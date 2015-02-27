@@ -1,0 +1,56 @@
+breadcrumb:
+  link_ad_place_size_list: Список размеров рекламных мест
+
+
+
+  link_units_list: Список единиц измерений
+  link_unit_of_measure_group_list: Список групп для единиц измерений
+  link_legal_form_list: Список организационно-правовых форм
+  link_legal_form_delete: Удаление организационно-правовой формы
+  link_currency_list: Список валют
+  link_country_list: Список стран
+  link_region_list: Список регионов
+  link_region_delete: Удаление региона
+  link_city_list: Список городов
+  link_city_delete: Удаление города
+  link_unit_of_measure_list: Список единиц измерения
+  link_product_tags_list: Список тегов продуктов
+  link_video_hosting_list: Список видео-хостингов
+  link_video_hosting_delete: Удаление видео-хостинга
+  link_remote_video_list: Список видео
+  link_remote_video_delete: Удаление видео
+  create:
+    Currency: Добавление нового продукта
+    Country: Добавление новой страны
+    Units: Добавление единицы измерения
+    UnitsGroups: Добавление группы единиц измерения    
+  edit:
+    Currency: Редактирование валюты
+    Country: Редактирование страны
+    Units: Редактирование единицы измерения
+    UnitsGroups: Редактирования группы единиц измерения    
+Currency: Валюты
+Country: Страны
+filter:
+  label:
+      name: Название
+      nameFull: Точное совпадение
+      isCapital: Столица
+      isCapitalOfRegion: Региона
+      isCapitalOfCountry: Страны
+Name: Название
+Full: Точное совпадение
+
+label:
+  id: ID
+  isEnabled: Активность
+  caption: Название
+  symbol: Символ
+  currency: Валюта
+  indexPosition: Позиции сортировки
+  updatedAt: Обновлен
+  alpha2: Двухбуквенное название
+  actions: Действия
+  citiesAmount: Городов
+  regionsAmount: Регионов
+  numeric: Цифровой код

@@ -1,0 +1,20 @@
+services:
+    # Основной сервис логики
+    core_holiday_logic:
+        class: Core\HolidayBundle\Logic\HolidayLogic
+        arguments: ['@service_container']
+
+    # Админский сервис
+    core_holiday_admin:
+        class: Core\HolidayBundle\Admin\HolidayAdmin
+        tags:
+        - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Системное, label: Праздники }
+        arguments: [null, Core\HolidayBundle\Entity\Holiday, CoreHolidayBundle:Admin\HolidayAdmin ]
+
+# Twig расширения
+    # Общие функции для бандла
+    core_holiday_twig_function_extension:
+        class: Core\HolidayBundle\Twig\HolidayFunctionExtension
+        arguments: [@service_container]
+        tags:
+            - { name: twig.extension }

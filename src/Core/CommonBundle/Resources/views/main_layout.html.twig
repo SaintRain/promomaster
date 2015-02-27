@@ -1,0 +1,90 @@
+{% extends "CoreCommonBundle::base_layout.html.twig" %}
+
+{% block css %}
+    <!--[i f lt IE 8]>
+     <link href="/css/main_ie7.css" rel="stylesheet">
+    <![endi f]-->
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    {% stylesheets 
+        'bundles/corecommon/select2/select2.css' 
+        'css/jquery-ui.css' 
+        'css/main.css'                 
+        'css/style.css'
+        'css/style_default.css'
+        'bundles/corecommon/slick/slick.css'
+        output='css/compiled/main.css'
+        filter='cssrewrite,yui_css'  %}
+    <link rel="stylesheet" href="{{ asset_url}}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block js_head %}
+    <script type="text/javascript">
+        var _home = '/',
+                google_tag_params = {
+                     ecomm_pagetype: 'other'
+                },
+                settingsJS = {
+                    extra: [],
+                    routes: [], // роуты
+                    trans: [], // переводы
+                    countCollection: [] // кол-во элементов коллекции в формах
+                };
+        settingsJS.extra['prodId'] = null;
+        settingsJS.extra['pageType'] = 'other';
+        settingsJS.extra['cartCost'] = null;
+        settingsJS.routes['social_auth'] = "{{path('application_sonata_user_auth_social')}}";
+        settingsJS.routes['core_product_subscribe_to_report'] = "{{ path('core_product_subscribe_to_report') }}";
+        settingsJS.routes['core_product_get_date_and_count_for_nearest_supply'] = "{{ path('core_product_get_date_and_count_for_nearest_supply') }}";
+        settingsJS.routes['core_product_buy_by_order'] = "{{ path('core_product_buy_by_order') }}";
+        settingsJS.trans['msg_work_time'] = '{{"msg.work_time" | trans}}';
+        settingsJS.trans['msg_not_work_time'] = '{{"msg.not_work_time" | trans}}';
+        settingsJS.trans['msg_time_till_close_start'] = '{{"msg.time_till_close_start" | trans}}';
+        settingsJS.trans['msg_time_till_close_end'] = '{{"msg.time_till_close_end" | trans}}';
+    </script>
+
+    {% javascripts 
+'js/source/jquery.min.js'
+'js/source/jquery-ui.min.js'
+'bundles/sonataadmin/select2/select2.min.js'
+'bundles/sonataadmin/select2/select2_locale_ru.js'
+'js/source/modernizr.custom.js'
+'js/source/flexmenu.min.js'
+'js/source/script.js'
+'bundles/applicationsonataadmin/js/jquery.inputmask/jquery.inputmask.js'
+'bundles/applicationsonataadmin/js/jquery.inputmask/jquery.inputmask.numeric.extensions.js'
+'js/source/bootstrap.min.js'
+'bundles/corecommon/js/slick.min.js'
+'bundles/coreproperty/js/frontend.filter.js'
+'bundles/corecommon/js/main.frontend.js'
+'bundles/coreproduct/js/frontend.catalog.js'
+'bundles/coreofficeworktime/js/work_time.js'
+'js/source/ulogin.js'
+
+output='js/compiled/main.js'
+ filter='yui_js' %}
+    <script src="{{ asset_url}}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block header %}
+    <div class="wrapper">
+        {{ render (controller ('CoreCommonBundle:Fragments:header', {'request': app.request})) }}
+    {% endblock %}
+
+    {% block menu %}
+        {{ render (controller ('CoreCommonBundle:Fragments:menu', {'request': app.request})) }}	
+    {% endblock %}
+
+    {% block footer %}
+        {% if not app.user %}
+            {{ render (controller ('CoreCommonBundle:Fragments:modalWindow', {'request': app.request})) }}
+        {% endif %}
+        {{ render (controller ('CoreCommonBundle:Fragments:footer', {'request': app.request})) }}
+        {#{% include 'CoreCommonBundle:Fragments:footer.html.twig' %}#}
+    {% block js_footer %}{% endblock %}
+</div>
+{% endblock %}

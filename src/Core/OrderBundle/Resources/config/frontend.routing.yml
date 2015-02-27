@@ -1,0 +1,70 @@
+# Корзина
+core_order_cart:
+  path:      /cart.html
+  schemes:  [http]
+  defaults:  { _controller: CoreOrderBundle:Order:step1 }
+
+#Данные покупателя
+core_order_cart_step2:
+  path:      /cart/step2.html
+  schemes:  [http]
+  defaults:  { _controller: CoreOrderBundle:Order:buyerInfo }
+
+#Доставка
+core_order_cart_step3:
+  path:      /cart/step3.html
+  schemes:  [http]
+  defaults:  { _controller: CoreOrderBundle:Order:delivery }
+
+# Проверка на наличие денег на балансе и выбор как оплатить заказ
+core_order_cart_step3_5:
+  schemes:  [http]
+  pattern:  /cart/step3_5.html
+  defaults: { _controller: CoreOrderBundle:Order:step3_5 }
+
+# Выбор способа оплаты
+core_order_cart_step4:
+  schemes:  [http]
+  pattern:  /cart/step4.html
+  defaults: { _controller: CoreOrderBundle:Order:step4 }
+
+core_order_finish:
+  path:      /cart/finish/{paymentSystem}.html
+  schemes:  [http]
+  defaults:  { _controller: CoreOrderBundle:Order:finish }
+  requirements:
+    paymentSystem: WebMoney|BankTransfer|Qiwi|YandexMoney|PlasticCard|Robokassa|PaymentOnDelivery|PayPal|PlasticCardTerminal
+
+core_order_finish_with_payment_id:
+  path:      /cart/finish/{paymentSystem}/{id}.html
+  schemes:  [http]
+  defaults:  { _controller: CoreOrderBundle:Order:finish }
+  requirements:
+    paymentSystem: WebMoney|BankTransfer|Qiwi|YandexMoney|PlasticCard|Robokassa|PaymentOnDelivery|PayPal|PlasticCardTerminal
+    id: \d+
+
+core_order_finish_with_order_id:
+  path:      /cart/finish/{paymentSystem}/{orderId}.html
+  schemes:  [http]
+  defaults:  { _controller: CoreOrderBundle:Order:finish }
+  requirements:
+    paymentSystem: Balance|PaymentOnDelivery
+    id: \d+
+
+core_order_contact:
+  path:      /ajax/cart_contact.json
+  schemes:  [http]
+  defaults:  { _controller: CoreOrderBundle:Order:contact }
+  methods:  [POST]
+  
+# Покупка под заказ
+core_product_buy_by_order:
+    path:      /ajax/products/buy_by_order.json
+    schemes:  [http]
+    defaults:  { _controller: CoreOrderBundle:AjaxOrder:buyByOrder }
+    
+# Покупка под заказ: расчет стоимости
+core_pre_order_cost:
+    path:      /ajax/products/pre_order_cost.json
+    #schemes:  [http]
+    defaults:  { _controller: CoreOrderBundle:AjaxOrder:preOrderCost }  

@@ -1,0 +1,10 @@
+{% set noIndex =  (request and request.attributes.get('_route') == 'core_common_index') ? false : true %}
+{% for brand in brands %}
+    {% if loop.index < 16 %}
+    {% if noIndex %}<!--noindex-->{% endif %}
+    <li {{fastEdit(brand)}}>
+        <a {% if noIndex %}rel="nofollow" {% endif %}href="{{ path('core_shop_product_brand_first_page', {slug: brand.slug}) }}">{{brand.captionRu}}</a>
+    </li>
+    {% if noIndex %}<!--/noindex-->{% endif %}
+        {% endif %}
+{% endfor %}

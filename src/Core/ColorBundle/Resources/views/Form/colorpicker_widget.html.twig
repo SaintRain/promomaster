@@ -1,0 +1,27 @@
+
+{#**
+ * Шаблон для вывода плагина с выбором цвета
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block colorpicker_widget %}
+
+    {% if libFirst %}
+        <link rel="stylesheet" href="{{ asset('bundles/corecolor/colorpicker/css/colorpicker.css') }}" type="text/css" />
+        <link rel="stylesheet" href="{{ asset('bundles/corecolor/colorpicker/css/admin_colorpicker.css') }}" type="text/css" />
+
+        <script type="text/javascript" src="{{ asset('bundles/corecolor/colorpicker/js/colorpicker.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/corecolor/colorpicker/js/eye.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/corecolor/colorpicker/js/utils.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/corecolor/colorpicker/js/admin_colorpicker.js') }}"></script>
+
+    {% endif %}
+
+    {% spaceless %}
+        <div class="colorpicker-preview"><div style="background-color: {{ '#'~value }}"></div></div>
+        <input type="text" {{ block('widget_attributes') }} value="{{ value }}" />
+    {% endspaceless %}
+
+{% endblock %}

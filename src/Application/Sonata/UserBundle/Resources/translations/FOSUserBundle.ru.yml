@@ -1,0 +1,119 @@
+# Group
+group:
+    edit:
+        submit: Обновить группу
+    show:
+        name: Название группы
+    new:
+        submit: Создать группу
+    flash:
+        updated: Группа обновлена
+        created: Группа создана
+        deleted: Группа удалена
+
+# Security
+"Bad credentials": Неверный Email и/или пароль.
+
+security:
+    login:
+        username: "Ваш e-mail:"
+        password: "Пароль:"
+        remember_me: Запомнить меня
+        submit: Войти
+
+# Profile
+profile:
+    show:
+        username: Имя пользователя
+        email: Email
+    edit:
+        submit: Обновить
+    flash:
+        updated: Профиль пользователя обновлен
+
+# Password change
+change_password:
+    submit: Изменить пароль
+    flash:
+        samepass: 'Вы ввели тот же пароль'
+        success: Пароль изменен
+
+# Registration
+registration:
+    check_email: Ваша регистрация успешно завершена. Подтверждение выслано на ваш E-mail.
+    confirmed: Поздравляем %username%, ваш аккаунт подтвержден.
+    back: Вернуться на предыдущую страницу.
+    submit: Регистрация
+    flash:
+        user_created: Пользователь успешно создан
+    email:
+        subject: Добро пожаловать %username%!
+        message: |
+            Приветствуем %username%!
+
+            Для подтверждения вашей регистрации, пройдите по ссылке %confirmationUrl%
+
+            С наилучшими пожеланиями,
+            команда сайта.
+    success: Вы были успешно авторизованы на сайте. Сейчас вы будете перенеправлены на страницу, с которой вы перешли на страницу регистрации. Если этого не произошло, то перейдите по ссылке
+
+# Password resetting
+resetting:
+    password_already_requested: Пароль для данного пользователя уже запрашивался за последние 24 часа.
+    check_email: Письмо на адрес %email% уже отправлено. Оно содержит ссылку, при переходе по которой ваш пароль будет сброшен.
+    request:
+        invalid_username: Email "%username%" не существует.
+        username: "Ваш e-mail:" #Имя пользователя:
+        submit: Восстановить
+        email: "Ваш e-mail:"
+    reset:
+        submit: Изменить пароль
+        submitSet: Указать пароль
+    flash:
+        success: Пароль успешно сброшен
+        successSet: Пароль успешно установлен
+    email:
+        subject: Сброс пароля
+        message: |
+            Приветствуем %username%!
+
+            Для сброса пароля - пожалуйста, пройдите по ссылке %confirmationUrl%
+
+            С наилучшими пожеланиями,
+            команда сайта.
+
+# Global strings
+layout:
+    logout: Выход
+    login: Вход
+    register: Регистрация
+    logged_in_as: Вы вошли как %username%
+
+# Form field labels
+form:
+    group_name: "Название группы:"
+    username: "Имя пользователя:"
+    email: "Ваш e-mail:"
+    current_password: "Текущий пароль:"
+    password: "Пароль:"
+    password_confirmation: "Пароль еще раз:"
+    new_password: "Пароль:"
+    new_password_confirmation: "Пароль еще раз:"
+    notice:
+      endDate: Окончание сорока действия домена
+      news: Новости проекта
+      settings: Изменение настроек домена
+      submit: Сохранить изменения
+    label_notice_end_date: Просроченные домены
+Notice: Оповещения
+
+User account is disabled.: Учетная запись не активирована
+User account is locked.: Учетная запись заблокирована
+User account has expired.: Учетная запись неактивна
+User credentials have expired.: Права для данной учетной записи истекли
+
+trans:
+  changePass: Изменение установленного пароля
+  error: Некоторые поля заполнены неверно
+filter:
+    label_groups: Группы

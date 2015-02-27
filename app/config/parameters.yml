@@ -1,0 +1,24 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: 3306
+    database_name: promomaster
+    database_user: root
+    database_password: root
+    mailer_encryption: ssl
+    mailer_transport: smtp
+    mailer_host: smtp.mail.ru
+    mailer_user: saintrain@mail.ru
+    mailer_password: sutFues7
+    locale: ru
+    domain_ru: promomaster
+    secret: b4e7a4ba6de9c87f227a93857e26b0856d0f4af1
+    filebrowserBrowseRoute: elfinder
+    default_timezone: Europe/Moscow
+    default_currency: RUB
+    default_email: saintrain@mail.ru
+    default_email_sender_name: saintrain@mail.ru
+    java_path: /usr/bin/java
+    router.request_context.host: '%domain_ru%'
+    router.request_context.base_url: /app_dev.php

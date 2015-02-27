@@ -1,0 +1,81 @@
+
+{#**
+ * Шаблон для отображения пагинации в каталоге товаров
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% if pageCount > 1 %}
+
+    {% set GET = app.request.query %}
+    {% set parameters = app.request.attributes.get('_route_params')|merge(GET.all) %}
+
+    {% if previous is defined %}
+        <!--noindex-->
+        {% if routeFirsPage is defined and previous == first %}
+            <a id="PrevPage" class="pagination_prev" href="{{ path(routeFirsPage, parameters|merge({'page': null})) }}">{{ 'prev'|trans({}, 'frontend') }}</a>
+        {% else %}
+            <a id="PrevPage" class="pagination_prev" href="{{ path(route, parameters|merge({'page': previous})) }}">{{ 'prev'|trans({}, 'frontend') }}</a>
+        {% endif %}
+        <!--/noindex-->
+    {% endif %}
+
+    {% if next is defined %}
+        <!--noindex-->
+        <a id="NextPage" class="pagination_next" href="{{ path(route, parameters|merge({'page': next})) }}">{{ 'next'|trans({}, 'frontend') }}</a>
+        <!--/noindex-->
+    {% endif %}
+
+    <ul class="pagination_nums">
+
+        {% if first is defined and current > first + 2 and pageCount > 7 %}
+            {% if routeFirsPage is defined %}
+                <li class="pagination_num"><a href="{{ path(routeFirsPage, parameters|merge({'page': null})) }}">{{ first }}</a></li>
+            {% else %}
+                <li class="pagination_num"><a href="{{ path(route, parameters|merge({'page': first})) }}">{{ first }}</a></li>
+            {% endif %}
+        {% endif %}
+
+        {% if first is defined and current > first + 3 and pageCount > 7 %}
+            {% if current == first + 4 %}
+                <li class="pagination_num"><a href="{{ path(route, parameters|merge({'page': first + 1})) }}">{{ first + 1 }}</a></li>
+            {% else %}
+                <li class="pagination_num"><span>&hellip;</span></li>
+            {% endif %}
+        {% endif %}
+
+        {% if pageCount <= 7 %}
+            {% set pagesInRange = [] %}
+            {% for n in 1..pageCount %}
+                {% set pagesInRange = pagesInRange|merge([n]) %}
+            {% endfor %}
+        {% endif %}
+
+        {% for page in pagesInRange %}
+            {% if page != current %}
+                {% if routeFirsPage is defined and page == first %}
+                    <li class="pagination_num"><a href="{{ path(routeFirsPage, parameters|merge({'page': null})) }}">{{ first }}</a></li>
+                {% else %}
+                    <li class="pagination_num"><a href="{{ path(route, parameters|merge({'page': page})) }}">{{ page }}</a></li>
+                {% endif %}
+            {% else %}
+                <li class="pagination_num"><strong>{{ page }}</strong></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if last is defined and current < last - 3 and pageCount > 7 %}
+            {% if current == last - 4 %}
+                <li class="pagination_num"><a href="{{ path(route, parameters|merge({'page': last - 1})) }}">{{ last - 1 }}</a></li>
+            {% else %}
+                <li class="pagination_num"><span>&hellip;</span></li>
+            {% endif %}
+        {% endif %}
+
+        {% if last is defined and current < last - 2 and pageCount > 7 %}
+            <li class="pagination_num"><a href="{{ path(route, parameters|merge({(pageParameterName): last})) }}">{{ last }}</a></li>
+        {% endif %}
+
+    </ul>
+
+{% endif %}

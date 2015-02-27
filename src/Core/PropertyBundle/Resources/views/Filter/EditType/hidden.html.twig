@@ -1,0 +1,12 @@
+{% block hidden %}
+
+    {% if this.value is defined %}
+
+ <input type="hidden" name="filter[{{ this.name }}]"
+                    value="{% spaceless %}
+                        {% if filterRequest[this.name] is defined %}
+                            {{ filterRequest[this.name] }}
+                        {% endif %}
+                    {% endspaceless %}">
+{% endif %}
+{% endblock %}

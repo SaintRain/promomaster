@@ -1,0 +1,13 @@
+
+{% if object.order %}
+    <a target="_blank" href="{{path('admin_core_order_order_edit', {'id': object.order.id})}}" class="btn view_link btn-small">
+        <i class="icon-zoom-in"></i>
+        <span>Посмотреть заказ</span>
+    </a>
+    {% else %}
+    <a href="javascript:void(0);" class="btn view_link btn-small create-order" data-obj-id="{{object.id}}">
+        <i class="icon-plus-sign"></i>
+        <span>Создать заказ</span>
+    </a>
+
+{% endif %}

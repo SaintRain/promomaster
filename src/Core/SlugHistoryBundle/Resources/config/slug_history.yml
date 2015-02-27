@@ -1,0 +1,43 @@
+core_slug_history:
+    namespaces:
+        # Продукция
+        Core\ProductBundle\Entity\CommonProduct:                    # имя сущности как ключ
+            route: core_product                                     # имя роута
+            parameters:
+                slug: 'slug'                                        # имя заполнителя как ключ и имя поля
+
+        # Категории продукции
+        Core\CategoryBundle\Entity\ProductCategory:
+            route: core_shop_product_catalog_first_page
+            parameters:
+                slug: 'slug'
+
+        # Бренды
+        Core\ManufacturerBundle\Entity\Brand:
+            route: core_shop_product_brand_first_page
+            parameters:
+                slug: 'slug'
+            childrensEntity:                                        # дочерние сущности-коллекции
+                seriesList: Core\ManufacturerBundle\Entity\Series   # имя коллекции как ключ и имя сущности как значение
+
+        # Серии брендов
+        Core\ManufacturerBundle\Entity\Series:
+            route: core_shop_product_brand_series_first_page
+            parameters:
+                slug: 'brand.slug'
+                slugSeries: 'slug'
+
+        # Статьи (FAQ)
+        Core\FaqBundle\Entity\Article:
+            route: core_faq_article
+            parameters:
+                categorySlug: 'category.slug'
+                articleSlug: 'slug'
+
+        # Категории статей (FAQ)
+        Core\CategoryBundle\Entity\FaqCategory:
+            route: core_faq_category
+            parameters:
+                categorySlug: 'slug'
+            childrensEntity:
+                articles: Core\FaqBundle\Entity\Article

@@ -1,0 +1,27 @@
+
+{#**
+ * Шаблон для вывода phpinfo()
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{#
+{% extends 'ApplicationSonataAdminBundle::layout.html.twig' %}
+
+{% block breadcrumb %}
+
+    <li>
+        <a href="{{ path('sonata_admin_dashboard') }}">⌂</a>
+        <span class="divider">/</span>
+    </li>
+    <li class="active">phpinfo()</li>
+
+{% endblock %}
+
+{% block content %}
+
+    <h1>Custom Page</h1>
+
+{% endblock %}
+#}

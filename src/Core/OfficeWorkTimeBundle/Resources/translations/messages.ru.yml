@@ -1,0 +1,9 @@
+msg:
+    no_response: 'Невозможно получить ответ от сервера'
+    no_year: 'Заданный год не обнаружен'
+    not_work_time: 'Не рабочее время'
+    work_time: 'Офис работает'
+    time_till_close_start: 'Офис закроется через '
+    time_till_close_end: ' мин.'
+    time_till_close: 'Офис закроется через %minute% минуту | Офис закроется через %minute% минуты | Офис закроется через %minute% минут'
+    #time_till_close: '{0} There are no apples|{1} There is one apple|]1,Inf] There are %minute% apples'

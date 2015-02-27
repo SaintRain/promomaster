@@ -1,0 +1,18 @@
+{#
+  Инициализируем скрипты для fastedit
+
+  @author Sergeev A.M
+  @copyright LLC "PromoMaster"
+#}
+
+{%block fastEditInit%}    
+    <script>
+        var __fastEditTagName = "{{tagName}}",
+            __fastEditCTRL = false;
+    </script>    
+
+    {% javascripts  'bundles/corecommon/fastedit/fastEditInit.js' output='js/compiled/fastEditInit.js' filter='yui_js' %}
+    <script src="{{ asset_url}}"></script>
+    {% endjavascripts %}    
+    <a href="{{path('sonata_admin_dashboard')}}" style="z-index: 100; text-shadow: 1px 1px 2px white, 0 0 1em white; /* Параметры тени */display:block;position:fixed;top:3px;right:3px;font-size:18px;font-weight:bold;">А<br>Д<br>М<br>И<br>Н<br>К<br>А</a>
+{%endblock%}

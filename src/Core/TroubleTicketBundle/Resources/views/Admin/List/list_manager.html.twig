@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.manager %}
+        <a href="{{path('admin_sonata_user_user_edit',{'id':object.manager.id})}}">{{object.manager.userName}}</a>
+        {% else %}
+            <span class="label label-important">нет</span>
+    {% endif %}
+{% endblock %}

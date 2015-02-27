@@ -1,0 +1,25 @@
+{% block textCase_widget %}    
+    
+    <div class="caption_case_wrapper">
+        {#<a class="caption_case">Показать</a>#}
+        <div class="{#hidden#} active">
+                {% if form.children | length %}
+                    {% for child in form.children %}
+                        <div class="control-group">
+                            {{form_label(child)}}
+                            <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                                {{form_widget(child)}}
+                                {% if help[child.vars.name] is defined  %}
+                                    <span class="help-block sonata-ba-field-help">
+                                        {{help[child.vars.name]}}
+                                        <span class="help-block-shadow"></span>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}            
+                {% endif %}    
+        </div>
+    </div>    
+
+{% endblock %}

@@ -1,0 +1,156 @@
+
+{#**
+ * Шаблон для генерации PDF платежки (счет-фактура)
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends "CorePaymentBundle:PaymentSystem\\BankTransfer:layout_print.html.twig" %}
+
+{% block body %}
+    
+    {% set seller = payment.order.seller %}    
+
+    <div style="width:720px">
+
+        <table  width="720" style="border:#000000 1px solid;" cellpadding="3" cellspacing="0">
+            <tr>
+                <td width="120">Поставщик:</td>
+                <td>{{ seller.legalForm.captionRu }} "{{ seller.caption }}"</td>
+            </tr>
+            <tr>
+                <td>Юр. адрес:</td>
+                <td>{{ seller.addressUr }}</td>
+            </tr>
+        </table>
+
+        <br>
+
+        <br>
+        {# <p align="center">Образец заполнения платежного поручения</p> #}
+
+        <table  width="720" style="border:#000000 1px solid;" cellpadding="3" cellspacing="0">
+            <tr>
+                <td style="border-right:#000000 1px solid;">ИНН&nbsp;{{ seller.inn }}</td>
+                <td style="border-right:#000000 1px solid;">КПП&nbsp;{{ seller.kpp }}</td>
+                <td style="border-right:#000000 1px solid;" width="50"></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" colspan="2">Получатель</td>
+                <td style="border-right:#000000 1px solid;"></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="border-right:#000000 1px solid;" colspan="2">{{ seller.legalForm.captionRu }} "{{ seller.caption }}"</td>
+                <td style="border-right:#000000 1px solid;" >Сч. №</td>
+                <td>{{ seller.paymentAccount }}</td>
+            </tr>
+
+            <tr>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" colspan="2">Банк получателя</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;">БИК</td>
+                <td style="border-top:#000000 1px solid;">{{ seller.bank.bic }}</td>
+            </tr>
+
+            <tr>
+                <td style="border-right:#000000 1px solid;" colspan="2">{{ seller.bank.caption }}</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;">Сч. №</td>
+                <td>{{ seller.corrAccount }}</td>
+            </tr>
+        </table>
+
+        <br>
+
+        <p align="center">СЧЕТ №{{ payment.id|idFormat }} от {{ payment.createdAt|localizeddate("none", "none", null, default_timezone, "«dd» MMMM YYYY г.") }}</p>
+
+        <br>
+
+        <table  width="720" style="" cellpadding="3" cellspacing="0">
+            <tr>
+                <td width="150">Плательщик:</td>
+                <td>{% if customer.legalForm is defined %}{{ customer.organization }}{% else %}{{ customer.lastName ~ ' ' ~ customer.firstName ~ ' ' ~ customer.surName }}{% endif %}</td>
+            </tr>
+            <tr>
+                <td>Грузополучатель:</td>
+                <td>{% if customer.legalForm is defined %}{{ customer.organization }}{% else %}{{ customer.lastName ~ ' ' ~ customer.firstName ~ ' ' ~ customer.surName }}{% endif %}</td>
+            </tr>
+        </table>
+
+        <br>
+
+        <table  width="720" cellpadding="3" cellspacing="0">
+            <tr>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid; border-left:#000000 1px solid;" width="40" align="center">№</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" align="center">Наименование товара</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" width="90" align="center">Единица</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" width="100" align="center">Количество</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" width="60" align="center">Цена (руб.)</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" width="80" align="center">Сумма (руб.)</td>
+            </tr>
+            <tr style="border-top:#000000 1px solid;">
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid; border-left:#000000 1px solid;" align="center">1</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;">Оплата заказа №{{ payment.order.id|idFormat }} (платеж №{{ payment.id|idFormat }})</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" align="center">шт.</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" align="center">1</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" align="center">{{ moneyFormat(payment.amount) }}</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" align="center">{{ moneyFormat(payment.amount) }}</td>
+            </tr>
+            <tr style="border-top:#000000 1px solid;">
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid;" align="right" colspan="5">Итого (без НДС):</td>
+                <td style="border-top:#000000 1px solid;border-right:#000000 1px solid; border-bottom:#000000 1px solid;" align="center">{{ moneyFormat(payment.amount) }}</td>
+            </tr>
+            <!--
+            <tr>
+                <td style="border-right:#000000 1px solid;" align="right" colspan="5">Итого с учетом НДС:</td>
+                <td style="border-right:#000000 1px solid; border-bottom:#000000 1px solid;"></td>
+            </tr>
+            <tr>
+                <td style="border-right:#000000 1px solid;" align="right" colspan="5">Всего к оплате:</td>
+                <td style="border-right:#000000 1px solid; border-bottom:#000000 1px solid;"></td>
+            </tr>
+            -->
+        </table>
+
+        <br>
+
+        <p>
+            Всего наименований 1, на сумму {{ moneyFormat(payment.amount) }} {{ currencyFormat() }}
+
+            <br>
+
+            {{ amount2str(payment.amount) }}
+        </p>
+
+        <br>
+
+        <table  width="700" cellpadding="3" cellspacing="0" >
+            <tr>
+                <td width="200">Руководитель предприятия</td>
+                <td align="center"> <img src="{{ asset(seller.imageSign|getFileWebPath('preview', 'small')) }}"/></td>
+                <td align="center">( {{ seller.nameOfTheHead }} )</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td align="center"><i style="font-size: 9pt">(подпись)</i></td>
+                <td align="center"><i style="font-size: 9pt">(расшифровка подписи)</i></td>
+            </tr>
+            <tr>
+                <td>Главный бухгалтер</td>
+                <td align="center"> <img src="{{ asset(seller.imageSign|getFileWebPath('preview', 'small')) }}"/></td>
+                <td align="center">( {{ seller.nameOfTheAccountant }} )</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td align="center"><i style="font-size: 9pt">(подпись)</i></td>
+                <td align="center"><i style="font-size: 9pt">(расшифровка подписи)</i></td>
+            </tr>
+        </table>
+        
+        <p style="margin-left: 1cm; margin-bottom: 0cm"><font face="Arial, sans-serif"><img src="{{ asset(seller.imageStamp|getFileWebPath('preview', 'small2')) }}"/></font></p>
+    </div>
+            
+{% endblock %}

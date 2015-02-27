@@ -1,0 +1,33 @@
+
+{#**
+ * Шаблон для вывода списка контрагентов в модальном окне при смене
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block list_contragents %}
+    {% spaceless %}
+
+        <ul class="change-contragent" data-url="{{ path('application_sonata_user_ajax_change_contragent') }}">
+
+            {% for c in contragents %}
+
+                <li>
+                    <span {% if app.session.get('current_contragent_id') != c.id %}class="text_tgl" data-id="{{ c.id }}"{% else %} class="text_tgl contragent-selected" title="Текущий контрагент"{% endif %}>
+
+                        {%- if c.legalForm is defined -%}
+                            {{- c.organization -}}
+                        {%- else -%}
+                            {{- c.lastName ~ ' ' ~ c.firstName ~ ' ' ~ c.surName  -}}
+                        {%- endif -%}
+
+                    </span>
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+    {% endspaceless %}
+{% endblock %}

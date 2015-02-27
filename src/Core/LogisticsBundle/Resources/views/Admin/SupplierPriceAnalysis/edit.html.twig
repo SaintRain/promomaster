@@ -1,0 +1,306 @@
+{% extends 'ApplicationSonataAdminBundle:CRUD:edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script xmlns="http://www.w3.org/1999/html">
+        $(function () {
+
+            $('a#summaryInfoPodorojalo').click(function () {
+                $('a[href="#{{ uniqid }}_{{ ind+1 }}"]').click();
+                $('input[value="phPriceHike"]').click();
+            });
+
+            $('a#summaryInfoPodeshevelo').click(function () {
+                $('a[href="#{{ uniqid }}_{{ ind+1 }}"]').click();
+                $('input[value="phDepreciation"]').click();
+            });
+
+            $('a#summaryInfoPodorojaloMrc').click(function () {
+                $('a[href="#{{ uniqid }}_{{ ind+3 }}"]').click();
+                $('input[value="mrcPriceHike"]').click();
+            });
+            $('a#summaryInfoPodesheveloMrc').click(function () {
+                $('a[href="#{{ uniqid }}_{{ ind+3 }}"]').click();
+                $('input[value="mrcDepreciation"]').click();
+            });
+
+            $('a#summaryInfoBezizmeneniya').click(function () {
+                $('a[href="#{{ uniqid }}_{{ ind+1 }}"]').click();
+                $('input[value="phNothing"]').click();
+            });
+
+            $('a#summaryInfoBezizmeneniyaMrc').click(function () {
+                $('a[href="#{{ uniqid }}_{{ ind+3 }}"]').click();
+                $('input[value="mrcNothing"]').click();
+            });
+
+            $('a#summaryInfoNoInBase').click(function () {
+                $('a[href="#{{ uniqid }}_{{ ind+2 }}"]').click();
+                $('input[value="noInBase"]').click();
+            });
+
+            $('a#summaryInfoNoInPrice').click(function () {
+                $('a[href="#{{ uniqid }}_{{ ind+2 }}"]').click();
+                $('input[value="noInPrice"]').click();
+            });
+
+            $('a#summaryInfoDisabledInBaseandHasInPrice').click(function () {
+                $('a[href="#{{ uniqid }}_{{ ind+1 }}"]').click();
+                $('input[value="phDisabledInBaseandHasInPrice"]').click();
+            });
+
+            $('a#summaryInfoDisabledInBaseandHasInPriceMrc').click(function () {
+                $('a[href="#{{ uniqid }}_{{ ind+3 }}"]').click();
+                $('input[value="mrcDisabledInBaseandHasInPrice"]').click();
+            });
+
+            $('a#badRecordsQuantity').click(function () {
+                $('a[href="#{{ uniqid }}_{{ ind+4 }}"]').click();
+            });
+
+        });
+
+
+    </script>
+{% endblock %}
+{% set ind=1 %}
+{% set uniqid=admin.uniqid %}
+{% block sonata_pre_fieldsets %}
+
+<div class="tabbable">
+<ul class="nav nav-tabs">
+
+    {% for name, form_group in admin.formgroups %}
+        <li class="{% if loop.first %}active{% endif %}">
+            <a href="#{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab">
+                <i class="icon-exclamation-sign has-errors hide"></i>
+                {{ admin.trans(name, {}, form_group.translation_domain) }}
+            </a>
+        </li>
+        {% set ind=loop.index %}
+    {% endfor %}
+    {% if extra.priceHike is defined %}
+        <li>
+            <a href="#{{ uniqid }}_{{ ind+1 }}" data-toggle="tab">
+                <i class="icon-exclamation-sign has-errors hide"></i>
+                Изменение цены
+            </a>
+        </li>
+    {% endif %}
+    {% if extra.outOfStock is defined %}
+        <li>
+            <a href="#{{ uniqid }}_{{ ind+2 }}" data-toggle="tab">
+                <i class="icon-exclamation-sign has-errors hide"></i>
+                Нет в наличии
+            </a>
+        </li>
+    {% endif %}
+    {% if extra.analysisMRC is defined %}
+        <li>
+            <a href="#{{ uniqid }}_{{ ind+3 }}" data-toggle="tab">
+                <i class="icon-exclamation-sign has-errors hide"></i>
+                МРЦ
+            </a>
+        </li>
+    {% endif %}
+    {% if extra.analysisBadRecords is defined %}
+        <li>
+            <a href="#{{ uniqid }}_{{ ind+4 }}" data-toggle="tab">
+                <i class="icon-exclamation-sign has-errors hide"></i>
+                Испорченные записи
+            </a>
+        </li>
+    {% endif %}
+
+</ul>
+{% endblock %}
+
+{% block sonata_tab_content %}
+    <div class="tab-content">
+    {% for name, form_group in admin.formgroups %}
+        <div class="tab-pane {% if loop.first %} active{% endif %}"
+             id="{{ admin.uniqid }}_{{ loop.index }}">
+            <fieldset>
+                <div class="sonata-ba-collapsed-fields">
+                    {% if form_group.description != false %}
+                        <p>{{ form_group.description|raw }}</p>
+                    {% endif %}
+
+                    {% for field_name in form_group.fields %}
+                        {% if admin.formfielddescriptions[field_name] is defined %}
+                            {{ form_row(form[field_name]) }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                {#Выводим сводоную информацию #}
+                {% if admin.subject.id %}
+                    <div class="control-group">
+                        <label class="control-label ">
+                        </label>
+
+                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural  "
+                             style="position: relative;">
+                            <div class="well well-sm" style="width: 350px; margin-top: 10px; margin-bottom: 0px;">
+                                <h5>Сводная информация</h5>
+
+
+
+
+
+                                {% if not admin.subject.isQuantityProcessed %}
+                                    <span class="small" >Прайс начнет обрабатываться с минутной задержкой:</span>
+                                    <div id="productPriceFormUploadProgress"
+                                         class="progress progress-info progress-striped active">
+                                        <div class="bar" style="width: 0%;">
+                                            <span>0%</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-success alert-dismissable"
+                                         id="productPriceFormUploadProgressOk" style="display:none"></div>
+                                    <div class="alert alert-error alert-dismissable"
+                                         id="productPriceFormUploadProgressError" style="display:none"></div>
+                                    <script>
+                                        var intervalProductParceId=setInterval(checkProductParcePriceAnalisysStatus, 3000);
+
+                                        function checkProductParcePriceAnalisysStatus() {
+                                            $.ajax({
+                                                url: "{{ admin.generateObjectUrl('getUpdateQuantityProgress', admin.subject) }}", //Server script to process data
+                                                type: 'POST',
+                                                success: function (res) {
+                                                    // var percent = (res.percent / (100 / 80) + 20).toFixed();
+                                                    if (typeof(res)=='object') {
+                                                        var percent = res.percent;
+                                                        SetProductPriceFormUploadProgress(percent);
+                                                        if (percent == 100) {
+                                                            clearInterval(intervalProductParceId);
+                                                            if (res.quantity > 0) {
+                                                                var msg = 'Успешно обновлено товаров ' + res.quantity + ' шт. Необходимо обновить страницу. Обновить сейчас?';
+                                                                var q=confirm(msg);
+                                                                if (q) {
+                                                                    location.reload();
+                                                                }
+                                                            }
+                                                            else {
+                                                                var msg = 'Парсинг успешно закончился, однако изменения для продуктов не было обнаружено.';
+                                                            }
+                                                            $('#productPriceFormUploadProgress').hide();
+                                                            $('#productPriceFormUploadProgressOk').show().html(msg);
+                                                        }
+                                                        //если ошибка
+                                                        if (res.error) {
+                                                            clearInterval(intervalProductParceId);
+                                                            $('#productPriceFormUploadProgress').hide();
+                                                            $('#productPriceFormUploadProgressError').show().html(res.error);
+                                                        }
+                                                    }
+                                                    else {
+
+                                                    }
+                                                },
+                                                error: function (res) {
+                                                    clearInterval(intervalProductParceId);
+                                                    $('#productPriceFormUploadProgress').hide();
+                                                    $('#productPriceFormUploadProgressError').show().html('Ошибка парсинга прайса! '+res.statusText);
+                                                },
+                                                //Options to tell jQuery not to process data or worry about content-type.
+                                                cache: false,
+                                                contentType: false,
+                                                processData: false
+                                            });
+                                        }
+
+                                        function SetProductPriceFormUploadProgress(percent) {
+                                            var $progres = $('#productPriceFormUploadProgress');
+                                            $progres.show().css('visibility', 'visible').find('.bar').attr('style', 'width:' + percent + '%').find('span').html(percent + '%');
+                                            $('#productPriceFormUploadProgressOk').hide();
+                                            $('#productPriceFormUploadProgressError').hide();
+                                        }
+                                    </script>
+                                {% endif %}
+
+
+                                {% if admin.subject.isQuantityProcessed %}
+                                <div>Всего в прайсе:
+                                    <b>{{ extra.summaryInfo.totalQuantity }}</b> {{ declOfNum(extra.summaryInfo.totalQuantity, ['товар', 'товара', 'товаров'] ) }}
+                                </div>
+                                <div>Испорченных: <a id="badRecordsQuantity"
+                                                     href="javascript:void(0);"><b>{{ extra.summaryInfo.badRecordsQuantity }}</b> {{ declOfNum(extra.summaryInfo.badRecordsQuantity, ['запись', 'записи', 'записей'] ) }}
+                                    </a>
+                                </div>
+                                <div>Подорожало: <a id="summaryInfoPodorojalo"
+                                                    href="javascript:void(0);"><b>{{ extra.summaryInfo.podorojalo }}</b> {{ declOfNum(extra.summaryInfo.podorojalo, ['товар', 'товара', 'товаров'] ) }}
+                                    </a>
+                                </div>
+                                <div>Подешевело: <a id="summaryInfoPodeshevelo"
+                                                    href="javascript:void(0);"><b>{{ extra.summaryInfo.podeshevelo }}</b> {{ declOfNum(extra.summaryInfo.podeshevelo, ['товар', 'товара', 'товаров'] ) }}
+                                    </a>
+                                </div>
+                                <div>Без изменения цены: <a id="summaryInfoBezizmeneniya"
+                                                            href="javascript:void(0);"><b>{{ extra.summaryInfo.bezizmeneniya }}</b> {{ declOfNum(extra.summaryInfo.bezizmeneniya, ['товар', 'товара', 'товаров'] ) }}
+                                    </a>
+                                </div>
+                                <div>Скрыто из доступных: <a id="summaryInfoDisabledInBaseandHasInPrice"
+                                                             href="javascript:void(0);"><b>{{ extra.summaryInfo.disabledInBaseandHasInPrice }}</b> {{ declOfNum(extra.summaryInfo.disabledInBaseandHasInPrice, ['товар', 'товара', 'товаров'] ) }}
+                                    </a>
+                                </div>
+                                <hr style="margin:5px">
+                                <div>Подорожало по МРЦ: <a id="summaryInfoPodorojaloMrc"
+                                                           href="javascript:void(0);"><b>{{ extra.summaryInfo.podorojaloMrc }}</b> {{ declOfNum(extra.summaryInfo.podorojaloMrc, ['товар', 'товара', 'товаров'] ) }}
+                                    </a>
+                                </div>
+                                <div>Подешевело по МРЦ: <a id="summaryInfoPodesheveloMrc"
+                                                           href="javascript:void(0);"><b>{{ extra.summaryInfo.podesheveloMrc }}</b> {{ declOfNum(extra.summaryInfo.podesheveloMrc, ['товар', 'товара', 'товаров'] ) }}
+                                    </a>
+                                </div>
+                                <div>Без изменения цены по МРЦ: <a id="summaryInfoBezizmeneniyaMrc"
+                                                                   href="javascript:void(0);"><b>{{ extra.summaryInfo.bezizmeneniyaMrc }}</b> {{ declOfNum(extra.summaryInfo.bezizmeneniyaMrc, ['товар', 'товара', 'товаров'] ) }}
+                                    </a>
+                                </div>
+                                <div>Скрыто из доступных по МРЦ: <a id="summaryInfoDisabledInBaseandHasInPriceMrc"
+                                                                    href="javascript:void(0);"><b>{{ extra.summaryInfo.disabledInBaseandHasInPriceMrc }}</b> {{ declOfNum(extra.summaryInfo.disabledInBaseandHasInPriceMrc, ['товар', 'товара', 'товаров'] ) }}
+                                    </a>
+                                </div>
+                                <hr style="margin:5px">
+                                <div>Нет в базе: <a id="summaryInfoNoInBase"
+                                                    href="javascript:void(0);"><b>{{ extra.summaryInfo.noInBase }}</b> {{ declOfNum(extra.summaryInfo.noInBase, ['товар', 'товара', 'товаров'] ) }}
+                                    </a>
+                                </div>
+                                <div>Нет у поставщика: <a id="summaryInfoNoInPrice"
+                                                          href="javascript:void(0);"><b>{{ extra.summaryInfo.noInPrice }}</b> {{ declOfNum(extra.summaryInfo.noInPrice, ['товар', 'товара', 'товаров'] ) }}
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            </fieldset>
+        </div>
+    {% endfor %}
+
+    {#Вкладка ПОДОРОЖАНИЕ#}
+    {% if extra.priceHike is defined %}
+        {% include ('CoreLogisticsBundle:Admin/SupplierPriceAnalysis/tabs:priceHike.html.twig') %}
+    {% endif %}
+
+    {# Вкладка Нет в наличии#}
+    {% if extra.outOfStock is defined %}
+        {% include 'CoreLogisticsBundle:Admin/SupplierPriceAnalysis/tabs:outOfStock.html.twig' %}
+    {% endif %}
+
+    {# Вкладка МРЦ#}
+    {% if extra.analysisMRC is defined %}
+        {% include 'CoreLogisticsBundle:Admin/SupplierPriceAnalysis/tabs:mrc.html.twig' %}
+    {% endif %}
+
+    {# Вкладка Испорченные записи#}
+    {% if extra.analysisBadRecords is defined %}
+        {% include 'CoreLogisticsBundle:Admin/SupplierPriceAnalysis/tabs:badRecords.html.twig' %}
+    {% endif %}
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,62 @@
+application_sonata_user_change_email:
+  path:      /change-email-{hash}.html
+  schemes:  [http]
+  defaults:  { _controller: ApplicationSonataUserBundle:Security:changeEmail }
+
+# Ajax запрос для смены истории баланса по продавцу
+application_sonata_user_contragent_balance_history_update:
+  path:      /admin/ajax/update/{customerId}/{sellerId}/balance_history.html
+  schemes:  [http]
+  defaults:  { _controller: ApplicationSonataUserBundle:Admin\AjaxContragentAdmin:balanceHistoryUpdate }
+  requirements:
+    customerId:  \d+
+    sellerId:  \d+
+# роуты контрагента
+# не удалять может потребоваться
+#application_sonata_user_contragent_index:
+#    path: /contragent/index.html
+#    schemes:  [http]
+#   defaults:  { _controller: ApplicationSonataUserBundle:Contragent:index }
+# роуты контрагента
+application_sonata_user_contragent_index:
+    path: /contragent/index.html
+    schemes:  [http]
+    defaults:  { _controller: ApplicationSonataUserBundle:Contragent:contact }
+    
+application_sonata_user_contragent_edit:
+    path: /contragent/edit-{isIndi}-{contragentId}.html
+    schemes:  [http]
+    defaults:  { _controller: ApplicationSonataUserBundle:Contragent:edit }
+    requirements:
+        contragentId: \d+
+        isIndi: 0|1
+application_sonata_user_contragent_create:
+    path: /contragent/create.html
+    schemes:  [http]
+    defaults:  { _controller: ApplicationSonataUserBundle:Contragent:create }
+
+application_sonata_user_contragent_delete:
+    path: ajax/contragent/delete.json
+    schemes:  [http]
+    defaults:  { _controller: ApplicationSonataUserBundle:Contragent:delete }
+    methods:  [POST]
+
+# роуты контактов
+application_sonata_user_contact_edit:
+    path: /contact/edit-{contactId}.html
+    schemes:  [http]
+    defaults:  { _controller: ApplicationSonataUserBundle:Contact:edit }
+    requirements:
+        contactId: \d+
+
+application_sonata_user_contact_create:
+    path: /contact/create-{contragentId}.html
+    schemes:  [http]
+    defaults:  { _controller: ApplicationSonataUserBundle:Contact:create }
+    requirements:
+        contragentId: \d+
+
+application_sonata_user_contact_delete:
+    path: ajax/contact/delete.json
+    defaults:  { _controller: ApplicationSonataUserBundle:Contact:delete }
+    methods:  [POST]    

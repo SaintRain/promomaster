@@ -1,0 +1,23 @@
+{% block form_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+        {% if not form.parent  or 'repeated' in form.vars['block_prefixes'] %}
+            <div class="error">
+        {% endif %}
+                <div class="form_field_error_txt">
+                    {% for error in errors %}
+                        {% if loop.first %}
+                            {% if error.messageParameters['{{ limit }}'] is defined %}
+                                {{ error.messageTemplate|trans(error.messageParameters, 'validators')|transchoice(error.messageParameters['{{ limit }}']) }}
+                                {% else %}
+                                    {{ error.messageTemplate|trans(error.messageParameters, 'validators') }}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+        {% if not form.parent  or 'repeated' in form.vars['block_prefixes'] %}
+            </div>
+        {% endif %}
+    {% endif %}
+{% endspaceless %}
+{% endblock form_errors %}

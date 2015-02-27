@@ -1,0 +1,374 @@
+#admin:
+label:
+  id: ID
+  id1C: ID записи из 1С
+  indexPosition: Позиции сортировки
+  createdDateTime: Создан
+  isEnabled: Активность
+  isBest: Бестселлер
+  caption: Название
+  article: Артикул
+  price: Цена
+  description: Описание
+  title: Заголовок (Title)
+  metadescription: Описание (Description)
+  metakeywords: Ключевики (Keywords)
+  images: Фото товара
+  actions: Действия
+  main_image: Главное фото
+  instruction: Инструкция
+breadcrumb:
+  link_common_product_list: Список продукции
+
+  create:
+    empty: Добавление неизвестного типа продукта
+    Product: Добавление физического продукта
+    ServiceProduct: Добавление услуги-продукта
+    DigitalProduct: Добавление цифрового продукта
+    CompositeProduct: Добавление составного продукта
+  edit:
+    empty: Редактирование продукта
+    Product: Физический продукт
+    ServiceProduct: Услуга-продукт
+    DigitalProduct: Цифровой продукт
+    CompositeProduct: Составной продукт
+Product: Физический продукт
+ServiceProduct: Услуга - продукт
+DigitalProduct: Цифровой продукт
+CompositeProduct: Составной продукт
+
+audit:
+    tabs:
+        name: История продукта
+    Core\ProductBundle\Entity\Product:
+        barcode: Штрихкод
+        UPD: Измененные данные
+        captionCaseRu: Падежи
+        captionRu: Название
+        shortDescriptionRu: Краткое описание
+        typePrefix: Тип префикса
+        idDiscontinued: Активно
+        descriptionRu: Описание
+        complectationRu: Комплектация
+        sloganRu: Описание (Мета)
+        titleRu: Заголовок (Мета)
+        metakeywordsRu: Ключевики (Мета)
+        metadescriptionRu: Описание (Мета)
+        article: Артикул
+        sku: SKU производителя
+        unitOfMeasure: Единица измерения
+        isNoSerials: У продукта нет серийников
+        serialsQuantity: Количество серийных номеров
+        warrantyMonths: Срок гарантии в месяцах
+        price: Цена
+        oldPrice: Старая цена
+        manufacturerMain: Основной производитель
+        brand: Бренд
+        serie: Серия
+        countryOfOrigin: Страна происхождения
+        createdDateTime: Дата добавления
+        isBest: Бестселлер
+        isEnabled: Активно
+        isVisible: Показывается на сайте
+        isDiscontinued: Снят с производства
+        orderOnly: Только под заказ
+        orderOnlyPriceBuying: Цена закупки
+        orderOnlyShopTax: Наценка магазина
+        orderOnlyShopTaxInPercent: Наценка в процентах
+        categoryMain: Основная категория
+        slogan: Слоган
+        quantityOfPieces: Количество одинаковых продуктов в данной фасовке/бухте
+        instruction: Инструкция
+        slug: ЧПУ
+        ymlCaption: Название для YML
+        colorOriginalCode: Цвет (код)
+        color: Цвет
+        netWeight: Масса нетто
+        isNetWeightInGm: Единица измерения массы кг
+        isColorSelectedByUser: Цвет выбран пользователем
+        indexPositionModification: Позиция в составе модификации
+        grossWeight: Масса брутто
+        isGrossWeightInGm: Единица измерения массы брутто кг
+        lengthOfProduct: Длина продукта в мм
+        widthOfProduct: Ширина продукта в мм
+        heightOfProduct: Высота продукта в мм
+        lengthOfBox: Длина коробки в мм
+        widthOfBox: Ширина коробки в мм
+        heightOfBox: Высота коробки в мм
+        barcode: Штрихкод(ы)
+        modificationUnion: Модификация
+        isOOPBCurrencyRateAdditiveInPercent: Надбавка к курсу в процентах (под заказ)
+        isMrcEnabled: МРЦ включено
+        OOPBQuantity: Остаток у поставщика (под заказ)
+        OOPBQuantityUpdated: Последнее обновление остатка у поставщика (под заказ)
+        mrc: МРЦ
+        OOPBCurrency: Валюта (под заказ)
+        OOPBCurrencyRateAdditive: Надбавка к курсу (под заказ)
+    Core\ProductBundle\Entity\CompositeProduct:
+        UPD: Измененные данные
+        captionCaseRu: Падежи
+        captionRu: Название
+        shortDescriptionRu: Краткое описание
+        typePrefix: Тип префикса
+        isDiscontinued: Снят с производства
+        descriptionRu: Описание
+        complectationRu: Комплектация
+        sloganRu: Описание (Мета)
+        titleRu: Заголовок (Мета)
+        metakeywordsRu: Ключевики (Мета)
+        metadescriptionRu: Описание (Мета)
+        article: Артикул
+        sku: SKU производителя
+        unitOfMeasure: Единица измерения
+        isNoSerials: У продукта нет серийников
+        serialsQuantity: Количество серийных номеров
+        warrantyMonths: Срок гарантии в месяцах
+        price: Цена
+        oldPrice: Старая цена
+        manufacturerMain: Основной производитель
+        brand: Бренд
+        serie: Серия
+        countryOfOrigin: Страна происхождения
+        createdDateTime: Дата добавления
+        isBest: Бестселлер
+        isEnabled: Активно
+        isVisible: Показывается на сайте
+        orderOnly: Только под заказ
+        orderOnlyPriceBuying: Цена закупки
+        orderOnlyShopTax: Наценка магазина
+        orderOnlyShopTaxInPercent: Наценка в процентах
+        categoryMain: Основная категория
+        slogan: Слоган
+        quantityOfPieces: Количество одинаковых продуктов в данной фасовке/бухте
+        instruction: Инструкция
+        slug: ЧПУ
+        ymlCaption: Название для YML
+        colorOriginalCode: Цвет (код)
+        color: Цвет
+        netWeight: Масса нетто
+        isNetWeightInGm: Единица измерения массы кг
+        isColorSelectedByUser: Цвет выбран пользователем
+        indexPositionModification: Позиция в составе модификации
+        grossWeight: Масса брутто
+        isGrossWeightInGm: Единица измерения массы брутто кг
+        lengthOfProduct: Длина продукта в мм
+        widthOfProduct: Ширина продукта в мм
+        heightOfProduct: Высота продукта в мм
+        lengthOfBox: Длина коробки в мм
+        widthOfBox: Ширина коробки в мм
+        heightOfBox: Высота коробки в мм
+        barcode: Штрихкод(ы)
+        modificationUnion: Модификация
+        isOOPBCurrencyRateAdditiveInPercent: Надбавка к курсу в процентах (под заказ)
+        isMrcEnabled: МРЦ включено
+        OOPBQuantity: Остаток у поставщика (под заказ)
+        OOPBQuantityUpdated: Последнее обновление остатка у поставщика (под заказ)
+        mrc: МРЦ
+        OOPBCurrency: Валюта (под заказ)
+        OOPBCurrencyRateAdditive: Надбавка к курсу (под заказ)
+    Core\ProductBundle\Entity\ServiceProduct:
+        UPD: Измененные данные
+        captionCaseRu: Падежи
+        captionRu: Название
+        shortDescriptionRu: Краткое описание
+        typePrefix: Тип префикса
+        isDiscontinued: Снят с производства
+        descriptionRu: Описание
+        complectationRu: Комплектация
+        sloganRu: Описание (Мета)
+        titleRu: Заголовок (Мета)
+        metakeywordsRu: Ключевики (Мета)
+        metadescriptionRu: Описание (Мета)
+        article: Артикул
+        sku: SKU производителя
+        unitOfMeasure: Единица измерения
+        isNoSerials: У продукта нет серийников
+        serialsQuantity: Количество серийных номеров
+        warrantyMonths: Срок гарантии в месяцах
+        price: Цена
+        oldPrice: Старая цена
+        manufacturerMain: Основной производитель
+        brand: Бренд
+        serie: Серия
+        countryOfOrigin: Страна происхождения
+        createdDateTime: Дата добавления
+        isBest: Бестселлер
+        isEnabled: Активно
+        isVisible: Показывается на сайте
+        orderOnly: Только под заказ
+        orderOnlyPriceBuying: Цена закупки
+        orderOnlyShopTax: Наценка магазина
+        orderOnlyShopTaxInPercent: Наценка в процентах
+        categoryMain: Основная категория
+        slogan: Слоган
+        quantityOfPieces: Количество одинаковых продуктов в данной фасовке/бухте
+        instruction: Инструкция
+        slug: ЧПУ
+        ymlCaption: Название для YML
+        colorOriginalCode: Цвет (код)
+        color: Цвет
+        netWeight: Масса нетто
+        isNetWeightInGm: Единица измерения массы кг
+        isColorSelectedByUser: Цвет выбран пользователем
+        indexPositionModification: Позиция в составе модификации
+        grossWeight: Масса брутто
+        isGrossWeightInGm: Единица измерения массы брутто кг
+        lengthOfProduct: Длина продукта в мм
+        widthOfProduct: Ширина продукта в мм
+        heightOfProduct: Высота продукта в мм
+        lengthOfBox: Длина коробки в мм
+        widthOfBox: Ширина коробки в мм
+        heightOfBox: Высота коробки в мм
+        barcode: Штрихкод(ы)
+        modificationUnion: Модификация
+        isOOPBCurrencyRateAdditiveInPercent: Надбавка к курсу в процентах (под заказ)
+        isMrcEnabled: МРЦ включено
+        OOPBQuantity: Остаток у поставщика (под заказ)
+        OOPBQuantityUpdated: Последнее обновление остатка у поставщика (под заказ)
+        mrc: МРЦ
+        OOPBCurrency: Валюта (под заказ)
+        OOPBCurrencyRateAdditive: Надбавка к курсу (под заказ)
+    Core\ProductBundle\Entity\DigitalProduct:
+        modificationUnion: Модификация
+        barcode: Код
+        UPD: Измененные данные
+        captionCaseRu: Падежи
+        captionRu: Название
+        shortDescriptionRu: Краткое описание
+        typePrefix: Тип префикса
+        isDiscontinued: Снят с производства
+        descriptionRu: Описание
+        complectationRu: Комплектация
+        sloganRu: Описание (Мета)
+        titleRu: Заголовок (Мета)
+        metakeywordsRu: Ключевики (Мета)
+        metadescriptionRu: Описание (Мета)
+        article: Артикул
+        sku: SKU производителя
+        unitOfMeasure: Единица измерения
+        isNoSerials: У продукта нет серийников
+        serialsQuantity: Количество серийных номеров
+        warrantyMonths: Срок гарантии в месяцах
+        price: Цена
+        oldPrice: Старая цена
+        manufacturerMain: Основной производитель
+        brand: Бренд
+        serie: Серия
+        countryOfOrigin: Страна происхождения
+        createdDateTime: Дата добавления
+        isBest: Бестселлер
+        isEnabled: Активно
+        isVisible: Показывается на сайте
+        orderOnly: Только под заказ
+        orderOnlyPriceBuying: Цена закупки
+        orderOnlyShopTax: Наценка магазина
+        orderOnlyShopTaxInPercent: Наценка в процентах
+        categoryMain: Основная категория
+        slogan: Слоган
+        quantityOfPieces: Количество одинаковых продуктов в данной фасовке/бухте
+        instruction: Инструкция
+        slug: ЧПУ
+        ymlCaption: Название для YML
+        colorOriginalCode: Цвет (код)
+        color: Цвет
+        netWeight: Масса нетто
+        isNetWeightInGm: Единица измерения массы кг?
+        isColorSelectedByUser: Цвет выбран пользователем
+        indexPositionModification: Позиция в составе модификации
+        grossWeight: Масса брутто
+        isGrossWeightInGm: Единица измерения массы брутто кг?
+        lengthOfProduct: Длина продукта в мм
+        widthOfProduct: Ширина продукта в мм
+        heightOfProduct: Высота продукта в мм
+        lengthOfBox: Длина коробки в мм
+        widthOfBox: Ширина коробки в мм
+        heightOfBox: Высота коробки в мм
+        barcode: Штрихкод(ы)
+        modificationUnion: Модификация
+        isOOPBCurrencyRateAdditiveInPercent: Надбавка к курсу в процентах (под заказ)
+        isMrcEnabled: МРЦ включено
+        OOPBQuantity: Остаток у поставщика (под заказ)
+        OOPBQuantityUpdated: Последнее обновление остатка у поставщика (под заказ)
+        mrc: МРЦ
+        OOPBCurrency: Валюта (под заказ)
+        OOPBCurrencyRateAdditive: Надбавка к курсу (под заказ)
+    Core\DirectoryBundle\Entity\RemoteVideo:
+        INS: Добавлено видео
+        DEL: Удалено видео
+        UPD: Изменено видео
+        captionRu: Название
+    Core\FileBundle\Entity\DocumentFile:
+        INS: Добавлен файл
+        DEL: Удален файл
+        UPD: Изменен файл
+        name: Название
+        captionRu: Название
+    Core\FileBundle\Entity\ImageFile:
+        INS: Добавлено фото
+        DEL: Удалено фото
+        UPD: Изменено фото
+        name: Название
+        captionRu: Название
+    Core\PropertyBundle\Entity\ProductDataProperty:
+        UPD: 'Изменена характеристика (ID: %id%)'
+        INS: 'Добавлена характеристика (ID: %id%)'
+        DEL: Удалена характеристика
+        #INS: Добавлена характеристика
+        #UPD: Изменена характеристика
+        data: Значение
+        #id: 'Изменена характеристика (ID: %id%) Название %value%'
+    Core\DirectoryBundle\Entity\ProductTags:
+        INS: Добавлен тег
+        DEL: Удален тег
+        UPD: Изменен тег
+        captionRu: Тег
+    Core\UnionBundle\Entity\ProductAccessoriesUnion:
+        INS: Добавлен аксессуар
+        DEL: Удален аксессуар
+        UPD: Изменен аксессуар
+        targetObject: Аксессуар
+    Core\UnionBundle\Entity\ProductServicesUnion:
+        INS: Добавлена дополнительная услуга
+        DEL: Удалена дополнительная услуга
+        UPD: Изменена дополнительная услуга
+        targetObject: Продукт
+    Core\UnionBundle\Entity\ProductAlternativeUnion:
+        INS: Добавлен альтернативный продукт
+        DEL: Удален альтернативный продукт
+        UPD: Изменен альтернативный продукт
+        targetObject: Продукт
+    Core\UnionBundle\Entity\ProductSimilarsUnion:
+        INS: Добавлен товар-заменитель
+        DEL: Удален товар-заменитель
+        UPD: Изменен товар-заменитель
+        targetObject: Продукт
+    Core\UnionBundle\Entity\ProductQuantityAlternativeUnion:
+        INS: Добавлен продукт для количественной альтернативы
+        DEL: Удален продукт для количественной альтернативы
+        UPD: Изменен продукт для количественной альтернативы
+        targetObject: Продукт
+    Core\CategoryBundle\Entity\ProductCategory:
+        INS: Продукт добавлен в категорию
+        DEL: Продукт удален из категории
+        UPD: Этой надписи быть не должно
+        captionRu: Название
+    Core\CategoryBundle\Entity\ProductVirtualCategory:
+        INS: Продукт добавлен в виртуальную категорию
+        DEL: Продукт удален из виртуальной категории
+        UPD: Этой надписи быть не должно
+        captionRu: Название
+    Core\ManufacturerBundle\Entity\Manufacturer:
+        INS: Продукт добавлен к производителю
+        DEL: Продукт удален из производителя
+        UPD: Этой надписи быть не должно
+        captionRu: Название
+    Core\ManufacturerBundle\Entity\Brand:
+        INS: Продукт добавлен к бренду
+        DEL: Продукт удален из бренда
+        UPD: Этой надписи быть не должно
+        captionRu: Название
+    Core\ManufacturerBundle\Entity\Series:
+        INS: Продукт добавлен к серии
+        DEL: Продукт удален из серии
+        UPD: Этой надписи быть не должно
+        captionRu: Название

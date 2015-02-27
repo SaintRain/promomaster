@@ -1,0 +1,105 @@
+{#**
+ * Корзина - Данные покупателя
+ *
+ * @author Kaluzhny. N.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'CoreCommonBundle::main_layout.html.twig' %}
+
+{% use 'CoreOrderBundle:Order/Block:summary_info.html.twig' %}
+{% use 'CoreOrderBundle:Order/Block:breadcrumbs.html.twig' %}
+
+{% block js_head %}
+    {{ parent() }}
+    {% javascripts
+        'bundles/coreorder/js/frontend.order.js'
+        'bundles/coreorder/js/steps.js'
+
+        output='js/compiled/order.js'
+        filter='yui_js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block menu %} {% endblock %}
+
+{% block title %}Оформление заказа - данные о покупателе | OliKids.ru{% endblock %}
+{% block meta_keywords %}заказ, оформление, данные, информация{% endblock %}
+{% block meta_description %}Страница оформления заказа на сайте OliKids - информация о покупателе. Внимательно проверьте итоговый список заказанных товаров. Заполните необходимые данные о себе для продолжения заказа.{% endblock %}
+
+{% block content %}
+
+    {{ block('order_breadcrumbs_block') }}
+
+    <div id="content" class="order_page" role="main">
+        <div class="main_col">
+            <div class="main_col_pad">
+                {% if isCartEmpty %}
+                    <div class="info_box">{{'order.label.cartIsEmpty' | trans}}</div>
+                    {% else %}
+                        {% if not app.user %}
+                        <div class="login_offer_box brown_gradient_box">
+                                <p>
+                                Уже зарегистрированы? Войдите, чтобы ускорить оформление заказа:
+                                <span class="login_offer_box_controls"><a href="{{path('fos_user_security_login')}}" class="login popup common_button">Войти</a>&nbsp;&nbsp;<span class="text_tgl modal_window_off">Скрыть</span></span>
+                                </p>
+                            <section class="login_social">
+                                <h3>Вход через:</h3>
+                                {% spaceless %}
+                                    <div id="uLogin" data-ulogin="display=buttons;
+                                         fields=first_name,last_name,photo,photo_big,email,nickname,bdate,sex,city,country,profile;
+                                         redirect_uri=;
+                                         receiver=http://{{ app.request.host }}{{path('auth_receiver')}};
+                                         callback=ucall">
+                                        <span data-uloginbutton="facebook" class="social_btn social_facebook">&nbsp;</span>
+                                        <span data-uloginbutton="vkontakte" class="social_btn social_vkontakte">&nbsp;</span>
+                                        <span data-uloginbutton="twitter" class="social_btn social_twitter">&nbsp;</span>
+                                        <span data-uloginbutton="yandex" class="social_btn social_yandex">&nbsp;</span>
+                                        <span data-uloginbutton="google" class="social_btn social_google">&nbsp;</span>
+                                        <span data-uloginbutton="odnoklassniki" class="social_btn social_odnoklassniki">&nbsp;</span>
+                                    </div>
+                                {% endspaceless %}
+                            </section>
+                        </div>
+                        {% endif %}
+                        <div class="form_group_header">
+                            <h2>{{'order.label.buyer' | trans()}}</h2>
+                        </div>
+                        {% if indiForm and legalForm %}
+                        <ul id="contragent_type" class="filter_sort_switches">
+                            <li>
+                                <label>
+                                    <span>{{'form.label.indi.caption' | trans }}</span>
+                                    <input type="radio" value="indi_form" name="form_selector" {% if (not indiForm.vars.valid and legalForm.vars.valid) or (indiForm.vars.valid and legalForm.vars.valid) %}  checked="checked" {% endif %}/>
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <span>{{'form.label.legal.caption' | trans }}</span>
+                                    <input type="radio" value="legal_form" name="form_selector" {% if not legalForm.vars.valid and indiForm.vars.valid %} checked="checked" {% endif %}/>
+                                </label>
+                            </li>
+                        </ul>
+                        {% endif %}
+                        {% if indiForm %}
+                            {% include 'CoreOrderBundle:Order/Form:indi_info_form.html.twig' with {'form': indiForm} %}
+                        {% endif %}
+                        {% if legalForm %}
+                            {% include 'CoreOrderBundle:Order/Form:legal_info_form.html.twig' with {'form': legalForm} %}
+                        {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <!-- side content col -->
+            {{ block('order_summary_block') }}
+        <!-- /side content col -->
+    </div>
+{% endblock %}
+{% block footer %}
+    {% set mixMarketList = ServiceContainer.get('core_config_logic').get('mix-market') %}
+    {%- if app.environment == 'prod' -%}
+        {% set mixMarketList = ServiceContainer.get('core_config_logic').get('mix-market') %}
+        {{ mixMarketList['cart'] | raw }}
+    {%- endif -%}
+    {{ parent() }}
+{% endblock %}

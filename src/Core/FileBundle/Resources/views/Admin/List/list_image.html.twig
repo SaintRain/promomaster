@@ -1,0 +1,19 @@
+
+{#**
+ * Шаблон для вывода картинок в админке на списке записей
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+    {% for image in value %}
+        <img width="64px" class="img-thumbnail" src="{{ asset(object.logo|getFileWebPath('preview')) }}"/>
+    {% else %}
+        -
+    {% endfor %}
+
+{% endblock %}

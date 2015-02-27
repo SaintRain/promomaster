@@ -1,0 +1,84 @@
+{#вывод списка сайтов в ЛК#}
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}Ваши рекламные места{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Рекламные места</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li class="active">Список ваших рекламных мест</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block sub_content %}
+
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% if  adplaces.getTotalItemCount %}
+        <h3>Список ваших рекламных мест</h3>
+        <a style="margin-top: -30px" href="{{ path('core_cabinet_adplace_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламное место</a>
+
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Название</th>
+                <th>Сайт</th>
+                <th>Размер</th>
+                <th>В каталоге</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for adplace in adplaces %}
+                <tr>
+                    <td height="53px">{{ loop.index }}</td>
+                    <td><a href="{{ path('core_cabinet_adplace_edit', {id:adplace.id}) }}"><b>{{ adplace.name }}</b></a></td>
+                    <td>
+                        <a href="{{ path('core_cabinet_site_edit', {id:adplace.site.id}) }}"><b>{{ adplace.site.domain }}</b></a>
+                    </td>
+                    <td>{{ adplace.height }}x{{ adplace.width }}</td>
+                    <td>{% if adplace.isShowInCatalog %}<span class="label label-u">Да</span>{% else %}<span class="label label-warning">Нет</span>{% endif %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% set routeFirsPage = 'core_cabinet_adplace_list_first_page' %}
+        {% set routePage = 'core_cabinet_adplace_list' %}
+
+        {{ knp_pagination_render(adplaces, 'CoreSiteBundle:AdPlace/Cabinet:pagination.html.twig',{},
+        { routeFirsPage: routeFirsPage, routePage:routePage}) }}
+
+    {% else %}
+        <h2>Вы еще не добавляли свои рекламные места в систему</h2>
+    {% endif %}
+
+{% endblock %}

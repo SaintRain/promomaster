@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+    {% if value != 'null' %}
+        <div style="width:18px;height:18px;float:left;border:solid 1px #ddd;background-color: {{ '#'~value }}"></div>&nbsp;{{ value }}
+    {% else %}
+        <div style="width:18px;height:18px;float:left;border:solid 1px #ddd;background: url({{ asset('bundles/corecolor/img/varicolored.png') }}) 50%"></div>
+    {% endif %}
+
+{% endblock %}

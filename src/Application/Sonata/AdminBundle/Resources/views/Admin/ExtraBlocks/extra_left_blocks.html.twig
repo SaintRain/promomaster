@@ -1,0 +1,49 @@
+
+{#**
+ * Шаблон для дополнения левого столбика блоками
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% use 'ApplicationSonataAdminBundle:Admin\\ExtraBlocks:extra_left_block_1.html.twig' %}
+{#{% use 'ApplicationSonataAdminBundle:Admin\\ExtraBlocks:extra_left_block_2.html.twig' %}#}
+
+{% block extra_left_blocks %}
+    {% spaceless %}
+
+        <div class="extra-left-block-container">
+
+            {% if optionsExtraBlocks['sides']['left'] is defined and 1 in optionsExtraBlocks['sides']['left'] %}
+
+                {{ block('extra_left_block_1') }}
+
+            {% endif %}
+
+            {#{{ block('extra_left_block_2') }}#}
+
+        </div>
+
+    {% endspaceless %}
+    <script type="text/javascript">
+        $(function(){
+
+            // переносим блок в левую колонку
+            if ($('.sidebar').size() === 0) {
+                $('.content').addClass('span10').before('<div class="sidebar span2"></div>');
+            }
+
+            // удаляем пустые блоки, если есть
+            $('.extra-left-block .tab-content').each(function(){
+                if ($(this).html() === '') {
+                    $(this).closest('.extra-left-block').remove();
+                }
+            });
+
+            var html = $('.extra-left-block-container').html();
+            $('.extra-left-block-container').remove();
+            $('.sidebar').append(html);
+            $('.extra-left-block').fadeIn('fast');
+        });
+    </script>
+{% endblock %}

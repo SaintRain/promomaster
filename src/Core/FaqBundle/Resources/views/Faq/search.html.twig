@@ -1,0 +1,50 @@
+{% extends "CoreFaqBundle::layout.html.twig" %}
+{% block title %}Помощь и наиболее часто задаваемые вопросы - поиск по запросу &quot;{{searchString}}&quot; | OliKids.ru{% endblock %}
+{% block meta_description %}помощь, вопросы, фак, FAQ, {{searchString}}{% endblock %}
+{% block meta_keywords %}Результаты поиска в разделе помощи по запросу &quot;{{searchString}}&quot;. Если Вы не смогли найти ответ на свой вопрос - пожалуйста, свяжитесь с нами.{% endblock %}
+{% block main_content %}
+    <ul class="info_page_path page_path_links">
+	<li class="page_path_link">
+            <a href="{{path('core_common_index')}}">OliKids</a>
+        </li>
+        <li class="page_path_link">
+            <a href="{{path('core_faq_homepage')}}">Помощь</a>
+        </li>
+	<li class="page_path_link">
+            <strong>Результаты поиска по запросу &quot;{{searchString}}&quot;</strong>
+        </li>
+    </ul>
+    <h1>Результаты поиска по запросу &quot;{{searchString}}&quot;</h1>
+    {% include 'CoreFaqBundle:Faq:search_form.html.twig' with {'form' : searchForm, 'isSearched': true } %}
+    <div class="help_cats">
+        {% set i = 0 %}
+        {% for cat in categories %}
+            {% if i % 2 == 0 %}
+                <div class="help_cat_group grid_container">
+            {% endif %}
+                <div class="help_cat grid_item">
+                    {% set i = i + 1 %}
+                    <a href="{{path('core_faq_category', {'categorySlug' : cat.slug})}}" class="help_cat_link">{{ attribute(cat, 'caption' ~ app.request.locale) }}</a>
+                    <ul class="round_bullet">
+                        {% for article in cat.articles %}
+                            <li>
+                                <a href="{{path('core_faq_article', {'categorySlug': cat.slug, 'articleSlug':article.slug})}}">{{ attribute(article, 'caption' ~ app.request.locale) }}</a>
+                            </li>
+                            {% else %}
+                                <div class="info_box">
+                                    <h6>Статьи не найдены</h6>
+                                </div>
+                        {% endfor %}
+                    </li>
+                </div>
+            {% if i % 2 == 0 or ((((categories | length) % 2) != 0 and loop.last )) %}
+                </div>
+                {% set i = 0 %}
+            {% endif %}
+            {% else %}
+                <div class="info_box">
+                    <h6>К сожалению, по запросу &DoubleDot;{{searchString}}&DoubleDot; ничего не удалось найти </h6>
+                </div>
+        {% endfor %}
+    </div>
+{% endblock %}

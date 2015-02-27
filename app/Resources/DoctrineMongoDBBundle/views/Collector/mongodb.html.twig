@@ -1,0 +1,97 @@
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+{% block toolbar %}
+    {% set icon %}
+        <img width="20" height="28" alt="Mongo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQRJREFUeNpi/P//PwM1ARMDlcGogZQDlpMnT7pxc3NbA9nhQKxOpL5rQLwJiPeBsI6Ozl+YBOOOHTv+AOllQNwtLS39F2owKYZ/gRq8G4i3ggxEToggWzvc3d2Pk+1lNL4fFAs6ODi8JzdS7mMRVyDVoAMHDsANdAPiOCC+jCQvQKqBQB/BDbwBxK5AHA3E/kB8nKJkA8TMQBwLxaBIKQbi70AvTADSBiSadwFXpCikpKQU8PDwkGTaly9fHFigkaKIJid4584dkiMFFI6jkTJII0WVmpHCAixZQEXWYhDeuXMnyLsVlEQKI45qFBQZ8eRECi4DBaAlDqle/8A48ip6gAADANdQY88Uc0oGAAAAAElFTkSuQmCC"/>
+        <span class="sf-toolbar-status">{{ collector.queryCount }}</span>
+    {% endset %}
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>DB Queries</b>
+            <span>{{ collector.queryCount }}</span>
+        </div>
+    {% endset %}
+    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
+{% endblock %}
+
+{% block menu %}
+<span class="label">
+    <span class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAcCAYAAAB/E6/TAAABLUlEQVR42u3TP0vDQBiA8UK/gDiLzi0IhU4OEunk5OQUAhGSOBUCzqWfIKSzX8DRySF0URCcMjWLIJjFD9Cpk/D6HITecEPUuzhIAz8CIdyTP/f2iqI4qaqqDx8l5Ic2uIeP/bquezCokOAFF+oCN3t4gPzSEjc4NEPaCldQbzjELTYW0RJzHDchwwem+ons6ZBpLSJ7nueJC22h0V+FzmwWV0ee59vQNV67CGVZJmEYbkNjfpY6X6I0Qo4/3RMmTdDDspuQVsJvgkP3IdMbIkIjLPBoadG2646iKJI0Ta2wxm6OdnP0/Tk6DYJgHcfxpw21RtscDTDDnaVZ26474GkkSRIrrPEv5sgMTfHe+cA2O6wPH6vOBpYQNALneHb96XTEDI6dzpEZ0VzO0Rf3pP5LMLI4tAAAAABJRU5ErkJggg==" alt="Mongo" /></span>
+    <strong>Doctrine MongoDB</strong>
+    <span class="count">
+        <span>{{ collector.queryCount }}</span>
+    </span>
+</span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Queries</h2>
+
+    {% if collector.queries is empty %}
+        <p>
+            <em>No queries.</em>
+        </p>
+    {% else %}
+        {% if 'odmtotal' == page %}
+            {{ render(controller('CoreCommonBundle:Profiler:odmtotal', {
+                'token': token,
+                'panel': 'mongodb',
+                'connectionName': app.request.query.get('connection'),
+                'query': app.request.query.get('query')
+            })) }}
+        {% else %}
+        <ul class="alt">
+            {% for i, query in collector.queries %}
+                <li class="{{ cycle(['odd', 'even'], loop.index) }}">
+                    <div>
+                        <code>{{ query }}</code>
+                        [<a class="needToExplain" href="{{ path('_profiler', {'panel': 'mongodb', 'token': token, 'page': 'odmtotal', 'connection': 'default', 'query': i}) }}" style="text-decoration: none;" title="Explains the query" data-target-id="explain-{{ i }}" >
+                            <img class="plus" alt="+" src="{{ asset('bundles/framework/images/blue_picto_more.gif') }}" style="display: inline; width: 12px; height: 12px;" />
+                            <img class="minus" alt="-" src="{{ asset('bundles/framework/images/blue_picto_less.gif') }}" style="display: none; width: 12px; height: 12px;" />
+                            <span style="vertical-align:top">Profile query</span>
+                        </a>]
+                        <div class="pasteDate" id="code-{{ i }}"></div>
+                        <div class="loading"></div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endif %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+<script>
+    (function($) {
+        $(function(){
+            $('body').on('click', '.needToExplain', function(){
+                var $this = $(this),
+                    placeToPaste = $this.siblings('.pasteDate'),
+                    loadHtml = $this.siblings('.loading');
+                $this.toggleClass('minus');
+                if (placeToPaste.html()) {
+                    placeToPaste.toggle();
+                    return false;
+                }
+                loadHtml.show();
+                $.ajax({
+                    type: "POST",
+                    url: $this.attr('href'),
+                    success: function(data){
+                        placeToPaste.html($(data).find('#result'));
+                        loadHtml.hide();
+                    }
+                });
+                return false;
+            });
+        }); // end document ready
+    })(jQuery)
+</script>
+<style>
+        .needToExplain.minus .minus {
+            display: inline-block !important;
+        }
+        .needToExplain.minus .plus,
+        .needToExplain .minus {
+            display: none !important;
+        }
+</style>
+{% endblock %}
+

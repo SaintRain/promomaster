@@ -1,0 +1,27 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field%}
+
+<table class="table  table-bordered table-striped">
+    <tr>
+        <th >
+            Накопительная сумма 
+        </th>
+        <th >
+            Ограничение в днях
+        </th>
+        <th >
+            Значение скидки
+        </th>        
+
+    </tr>
+    {%for d in object.manufacturerStepValues%}
+    <tr>
+        <td class="money">{{moneyFormat(d.stepValue)}} {{currencyFormat()}}</td>
+        <td>{{d.stepDays}}</td>
+        <td>{{d.discountValue}} {% if d.isDiscountValueInPercent %}%{%else%}{{currencyFormat()}}{%endif%}</td>
+    </tr>
+{%endfor%}
+
+</table>
+
+{% endblock %}

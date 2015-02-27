@@ -1,0 +1,65 @@
+<script>
+    function productFormatResult{{ id }}(result) {
+        var html = "<div class=\"media\">",
+                id = "{{ id }}";
+        if (!result.images) {
+            result.images = "/bundles/coreproduct/Admin/img/no_image.png";
+        }
+        if (!result.sku) {
+            result.sku = "";
+        }
+
+        html = html + '<div class="pull-left"><img class="media-object" width="60px" src="' + result.images + '"/></div>';
+        html = html + "<div class=\"media-body\">" + (result.sku ? "<b>" + result.sku + "</b><br/>" : "") + result.captionRu + "<br>Цена: " + result.price.toString().replace('.', ',') + " {{currencyFormat()}}</div>";
+        html = html + (result.sku ? "" : "<br/>") + "</div>";
+
+        return html;
+    }
+
+
+    function productFormatSelection{{ id }}(result) {
+        if (!result.sku) {
+            result.sku = "";
+        }
+        var html = "<b>" + result.sku + "</b> " + result.captionRu,
+                id = "{{ id }}";
+
+        //проставляем цену
+        var price = result.price + '';
+        if (price.indexOf(".") === -1) {
+            price = result.price + '.00';
+        }
+
+        //$price = $('#' + id).closest('tr').find('input[id $= "price"]');
+        $price = $('#' + id.replace(/_product/, '_price'));
+        $product = $('[id*="' + id + '"]');
+
+        if (!$price.val()) {    //если цена была проставлена раньше, то ничего не делаем
+            $price.val(price.replace('.', ','));
+        }
+
+        $supplier = $('#' + id.replace(/_product/, '_defaultSupplier'));
+        if (!$supplier.val() && result.supplierId) {
+            $supplier.select2('val',result.supplierId)
+        }
+
+        //прорисовываем иконку
+        {#var#}
+                {#iconId = $product.attr('id') + '_icon',#}
+                {#link = "{{path('admin_core_product_commonproduct_edit', {id:'__s'})}}",#}
+                {#icon = '<a style="margin-left:5px" id="' + iconId + '" title="Перейти на редактирование" target="_blank" href="' + link.replace('__s', result.id) + '"><i class="icon-edit"></i></a>';#}
+
+        {#$product.parent('td').find('#' + iconId).remove();#}
+        {#$product.parent('td').append(icon);#}
+
+        return html;
+    }
+
+    function productOnReset{{ id }}(e) {
+        {#var id = "{{ id }}",#}
+                {#$product = $('[id*="' + id + '"]'),#}
+                {#iconId = $product.attr('id') + '_icon';#}
+        {#$product.parent('td').find('#' + iconId).remove();#}
+    }
+
+</script>

@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /cart
+Disallow: /search
+Disallow: /profile
+Disallow: /register
+Disallow: /login.html
+Disallow: /trouble-tickets/
+Disallow: /delivery
+Disallow: /resetting
+Disallow: /ajax
+User-agent: MJ12bot
+Disallow: /
+User-agent: AhrefsBot
+disallow: /

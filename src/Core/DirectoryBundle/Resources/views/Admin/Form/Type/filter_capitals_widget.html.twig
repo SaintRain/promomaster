@@ -1,0 +1,9 @@
+{% extends 'SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig' %}
+{% block filter_capitals_type_widget %}
+    {% spaceless %}
+        <div class="span2">{{ form_label(form.isCapital) }}</div>
+        <div class="span8">
+            {{ form_widget(form.isCapital, {'attr':{'class':'choice-inline with-min-width no-marg'} }) }}
+        </div>
+    {% endspaceless %}
+{% endblock %}

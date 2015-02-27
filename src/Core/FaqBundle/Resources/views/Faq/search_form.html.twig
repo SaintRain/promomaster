@@ -1,0 +1,32 @@
+{#<script>
+    (function($){
+        $(function(){
+           $('.text_tgl_form').click(function(){
+                var $this = $(this),
+                    parentForm = $this.parents('form'),
+                    needElt  = $('input', parentForm);
+                needElt.val($this.text());
+                console.log($this.text());
+           });
+        });
+    })(jQuery)
+</script>
+#}
+<div class="help_search{#brown_gradient_box#}">
+    <form action="{{path('core_faq_search')}}" method="GET"  {{ form_enctype(form) }}>
+        <div class="help_search_button">
+            <button class="common_button"><span>Найти</span></button>
+            {% if isSearched is defined %}
+                <a href="{{path('core_faq_homepage')}}" class="btn_off">Сбросить</a>
+            {% endif %}
+        </div>
+        <div class="search_input">
+            {{form_widget(form.searchQuery)}}
+        </div>
+        {#
+        <div class="search_tip">
+            Например, <span class="text_tgl_form">Оплата заказа</span>
+        </div>
+        #}
+    </form>
+</div>

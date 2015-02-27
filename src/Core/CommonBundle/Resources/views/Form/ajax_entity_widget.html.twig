@@ -1,0 +1,144 @@
+
+{#**
+ * Виджет для отображения формы ajax_entity
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block ajax_entity_widget %}
+    {% spaceless %}
+
+        {% set formatDefault %}
+            function Select2Default(result, container) {
+                var selection = '';
+                var len = Object.keys(result).length;
+                for (property in result) {
+                    if (((property !== 'id' && len > 1) || (property === 'id' && len <= 1)) && result[property].length) {
+                        selection += result[property]+'{{ separator }}';
+                    }
+                }
+                selection = selection.substr(0, selection.length - {{ separator|length }});
+                if (container[0].nodeName !== undefined && container[0].nodeName !== 'SPAN') {
+                    selection = selection.replace(RegExp('(' + escapeRegExp($('.select2-input.select2-focused:focus').val()) + ')', 'gim'), '<u>$1</u>');
+                }
+                return selection;
+            }
+        {% endset %}
+
+        {% if customise_functions is defined %}
+            {{ customise_functions|raw }}
+        {% endif %}
+
+        <script>
+            var data_{{ form.vars.id }} = {
+                class: '{{ class|e('js') }}',
+                properties: '{{ properties_json|raw }}',
+                max_results: {{ max_results }},
+                entry: '{{ entry }}',
+                {%- if add_to_query is defined -%}add_to_query: '{{ add_to_query|raw }}',{%- endif -%}
+                {%- if initImages -%}initImages: '{{ initImages }}',{%- endif -%}
+            }
+            $(function() {
+                    $('input#{{ form.vars.id }}').select2({
+                        allowClear: true,
+                        ajax: {
+                            url: '{{ path('core_common_ajax_entity' ~ (frontend ? '_frontend' : '')) }}',
+                            dataType: 'json',
+                            quietMillis: 100,
+                            data: function(query, page) {
+                                {%- if isParentCollection -%}
+                                    if ($(this).hasClass('collection')) {
+                                        var collectionName = $(this).data('collection');
+                                        var selectedIds = $('input[data-collection="' + collectionName + '"]').map(function(el){
+                                            return this.value;
+                                        }).get().join(',');
+                                        data_{{ form.vars.id }}.selectedIds = selectedIds;
+                                    }
+                                {%- endif -%}
+                                data_{{ form.vars.id }}.query = query;
+                                data_{{ form.vars.id }}.page = page;
+                                return data_{{ form.vars.id }};
+                            },
+                            results: function(result, page) {
+                                data = [];
+                                for (id in result.data) {
+                                    data.push(result.data[id]);
+                                }
+                                return {results: data, more: result.more, total: result.total };
+                            }
+                        },
+                        {%- if initData is defined -%}
+                            initSelection: function(element, callback) {
+                                result = {{ initData|raw }};
+                                data = [];
+                                for (id in result.data) {
+                                    data.push(result.data[id]);
+                                }
+                                callback({% if constructor.multiple is defined and constructor.multiple %}data{% else %}data[0]{% endif %});
+                            },
+                        {%- endif -%}
+                        {%- for option, value in constructor %}{{ option }}: {% if 'function(' in value %}{{ value|raw }}{% else %}{{ value|json_encode()|raw }}{% endif %}, {% endfor -%}
+                        formatResult:
+                            {%- if formatResult is defined -%}
+                                {%- if customise_functions is defined and formatResultFromTemplate is defined and formatResultFromTemplate -%}
+                                    {{- formatResult ~ subId -}}
+                                {%- else -%}
+                                    {{- formatResult|raw -}}
+                                {%- endif -%}
+                            {%- else -%}
+                                {{- formatDefault|raw -}}
+                            {%- endif -%},
+                        formatSelection:
+                            {%- if formatSelection is defined -%}
+                                {%- if customise_functions is defined and formatSelectionFromTemplate is defined and formatSelectionFromTemplate -%}
+                                    {{- formatSelection ~ subId -}}
+                                {%- else -%}
+                                    {{- formatSelection|raw -}}
+                                {%- endif -%}
+                            {%- else -%}
+                                {{- formatDefault|raw -}}
+                            {%- endif -%}
+                    });
+
+                    {% if onReset is defined %}
+                        {%- if customise_functions is defined and onResetFromTemplate is defined and onResetFromTemplate -%}
+                            $('input#{{ form.vars.id }}').on('select2-removed', {{ onReset ~ subId }});
+                        {%- else -%}
+                            $('input#{{ form.vars.id }}').on('select2-removed', {{- onReset|raw -}});
+                        {%- endif -%}
+                    {%- endif -%}
+
+                    {%- if not frontend -%}
+                        customiseHelpBlock();
+                    {%- endif -%}
+
+                    {%- if form.vars.route_edit -%}
+
+                        $('input#{{ form.vars.id }}').on('select2-selecting', function (e) {
+                            if (e.val) {
+                                var $a = $('#edit_link_{{ form.vars.id }}');
+                                $a.attr('href', $a.data('href').replace(/~id~/g, e.val)).fadeIn('fast');
+                            } else {
+                                $a.removeAttr('href').hide();
+                            }
+                        }).on('select2-removed', function(){
+                            $('#edit_link_{{ form.vars.id }}').hide();
+                        });
+
+                    {%- endif -%}
+            });
+        </script>
+
+        <input type="text" {{ block('widget_attributes') }} value="{{ value }}" />
+
+        {% if form.vars.route_edit %}
+
+            <a style="margin-left:8px;{% if not value %} display: none;{% endif %}" id="edit_link_{{ form.vars.id }}" title="Перейти на редактирование" target="_blank" data-href="{{ path(form.vars.route_edit, {id: '~id~'}) }}"{% if value %} href="{{ path(form.vars.route_edit, {id: value}) }}"{% endif %}>
+                <i class="icon-edit" style="margin-top: 3px;"></i>
+            </a>
+
+        {% endif %}
+
+    {% endspaceless %}
+{% endblock %}

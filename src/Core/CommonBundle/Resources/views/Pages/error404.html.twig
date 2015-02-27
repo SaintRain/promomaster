@@ -1,0 +1,41 @@
+{% extends "CoreCommonBundle::main_layout_simple.html.twig" %}
+{# SEO - заголовки #}
+{% block title %}Ошибка 404. Страница не найдена{% endblock %}
+{% block meta_description %}Ошибка 404. Страница не найдена{% endblock %}
+{% block meta_keywords %}Ошибка 404. Страница не найдена{% endblock %}
+{% block content %}
+    <div id="content" class="error_page" role="main">
+        <div class="page_pad">
+
+            <div class="error_page_info">
+                <h1 class="error_page_name">4<span class="error_page_zero">0</span>4</h1>
+                <p class="error_page_desc">Неправильно набран адрес, или такой страницы на сайте не существует (ошибка 404), попробуйте вернуться назад или воспользуйтесь ссылками ниже.</p>
+            </div>
+
+            <div class="error_page_things grid_container">
+                <div class="cats grid_item">
+                    <h2>Разделы сайта</h2>
+                    <ul class="list_simple">
+                        {{ render (controller ('CoreCommonBundle:Fragments:categoriesInDown')) }}
+                    </ul>
+                </div>
+                <div class="brands grid_item">
+                    <h2>Бренды</h2>
+                    <ul class="list_simple">
+                        {{ render (controller ('CoreCommonBundle:Fragments:brandsInDown')) }}
+                    </ul>
+                    {#
+                    <a href="">Все бренды</a>
+                    #}
+                </div>
+
+                <!-- popular showcase -->
+                <div class="popular_products grid_item">
+                    <h2>Популярные товары</h2>
+                    {{ render (controller ('CoreCommonBundle:Fragments:popularProductsInDown')) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

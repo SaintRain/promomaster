@@ -1,0 +1,107 @@
+{% extends "CoreCommonBundle::main_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}Контакты{% endblock %}
+{% block meta_keywords %}Контакты{% endblock %}
+{% block meta_description %}Контакты{% endblock %}
+
+{% block content %}
+<div role="main" class="contacts_page info_page" id="content">
+    <div class="main_col">
+        <div class="main_col_pad">
+            <ul class="info_page_path page_path_links">
+                <li class="page_path_link">
+                    <a href="{{path('core_common_index')}}">OliKids</a>
+                </li>
+                <li class="page_path_link">
+                    <strong>Контактная информация</strong>
+                </li>
+            </ul>
+            {% set ticketDone = false %}
+            {% for flashMessage in app.session.flashbag.get('ticket_success') %}
+                {% set ticketDone = true %}
+                <div class="info_box info_box_border">
+                    {{ flashMessage|trans({}) | raw}}
+                </div>
+            {% endfor %}
+                {#<a class="print with_icon text_tgl on_print" href="{{path('trouble_ticket_contact', {'print': true})}}">Напечатать</a>#}
+            <h1>Контактная информация</h1>
+
+            <section class="info">
+                <div class="general">
+                    <h2>ООО «РОСТПЭЙ»</h2>
+                    <p>Россия, г. Ростов-на-Дону, Бизнес-центр «Гвардейский», пер. Доломановский, 70Д, офис №1001 (10 этаж)</p>
+                    <p><a target="blank" href="http://maps.yandex.ua/-/CVrV50~6" class="yandex_maps with_icon with_icon_right">Посмотреть на Яндекс.Картах</a></p>
+                </div>
+                <img height="367" width="284" alt="Бизнес-центр «Гвардейский», пер. Доломановский, 70Д" src="{{asset('images/office_photo.jpg')}}" class="office_photo {% if ticketDone %}move{% endif %}">
+
+                <dl class="contacts_list">
+                    <dd class="contacts_list_name">Телефоны</dd>
+                    <dt class="contacts_list_info">
+                        <ul class="round_bullet">
+                            <li>+7 (495) 916-72-52 Москва</li>
+                            <li>+7 (812) 604-43-47 Санкт-Петербург</li>
+                            <li>+7 (863) 280-01-01 Ростове-на-Дону</li>
+                        </ul>
+                    </dt>
+                    <dd class="contacts_list_name">{{ 'workTime.label' | trans }}</dd>
+                    <dt class="contacts_list_info">{{ 'workTime.body' | trans | raw }}</dt>
+                    <dd class="contacts_list_name">E-mail</dd>
+                    <dt class="contacts_list_info"><a href="mailto:info@olikids.ru">info@olikids.ru</a></dt>
+                    {#<dd class="contacts_list_name">Skype</dd>
+                    <dt class="contacts_list_info">olikids.ru (только для звонков)</dt>
+                    #}
+                    <dd class="contacts_list_name">Юридический адрес</dd>
+                    <dt class="contacts_list_info">344011, г. Ростов-на-Дону, пер.Доломановский, д. 70Д, оф.1 (10 этаж)</dt>
+                    <dd class="contacts_list_name">Почтовый адрес</dd>
+                    <dt class="contacts_list_info">344011, г. Ростов-на-Дону, пер.Доломановский, д. 70Д, оф.1001</dt>
+                    <dd class="contacts_list_name">Банковские реквизиты</dd>
+                    <dt class="contacts_list_info">
+                        <ul class="list_simple">
+                                <li>ОГРН: 1086168004669</li>
+                                <li>ИНН/КПП: 6168024612/616401001</li>
+                                <li>Р/счет: 40702810681000895501 в Южном филиале ОАО "Промсвязьбанк", г. Волгоград</li>
+                                <li>БИК: 041806715</li>
+                                <li>К/счет: 30101810100000000715</li>
+                        </ul>
+                    </dt>
+                </dl>
+                {% if pickupPoints | length %}
+                    <dl class="contacts_list contacts_list_delivery">
+                        <dd class="contacts_list_name">Пункт выдачи товара</dd>
+                        <dt class="contacts_list_info">
+                            <ul class="list_simple">
+                                {% for point in pickupPoints %}
+                                <li>
+                                    {{point.city.name}}, {{point.captionRu}}
+                                    <br />
+                                    {{point.description | nl2br }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </dt>
+                    </dl>
+                {% endif %}
+            </section>
+            <section id="ask-a-question" class="ask">
+                <h2>Задайте нам вопрос</h2>
+                <p>Мы постоянно работаем над качеством сайта, удобством его использования и повышением уровня наших услуг.
+                Если у вас есть какие-либо предложения, пожелания, комментарии, вопросы или проблемы при использовании
+                нашего сервиса, заполните, пожалуйста, форму, чтобы связаться с нами.</p>
+                <p>Пожалуйста, для оформления и оплаты заказа ознакомьтесь с разделом <a href="{{path('core_faq_homepage')}}">Помощь</a>.</p>
+
+                {% include 'CoreTroubleTicketBundle:TroubleTicket:form.html.twig' %}
+            </section>
+        </div>
+    </div>
+    {% block menu_left %}
+        {{ include ('CoreCommonBundle:Fragments:menuLeft.html.twig') }}
+    {% endblock %}
+</div>
+{% endblock %}
+{% block js_head %}
+    {{ parent() }}
+     {% javascripts  'bundles/coretroubleticket/js/frontend.js' output='js/compiled/troubleticket_frontend.js' filter='yui_js' %}
+    <script src="{{ asset_url}}"></script>
+    {% endjavascripts %}    
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'ApplicationSonataAdminBundle:CRUD:list_top.html.twig' %}
+{% block list_table %}
+    {{parent()}}
+    <script>
+        //вешаем на форму генерирования обработку в новом окне
+        $(document).ready(function() {
+            $('input[name="all_elements"]').parents('form').attr('target', '_blank');
+        });
+
+    </script>
+{% endblock %}

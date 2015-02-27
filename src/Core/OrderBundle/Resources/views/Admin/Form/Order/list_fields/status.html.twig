@@ -1,0 +1,18 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field%}
+
+{%if object.isCheckedStatus%}
+<span class="label label-default">Проверен</span>
+{%endif%}
+{%if object.isPaidStatus%}
+<span class="label label-info">Оплачен</span>
+{%endif%}
+{%if object.isShippedStatus%}
+<span class="label label-success">Отгружен</span>
+{%endif%}
+{%if object.isCanceledStatus%}
+<span class="label label-important">Отменён</span>
+{%endif%}
+
+{%if object.extraStatus%}<br><span style="color:#{{object.extraStatus.hex}}">{{object.extraStatus.captionRu}}</span>{%endif%}
+{% endblock %}

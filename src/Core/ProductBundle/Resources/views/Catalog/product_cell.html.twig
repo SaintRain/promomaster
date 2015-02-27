@@ -1,0 +1,126 @@
+
+{#**
+ * Шаблон для стандартного отображения товара в каталоге
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block product %}
+    {% spaceless %}
+
+        <div {{fastEdit(product)}} {% if i is defined %}id="i-{{ i }}"{% endif %} class="product grid_item {% if favoriteProductsIds is defined and product.id in favoriteProductsIds %}favored{% endif %}{% if productItemContainerClass is defined %} {{ productItemContainerClass }}{% endif %}">
+
+            {% block cell_product_header %}
+
+                <a class="product_name" href="{{ path('core_product', {slug: product.slug}) }}" title="{{ attribute(product, 'caption'~ app.request.locale ) }}">
+                    {% if product.images|length %}
+                        {% if attribute(product.images[0], 'alt' ~ app.request.locale) %}
+                            {% set curImgAlt =  attribute(product.images[0], 'alt'~ app.request.locale) %}
+                            {% else %}
+                                {% set curImgAlt =  attribute(product, 'caption'~ app.request.locale) %}
+                        {% endif %}
+                        {% else %}
+                             {% set curImgAlt = 'msg.image_not_found' | trans([],'frontend') %}
+                    {% endif %}
+                    <img class="product_img" src="{{ asset(product.images|getFileWebPath('preview', (imgSize is defined) ? imgSize : '222x222_', true)) }}" alt="{{curImgAlt}}" title="{{curImgAlt}}">{{ attribute(product, 'caption'~ app.request.locale ) }}
+                </a>
+
+            {% endblock %}
+
+            {% block cell_product_footer %}
+
+                {% block cell_product_category %}
+
+                    {% set productCategory = product.categoryMain %}
+                    {#
+                    {% if filterRequest.categories is defined %}
+                        {% for categoryId in filterRequest.categories %}
+                            {% if categoryId == product.categoryMain.id %}
+                                {% set productCategory = product.categoryMain %}
+                            {% else %}
+                                {% for category in product.categories %}
+                                    {% if categoryId == category.id %}
+                                        {% set productCategory = category %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    #}
+                    <a class="product_cat" href="{{ path('core_shop_product_catalog_first_page', {slug: productCategory.slug}) }}">{{ attribute(productCategory, 'caption' ~ app.request.locale ) }}</a>
+
+                {% endblock %}
+
+                {% block cell_product_rating %}
+
+                    {% if product.reviewsCount > 0 %}
+
+                        <div class="product_rating">
+                            {{ drawStarsByRating(product.reviewsRating)|raw }}
+                            <span class="product_rating_count">{{ product.reviewsCount }}</span>
+                        </div>
+
+                    {% endif %}
+
+                {% endblock %}
+
+                {% block cell_product_price %}
+
+                    <div class="product_price">
+
+                        {% if computeDiscountForProductAndGetCurrentPrice(product, 'old') %}
+
+                            <div class="product_price old">{{ moneyFormat(computeDiscountForProductAndGetCurrentPrice(product, 'old')) }} <span>{{ currencyFormat() }}</span></div>
+
+                        {% endif %}
+
+                        {{- moneyFormat(computeDiscountForProductAndGetCurrentPrice(product, 'current')) }} <span>{{ currencyFormat() }}</span>
+
+                        {% if product.isDiscontinued %}
+
+                            <div class="avaliability{% if productItemContainerClass is defined and productItemContainerClass == 'product_min' %} avaliability_align_left{% endif %}">СНЯТ С{% if productItemContainerClass is not defined or productItemContainerClass != 'product_min' %} <br>{% endif %}ПРОИЗВОДСТВА</div>
+
+                        {% elseif product.orderOnly %}
+
+                            <div class="avaliability">Под заказ</div>
+
+                            {% else %}
+
+                                {% if product.getAvailabilityQuantityReal %}
+
+                                    <div class="avaliability{% if productItemContainerClass is defined and productItemContainerClass == 'product_min' %} avaliability_align_left{% endif %}">ЕСТЬ НА{% if productItemContainerClass is not defined or productItemContainerClass != 'product_min' %}<br>{% endif %} СКЛАДЕ</div>
+
+                                {% elseif product.getAvailabilityQuantityVirtualReal %}
+
+                                    <div class="avaliability expected report-instock{% if productItemContainerClass is defined and productItemContainerClass == 'product_min' %} avaliability_align_left{% endif %}" data-id="{{ product.id }}">
+                                        <div class="avaliability_expected_link" title="{#{{ fullInfoAboutQuantity[product.id]['date']|localizeddate("none", "none", null, default_timezone, "dd MMM YYYY г.") }}{{ product.getAvailabilityQuantityVirtualReal }} шт.#}">
+                                            <span class="avaliability_expected_link_title">Ожидается{% if productItemContainerClass is not defined or productItemContainerClass != 'product_min' %}<br>{% endif %} поставка</span>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                        {% endif %}
+                        {#
+                        {% if product.orderOnlyPriceBuying %}
+                            <div class="avaliability>Под заказ</div>
+                        {% endif %}
+                        #}
+                    </div>
+
+                {% endblock %}
+
+                {% if favoriteProductsIds is defined and product.id in favoriteProductsIds %}
+
+                    <span class="favor icon_tgl" title="{{ 'Remove from favorites'|trans({}, 'frontend') }}"
+                        data-remove-url="{{ path('core_product_update_favorites', {action: 'remove', id: product.id, _format: 'json'}) }}"
+                    >&nbsp;</span>
+
+                {% endif %}
+
+            {% endblock %}
+
+    </div>
+
+    {% endspaceless %}
+{% endblock %}

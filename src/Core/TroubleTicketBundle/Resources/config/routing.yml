@@ -1,0 +1,41 @@
+trouble_ticket_index:
+    path:      /index-{owner}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:index }
+trouble_ticket_index_auth:
+    path:      /index.html
+    schemes:  [http]
+    defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:index }
+trouble_ticket_log:
+    path:      /log/{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:log }
+
+# Связь заказа с новым тикетом (Страница контактов)
+trouble_ticket_contact_with_order_id:
+    path:      /contacts/order/{order_id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:contact }
+    requirements:
+        order_id: \d+
+
+trouble_ticket_contact_with_product_id:
+    path:      /contacts/product/{product_id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:contact }
+    requirements:
+        product_id: \d+
+
+trouble_ticket_edit:
+    path:      /edit-{hash}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:edit }
+    schemes:  [http]
+trouble_ticket_read:
+    path:      /read-{hash}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreTroubleTicketBundle:AjaxTroubleTicket:read }
+trouble_ticket_close:
+    path:      /close-{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreTroubleTicketBundle:AjaxTroubleTicket:close }

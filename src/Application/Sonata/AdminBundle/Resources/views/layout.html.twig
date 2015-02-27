@@ -1,0 +1,254 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/sonatamarkitup/markitup/markitup/skins/sonata/style.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/sonatamarkitup/markitup/markitup/sets/markdown/style.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/sonatamarkitup/markitup/markitup/sets/html/style.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/sonatamarkitup/markitup/markitup/sets/textile/style.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" href="{{ asset('bundles/applicationsonataadmin/css/admin_extra.css') }}" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('bundles/corereview/star-rating/jquery.rating.css') }}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('bundles/corecommon/fancybox/jquery.fancybox.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/applicationivoryckeditor/jquery-spellchecker-demo-master/css/jquery.spellchecker.min.css')}}" type="text/css" media="all" />
+    <style>                
+        .langSwitch {
+            cursor:pointer;
+        }
+        .sonata-bc input[type="checkbox"],
+        .sonata-bc  input[type="radio"] {
+            margin-top:0px;
+            margin-bottom:0px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        window.SONATA_CONFIG = {
+            CONFIRM_EXIT: {% if admin_pool is defined and admin_pool.getOption('confirm_exit') %}true{% else %}false{% endif %},
+            USE_SELECT2: {% if admin_pool is defined and admin_pool.getOption('use_select2') %}true{% else %}false{% endif %}
+        };
+        window.SONATA_TRANSLATIONS = {
+            CONFIRM_EXIT: '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
+        };
+    </script>
+    <script src="{{ asset('bundles/sonatajquery/jquery-1.8.3.js') }}"></script>
+    <script src="{{ asset('bundles/sonatajquery/jquery-ui-1.8.23.js') }}"></script>
+    <script src="{{ asset('bundles/sonatajquery/jquery-ui-i18n.js') }}"></script>
+
+    <script src="{{ asset('bundles/sonataadmin/bootstrap/js/bootstrap.min.js') }}"></script>
+
+    <script src="{{ asset('bundles/sonataadmin/x-editable/js/bootstrap-editable.min.js') }}"></script>
+
+    {% if admin_pool is defined and admin_pool.getOption('use_select2') %}
+        <script src="{{ asset('bundles/sonataadmin/select2/select2.min.js') }}"></script>
+    {% endif %}
+
+    <script src="{{ asset('bundles/applicationsonataadmin/js/jquery.form.js') }}"></script>
+    {% if admin_pool is defined and admin_pool.getOption('confirm_exit') %}<script src="{{ asset('bundles/sonataadmin/jquery/jquery.confirmExit.js') }}"></script>{% endif %}
+    <script src="{{ asset('bundles/sonataadmin/base.js') }}"></script>
+
+
+    {% if admin_pool is defined and admin_pool.getOption('use_select2') %}
+        <script src="{{ asset('bundles/sonataadmin/select2/select2_locale_ru.js') }}" type="text/javascript"></script>
+    {% endif %}
+
+    <script src="{{ asset('bundles/ivoryckeditor/ckeditor.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/sonatamarkitup/markitup/markitup/jquery.markitup.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/sonatamarkitup/markitup/markitup/sets/markdown/set.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/sonatamarkitup/markitup/markitup/sets/html/set.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/sonatamarkitup/markitup/markitup/sets/textile/set.js') }}" type="text/javascript"></script>
+
+    <script src="{{ asset('bundles/applicationsonataadmin/js/jquery.inputmask/jquery.inputmask.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/applicationsonataadmin/js/jquery.inputmask/jquery.inputmask.extensions.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/applicationsonataadmin/js/jquery.inputmask/jquery.inputmask.numeric.extensions.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/applicationsonataadmin/js/jquery.inputmask/jquery.inputmask.regex.extensions.js') }}" type="text/javascript"></script>
+
+
+    <script src="{{ asset('bundles/applicationsonataadmin/js/admin_extra.js') }}" type="text/javascript"></script>
+
+    <script src="{{ asset('bundles/corestatistics/highstock/js/highstock.js') }}"></script>
+    <!--
+    <script src="{{ asset('bundles/corestatistics/highstock/js/modules/exporting.js') }}"></script>
+    -->
+    <script src="{{ asset('bundles/corestatistics/highcharts/js/themes/customise.default.ru.js') }}"></script>
+    <script src="{{ asset('bundles/corereview/star-rating/jquery.rating.pack.js') }}"></script>
+    <script src="{{ asset('bundles/corecommon/fancybox/jquery.fancybox.pack.js') }}"></script>
+    <script src="{{ asset('bundles/coreproduct/js/remotevideo.js') }}"></script>
+    <script src="{{ asset('bundles/applicationivoryckeditor/jquery-spellchecker-demo-master/js/jquery.spellchecker.js') }}" type="text/javascript"></script>
+    {# tree select #}
+    <script src="{{ asset('bundles/corecommon/js/jquery.mcdropdown.min.js') }}"></script>
+    <script src="{{ asset('bundles/corecommon/js/jquery.bgiframe.js') }}"></script>
+    <script src="{{ asset('bundles/applicationsonataadmin/js/stupidtable.min.js') }}"></script>
+    {# END tree select #}
+    <script type="text/javascript">
+        {# если для полей ввода есть атрибут data-mask, тогда инициализируем для каждого маску ввода #}
+            $(document).ready(function() {
+                setMaskForInputs();
+                setDatePickerForInputs();
+            });
+
+        {# при ajax запросах показываем анимацию у курсора #}
+            var adminRoutes = [];
+            var adminExtra = [];
+            {% if app.user %}
+                adminExtra['email'] = '{{app.user.email}}';
+            {% endif %}
+                {#adminRoutes['checkLogin'] = '{{path('application_sonata_user_admin_quick_auth')}}';#}
+            var img = $('<img />')
+                    .attr('src', "{{ asset('bundles/sonataadmin/ajax-loader.gif') }}")
+                    .css({position: 'absolute', display: 'none', zIndex: 1000000})
+                    .attr('id', 'pict_weit');
+            $(document)
+                    .ajaxStart(function() {
+                        $('#pict_weit').css('display', 'block');
+                    })
+                    .ajaxStop(function() {
+                        $('#pict_weit').css('display', 'none');
+                        setMaskForInputs();
+                        setDatePickerForInputs();
+                    })
+                    .ready(function($) {
+                        $('body').append(img);
+                        $(document).mousemove(function(event) {
+                            $('#pict_weit').css({
+                                left: event.pageX + 10,
+                                top: event.pageY - 10
+                            });
+                        });
+                    });
+
+    </script>
+
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {# если находимся на списке записей, выводим боковое меню табами #}
+    {% if action is defined and action == 'list' %}
+
+        {{ block('side_menu_to_tabs')|raw }}
+
+    {% endif %}
+
+    {{ parent() }}
+
+    {% set optionsExtraBlocks = ServiceContainer.get('application_sonata_admin_extra_blocks_logic').getWhatShow %}
+
+    {# Подключение дополнительного левого блока #}
+    {% if optionsExtraBlocks['sides'] is defined and optionsExtraBlocks['sides']['left'] is defined %}
+
+        {% include 'ApplicationSonataAdminBundle:Admin\\ExtraBlocks:extra_left_blocks.html.twig' %}
+
+    {% endif %}
+
+    {# Подключение дополнительного нижнего блока #}
+    {% if optionsExtraBlocks['sides'] is defined and optionsExtraBlocks['sides']['bottom'] is defined %}
+
+        {% include 'ApplicationSonataAdminBundle:Admin\\ExtraBlocks:extra_bottom_blocks.html.twig' %}
+
+    {% endif %}
+
+{% endblock %}
+
+{% block logo %}
+    <a title="Перейти на сайт"  href="{{path('core_common_index')}}" class="brand">
+        <img src="{{ asset(admin_pool.titlelogo) }}"  alt="{{ admin_pool.title }}">
+    </a>
+
+    <a href="{{ url('sonata_admin_dashboard') }}" class="brand">
+        <span class="icon-home" title="Общая статистика"></span>
+    </a>
+
+{% endblock %}
+
+{% block sonata_top_bar_search %}{% endblock %}
+
+{% block sonata_nav_menu %}
+
+    {#{{ parent() }}#}
+
+    {{ render (controller ('ApplicationSonataAdminBundle:MenuAdmin:menu', {'request': app.request})) }}
+
+{% endblock %}
+
+{% block footer %}
+    <script>
+        jQuery(function($) {
+            //для удобства, если кликнули по TD, то выделяем в нем первый checkbox
+            $('body').on('click', 'td, th', function(e) {
+                if ($(e.target).is('td') || $(e.target).is('th')) {
+                    $(this).find('input[type="checkbox"]').first().click();
+                }
+
+            });
+
+            {#$('th').find('input[type="checkbox"]').first().click().change() ;#}
+//     $('#list_batch_checkbox').click(function () {
+//    $('th').find('input[type="checkbox"]').first().trigger('click');
+            //Селект2 декорация для html5 ошибок
+            $('body').on('change', '.control-group select.select2-offscreen, .control-group input.ajax-entity', function() {
+                var $this = $(this),
+                    eltBlock = $this.parents('.control-group'),
+                    selectContainer = $('.select2-container', eltBlock);
+
+                if ($this.is(':invalid')) {
+                     selectContainer.addClass('html5-error');
+                } else {
+                    selectContainer.removeClass('html5-error');
+                }
+
+            });
+
+            //hmtl5 error scroll
+            $('input[type="submit"]').click(function() {
+
+                var $this = $(this),
+                    parentForm = $this.parents('form'),
+                    invalidElements = $('input.select2-offscreen:invalid, textarea.select2-offscreen:invalid, select.select2-offscreen:invalid', parentForm);
+                if (invalidElements.length) {
+                    $('body').animate({
+                            scrollTop: (invalidElements.first().offset().top - 40)
+                        }, 'slow');
+                }
+            });
+
+            /*
+            $('form').submit(function() {
+                console.log('dfdf');
+                var $this = $(this),
+                    invalidElements = $('input:ivalid,textarea:invalid, select:invalid', $this);
+                console.log(invalidElements);
+                invalidElements.each(function(index, element){
+                   var $this = $(element);
+
+                   $('body').animate({
+                            scrollTop: $this.offset().top
+                        }, 'slow');
+                });
+
+            });
+            */
+            select2Html5();
+        });
+
+        /**
+         * Селект2 декорация для html5 ошибок
+         * @returns {void}
+         */
+        function select2Html5() {
+            $('.control-group select.select2-offscreen, .control-group input.ajax-entity').each(function(index, element){
+                var $this = $(element),
+                    eltBlock = $this.parents('.control-group'),
+                    parentBlock = $('.controls.sonata-ba-field', eltBlock);
+                parentBlock.css("position", "relative");
+            });
+        }
+
+    </script>
+    <div class="row-fluid">
+        <div class="span2 offset10 pull-right">
+        </div>
+    </div>
+{% endblock %}

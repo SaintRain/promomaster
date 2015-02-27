@@ -1,0 +1,14 @@
+
+{#**
+ * Шаблон для вывода верхнего правого блока с именем пользователя и ссылкой "Выход"
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block user_block %}
+
+    <span class="user_block_big">{{ app.user.username }} - <a href="{{ path('_logout') }}">Выход</a></span>
+    <span class="user_block_small"><span class="icon-user" title="{{ app.user.username }}" style="cursor: help"></span>&nbsp;&nbsp;&nbsp;<a href="{{ path('_logout') }}" title="Выход"><span class="icon-logout"></span></a></span>
+
+{% endblock %}

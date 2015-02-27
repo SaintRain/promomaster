@@ -1,0 +1,50 @@
+breadcrumb:
+  link_trouble_ticket_list: Список тикетов
+  link_trouble_ticket_category_list: Категории тикетов
+  link_status_list: Статусы тикетов
+  link_priority_list: Приоритеты тикетов
+  edit:
+    TroubleTicket: Редактирование тикета
+    Status: Редактирование статуса
+    Priority: Редактирование приоритета
+  create:
+    Status: Добавление нового статуса
+    Priority: Добавление нового приоритета
+    TroubleTicket: Создание тикета
+label:
+  status: Статус
+  mangager: Назначена
+  priority: Приоритет
+  rediness: Готовность
+  caption: Название
+  sysName: Системное имя
+  isEnabled: Активность
+  indexPosition: Поизиция сортировки
+  actions: Действия
+  action_show_on_site: Показать на сайте
+filter:
+  label_is_enabled: Активность
+label_type_yes: Вкл
+label_type_no: Выкл
+form:
+  label_caption_ru: Название
+  label_sys_name: Системное имя
+  label_index_position: Поизиция сортировки
+  label_is_enabled: Активность
+  label:
+    empty: Необходимо выбрать
+General: Основное
+watcher:
+  add: Вы подписались на обновления
+  remove: Вы отписались от обновлений
+parameter:
+  priority: Приоритет
+  category: Категория
+  manager: Назначена
+  title: Заголовок
+  readiness: Готовность
+  body: Описание
+  status: Статус
+  add: Добавлен
+  delete: Удален
+  file: Файл

@@ -1,0 +1,83 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block title %}
+    {% if admin.id(object) is not null %}
+        {{ "title_edit"|trans({'%name%': admin.toString(object) }, 'SonataAdminBundle') }}
+    {% else %}
+        {{ "title_create"|trans({}, 'SonataAdminBundle') }}
+    {% endif %}
+{% endblock%}
+
+{% block actions %}
+    <div class="sonata-actions btn-group">
+        {% include 'SonataAdminBundle:Button:show_button.html.twig' %}
+        {#{% include 'SonataAdminBundle:Button:history_button.html.twig' %}#}
+        {% include 'SonataAdminBundle:Button:acl_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:list_button.html.twig' %}
+    </div>
+{% endblock %}
+
+{% block formactions %}
+    <div class="well well-small form-actions">
+        {% block formactions_buttons %}
+        {% if app.request.isxmlhttprequest %}
+            {% if admin.id(object) is not null %}
+                <input type="submit" class="btn btn-primary" name="btn_update" value="{{ 'btn_update'|trans({}, 'SonataAdminBundle') }}">
+            {% else %}
+                <input type="submit" class="btn" name="btn_create" value="{{ 'btn_create'|trans({}, 'SonataAdminBundle') }}">
+            {% endif %}
+        {% else %}
+            {% if admin.supportsPreviewMode %}
+                <button class="btn btn-info persist-preview" name="btn_preview" type="submit">
+                    <i class="icon-eye-open"></i>
+                    {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
+                </button>
+            {% endif %}
+            {% if admin.id(object) is not null %}
+                <input title="{{ 'hot_save_title'|trans({}, 'SonataAdminBundle') }}" type="submit" class="btn btn-primary" name="btn_update_and_edit" value="{{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}">
+
+                {% if admin.hasroute('list') %}
+                    <input type="submit" class="btn" name="btn_update_and_list" value="{{ 'btn_update_and_return_to_list'|trans({}, 'SonataAdminBundle') }}">
+                {% endif %}
+
+                {% if admin.hasroute('delete') and admin.isGranted('DELETE', object) %}
+                    {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
+                    <a class="btn btn-danger" href="{{ admin.generateObjectUrl('delete', object) }}">{{ 'link_delete'|trans({}, 'SonataAdminBundle') }}</a>
+                {% endif %}
+
+                {% if admin.isAclEnabled() and admin.hasroute('acl') and admin.isGranted('MASTER', object) %}
+                    <a class="btn" href="{{ admin.generateObjectUrl('acl', object) }}">{{ 'link_edit_acl'|trans({}, 'SonataAdminBundle') }}</a>
+                {% endif %}
+            {% else %}
+                {% if admin.hasroute('edit') %}
+                    <input title="{{ 'hot_save_title'|trans({}, 'SonataAdminBundle') }}" class="btn btn-primary" type="submit" name="btn_create_and_edit" value="{{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}">
+                {% endif %}
+                {% if admin.hasroute('list') %}
+                    <input type="submit" class="btn" name="btn_create_and_list" value="{{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}">
+                {% endif %}
+                <input class="btn" type="submit" name="btn_create_and_create" value="{{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}">
+            {% endif %}
+        {% endif %}
+        {% endblock  %}
+    </div>
+{% endblock formactions %}
+
+{% block side_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
+
+{% use 'ApplicationSonataAdminBundle:CRUD:base_edit_form.html.twig' with form as parentForm %}
+
+{% block form %}
+    {{ block('parentForm') }}
+{% endblock %}

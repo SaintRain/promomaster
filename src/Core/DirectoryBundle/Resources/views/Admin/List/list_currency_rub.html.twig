@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if not (object.currencyRUB * 1) %}
+        <span class="label">Просчет не производился</span>
+    {% else %}
+        {{object.currencyRUB}} (от {{object.currencyDateTime | date('d.m.Y', default_timezone)}})
+    {% endif %}
+{% endblock %}

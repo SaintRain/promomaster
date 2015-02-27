@@ -1,0 +1,11 @@
+breadcrumb:  
+  link_config_list: Список настроек
+  link_group_list: Список групп для настроек
+  link_group_delete: Удаление группы для настроек
+label:
+  type:
+    array: Массив
+    string: Строка
+    text: Текст
+
+ 

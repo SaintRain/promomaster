@@ -1,0 +1,9 @@
+{% extends 'SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig' %}
+{% block filter_name_type_widget %}
+    {% spaceless %}
+        <div class="full-search">
+            {{ form_widget(form.name, {'attr':{'class':'span12'} }) }}
+            {{ form_widget(form.full) }}
+        </div>
+    {% endspaceless %}
+{% endblock %}

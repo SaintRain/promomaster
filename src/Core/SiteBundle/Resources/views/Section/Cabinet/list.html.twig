@@ -1,0 +1,105 @@
+{#вывод списка сайтов в ЛК#}
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}Разделы для отображения рекламных мест{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Разделы рекламных мест</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li class="active">Список разделов для отображения рекламных мест</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block sub_content %}
+
+
+    <div class="tab-v2">
+        <ul class="nav nav-tabs">
+            <li class=""><a href="{{ path('core_cabinet_adplace_list_first_page') }}" >Рекламное
+                    место</a></li>
+            <li class="active"><a href="{{ path('core_cabinet_section_list_first_page') }}"
+                                  data-toggle="tab">Разделы</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade active in" id="tab1">
+
+
+                {% for flashMessage in app.session.flashbag.get('edit_success') %}
+                    <br/>
+                    <div class="alert alert-success fade in">
+                        {{ flashMessage | raw }}
+                    </div>
+                {% endfor %}
+
+
+                {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+                    <br/>
+                    <div class="alert alert-danger fade in">
+                        {{ flashMessage | raw }}
+                    </div>
+                {% endfor %}
+
+
+                {% if  sections.getTotalItemCount %}
+                    <h3>Список разделов для отображения рекламных мест</h3>
+                    <a style="margin-top: -30px" href="{{ path('core_cabinet_section_create') }}"
+                       class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить раздел</a>
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Название</th>
+                            <th>Шаблон</th>
+                            <th>Весь сайт</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for section in sections %}
+                            <tr>
+                                <td height="53px">{{ loop.index }}</td>
+                                <td>
+                                    <a href="{{ path('core_cabinet_section_edit', {id:section.id}) }}"><b>{{ section.name }}</b></a>
+                                </td>
+                                <td>
+                                    {{ section.urlTemplate }}
+                                </td>
+                                <td>
+                                    {% if section.isAllPage %}<span class="label label-u">Да</span>{% else %}<span
+                                            class="label label-warning">Нет</span>{% endif %}
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% set routeFirsPage = 'core_cabinet_section_list_first_page' %}
+                    {% set routePage = 'core_cabinet_section_list' %}
+
+                    {{ knp_pagination_render(sections, 'CoreSiteBundle:Section/Cabinet:pagination.html.twig',{},
+                    { routeFirsPage: routeFirsPage, routePage:routePage}) }}
+
+                {% else %}
+                    <h2>Вы еще не добавляли разделы для рекламных мест в систему</h2>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

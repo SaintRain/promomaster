@@ -1,0 +1,14 @@
+{% extends "CoreCommonBundle::main_layout.html.twig" %}
+{% block content %}
+    <div role="main" class="contacts_page info_page" id="content">
+        <div class="main_col">
+            <div class="main_col_pad">
+                {% block main_content %}{% endblock %}
+            </div>
+        </div>
+
+        {% block menu_left %}
+            {{ include ('CoreCommonBundle:Fragments:menuLeft.html.twig') }}
+        {% endblock %}
+    </div>
+{% endblock %}

@@ -1,0 +1,166 @@
+parameters:
+  sonata.user.admin.groupname: Пользователи
+services:
+    application_user.registration.form.type:
+        class: Application\Sonata\UserBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: application_user_registration }
+    application_user.form.handler.registration:
+        class: Application\Sonata\UserBundle\Form\Handler\RegistrationFormHandler
+        arguments: ["@fos_user.registration.form", "@request", "@fos_user.user_manager", "@fos_user.mailer", "@fos_user.util.token_generator"]
+        scope: request
+        public: false
+    application_user.form.handler.resseting:
+        class: Application\Sonata\UserBundle\Form\Handler\ResettingFormHandler
+        arguments: ["@fos_user.resetting.form", "@request", "@fos_user.user_manager"]
+        scope: request
+        public: false
+        
+    application_user.user.provider:
+        class: Application\Sonata\UserBundle\Logic\UserProvider
+        arguments: ["@fos_user.user_manager"]
+        public: false
+    # eventlistener on login - перенаправление при авторизации
+    application_sonata_user.listener.login:
+        class: Application\Sonata\UserBundle\EventListener\SecurityListener
+        arguments: ['@router', '@security.context', '@event_dispatcher', '@session' ]
+        tags:
+          - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
+
+    # eventlistener для редиректов авторизованных пользователей
+    application_sonata_user.listener.redirect:
+        class: Application\Sonata\UserBundle\EventListener\LoggedInUserListener
+        #arguments: ['@router', '@security.context', '@session', '@core_product_logic', '@service_container']
+        arguments: ['@router', '@security.context', '@session', '@service_container']
+        tags:
+          - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    application_user.profile.form.type:
+        class: Application\Sonata\UserBundle\Form\Type\ProfileFormType
+        arguments: [%fos_user.model.user.class%,'@security.context']
+        tags:
+            - { name: form.type, alias: application_user_profile }
+    application_user.profile.form.handler:
+        class: Application\Sonata\UserBundle\Form\Handler\ProfileFormHandler
+        arguments: ["@fos_user.profile.form", "@request", "@fos_user.user_manager"]
+        calls:
+            - [setMailer, ["@applaction_user_mailer"]]
+            - [setSession, ["@session"]]
+        scope: request
+        public: false
+
+    application_user.validator.unique.your_validator_name:
+        arguments: ['@security.context','@security.encoder_factory']
+        class: Application\Sonata\UserBundle\Validator\Constraints\SameDataValidator
+        tags:
+            - { name: validator.constraint_validator, alias: application_user_same_data }
+
+    applaction_user_mailer:
+        class: Application\Sonata\UserBundle\Mailer\Mailer
+        arguments: ['@mailer', '@router', '@templating','@translator', { fromEmail: %default_email% }]
+        lazy: true
+
+    #Админский класс контрагентов
+    application_user_contragent_admin:
+      class: Application\Sonata\UserBundle\Admin\ContragentAdmin
+      tags:
+      - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Пользователи, label: Контрагенты }
+      arguments: [null, Application\Sonata\UserBundle\Entity\CommonContragent, null]
+      calls:
+      - [ setSubClasses, [ { LegalContragent: Application\Sonata\UserBundle\Entity\LegalContragent, IndiContragent: Application\Sonata\UserBundle\Entity\IndiContragent} ] ]
+
+    #Админский класс адресатов
+    application_user_indi_contact_admin:
+      class: Application\Sonata\UserBundle\Admin\IndiContactAdmin
+      tags:
+      - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Пользователи, label: Адресаты физ-e, show_in_dashboard: false }
+      arguments: [null, Application\Sonata\UserBundle\Entity\IndiContact, null]
+
+    #Админский класс адресатов
+    application_user_legal_contact_admin:
+      class: Application\Sonata\UserBundle\Admin\LegalContactAdmin
+      tags:
+      - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Пользователи, label: Адресаты юр-e, show_in_dashboard: false }
+      arguments: [null, Application\Sonata\UserBundle\Entity\LegalContact, null]
+
+    #Форма для поиска по кпп и без - объединенная
+    application_user_contragent_admin_kpp_form:
+      class: Application\Sonata\UserBundle\Admin\Form\Type\KppType
+      arguments: ['@translator']
+      tags:
+          - { name: form.type, alias: kpp_type }
+
+    #Форма для поиска по кпп и без - объединенная
+    application_user_contragent_admin_onec_form:
+      class: Application\Sonata\UserBundle\Admin\Form\Type\OnecType
+      arguments: ['@translator']
+      tags:
+          - { name: form.type, alias: onec_type }
+
+    #Форма для поиска по кпп и без - объединенная
+    application_user_contragent_admin_email_form:
+      class: Application\Sonata\UserBundle\Admin\Form\Type\EmailType
+      arguments: ['@translator']
+      tags:
+          - { name: form.type, alias: contragent_email_type }
+
+    #Форма для поиска по подклассам
+    application_user_contragent_admin_subclass_form:
+      class: Application\Sonata\UserBundle\Admin\Form\Type\SubClassType
+      arguments: ['@translator']
+      tags:
+          - { name: form.type, alias: subclasses_type }
+
+    #логика для пользователей
+    application_user_logic:
+      class: Application\Sonata\UserBundle\Logic\UserLogic
+      arguments: ['@doctrine.orm.entity_manager', '@service_container']
+
+    #Форма вывода истории баланса
+    application_user_contragent_balance_history:
+      class: Application\Sonata\UserBundle\Admin\Form\Type\BalanceHistoryType
+      arguments: ['@core_payment_logic']
+      tags:
+          - { name: form.type, alias: balance_history }
+
+    #тип формы для адресата контрагента физ. Типа
+    application_user_indi_contact_form_type:
+      class: Application\Sonata\UserBundle\Form\Type\IndiContactFormType
+      tags:
+          - { name: form.type, alias:  indi_contact_form}
+
+    #тип формы для адресата контрагента юр. Типа
+    application_user_legal_contact_form_type:
+      class: Application\Sonata\UserBundle\Form\Type\LegalContactFormType
+      tags:
+          - { name: form.type, alias:  legal_contact_form}
+
+    #тип формы для контрагента юр. лицо
+    application_user_contragent_legal:
+      class: Application\Sonata\UserBundle\Form\Type\LegalFormType
+      arguments: ['@translator']
+      tags:
+          - { name: form.type, alias: legal_contragent_form }
+
+    #тип формы для контрагента физ. лицо
+    application_user_contragent_indi_form_type:
+      class: Application\Sonata\UserBundle\Form\Type\IndiFormType
+      arguments: ['@translator']
+      tags:
+          - { name: form.type, alias: indi_contragent_form }
+
+    # Раcширения для Twig для работы с уведомлениями
+    application_user_notification_twig_extension:
+      class: Application\Sonata\UserBundle\Twig\Extension\NotificationExtension
+      tags:
+        - { name: twig.extension }
+      #  - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+      arguments: ['@doctrine', '@security.context', '@session']
+
+    # Обработчик авторизации
+    application_user_auth_logic:
+        class:        Application\Sonata\UserBundle\Logic\AuthenticationLogic
+        arguments:    ['@router', '@translator', '@security.context', '@session', '@application_user_logic', '@doctrine.orm.entity_manager', {secret:'%secret%', fos_user.firewall_name:'%fos_user.firewall_name%', domain_ru:'%domain_ru%'}]
+
+

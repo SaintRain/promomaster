@@ -1,0 +1,123 @@
+{% extends 'CoreStatisticsBundle:Admin/Crud:default.html.twig' %}
+{%block statisticsContent%}
+
+<p>В колонке "Свободный" не учтёны виртуальные позиции. В остальных колонках могут присутствовать как креальные так и виртуальные позиции.</p>
+
+{#По категориям#}
+<table class="table table-bordered table-hover" style="width:100%">
+    <thead>
+        <tr>
+            <th style="width:30%" rowspan="2">По категориям</th>
+            <th colspan="2">Свободный</th>
+            <th colspan="2">Опл., неотпр.</th>
+            <th colspan="2">Бронь</th>
+            <th colspan="2">В пути</th>
+            <th colspan="2">Всего</th>
+        </tr>
+
+        <tr>
+            <th>{{currencyFormat()}}</th>
+            <th>шт.</th>
+            <th>{{currencyFormat()}}</th>
+            <th>шт.</th>
+            <th>{{currencyFormat()}}</th>
+            <th>шт.</th>
+            <th>{{currencyFormat()}}</th>
+            <th>шт.</th>
+            <th>{{currencyFormat()}}</th>
+            <th>шт.</th>            
+        </tr>
+    </thead>
+    <tbody>
+    {%for c in data.byCategories%}
+            <tr>
+                <td><a href="{{path('admin_core_category_productcategory_edit',{id:c.category.id})}}">{{c.category.captionRu}}</a></td>
+                <td class="success">{{moneyFormat(c.free.quantity_sum)}}</td>
+                <td class="success">{{c.free.quantity}}</td>
+                <td class="error">{{moneyFormat(c.paidNotShipped.quantity_sum)}}</td>
+                <td class="error">{{c.paidNotShipped.quantity}}</td>
+                <td class="info">{{moneyFormat(c.booking.quantity_sum)}}</td>
+                <td class="info">{{c.booking.quantity}}</td>
+                <td class="warning">{{moneyFormat(c.supply.quantity_sum)}}</td>
+                <td class="warning">{{c.supply.quantity}}</td>
+                <td>{{moneyFormat(c.total.quantity_sum)}}</td>
+                <td>{{c.total.quantity}}</td>
+            </tr>
+{%endfor%}
+            {%set c=data.byCategoriesAll%}
+            <tr>
+                <td style="text-align:right"><b>Итого</b></td>
+                <td class="success"><b>{{moneyFormat(c.free_quantity_sum)}}</b></td>
+                <td class="success"><b>{{c.free_quantity}}</b></td>
+                <td class="error"><b>{{moneyFormat(c.paid_quantity_sum)}}</b></td>
+                <td class="error"><b>{{c.paid_quantity}}</b></td>
+                <td class="info"><b>{{moneyFormat(c.booking_quantity_sum)}}</b></td>
+                <td class="info"><b>{{c.booking_quantity}}</b></td>
+                <td class="warning"><b>{{moneyFormat(c.supply_quantity_sum)}}</b></td>
+                <td class="warning"><b>{{c.supply_quantity}}</b></td>
+                <td>{{moneyFormat(c.total_quantity_sum)}}</b></td>
+                <td>{{c.total_quantity}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+{#По производителям#}
+    <table class="table table-bordered table-hover" style="width:100%;">
+        <thead>
+            <tr>
+                <th style="width:30%" rowspan="2">По производителям</th>
+                <th colspan="2">Свободный</th>
+                <th colspan="2">Опл., неотпр.</th>
+                <th colspan="2">Бронь</th>
+                <th colspan="2">В пути</th>
+                <th colspan="2">Всего</th>
+            </tr>
+
+            <tr>
+                <th>{{currencyFormat()}}</th>
+                <th>шт.</th>
+                <th>{{currencyFormat()}}</th>
+                <th>шт.</th>
+                <th>{{currencyFormat()}}</th>
+                <th>шт.</th>
+                <th>{{currencyFormat()}}</th>
+                <th>шт.</th>
+                <th>{{currencyFormat()}}</th>
+                <th>шт.</th>
+            </tr>
+        </thead>
+        <tbody>
+    {%for c in data.byManufacturers%}
+                <tr>
+                    <td><a href="{{path('admin_core_manufacturer_manufacturer_edit',{id:c.manufacturer.id})}}">{{c.manufacturer.captionRu}}</a></td>
+                    <td class="success">{{moneyFormat(c.free.quantity_sum)}}</td>
+                    <td class="success">{{c.free.quantity}}</td>
+                    <td class="error">{{moneyFormat(c.paidNotShipped.quantity_sum)}}</td>
+                    <td class="error">{{c.paidNotShipped.quantity}}</td>
+                    <td class="info">{{moneyFormat(c.booking.quantity_sum)}}</td>
+                    <td class="info">{{c.booking.quantity}}</td>
+                    <td class="warning">{{moneyFormat(c.supply.quantity_sum)}}</td>
+                    <td class="warning">{{c.supply.quantity}}</td>
+                    <td>{{moneyFormat(c.total.quantity_sum)}}</td>
+                    <td>{{c.total.quantity}}</td>
+                </tr>
+{%endfor%}
+            {%set c=data.byManufacturersAll%}
+                <tr>
+                    <td style="text-align:right"><b>Итого</b></td>
+                    <td class="success"><b>{{moneyFormat(c.free_quantity_sum)}}</b></td>
+                    <td class="success"><b>{{c.free_quantity}}</b></td>
+                    <td class="error"><b>{{moneyFormat(c.paid_quantity_sum)}}</b></td>
+                    <td class="error"><b>{{c.paid_quantity}}</b></td>
+                    <td class="info"><b>{{moneyFormat(c.booking_quantity_sum)}}</b></td>
+                    <td class="info"><b>{{c.booking_quantity}}</b></td>
+                    <td class="warning"><b>{{moneyFormat(c.supply_quantity_sum)}}</b></td>
+                    <td class="warning"><b>{{c.supply_quantity}}</b></td>
+                    <td>{{moneyFormat(c.total_quantity_sum)}}</b></td>
+                    <td>{{c.total_quantity}}</td>
+                </tr>
+            </tbody>
+        </table>
+{%endblock%}

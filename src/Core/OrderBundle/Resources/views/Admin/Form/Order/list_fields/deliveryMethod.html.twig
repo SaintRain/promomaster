@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field%}
+
+    {%if object.deliveryMethod%}{{object.deliveryMethod.captionRu}}<br/>
+    <span class="money">{{moneyFormat(object.deliveryCost)}} {{currencyFormat()}}</span>
+    <br/><small class="muted">{%if object.deliveryCity.name is defined or object.deliveryAddress%}{%if object.deliveryCity.name is defined%}{{object.deliveryCity.name}}, {%endif%}{{object.deliveryAddress}}{%endif%}</small>
+    {%endif%}
+
+{% endblock %}

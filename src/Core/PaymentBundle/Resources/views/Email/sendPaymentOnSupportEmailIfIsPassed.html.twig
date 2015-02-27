@@ -1,0 +1,26 @@
+
+{#**
+ * Шаблон для генерации письма с ифой о платеже для отправки на email админа, в случае если платеж оплачен
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% spaceless %}
+
+    Поступила оплата по счету <a href="https://{{ domain }}{{ path('admin_core_payment_payment_edit', {id: payment.id}) }}" target="_blank">№{{ payment.id }}</a><br/>
+    Платежная система: {{ payment.system.captionRu }}<br/>
+    Дата счета: {{ payment.createdAt|date('d.m.Y, H:i', default_timezone) }}<br/>
+    Сумма по счету: {{ moneyFormat(payment.amount) }}&nbsp;{{ currencyFormat() }}<br/>
+
+    <br>
+
+    {% if payment.order %}
+
+        Счет связан с заказом <a href="https://{{ domain }}{{ path('admin_core_order_order_edit', {id: payment.order.id}) }}" target="_blank">№{{ payment.order.id|idFormat }}</a><br/>
+        Дата заказа: {{ payment.order.createdDateTime|date('d.m.Y, H:i', default_timezone) }}<br/>
+        Сумма заказа: {{ moneyFormat(orderCostInfo['total_cost_all']) }}&nbsp;{{ currencyFormat() }}<br/>
+
+    {% endif %}
+
+{% endspaceless %}

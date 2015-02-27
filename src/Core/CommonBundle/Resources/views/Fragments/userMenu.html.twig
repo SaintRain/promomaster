@@ -1,0 +1,65 @@
+<!--noindex-->
+<div class="header_useraccount{% if app.user %} menu{% endif %}">
+    {% if app.user %}
+        {% set orderCountNotification = getOrderNotification() %}
+        {% set totalCountNotification = orderCountNotification %}
+        {% set ticketsNotification = getTicketsNotification() %}
+            <strong class="header_useraccount_name">{% if app.user.firstname or app.user.lastname %}{{ app.user.lastname ~ ' ' ~ app.user.firstname }}{% else %}{{ app.user.username }}{% endif %}</strong>
+            <a rel="nofollow" class="header_useraccount_dropdown_tgl text_tgl" href="">Личный кабинет</a>{% if totalCountNotification > 0 %}&nbsp;<span class="notice_indicator">{{ totalCountNotification }}</span>{% endif %}
+            <div class="header_useraccount_dropdown dropdown">
+                <div class="header_useraccount_dropdown_header">
+                    <strong class="header_useraccount_name">{% if app.user.firstname or app.user.lastname %}{{ app.user.lastname ~' '~ app.user.firstname }}{% else %}{{ app.user.username }}{% endif %}</strong>
+                    <a rel="nofollow" class="header_useraccount_dropdown_tgl text_tgl" href="{{ path('sonata_user_profile_show') }}">Личный кабинет</a>
+                </div>
+                {% if contragent %}
+                    <ul class="first">
+                        <li class="pad">
+                            {%- if contragent.legalForm is defined -%}
+                                {{- contragent.organization -}}
+                            {%- else -%}
+                                {{- contragent.lastName }} {{ contragent.firstName }} {{ contragent.surName }}
+                            {%- endif -%}
+                        </li>
+                        <li class="pad">Баланс: {{ moneyFormat(getBalance(contragent.id)) }} {{ currencyFormat() }}</li>
+                        {%- if app.user.contragents.count > 1 -%}
+                            <li>
+                                <a rel="nofollow" class="btn-change-contragent with-url" {# href="{{ path('application_sonata_user_change_contragent') }}" #} data-url="{{ path('application_sonata_user_get_user_contragents') }}">Сменить контрагента</a>
+                            </li>
+                        {%- endif -%}
+                    </ul>
+                {% endif %}
+
+                <ul{% if not contragent %} class="first"{% endif %}>
+                    <li>
+                        <a rel="nofollow" href="{{ path('application_sonata_user_profile_orders_history_list_first_page') }}">Мои заказы</a>{% if orderCountNotification > 0 %}<span title="Количество неоплаченных заказов" class="notice_indicator">{{ orderCountNotification }}</span>{% endif %}
+                    </li>
+                    <li>
+                        <a rel="nofollow" rel="nofollow" href="{{ path('application_sonata_user_profile_products_favorites_first_page', {_format: 'html'}) }}">Избранные товары</a>
+                    </li>
+                    <li>
+                        <a rel="nofollow" href="{{ path('application_sonata_user_profile_products_history_first_page', {_format: 'html'}) }}">Просмотренные товары</a>
+                    </li>
+                    <li>
+                        <a rel="nofollow" href="{{ path('trouble_ticket_index_auth') }}">Мои обращения</a>{% if ticketsNotification %}<span class="notice_indicator">{{ ticketsNotification }}</span>{% endif %}
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <a rel="nofollow" href="{{ path('sonata_user_profile_show') }}">Персональная информация</a>
+                    </li>
+                    <li>
+                        <a rel="nofollow" href="{{ path('application_sonata_user_contragent_index') }}">Адреса доставки</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <a rel="nofollow" href="{{ path('_logout') }}">Выйти</a>
+                    </li>
+                </ul>
+            </div>
+        {% else %}
+            <a rel="nofollow" href="{{path('fos_user_security_login')}}" class="header_useraccount_login text_tgl">Вход</a>
+            <a rel="nofollow" href="{{path('fos_user_registration_register')}}" class="text_tgl">Регистрация</a>
+    {% endif %}
+</div>
+<!--/noindex-->

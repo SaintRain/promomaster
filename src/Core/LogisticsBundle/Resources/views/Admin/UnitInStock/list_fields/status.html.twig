@@ -1,0 +1,31 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field%}
+
+    {%if object.isWithDefect%}
+        <span class="label label-warrning">списано</span>
+        {%if object.defectReason.captionRu is defined %}<br/>{{object.defectReason.captionRu}}{%endif%}
+    {%else%}
+        {%if not object.isCouldBeSold%}
+            <span class="label label-success">продано</span><br/>
+            {%if object.composition.order is defined%}
+            (заказ <a href="{{path('admin_core_order_order_edit', {id:object.composition.order.id})}}">#{{object.composition.order.id|idFormat}}</a>)
+            {%endif%}
+        {%else%}
+            {%if object.composition.order is defined%}
+                <span class="label label-success">{%if object.composition.order.isCanceledStatus%}переоформляется{%else%}забронировано{%endif%}</span><br/>
+                (заказ <a href="{{path('admin_core_order_order_edit', {id:object.composition.order.id})}}">#{{object.composition.order.id|idFormat}}</a>)
+            {%else%}
+                {%if object.supply.status.name== constant('Core\\LogisticsBundle\\Entity\\Supply::onTheWayStatusName') %}
+                    <span class="label label-info">{{object.supply.status.captionRu}}</span>
+                {%else%}
+                    {%if object.supply.status.name==constant('Core\\LogisticsBundle\\Entity\\Supply::suppliedStatusName')%}
+                        <span class="label label-success">{{object.supply.status.captionRu}}</span>
+                    {%else%}
+                        <span class="label label-default">{{object.supply.status.captionRu}}</span>
+                    {%endif%}
+                {%endif%}
+            {%endif%}
+        {%endif%}
+    {%endif%}
+
+{% endblock %}

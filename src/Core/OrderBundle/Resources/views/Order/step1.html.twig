@@ -1,0 +1,304 @@
+
+{#**
+ * Шаблон для вывода корзины
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'CoreCommonBundle::main_layout.html.twig' %}
+
+{#{% use 'CoreProductBundle:Catalog:product_cell.html.twig' %}#}
+
+{% use 'CoreOrderBundle:Order/Block:breadcrumbs.html.twig' %}
+
+{# SEO - заголовки #}
+{% block title %}Ваши покупки | OliKids.ru{% endblock %}
+{% block meta_keywords %}корзина, заказ, покупки{% endblock %}
+{% block meta_description %}Список Ваших покупок на сайте OliKids.{% endblock %}
+
+{% block js_head %}
+
+    {{ parent() }}
+    {#
+    {% if data.products is defined and data.products|length %}
+        {% set cartCost = moneyFormat(data.orderCostInfo['total_cost']) %}
+            {% else %}
+                {% set cartCost = null %}
+    {% endif %}
+    #}
+    {% javascripts
+        'bundles/coreorder/js/frontend.order.js'
+        'bundles/coreorder/js/steps.js'
+
+        output='js/compiled/order.js'
+        filter='yui_js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        {% if data.products is defined and data.products|length %}
+            {% set cartCost = data.orderCostInfo['total_cost'] %}
+                var google_tag_params = {
+                    ecomm_pagetype: 'cart',
+                    ecomm_totalvalue: '{{ cartCost}}'
+                };
+                {% else %}
+                    var google_tag_params = {
+                        ecomm_pagetype: 'cart'
+                    };
+        {% endif %}
+        {#
+        settingsJS.extra['pageType'] = 'cart';
+        settingsJS.extra['cartCost'] = '{{ cartCost }}';
+        #}
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    {{ block('order_breadcrumbs_block') }}
+
+    <div id="content" class="cart_page" role="main">
+        <h1>Ваши покупки</h1>
+
+        <!-- main content col -->
+        <div class="main_col">
+            <div class="main_col_pad">
+
+                {% if data.products is defined and data.products|length %}
+
+                    {% set orderCostInfo = data.orderCostInfo %}
+
+                    <table class="cart_products_list">
+                        <thead>
+                            <tr>
+                                <th>Товар</th>
+                                <th>Количество</th>
+                                <th class="cart_product_price">Сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- product -->
+                            {% for product in data.products %}
+
+                                {% set quantity = data.sessionOrder['products'][product.id]['quantity'] %}
+                                <tr class="cart_product" data-id="{{ product.id }}" data-url="{{ path('core_product_update_cart') }}">
+                                    <td class="cart_product_info">
+                                        <div class="cart_product_info_pad">
+                                            <a class="cart_product_name" href="{{ path('core_product', {slug: product.slug}) }}"><img class="cart_product_img" src="{{ asset(product.images|getFileWebPath('preview', '100x100_', true)) }}">{{ attribute(product, 'caption' ~ app.request.locale) }}</a>
+                                            <p class="cart_product_specs">
+
+                                                {%- set size = null -%}
+                                                {%- for pdp in product.productDataProperty -%}
+                                                    {%- if pdp.data.property.name == 'size' -%}
+                                                        {%- set size = pdp.data.value -%}
+                                                    {%- endif -%}
+                                                {%- endfor -%}
+
+                                                {{- product.color ? attribute(product.color, 'caption' ~ app.request.locale) ~ ' цвет' : '' }}{{ (product.color and size) ? ', ' : '' }}{{ size ? size ~ '  размер' : '' }}{% if product.sku %} (SKU: {{ product.sku }}){% endif %}<br>
+
+                                                {%- if computeDiscountForProductAndGetCurrentPrice(product, 'old') -%}
+
+                                                    <span class="product_price old">{{ moneyFormat(computeDiscountForProductAndGetCurrentPrice(product, 'old')) }} {{ currencyFormat() }}</span>&nbsp;
+
+                                                {%- endif %}
+
+                                                <span class="product_price">{{ moneyFormat(computeDiscountForProductAndGetCurrentPrice(product, 'current')) }} {{ currencyFormat() }}</span>
+
+                                                <br>
+
+                                                {% if product.orderOnly %}
+
+                                                    <span>Под заказ{% if product.deliveryDays %}. Время обработки {{ product.deliveryDays }} {{ declOfNum(product.deliveryDays, ['день','дня','дней']) }}.{%  endif %}</span>
+
+                                                {% endif %}
+
+                                            </p>
+                                            <ul class="cart_product_tools">
+                                                <li class="cart_product_tool"><span class="delete with_icon text_tgl" data-action="remove">Удалить позицию</span></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="cart_product_qnt">
+                                        <div class="clearfix">
+                                            <span class="qnt_btn decrease{#{% if quantity <= 1 %} disabled{% endif %}#}" data-action="setQuantity">&nbsp;</span>
+                                            <input class="cart_product_qnt_input" type="text" value="{{ quantity }}" size="3" maxlength="3" data-action="setQuantity" data-max="{{ product.availabilityQuantity }}">
+                                            <span class="qnt_btn increase{% if quantity >= product.availabilityQuantity %} disabled{% endif %}" data-action="setQuantity">&nbsp;</span>
+                                        </div>
+                                        <div class="clearfix amount">
+                                            {% if product.orderOnly %}
+                                                На складе:
+                                            {% else %}
+                                                {{ 'order.label.goodsAvailability' | trans }}
+                                            {% endif %}
+                                            <span class="qnt">{{ product.availabilityQuantity }}{% if product.unitOfMeasure %}&nbsp;{{ attribute(product.unitOfMeasure, 'shortCaption' ~ app.request.locale) }}{% endif %}</span>
+                                        </div>
+                                    </td>
+                                    <td class="cart_product_price" nowrap>
+                                        <div class="product_price"><b class="composition_cost">{{ moneyFormat(orderCostInfo['composition'][product.id]['cost']) }}</b>&nbsp;<span>{{ currencyFormat() }}</span></div>
+
+                                        {% if orderCostInfo['composition'][product.id]['discountValue'] %}
+                                            <span class="discount">Со скидкой <b class="discountValue">{{ orderCostInfo['composition'][product.id]['discountValue'] }}</b>{% if orderCostInfo['composition'][product.id]['isDiscountValueInPercent'] %}% (<b class="discountValueInCurrency">{{ moneyFormat(orderCostInfo['composition'][product.id]['discountValueInMoney']) }}</b> {{ currencyFormat() }}){% else %}{{ currencyFormat() }}{% endif %}</span>
+                                        {% endif %}
+
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                    <div class="cart_total">
+                        <table>
+                            <tbody>
+                                {#<tr>
+                                    <td>Товаров на сумму</td>
+                                    <td class="sum price"><b id="composition_total_cost">{{ moneyFormat(orderCostInfo['composition_total_cost']) }}</b> <span>{{ currencyFormat() }}</span></td>
+                                </tr>#}
+
+                                {% if orderCostInfo['total_discount_summ'] > 0 %}
+
+                                    <tr class="discount">
+                                        <td>Скидка</td>
+                                        <td class="sum price">-<b id="total_discount_summ">{{ moneyFormat(orderCostInfo['total_discount_summ']) }}</b><span>&nbsp;{{ currencyFormat() }}</span></td>
+                                    </tr>
+
+                                {% endif %}
+
+                                <tr class="cart_total_sum">
+                                    <td>Общая стоимость без учета доставки</td>
+                                    <td class="sum price"><b id="total_cost">{{ moneyFormat(orderCostInfo['total_cost']) }}</b><span>&nbsp;{{ currencyFormat() }}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="order_proceed{% if not confines.canCreateOrder %} hidden{% endif %}">
+                            <button id="create-order" data-url="{{ path('core_order_cart_step2') }}" class="common_button big with_arrow" type="submit"><span>Оформить заказ</span></button>
+                        </div>
+
+                        <!--noindex-->
+
+                        <strong class="confines_min_sum">
+
+                            {%- if not confines.canCreateOrder -%}
+
+                                {{ confines.msg|raw }}
+
+                            {%- endif -%}
+
+                        </strong>
+
+                        <!--/noindex-->
+
+                    </div>
+
+                {% else %}
+
+                    <div class="info_box">Ваша корзина пуста</div>
+                    Вы можете добавить товары в корзину перейдя на страницу понравившегося вам товара в списке товаров.
+
+                    {% if countNotPaidOrders > 0 %}
+
+                        <br>
+                        У Вас есть {{ countNotPaidOrders }} {{ declOfNum(countNotPaidOrders, ['неоплаченный заказ','неоплаченных заказa','неоплаченных заказов']) }}. Просмотреть их можно в Личном кабинете в <a href="{{ path('application_sonata_user_profile_orders_history_list_first_page') }}">Списке заказов</a>.
+
+                    {% endif %}
+
+                {% endif %}
+
+                {#<ul class="cart_tools">
+                    <li class="cart_tool">
+                        <span class="cart_pack_all with_icon text_tgl">Упаковать все товары вместе в подарочную коробку</span>
+                        <div class="cart_tool_pad brown_gradient_box with_arrow">
+                            <h6>Выберите подходящую подарочную упаковку</h6>
+                            <span class="cart_tool_info_tgl text_tgl">Об услуге</span>
+                            <ul class="cart_package_list">
+                                <li class="cart_package_item">
+                                    <div class="cart_package_preview"><img src="dummy_package_preview.jpg"></div>
+                                    <span class="cart_package_price">99 руб.</span>
+                                </li>
+                                <li class="cart_package_item">
+                                    <div class="cart_package_preview"><img src="dummy_package_preview.jpg"></div>
+                                    <span class="cart_package_price">199 руб.</span>
+                                </li>
+                                <li class="cart_package_item">
+                                    <div class="cart_package_preview"><img src="dummy_package_preview.jpg"></div>
+                                    <span class="cart_package_price">1299 руб.</span>
+                                </li>
+                                <li class="cart_package_item">
+                                    <div class="cart_package_preview"><img src="dummy_package_preview.jpg"></div>
+                                    <span class="cart_package_price">1299 руб.</span>
+                                </li>
+                                <li class="cart_package_item">
+                                    <div class="cart_package_preview"><img src="dummy_package_preview.jpg"></div>
+                                    <span class="cart_package_price">1299 руб.</span>
+                                </li>
+                                <li class="cart_package_item">
+                                    <div class="cart_package_preview"><img src="dummy_package_preview.jpg"></div>
+                                    <span class="cart_package_price">1299 руб.</span>
+                                </li>
+                                <li class="cart_package_item">
+                                    <div class="cart_package_preview"><img src="dummy_package_preview.jpg"></div>
+                                    <span class="cart_package_price">1299 руб.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="cart_tool">
+                        <span class="cart_discount_code with_icon text_tgl">Использовать код скидки</span>
+                        <div class="cart_tool_pad brown_gradient_box with_arrow">
+                            <h6>Введите код скидки</h6>
+                            <span class="cart_tool_info_tgl text_tgl">Как получить код</span>
+                            <form class="cart_discount_code_form">
+                                <input class="text_input" type="text" name="discount_code">&nbsp;<button class="common_button"><span>Применить</span></button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>#}
+            </div>
+        </div>
+        <!-- /main content col -->
+
+        <!-- side content col -->
+        {#<aside class="side_col">
+            <div class="side_col_pad">
+                <section class="recommend_tall_box products_grid row_one">
+                    <h2>Рекомендуем также приобрести</h2>
+                    <div class="products_grid_line grid_container">
+                        <div class="product grid_item">
+                            <a class="product_name" href=""><img class="product_img" src="dummy_product_preview.jpg">LEGO Dino Raptor Chase</a>
+                            <div class="product_price">1499 руб.</div>
+                            <a class="common_button" href="">Добавить к покупкам</a>
+                        </div>
+                        <div class="product grid_item">
+                            <a class="product_name" href=""><img class="product_img" src="dummy_product_preview.jpg">LEGO Dino Raptor Chase</a>
+                            <div class="product_price">1499 руб.</div>
+                            <a class="common_button" href="">Добавить к покупкам</a>
+                        </div>
+                        <div class="product grid_item">
+                            <a class="product_name" href=""><img class="product_img" src="dummy_product_preview.jpg">LEGO Dino Raptor Chase</a>
+                            <div class="product_price">1499 руб.</div>
+                            <a class="common_button" href="">Добавить к покупкам</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </aside>#}
+        <!-- /side content col -->
+
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    {% set mixMarketList = ServiceContainer.get('core_config_logic').get('mix-market') %}
+    {%- if app.environment == 'prod' -%}
+        {% set mixMarketList = ServiceContainer.get('core_config_logic').get('mix-market') %}
+        {{ mixMarketList['cart'] | raw }}
+    {%- endif -%}
+    {{ parent() }}
+{% endblock %}
+

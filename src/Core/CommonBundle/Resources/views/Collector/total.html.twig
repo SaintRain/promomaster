@@ -1,0 +1,25 @@
+<strong>Profiling:</strong>
+
+<table style="margin: 5px 0;">
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Duration</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr>
+            {% for item in row %}
+                <td>{{ item }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Total:</th>
+            <td>{{ total }}</td>
+        </tr>
+    </tfoot>
+</table>

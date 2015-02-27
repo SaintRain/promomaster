@@ -1,0 +1,12 @@
+.jstree a {
+    width: 95%;
+    width: calc(100% - 20px);
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: -5px;
+}
+
+.jstree a:hover {
+    width: auto;
+    overflow-x: visible;
+}

@@ -1,0 +1,16 @@
+
+{#**
+ * Шаблон для вывода фоток
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+
+    {{ value.count }}
+    
+{% endblock %}
+

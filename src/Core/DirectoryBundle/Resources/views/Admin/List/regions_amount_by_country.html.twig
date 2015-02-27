@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.regionsAmount %}
+        <div><a target=_blank" href="{{path('admin_core_directory_region_list', {'filter[country][value]': object.id })}}">{{object.regionsAmount}}</a></div>
+        {% else %}
+        <div>&#x2012;</div>
+    {% endif %}
+{% endblock %}

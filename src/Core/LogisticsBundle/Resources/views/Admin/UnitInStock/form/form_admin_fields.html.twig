@@ -1,0 +1,44 @@
+{#  Переопределение вывода продукта #}
+{% block core_logistics_unit_in_stock_admin_product_ajax_entity_widget %}
+    {{ block('ajax_entity_widget') }}
+    {%set unit=sonata_admin.admin.subject%}        
+        {%if unit.productInSupply.priceInGtdCurrency is defined%}
+            <br><br>
+            <div style="clear: left;"><span class="small_label">Цена поставки в валюте ГТД: <span class="money small_label">{{moneyFormat(sonata_admin.admin.subject.productInSupply.priceInGtdCurrency)}} {{sonata_admin.admin.subject.productInSupply.gtdCurrency.symbol}}</span></label></div>
+            <div><span small_label>Цена поставки в основной валюте: <span class="money small_label">{{moneyFormat(sonata_admin.admin.subject.productInSupply.priceInGeneralCurrency)}} {{currencyFormat()}}</span></label></div>
+        {%endif%}
+
+        {%if not unit.isCouldBeSold and unit.composition.order is defined%}
+            <span class="label label-success">продано</span> 
+            {%if unit.composition.order is defined%}
+                (заказ <a href="{{path('admin_core_order_order_edit', {id:unit.composition.order.id})}}">#{{unit.composition.order.id|idFormat}}</a>)
+            {%endif%}           
+        {%else%}
+            {%if unit.composition.order is defined%}
+                <span class="label label-success">{%if unit.composition.order.isCanceledStatus%}переоформляется{%else%}забронировано{%endif%}</span> 
+                (заказ <a href="{{path('admin_core_order_order_edit', {id:unit.composition.order.id})}}">#{{unit.composition.order.id|idFormat}}</a>)
+            {%else%}
+                {%if unit.isWithDefect%}
+                    <span class="label label-warrning">списано</span>
+                {%else%}
+                    {%if unit.supply.status.name== constant('Core\\LogisticsBundle\\Entity\\Supply::onTheWayStatusName') %}
+                        <span class="label label-info">{{unit.supply.status.captionRu}}</span>
+                    {%else%}
+                        {%if unit.supply.status.name==constant('Core\\LogisticsBundle\\Entity\\Supply::suppliedStatusName')%}
+                            <span class="label label-success">{{unit.supply.status.captionRu}}</span>
+                        {%else%}
+                            <span class="label label-default">{{unit.supply.status.captionRu}}</span>
+                        {%endif%}
+                    {%endif%}
+                {%endif%}
+            {%endif%}
+        {%endif%}
+        {% endblock %}
+
+
+            {#  Фиксируем по ширине таблицу серийников #}
+            {% block core_logistics_unit_in_stock_admin_serials_sonata_type_collection_widget %}
+                <div style="width:350px">
+                    {{ block('sonata_type_collection_widget') }}
+                </div>
+            {% endblock %}

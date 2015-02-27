@@ -1,0 +1,573 @@
+{#
+ Шаблон для костомных полей у формы редактирования заказов
+ @author Sergeev A.M
+ @copyright LLC "PromoMaster"
+#}
+
+{#  Переопределение вывода Статуса ПРОВЕРЕН #}
+{% block  core_order_admin_isCheckedStatus_checkbox_widget %}    
+    {{ form_widget(form) }}   
+    {% if sonata_admin.admin.subject.isCheckedStatusSend%}
+        {%set imagePrefix=''%}
+    {%else%}
+        {%set imagePrefix='dont_'%}        
+    {%endif%}    
+    &nbsp;<img  data-target="isCheckedStatusSend" class="sendEmailOrderStatus" title="Нужно ли отправлять уведомление заказчику при смене этого статуса" 
+         src="{{asset('bundles/coreorder/Admin/img/'~imagePrefix~'send_email.png')}}" />    
+{%endblock%}
+
+{#  Переопределение вывода Статуса ОПЛАЧЕН #}
+{% block  core_order_admin_isPaidStatus_checkbox_widget %}        
+    {{ form_widget(form) }}   
+    {% if sonata_admin.admin.subject.isPaidStatusSend%}
+        {%set imagePrefix=''%}
+    {%else%}
+        {%set imagePrefix='dont_'%}        
+    {%endif%}    
+    &nbsp;<img  data-target="isPaidStatusSend" class="sendEmailOrderStatus" title="Нужно ли отправлять уведомление заказчику при смене этого статуса" 
+         src="{{asset('bundles/coreorder/Admin/img/'~imagePrefix~'send_email.png')}}" />    
+{%endblock%}
+
+
+{#  Переопределение вывода Статуса ОТГРУЖЕН #}
+{% block  core_order_admin_isShippedStatus_checkbox_widget %}    
+    {{ form_widget(form) }}   
+    {% if sonata_admin.admin.subject.isShippedStatusSend%}
+        {%set imagePrefix=''%}
+    {%else%}
+        {%set imagePrefix='dont_'%}        
+    {%endif%}    
+    &nbsp;<img  data-target="isShippedStatusSend" class="sendEmailOrderStatus" title="Нужно ли отправлять уведомление заказчику при смене этого статуса" 
+         src="{{asset('bundles/coreorder/Admin/img/'~imagePrefix~'send_email.png')}}" />    
+{%endblock%}
+
+{#  Переопределение вывода Статуса ОТМЕНЁН #}
+{% block  core_order_admin_isCanceledStatus_canceled_status_widget %}    
+    {% if sonata_admin.admin.subject.isCanceledStatusSend%}
+        {%set imagePrefix=''%}
+    {%else%}
+        {%set imagePrefix='dont_'%}        
+    {%endif%}    
+    <img style="margin-left:21px;position: absolute;margin-top:-2px"  data-target="isCanceledStatusSend" class="sendEmailOrderStatus" title="Нужно ли отправлять уведомление заказчику при смене этого статуса" 
+         src="{{asset('bundles/coreorder/Admin/img/'~imagePrefix~'send_email.png')}}" />        
+    {{ form_widget(form) }}   
+
+{%endblock%}
+
+{% block  core_order_admin_isCheckedStatusSend_checkbox_widget %}  
+    <span style='display: none'>{{ form_widget(form) }}</span>
+{%endblock%}
+
+{% block  core_order_admin_isPaidStatusSend_checkbox_widget %}  
+    <span style='display: none'>{{ form_widget(form) }}</span>
+{%endblock%}
+{% block  core_order_admin_isShippedStatusSend_checkbox_widget %}  
+    <span style='display: none'>{{ form_widget(form) }}</span>
+{%endblock%}
+{% block  core_order_admin_isCanceledStatusSend_checkbox_widget %}  
+    <span style='display: none'>{{ form_widget(form) }}</span>
+{%endblock%}
+
+
+
+{#  Переопределение вывода состава заказа #}
+{% block core_order_admin_compositions_products_in_order_widget %}
+    {{ form_widget(form) }}
+{%endblock%}
+
+{#  Переопределение вывода состава заказа #}
+{% block core_order_admin_recipientFio_text_widget %}
+    <div style="float:left">{{ form_widget(form)}}</div>
+    <div style="float:left">&nbsp;&nbsp;<a href="javascript:void(0);" class="btn selectContragentReciepment"><i class="icon icon-list"></i>&nbsp;Получатели контрагента</a></div>
+    <div  style="display:none" id="selectContragentReciepmentContent"></div>
+{%endblock%}
+
+{#  Переопределение вывода контрагента #}
+{% block core_order_admin_contragent_ajax_entity_contragent_widget %}
+    {% spaceless %}
+        {{ form_widget(form) }}
+
+        <span class="help-block ">Вы не сможете сменить контрагента, если заказа был отгружен ранее</span>
+        {% set cont=sonata_admin.admin.subject.contragent%}
+        {%if cont%}
+
+
+            {% set ordersInfo = ServiceContainer.get('application_user_logic').getContragentOrdersInfo(cont.id) %}
+            <table class="table table-bordered table-striped" style="width:900px">
+                <tbody>
+                    <tr>
+                        <td>Заказы</td>
+                        <td>
+                            <span class="label label-inverse"  title="Всего">все {{cont.orders.count}} ({{moneyFormat(ordersInfo.cost)}} {{currencyFormat()}})</span>&nbsp;&nbsp;
+                            <span class="label label-default">Проверено  {{ordersInfo.checked.count}} {%if ordersInfo.checked.cost%} ({{moneyFormat(ordersInfo.checked.cost)}} {{currencyFormat()}}){%endif%}</span>&nbsp;&nbsp;
+                            <span class="label label-info">Оплачено {{ordersInfo.paid.count}} {%if ordersInfo.paid.cost%} ({{moneyFormat(ordersInfo.paid.cost)}} {{currencyFormat()}}){%endif%}</span>&nbsp;&nbsp;
+                            <span class="label label-success">Отгружено {{ordersInfo.shipped.count}} {%if ordersInfo.shipped.cost%} ({{moneyFormat(ordersInfo.shipped.cost)}} {{currencyFormat()}}){%endif%}</span>&nbsp;&nbsp;
+                            <span class="label label-important">Отменено {{ordersInfo.canceled.count}} {%if ordersInfo.canceled.cost%} ({{moneyFormat(ordersInfo.canceled.cost)}} {{currencyFormat()}}){%endif%}</span>&nbsp;&nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Баланс</td>
+                        {% set balance=getBalance(cont.id, true) %}
+                        <td><span class="label {%if balance<1%}label-important{%endif%}">{{moneyFormat(balance)}} {{currencyFormat()}}</td>
+                    </tr>
+                    <tr>
+                        <td>Дополнительно</td>
+                        <td>
+                            <span class="label" >E-mail:</span> {{cont.user.email}}
+                            <div>
+                                <span class="label">{%if cont.kpp is defined %}Юр.{%else%}Физ.{%endif%}</span>&nbsp;
+                                <span class="label label-info">{%if cont.kpp is defined %}{{cont.organization}}{%else%}{{cont.surName}} {{cont.firstName}} {{cont.lastName}}{%endif%}</span>&nbsp;&nbsp;
+                                &nbsp;&nbsp;<a target="_blank" href="{{path('admin_sonata_user_commoncontragent_edit', {id:cont.id})}}">Посмотреть контрагента</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br/>
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block core_order_admin_deliveryPrice_money_widget %}
+    {% spaceless %}
+        {{ form_widget(form) }}
+        <a title="Пересчитать" href="javascript:void(0);" class="delivery-recalc btn btn-small"><i class="icon icon-repeat"></i></a>
+        <div class="all-methods-wr">
+            <a title="Узнать стоимость для всех вариантов" href="javascript:void(0);" class="delivery-calc-all btn btn-small btn-warning"><i class="icon icon-refresh"></i></a>
+            <div class="all-methods-container hidden">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="3" class="table-caption">Все способы доставки</th>
+                        </tr>
+                        <tr>
+                            <th data-sort="string">Способ доставки</th>
+                            <th data-sort="float">Стоимость, руб</th>
+                            <th data-sort="period">Срок доставки, дни</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            {#
+            <div class="all-methods-container">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="3" class="table-caption">Все способы доставки</th>
+                        </tr>
+                        <tr>
+                            <th data-sort="string">Способ доставки</th>
+                            <th data-sort="float">Стоимость, руб</th>
+                            <th data-sort="period">Срок доставки, дни</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-delivery-method="9" data-cost="120">
+                            <td>
+                                <a href="#">Энергия</a>
+                            </td>
+                            <td class="cost-cell">120</td>
+                            <td>1 - 15</td>
+                        </tr>
+                        <tr data-delivery-method="27" data-cost="169.98">
+                            <td>
+                                <a href="#">Cdek Склад-Склад (Наложенный платеж)</a>
+                            </td>
+                            <td class="cost-cell">169,98</td>
+                            <td>1 - 3</td>
+                        </tr>
+                        <tr data-delivery-method="5" data-cost="177">
+                            <td>
+                                <a href="#">DPD Classic Parcel (Склад - Дверь)</a>
+                            </td>
+                            <td class="cost-cell">177</td>
+                            <td>1</td>
+                        </tr>
+                        <tr data-delivery-method="17" data-cost="180.81">
+                            <td>
+                                <a href="#">DPD Classic Parcel с наложенным платежом (Склад - Дверь)</a>
+                            </td>
+                            <td class="cost-cell">180,81</td>
+                            <td>1</td>
+                        </tr>
+                        <tr data-delivery-method="11" data-cost="230.15">
+                            <td>
+                                <a href="#">Почта России</a>
+                            </td>
+                            <td class="cost-cell">230,15</td>
+                            <td>5</td>
+                        </tr>
+                        <tr data-delivery-method="8" data-cost="350">
+                            <td>
+                                <a href="#">Первая Экспедиционная Компания (ПЭК)</a>
+                            </td>
+                            <td class="cost-cell">350</td>
+                            <td>1</td>
+                        </tr>
+                        <tr data-delivery-method="18" data-cost="354">
+                            <td>
+                                <a href="#">DPD Classic Parcel (Склад - Склад)</a>
+                            </td>
+                            <td class="cost-cell">354</td>
+                            <td>1</td>
+                        </tr>
+                        <tr data-delivery-method="26" data-cost="360">
+                            <td>
+                                <a href="#">Cdek эксперсс лайт. Склад - Склад</a>
+                            </td>
+                            <td class="cost-cell">360</td>
+                            <td>1 - 2</td>
+                        </tr>
+                        <tr data-delivery-method="19" data-cost="361.61">
+                            <td>
+                                <a href="#">DPD Classic Parcel  с наложенным платежом (Склад - Склад)</a>
+                            </td>
+                            <td class="cost-cell">361,61</td>
+                            <td>1</td>
+                        </tr>
+                        <tr data-delivery-method="4" data-cost="390">
+                            <td>
+                                <a href="#">Деловые линии</a>
+                            </td>
+                            <td class="cost-cell">390</td>
+                            <td>1</td>
+                        </tr>
+                        <tr data-delivery-method="32" data-cost="440">
+                            <td>
+                                <a href="#">Тестовая CDEK доставка</a>
+                            </td>
+                            <td class="cost-cell">440</td>
+                            <td>1 - 2</td>
+                        </tr>
+                        <tr data-delivery-method="14" data-cost="830.72">
+                            <td>
+                                <a href="#">DPD Economy (Склад - Дверь)</a>
+                            </td>
+                            <td class="cost-cell">830,72</td>
+                            <td>1 - 2</td>
+                        </tr>
+                        <tr data-delivery-method="15" data-cost="848.58">
+                            <td>
+                                <a href="#">DPD Economy с наложенным платежом (Склад - Дверь)</a>
+                            </td>
+                            <td class="cost-cell">848,58</td>
+                            <td>1 - 2</td>
+                        </tr>
+                        <tr data-delivery-method="31" data-cost="974.54">
+                            <td>
+                                <a href="#">Тестовая DPD доставка</a>
+                            </td>
+                            <td class="cost-cell">974,54</td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            #}
+        </div>
+        {% endspaceless %}
+    {% endblock %}
+
+{% block core_order_admin_id_text_widget %}
+    {%set order=sonata_admin.admin.subject%}
+    {%if order.id%}
+{#        {{ld(order.createdDateTime.getTimeZone.getName)}}#}
+        <h4>Заказ #{{order.id|idFormat}} <span style="color:gray">(от {{order.createdDateTime|date("d.m.Y H:i:s", default_timezone) }})</span></h4>
+    {%else%}
+        <h4>Новый заказ <span style="color:gray">(от {{"now"|date("d.m.Y H:i:s", default_timezone) }})</span></h4>        
+    {%endif%}
+{%endblock%}
+
+{% block core_order_admin_documentScans_multiupload_document_widget %}
+    {%set order=sonata_admin.admin.subject%}
+    {{ form_widget(form) }}
+    <span class="help-block sonata-ba-field-help span5">
+        Всего может быть не более 4 шт. в каждом заказе. Допустимые форматы: jpg, jpeg, png, pdf, doc, docx. Макс. размер каждого: 2.00 Mb.
+    </span>
+    {%if order.id%}
+        <br/>
+        <br/>
+        <div class="well well-small " >
+            <div class="control-group">
+                <a class="btn" style="width:190px" target="_blank" href="{{ sonata_admin.admin.generateObjectUrl('invoiceForPayment', order, {order_id:order.id}) }}"><i class="icon-largeы"></i> Cчет на оплату</a>
+            </div>
+            <div class="control-group">
+                <a class="btn invoiceForPaymentSend" style="width:190px" data-url="{{ sonata_admin.admin.generateObjectUrl('invoiceForPaymentSend', order, {order_id:order.id}) }}"  href="javascript:void(0)"><i class="icon-large icon-envelope"></i> Отправить счет на оплату </a>
+                <span class="label lastInvoiceForPaymentSendDateTime" {%if not order.sendInvoiceForPaymentToEmailDateTime or order.sendInvoiceForPaymentToEmailDateTime|date("Y", default_timezone)=='-0001'%}style="display:none"{%endif%}>
+                    {%if order.sendInvoiceForPaymentToEmailDateTime and order.sendInvoiceForPaymentToEmailDateTime|date("Y", default_timezone)!='-0001'%}Последняя отправка {{order.sendInvoiceForPaymentToEmailDateTime|date("d.m.Y H:i:s", default_timezone)}}{%endif%}</span>
+            </div>
+            <div class="control-group">
+                <a class="btn" style="width:190px" target="_blank" href="{{ sonata_admin.admin.generateObjectUrl('guarantees', order, {order_id:order.id, needStamps:0}) }}"><i class="icon-large icon-file"></i> Гарантийный талон</a>
+            </div>
+            <div class="control-group">
+                <a class="btn" style="width:190px" target="_blank" href="{{ sonata_admin.admin.generateObjectUrl('deliveryAgreement', order, {order_id:order.id}) }}"><i class="icon-large icon-plane"></i> Договор поставки</a><br>
+            </div>
+            <div class="control-group">
+                <a class="btn" style="width:190px" target="_blank" href="{{ sonata_admin.admin.generateObjectUrl('invoice', order, {order_id:order.id}) }}"><i class="icon-large"></i> Счет-фактура</a><br>
+            </div>
+            <!--
+            Пока скрываем
+            <div class="control-group">
+                <a class="btn" style="width:190px" target="_blank" href="{{ sonata_admin.admin.generateObjectUrl('receiptOfSberbank',order, {order_id:order.id}) }}"><i class="icon-large icon-file"></i> Квитанция Сбербанка</a>
+            </div>
+            -->
+            <div class="control-group">
+                <a class="btn  waybillAtTheDate" style="width:190px" target="_blank" href="#"><i class="icon-large icon-shopping-cart"></i> Товарная накладная</a>
+                <input type="text" id="waybillAtTheDate" {%if  order.isShippedStatus%}readonly{%endif%} class="form-control span2 {%if not order.isShippedStatus%}datepicker{%endif%}"
+                       placeholder="на дату" value="{%if not order.isShippedStatus%}{{"now"|date("d.m.Y", default_timezone) }}{%else%}{{order.createdDateTime|date("d.m.Y", default_timezone) }}{%endif%}">
+            </div>
+            <div class="control-group">
+                <a class="btn   addressLabel" style="width:190px" target="_blank" href=""><i class="icon-large icon-tag"></i> Адресный ярлык</a>
+                <input type="text" id="addressLabel" class="form-control span2" data-mask="integer" placeholder="для коробок" value="1">
+            </div>
+        </div>
+
+        <script>
+            //отправка счета на email
+            $('.invoiceForPaymentSend').click(function() {
+                var link = $(this).attr('data-url');
+                $.ajax({
+                    url: link,
+                    type: 'GET',
+                    success: function(data) {
+                        if (data.res === 1) {
+                            $('.lastInvoiceForPaymentSendDateTime').show().html('Последняя отправка ' + data.sendDateTime);
+                            alert("Счет на оплату успешно отправлен контрагенту!");
+                        }
+                        else {
+                            alert("Ошибка отправки счета контрагенту!");
+                        }
+                    },
+                    error: function(data) {
+                        alert("Ошибка отправки счета контрагенту!");
+                    }
+                });
+            });
+            //
+            $('.waybillAtTheDate').click(function() {
+                var waybillAtTheDateURL = "{{ sonata_admin.admin.generateObjectUrl('waybillAtTheDate', order, {order_id:order.id, date:'00.00.0000'}) }}",
+                        value = $('#waybillAtTheDate').val();
+                if (value) {
+                    var url = waybillAtTheDateURL.replace('00.00.0000', value);
+                    $(this).attr('href', url);
+                }
+                else {
+                    alert('Укажите дату для товарной накладной!');
+                }
+            });
+            $('.addressLabel').click(function() {
+                var addressLabel = "{{ sonata_admin.admin.generateObjectUrl('addressLabel',order, {order_id:order.id, quantity:'0'}) }}",
+                        value = $('#addressLabel').val();
+                if (value) {
+                    var url = addressLabel.replace('0', value);
+                    $(this).attr('href', url);
+                }
+                else {
+                    alert('Укажите количество коробок!');
+                }
+            });
+        </script>
+    {%endif%}
+    <script>
+
+        //если изменили юзера, то пытаемся
+        $('.selectContragentReciepment').on('click', function() {
+            var contragent_id = $('input[name="{{sonata_admin.admin.uniqid}}[contragent]"]').val();
+            if (contragent_id) {
+                $.get("{{path('core_order_get_contragent_receipments')}}", {contragent_id: contragent_id})
+                        .done(function(res) {
+
+                            var html = '';
+                            for (var index in res) {
+                                html = html + '<li><a data-caption="' + res[index].caption + '" data-company="' + res[index].organization + '" data-phone="' + res[index].phone + '" data-email="' + res[index].contactEmail + '" data-passport="' + res[index].passport + '"  class="setContragentReciepmentContent" href="javascript:void(0)">' + res[index].caption + '</a></li>';
+                            }
+
+                            if (html === '') {
+                                html = '<h5>У выбранного контрагента еще нет получателей.</h5>';
+                            }
+                            html = html + '<br/><div style="vertical-align:baseline;" class="well well-small form-actions"><input type="button" class="btn btn-danger selectContragentReciepmentContentClose" value="Закрыть"></div>';
+
+                            $('#selectContragentReciepmentContent').html(html);
+                            var dlg = $('#selectContragentReciepmentContent').dialog(
+                                    {width: 500, height: 300, modal: true, title: "Выберите получателя для автозаполнения"}
+                            ).on('keydown', function(evt) {
+                                if (evt.keyCode === $.ui.keyCode.ESCAPE) {
+                                    dlg.dialog('close');
+                                }
+                                evt.stopPropagation();
+                            });
+                        });
+            }
+            else {
+                alert("Укажите контрагента!")
+            }
+        });
+
+        $('body').on('click', '.selectContragentReciepmentContentClose', function(event) {
+
+            if ($('#selectContragentReciepmentContent').dialog("isOpen")) {
+                $('#selectContragentReciepmentContent').dialog('close');
+            }
+        });
+        $('body').on('click', '.setContragentReciepmentContent', function(event) {
+            $('#{{sonata_admin.admin.uniqid}}_recipientFio').val($(this).attr('data-caption'));
+            $('#{{sonata_admin.admin.uniqid}}_recipientCompany').val($(this).attr('data-company'));
+            $('#{{sonata_admin.admin.uniqid}}_recipientPhone').val($(this).attr('data-phone'));
+            $('#{{sonata_admin.admin.uniqid}}_recipientEmail').val($(this).attr('data-email'));
+            $('#{{sonata_admin.admin.uniqid}}_recipientPassport').val($(this).attr('data-Passport'));
+            if ($('#selectContragentReciepmentContent').dialog("isOpen")) {
+                $('#selectContragentReciepmentContent').dialog('close');
+            }
+        });
+    </script>
+{% endblock %}
+
+{#  Переопределение вывода платежек #}
+{% block core_order_admin_payments_sonata_type_collection_widget %}
+
+    {% if not sonata_admin.field_description.hasassociationadmin %}
+        {% for element in value %}
+            {{ element|render_relation_element(sonata_admin.field_description) }}
+        {% endfor %}
+    {% else %}
+
+        <div id="field_container_{{ id }}" class="field-container">
+            <span id="field_widget_{{ id }}" >
+                {% if form.children|length > 0 %}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                {% for field_name, nested_field in form.children|first.children %}
+                                    {% if field_name not in ['log', 'order'] %}
+
+                                        {% if field_name == '_delete' %}
+                                            <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
+                                        {% else %}
+                                            <th {#{{ nested_field.vars['required']  ? 'class="required"' : '' }}#}{% if ((nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden'])) or field_name in ['product','parent'] %} style="display:none;"{% endif %}>
+                                                {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label) }}
+                                            </th>
+                                        {% endif %}
+
+                                    {% endif %}
+                                {% endfor %}
+                                <th>
+                                    Действия
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="sonata-ba-tbody">
+                            {% for nested_group_field_name, nested_group_field in form.children %}
+                                <tr>
+                                    {% for field_name, nested_field in nested_group_field.children %}
+
+                                        {% set object = value.get(nested_field.parent.vars.name) %}
+
+                                        <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group{% if nested_field.vars.errors|length > 0 %} error{% endif %}"{% if ((nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden'])) or field_name in ['log', 'order'] %} style="display:none;"{% endif %}>
+                                            {% if field_name in ['id','createdAt','updatedAt' ] %}
+                                                {{ nested_field.vars.value }}
+
+                                                <span class="hidden">{{ form_widget(nested_field) }}</span>
+
+                                            {% elseif field_name in ['customer'] %}
+
+                                                <a href="{{ path('admin_sonata_user_commoncontragent_edit', { id: nested_field.vars.sonata_admin.value }) }}">
+                                                    {%- if object.customer.legalForm is defined -%}
+                                                        {{- object.customer.organization -}}
+                                                    {%- else -%}
+                                                        {{- object.customer.lastName }} {{ object.customer.firstName }} {{ object.customer.surName }}
+                                                    {%- endif -%}
+                                                </a>
+
+                                                <span class="hidden">{{ form_widget(nested_field) }}</span>
+
+                                            {% elseif field_name in ['isPassed'] %}
+                                                {% if object.isPassed %}
+                                                    <span class="label label-success">Да</span>
+                                                {% else %}
+                                                    <span class="label label-important">Нет</span>
+                                                {% endif %}
+
+                                                <span class="hidden">{{ form_widget(nested_field) }}</span>
+
+                                            {% elseif field_name in ['system'] %}
+                                                {% if nested_field.vars.value %}
+                                                    <a href="{{ path('admin_core_payment_paymentsystem_commonpaymentsystem_edit', {id: nested_field.vars.value}) }}">{{ nested_field.vars.sonata_admin.value }}</a>
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+
+                                                <span class="hidden">{{ form_widget(nested_field) }}</span>
+
+                                            {% elseif field_name in ['type'] %}
+                                                {% if object.type %}
+                                                    Приход
+                                                {% else %}
+                                                    Расход
+                                                {% endif %}
+
+                                                <span class="hidden">{{ form_widget(nested_field) }}</span>
+
+                                            {% elseif field_name in ['amount'] %}
+                                                {% if object.type %}
+                                                    <span class="money">
+                                                        {{ moneyFormat(nested_field.vars.value) }} {{ currencyFormat() }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="money" style="color:#B94A48">
+                                                        -{{ moneyFormat(nested_field.vars.value) }} {{ currencyFormat() }}
+                                                    </span>
+                                                {% endif %}
+
+                                                <span class="hidden">{{ form_widget(nested_field) }}</span>
+
+                                            {% elseif field_name in ['noteRu'] %}
+                                                 {% if nested_field.vars.value %}
+
+                                                    <span class="icon-eye-open" style="cursor: help;" data-toggle="popover" data-html="true" data-placement="left" data-content="{{ nested_field.vars.value }}" onmouseover="
+                                                        $(this).popover('show');
+                                                        $('.popover').css({width:500, marginLeft:-280+'px'});
+                                                        " onmouseout="$(this).popover('destroy');" data-original-title="Просмотр"></span>
+
+                                                    <span class="hidden">{{ form_widget(nested_field) }}</span>
+
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+
+                                            {% else %}
+                                                {{ form_widget(nested_field) }}
+                                                {% set dummy = nested_group_field.setrendered %}
+                                            {% endif %}
+
+                                            {% if nested_field.vars.errors|length > 0 %}
+                                                <div class="help-inline sonata-ba-field-error-messages">
+                                                    {{ form_errors(nested_field) }}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+
+
+                                    {% endfor %}
+                                    <td>
+                                        <a href="{{ path('admin_core_payment_payment_edit', {id: nested_group_field.vars.value.id}) }}" class="btn edit_link btn-small" title="Редактировать">
+                                            <i class="icon-edit"></i>
+                                            Редактировать
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </span>
+            <br>
+            <a target="_blank" class="btn sonata-action-element" href="{{ path('admin_core_payment_payment_create', { order_id: form.vars.sonata_admin.admin.subject.id }) }}">
+            <i class="icon-plus"></i>
+            Добавить новый</a>
+
+        </div>
+    {% endif %}
+
+{%endblock%}

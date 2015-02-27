@@ -1,0 +1,48 @@
+
+{#**
+ * Шаблон для хлебных крошек в корзине
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+
+{% block order_breadcrumbs_block %}
+
+    {% set r = app.request.get('_route') %}
+
+    <div id="order_steps">
+        <ul class="order_steps_items">
+
+            {% if r == 'core_order_cart' %}
+                <li class="order_step_item current">Ваши покупки</li>
+            {% else %}
+                <li class="order_step_item done"><a href="{{ path('core_order_cart') }}">Ваши покупки</a></li>
+            {% endif %}
+
+            {% if r == 'core_order_cart_step2' %}
+                <li class="order_step_item current">Данные покупателя</li>
+            {% elseif r == 'core_order_cart' %}
+                <li class="order_step_item">Данные покупателя</li>
+            {% else %}
+                <li class="order_step_item done"><a href="{{ path('core_order_cart_step2') }}">Данные покупателя</a></li>
+            {% endif %}
+
+            {% if r == 'core_order_cart_step3' %}
+                <li class="order_step_item current">Доставка</li>
+            {% elseif r == 'core_order_cart' or r == 'core_order_cart_step2' %}
+                <li class="order_step_item">Доставка</li>
+            {% else %}
+                <li class="order_step_item done"><a href="{{ path('core_order_cart_step3') }}">Доставка</a></li>
+            {% endif %}
+
+            {% if r == 'core_order_cart_step3_5' or r == 'core_order_cart_step4' %}
+                <li class="order_step_item current last">Оплата</li>
+            {% else %}
+                <li class="order_step_item last">Оплата</li>
+            {% endif %}
+
+        </ul>
+    </div>
+
+{% endblock %}

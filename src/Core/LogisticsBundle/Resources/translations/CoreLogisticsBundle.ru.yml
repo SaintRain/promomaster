@@ -1,0 +1,60 @@
+#admin:
+breadcrumb:
+  link_supplier_price_analysis_list: Загруженные для анализа прайсы
+  link_supplier_price_analysis_delete: Удаление прайса
+  link_unit_status_list: Статусы для единиц товаров на складе
+  link_unit_status_delete: Удалене статуса
+  link_bank_list: Справочник банков
+  link_bank_delete: Удаление банка
+  link_seller_list: Список продавцов
+  link_supplier_list: Список поставщиков
+  link_supplier_delete: Удаление поставщика
+  link_supply_list: Список поставок
+  link_supply_delete: Удаление поставки
+  link_unit_in_stock_list: Список единиц товара на общем складе
+  link_unit_in_stock_delete: Удаление единицы товара с общего склада
+  link_transit_status_list: Статусы транзитов
+  link_transit_status_delete: Удаления статуса транзита
+  link_transit_list: Список транзитов
+  link_transit_delete: Удаление транзита
+  link_stock_list: Список складов
+  link_stock_delete: Удаление склада
+  link_supply_status_list: Список статусов поставок
+  link_supply_status_delete: Удаление статуса поставки
+  link_unit_in_stock_defect_reason_list: Список причин списания товарных единиц
+  link_additional_costs_type_of_supply_list: Список типов расходов
+#label_type_equals: Содержит
+#label_type_not_equals: Не содержит
+
+audit:
+  tabs:
+    name: История единицы товара
+
+  Core\LogisticsBundle\Entity\UnitInStock:
+    UPD: Обновление единицы товара
+    INS: Добавление единицы товара
+    DEL: Удаление единицы товара
+    mac: Серийный №
+    boxGroup: boxGroup
+    composition: Композиция
+    stock: Склад
+    status: Статус
+    seller: Продавец
+    product: Продукт
+    gtdNumber: Номер ГТД
+    isCouldBeSold: Можно продать
+    priceInGtdCurrency: Цена поставки в валюте ГТД
+    priceInGeneralCurrency: Цена поставки
+    article: Артикул
+    supply: Поставка
+    isVirtual: Виртуалиный
+    isWithDefect: С дефектом
+    defectReason: Причина дефекта
+    productInSupply: Продукт в поставке
+    comments: Комментарий
+
+  Core\LogisticsBundle\Entity\UnitSerials:
+    UPD: 'Обновление серийника (ID: %id%)'
+    INS: 'Добавление серийника (ID: %id%)'
+    DEL: 'Удаление серийника (ID: %id%)'
+    value: Значение

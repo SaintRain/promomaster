@@ -1,0 +1,12 @@
+{% extends 'CoreCommonBundle:Form:choice_widget_with_data_attr.html.twig' %}
+{% block form_row %}
+{% spaceless %}
+    <div class="form_row">
+        {{ form_label(form, null, {'label_attr':{'class':'form_label'} }) }}
+        <div class="form_row_field{% if form_errors(form) %} form_field_error{% endif %}">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock form_row %}

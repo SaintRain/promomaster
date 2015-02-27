@@ -1,0 +1,24 @@
+<strong>Profiling:</strong>
+<table style="margin: 5px 0;" id="result">
+    <thead>
+        <tr>
+            <th colspan="{{data | length}}"><strong>{{query}}</strong></th>
+        </tr>
+        <tr>
+            {% for label, row in data %}
+            <th>{{label}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            {% for label, val in data %}
+                {% if val is iterable %}
+                    <td>{{ ld(val) }}</td>
+                    {% else %}
+                    <td>{{val}}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>

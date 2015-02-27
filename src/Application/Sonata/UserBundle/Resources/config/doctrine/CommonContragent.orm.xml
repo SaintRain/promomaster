@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <!--Kaluzhniy. N. -->
+    <entity  repository-class="Application\Sonata\UserBundle\Entity\Repository\CommonContragentRepository" name="Application\Sonata\UserBundle\Entity\CommonContragent" inheritance-type="SINGLE_TABLE" table="core_contragent">
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="prePersist" />
+            <lifecycle-callback type="preUpdate" method="preUpdate" />
+        </lifecycle-callbacks>
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <discriminator-column name="type" type="string" />
+        <discriminator-map>
+            <discriminator-mapping value="IndiContragent" class="Application\Sonata\UserBundle\Entity\IndiContragent" />
+            <discriminator-mapping value="LegalContragent" class="Application\Sonata\UserBundle\Entity\LegalContragent" />
+        </discriminator-map>
+
+        <many-to-one target-entity="Application\Sonata\UserBundle\Entity\User" field="user" inversed-by="contragents">
+            <join-column name="user_id" on-delete="cascade" referenced-column-name="id"/>
+            <cascade>
+                <cascade-persist />
+            </cascade>
+        </many-to-one>
+
+        <one-to-many field="payments"
+            target-entity="Core\PaymentBundle\Entity\Payment"
+            mapped-by="customer"
+        />
+        <one-to-many field="manufacturerDiscounts"
+            target-entity="Core\DiscountsBundle\Entity\ContragentManufacturerDiscount"
+            mapped-by="contragent"
+        />
+        <one-to-many field="orders"
+            target-entity="Core\OrderBundle\Entity\Order"
+            mapped-by="contragent"
+        />
+        
+        <field name="phone1" column="phone1" type="string" length="50" />
+        <field name="phone2" column="phone2" type="string" length="50" nullable="true" />
+        <field name="phone3" column="phone3" type="string" length="50" nullable="true" />
+        <field name="contactEmail" column="contact_email" type="string" length="50" nullable="true" />
+        <field name="createdDateTime" column="created_date_time" type="datetime" nullable="true"/>
+        <field name="updatedDateTime" column="updated_date_time" type="datetime" nullable="true" />
+
+    </entity>
+
+</doctrine-mapping>

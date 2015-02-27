@@ -1,0 +1,23 @@
+<script>
+
+    function productFormatResult{{ id }}(result) {
+        var html = "<a onclick=\"select2searchOnClick(this)\" href=\"" + '{{ path('core_product', {slug: '~slug~'}) }}'.replace(/~slug~/g, result.slug) + "\" class=\"search-row\">";
+        if (!result.images) {
+            result.images = "/images/no-image.jpg";
+        }
+
+        html = html + '<div class="pull-left"><img class="search-image" src="' + result.images + '"/></div>';
+        html = html + "<div class=\"search-text\">" + result.captionRu + (result.sku ? "<br/>SKU: " + result.sku : '') + "<br><span class=\"search-price\">Цена: " + number_format(result.price.toString()) + " {{ currencyFormat() }}</span></div>";
+        html = html + "</a>";
+
+        return html;
+    }
+
+    function productFormatSelection{{ id }}(result) {
+        var html = result.captionRu + (result.sku ? " (SKU: " + result.sku + "" + ')' : '') +', Цена: ' + number_format(result.price.toString()) + ' {{ currencyFormat() }}';
+
+        return html;
+    }
+
+</script>
+

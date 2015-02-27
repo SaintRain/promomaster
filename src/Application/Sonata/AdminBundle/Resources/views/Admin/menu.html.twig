@@ -1,0 +1,93 @@
+
+{#**
+ * Шаблон для генерации меню
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block menu %}
+    {% spaceless %}
+
+        <div class="nav-collapse">
+            <ul class="nav">
+                {% block top_bar_before_nav %}{% endblock %}
+                {% block sonata_top_bar_nav %}
+                    {% if app.security.token and is_granted('ROLE_SONATA_ADMIN') %}
+
+                        {% set carretArrow = '' %}
+                        {% set menuClass = '' %}
+
+                        {% block menu_dropdown %}
+                            {% for labelParent, items in menu %}
+
+                                {% set tempMenu = menu %}
+                                <li class="dropdown{{ menuClass }}">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ labelParent }} <span class="caret{{ carretArrow }}"></span></a>
+                                    <ul class="dropdown-menu">
+
+                                            {% for label, item in items %}
+
+                                                {% set display = true %}
+
+                                                {% if item.roles is defined  %}
+                                                    {% set display = false %}
+                                                    {% if app.user %}
+                                                        {% for role in app.user.roles %}
+                                                            {% if role in item.roles %}
+                                                                {% set display = true %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endif %}
+
+                                                {% if display %}
+
+                                                    {% if item.delimiters is defined and 'before' in item.delimiters %}
+
+                                                        {#<li class="menu-delimiter"></li>#}
+                                                        <hr style="margin: 0px">
+                                                    {% endif %}
+
+                                                    {% if item.route is defined %}
+
+                                                        {% set carretArrow = '' %}
+                                                        {% set menuClass = '' %}
+
+                                                        <li{% if app.request.attributes.get('_route') == item.route %} class="active"{% endif %}><a href="{{ path(item.route) }}">{{ label }}</a></li>
+
+                                                    {% else %}
+
+                                                        {% set menu = {(''~label): item} %}
+                                                        {% set carretArrow = '-right' %}
+                                                        {% set menuClass = ' submenu-show-on-hover' %}
+                                                        {{ block('menu_dropdown') }}
+
+                                                    {% endif %}
+
+                                                    {% if item.delimiters is defined and 'after' in item.delimiters %}
+                                                                <hr style="margin: 0px">
+                                                        {#<li class="menu-delimiter"></li>#}
+
+                                                    {% endif %}
+
+                                                {% endif %}
+
+                                            {% endfor %}
+
+                                    </ul>
+                                </li>
+
+                                {% set menu = tempMenu %}
+                            {% endfor %}
+                        {% endblock %}
+
+                    {% endif %}
+                {% endblock %}
+                {% block top_bar_after_nav %}{% endblock %}
+            </ul>
+        </div>
+
+    {% endspaceless %}
+{% endblock %}
+

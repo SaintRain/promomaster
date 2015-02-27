@@ -1,0 +1,52 @@
+
+{#**
+ * Шаблон для вывода звязных тикетов
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block tickets_block_tickets_table %}
+    {% spaceless %}
+
+        {%- if tickets is defined and tickets|length > 0 -%}
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Тема</th>
+                        <th>Информация</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {%- for ticket in tickets|reverse -%}
+
+                        <tr id="i-{{ ticket.id }}" class="tickets-row" {% if ticket.isAdminAnswer == true %}style="background-color: #FFE8E8" title="Тикет требует ответа"{% endif %}>
+                            <td><a href="{{ path('admin_core_troubleticket_troubleticket_edit', {id: ticket.id}) }}" target="_blank" title="Перейти на редактирование тикета">{{ ticket.title }}</a></td>
+                            <td nowrap>
+                                {{ ticket.updatedDateTime|date('d.m.y H:i', default_timezone) }}
+                                <br>
+                                {{ ticket.status.captionRu }}
+                                <br>
+                                <a href="{{ path('trouble_ticket_edit',{'hash': ticket.hash}) }}" target="_blank" title="Посмотреть обсуждение на сайте">
+                                    <span class="icon icon-home"></span>
+                                </a>
+                                &nbsp;
+                                <a href="{{ path('admin_core_troubleticket_troubleticket_edit', {id: ticket.id}) }}" target="_blank" title="Перейти на редактирование тикета">
+                                    <span class="icon icon-eye-open"></span>
+                                </a>
+                                &nbsp;
+                                <span class="icon icon-remove tickets-remove" title="Удалить (только звязь с тикетом)" data-id="{{ ticket.id }}"></span>
+                            </td>
+                        </tr>
+
+                    {%- endfor -%}
+
+                </tbody>
+            </table>
+
+        {%- endif -%}
+
+    {% endspaceless %}
+{% endblock %}

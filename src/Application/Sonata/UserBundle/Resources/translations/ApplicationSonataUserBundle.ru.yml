@@ -1,0 +1,16 @@
+LegalContragent: Юридическое лицо
+IndiContragent: Физическое лицо
+breadcrumb:
+  link_common_contragent_list: Список контрагентов
+form.label_notation: Примечание
+filter:
+    label_groups: Группы
+Delete: Удалить
+
+form:
+    label:
+        address:
+            cityPlaceholder: Город
+        legal:
+            bankPlaceholder: Введите BIC-код
+

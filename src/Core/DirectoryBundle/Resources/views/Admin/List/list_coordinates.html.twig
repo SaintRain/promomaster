@@ -1,0 +1,30 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.latitude and object.longitude %}
+        <div class="row-centrify">
+            <div class="text-center">
+            {% for item in object.coordinates %}
+                {% if loop.last %}
+                    <span>&nbsp;&setmn;&nbsp;</span>
+                    <span>{{item}}</span>
+                    {% else %}
+                        <span>{{item}}</span>
+                {% endif %}
+            {% endfor %}
+            </div>
+        </div>
+        <div class="row-centrify">
+            <div class="text-center">
+                <a title="Google Maps" href="http://maps.google.com/?q={{object.latitude ~ ',' ~ object.longitude}}">
+                    <img alt="Google Maps" src="{{asset('bundles/applicationsonataadmin/img/gmail.png')}}" />
+                </a>
+                <a title="Yandex Maps" href="http://maps.yandex.ru/?ll={{object.longitude ~ ',' ~ object.latitude}}">
+                    <img alt="Yandex Maps" src="{{asset('bundles/applicationsonataadmin/img/yamaps.png')}}" />
+                </a>
+            </div>
+        </div>
+        {% else %}
+            <div>&#x2012;</div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+{% if (indiForm is defined and not indiForm.vars.valid) or (legalForm is defined and legalForm.vars.valid) %}
+    {% set curClass = 'hidden' %}
+    {% else %}
+        {% set curClass = 'normal' %}
+{% endif %}
+<form class="{{curClass}}" action="{% if contragent.id %}{{path('application_sonata_user_contragent_edit', {'contragentId': contragent.id, 'isIndi':isIndi })}}{%else%}{{ path('application_sonata_user_contragent_create', {'isIndi':0}) }}{% endif %}" method="POST" {{ form_enctype(form) }}>
+    {% if not form.vars.valid %}
+        <div class="attention_box">{{'form.label.error.main' | trans}}</div>
+    {% endif %}
+    <fieldset class="form_fieldset">
+        {{form_row(form.legalForm)}}
+        {{form_row(form.organization)}}
+    </fieldset>
+    <fieldset class="form_fieldset">
+        {{form_row(form.inn)}}
+        {{form_row(form.kpp)}}
+        {{form_row(form.ogrn)}}
+    </fieldset>
+    <fieldset class="form_fieldset">
+        {{form_row(form.chiefPosition)}}
+        {{form_row(form.chiefFio)}}
+    </fieldset>
+    <fieldset class="form_fieldset">
+        {{form_row(form.bank)}}
+        {{form_row(form.bankAccount)}}
+        {{form_row(form.corrAccount)}}
+    </fieldset>
+    <fieldset class="form_fieldset">
+        {{form_row(form.addressPost)}}
+        {{form_row(form.addressLegal)}}
+    </fieldset>
+    <fieldset class="form_fieldset">
+        {{form_row(form.phone1)}}
+        {{form_row(form.fax)}}
+    </fieldset>
+    <fieldset class="form_fieldset">
+        {{form_row(form.contactFio)}}
+        {{form_row(form.site)}}
+    </fieldset>
+    <fieldset class="form_fieldset">
+        {{form_row(form.contactEmail)}}
+    </fieldset>
+    <div class="form_padding_group">
+        {{form_rest(form)}}
+        <button type="submit" class="common_button big">
+            <span>{% if contragent.id %}Сохранить{%else%}Добавить{% endif %}</span>
+        </button>
+        <a href="{{path('application_sonata_user_contragent_index')}}" class="text_tgl">Отменить</a>
+    </div>
+</form>

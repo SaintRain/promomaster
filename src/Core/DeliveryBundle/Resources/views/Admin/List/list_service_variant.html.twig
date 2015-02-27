@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.addresses is defined %}
+        <span class="label label-default">Самовывоз</span>
+        {% elseif object.city is defined %}
+            <span class="label label-inverse">Адресная доставка</span>
+        {% else %}
+            <span class="label label-info">Обычная</span>
+    {% endif %}
+{% endblock %}

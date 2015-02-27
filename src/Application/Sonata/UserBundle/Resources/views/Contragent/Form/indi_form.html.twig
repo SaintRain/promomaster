@@ -1,0 +1,28 @@
+{% if legalForm is defined and not legalForm.vars.valid %}
+    {% set curClass = 'hidden' %}
+    {% else %}
+        {% set curClass = 'normal' %}
+{% endif %}
+    <form class="{{curClass}}" action="{% if contragent.id %}{{path('application_sonata_user_contragent_edit', {'contragentId': contragent.id, 'isIndi':isIndi })}}{%else%}{{ path('application_sonata_user_contragent_create', {'isIndi':1}) }}{% endif %}" method="POST" {{ form_enctype(form) }}>
+    {% if not form.vars.valid %}
+        <div class="attention_box">{{'form.label.error.main' | trans}}</div>
+    {% endif %}
+    <fieldset class="form_fieldset">
+        {{form_row(form.lastName)}}
+        {{form_row(form.firstName)}}
+        {{form_row(form.surName)}}
+    </fieldset>
+    <fieldset class="form_fieldset">
+        {{form_row(form.phone1)}}
+    </fieldset>
+    <fieldset class="form_fieldset">
+        {{form_row(form.contactEmail)}}
+    </fieldset>
+    <div class="form_padding_group">
+        {{form_rest(form)}}
+        <button type="submit" class="common_button big">
+            <span>{% if contragent.id %}Сохранить{%else%}Добавить{% endif %}</span>
+        </button>
+        <a href="{{path('application_sonata_user_contragent_index')}}" class="text_tgl">Отменить</a>
+    </div>
+</form>

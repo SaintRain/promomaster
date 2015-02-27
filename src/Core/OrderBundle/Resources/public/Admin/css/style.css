@@ -1,0 +1,112 @@
+.collection-modify {
+    margin-left: 0 !important;
+    list-style: none;
+}
+.collection-row .pull-left {
+    display: inline-block;
+    margin: 0 5px 0 0;
+}
+.nav-tabs li {
+    position: relative;
+}
+.nav.nav-tabs .collection-modify-delete {
+    float: right;
+}
+.nav.nav-tabs .collection-modify-delete:hover {
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    -webkit-transform: matrix(1.5, -0.5, 0.5, 1.5, 0, 0);
+    -moz-transform: matrix(1.5, -0.5, 0.5, 1.5, 0, 0);
+    -ms-transform: matrix(1.5, -0.5, 0.5, 1.5, 0, 0);
+    -o-transform: matrix(1.5, -0.5, 0.5, 1.5, 0, 0);
+    transform: matrix(1.5, -0.5, 0.5, 1.5, 0, 0);
+    transition: all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+}
+.sonata-bc .modal.waybill-modal {
+    width: 650px;
+    left: 47%;
+}
+.sonata-bc .modal.fade.in.waybill-modal {
+    top: 40%;
+    
+}
+
+.sonata-bc .form-horizontal .waybill-modal div.control-label,
+.sonata-bc .form-horizontal .waybill-modal select.control-label,
+.waybill-modal input.control-label {
+    padding: 0;
+}
+.sonata-bc .waybill-modal legend {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    margin: 0 0 10px 0;
+    line-height: 30px;
+}
+.sonata-bc .waybill-modal .modal-body {
+    max-height: 500px;
+}
+.sonata-bc .form-horizontal .control-label.waybill-label {
+    text-align: left;
+}
+.waybill-modal textarea {
+    max-width: 70%;
+}
+body.sonata-bc .popover {
+    z-index: 2010 !important;
+}
+.sonata-bc .control-group  .error-modify,
+.sonata-bc .control-group  .error-modify a,
+.sonata-bc .control-group  .error-modify:focus {
+    border-color: #B94A48;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #B94A48;
+}
+.sonata-bc .control-group  .error-modify > span {
+    color: #B94A48;
+}
+.sonata-bc .control-group .tab-collection .nav > li a.add-tab {
+    border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #F5F5F5;
+    background-image: linear-gradient(to bottom, #FFFFFF, #E6E6E6);
+    background-repeat: repeat-x;
+    border-image: none;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 0;
+    padding: 7px;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+}
+.sonata-bc .control-group .tab-collection  .nav.only-add {
+    border-bottom: none;
+}
+.sonata-bc .control-group .tab-collection  .nav > li a.add-tab:hover {
+    cursor: pointer;
+    background-color: #E6E6E6;
+    background-position: 0 -15px;
+    color: #333333;
+    text-decoration: none;
+    transition: background-position 0.1s linear 0s;
+}
+.delivery-recalc.btn.btn-small i.hover {
+    transform: rotate(720deg);
+    transition: all 1s ease;
+}

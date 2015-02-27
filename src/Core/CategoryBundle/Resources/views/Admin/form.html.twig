@@ -1,0 +1,75 @@
+{% block right_side %}
+{% set url = admin.id(object) is not null ? 'edit' : 'create' %}
+{% for notice_level in ['success','error','info', 'warning'] %}
+    {% set session_var = 'sonata_flash_' ~ notice_level %}
+        {% for flash in app.session.flashbag.get(session_var) %}
+<div class="alert {{ 'alert-' ~ notice_level }}">
+            {{ flash|trans([], 'SonataAdminBundle') }}
+    </div>
+        {% endfor %}
+{% endfor %}
+
+ {% if admin.id(object) is not null or not form.vars.valid  %}
+    {{languageSwitcher()|raw}}
+
+    <form id="categoryForm" class="form-horizontal"
+          action="{{ admin.generateUrl(url, {'id': admin.id(object), 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}" {{ form_enctype(form) }}
+          method="POST" {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}>
+        <input id="objectId" type="hidden" value="{{object.id}}" />
+        <input id="uniqid" type="hidden" value="{{admin.uniqid}}" />
+
+{% if form.vars.errors|length > 0 %}
+        <div class="sonata-ba-form-error">
+{{ form_errors(form) }}
+            </div>
+{% endif %}
+
+            {% block sonata_pre_fieldsets %}
+                <div class="tabbable">
+                    <ul class="nav nav-tabs">
+                        {% for name, form_group in admin.formgroups %}
+                            <li class="{% if loop.first %}active{% endif %}">
+                                <a href="#{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab">
+                                    <i class="icon-exclamation-sign has-errors hide"></i>
+                                    {{ admin.trans(name, {}, form_group.translation_domain) }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+            {% endblock %}
+
+                <div class="tab-content">
+                    {% for name, form_group in admin.formgroups %}
+                        <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">
+                            <fieldset>
+                                <div class="sonata-ba-collapsed-fields">
+                                    {% if form_group.description != false %}
+                                        <p>{{ form_group.description|raw }}</p>
+                                    {% endif %}
+
+                                    {% for field_name in form_group.fields %}
+                                        {% if admin.formfielddescriptions[field_name] is defined %}
+                                            {{ form_row(form[field_name])}}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </fieldset>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            {% block sonata_post_fieldsets %}
+                </div>
+            {% endblock %}
+        {{ form_rest(form) }}
+         {# подключаем содержимое формы #}
+        {{ include (formTplName) }}
+{% include 'CoreCategoryBundle:Admin:formactions.html.twig'  %}
+</form>
+{%else%}
+<h5>Вы можете добавить новую категорию по кнопке справо.</h5>
+{% endif %}
+{% endblock %}
+
+
+

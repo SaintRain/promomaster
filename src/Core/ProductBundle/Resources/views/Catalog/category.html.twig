@@ -1,0 +1,225 @@
+
+{#**
+ * Шаблон для вывода товаров по категориям
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'CoreProductBundle:Catalog:layout.html.twig' %}
+
+{#{% use 'CoreProductBundle:Catalog:products_grid.html.twig' %}#}
+
+{% use 'CoreProductBundle:Catalog:products_container.html.twig' %}
+
+{% set _page = app.request.attributes.get('page') %}
+
+{# SEO - заголовки #}
+
+{% set seoPage %}
+    {%- if (_page and _page > 1)  %} страница {{ _page }}{%- endif -%}
+{% endset %}
+{%- if category.lvl > 1 -%}
+{% set seoTitle = attribute(category, 'caption'~ app.request.locale) ~ seoPage %}
+{% set seoKeywords = attribute(category, 'caption'~ app.request.locale) ~ ' ' ~ ', в наличие, под заказ, заказать' %}
+{% set seoDescription = 'Купить' ~ ' ' ~ (attribute(category, 'caption'~ app.request.locale)) ~ ' ' ~ 'с быстрой доставкой по всей России в интернет магазине' ~ seoPage ~ '.' %}
+    {%- else -%}
+        {% set topCatCaption = attribute(category, 'caption'~ app.request.locale) %}
+        {% set childsTitle = '' %}
+        {% set titleLimit = false %}
+        {% set descriptionLimit = false %}
+        {% set childsDescription = '' %}
+        {% set seoKeywords = topCatCaption %}
+        {% for child in activeChilds %}
+            {% set childCaption = attribute(child, 'caption'~ app.request.locale) %}
+            {% set seoKeywords = seoKeywords ~ ', '~ childCaption %}
+            {% if (childsTitle ~ ', ' ~ childCaption) | length < 60 %}
+                {% if childsTitle | length %}
+                    {% set childsTitle = childsTitle ~ ', ' ~ childCaption %}
+                    {% else %}
+                        {% set childsTitle = childsTitle ~ ' — ' ~ childCaption %}
+                {% endif %}
+                    {% else %}
+                    {% set titleLimit = true %}
+            {% endif %}
+            {% if (childsDescription ~ ', ' ~ childCaption) | length < 100 %}
+                {% if childsDescription | length %}
+                    {% set childsDescription = childsDescription ~ ', ' ~ childCaption %}
+                    {% else %}
+                        {% set childsDescription = childsDescription ~ ' — ' ~ childCaption %}
+                {% endif %}
+                    {% else %}
+                    {% set descriptionLimit = true %}
+            {% endif %}
+        {% endfor %}
+        {% if childsTitle | length %}
+            {% if titleLimit %}
+                {% set seoTitle = topCatCaption ~ childsTitle ~ '... ' ~ seoPage %}
+                {% else %}
+                    {% set seoTitle = topCatCaption ~ childsTitle ~ seoPage %}
+            {% endif %}
+            {% else %}
+                {% set seoTitle = topCatCaption ~ seoPage %}
+        {% endif %}
+        {% if childsDescription | length %}
+            {% set seoDescription =  'Купить ' ~ topCatCaption %}
+            {% if descriptionLimit %}
+                {% set seoDescription = seoDescription ~ childsTitle ~ '...' ~ ' С быстрой доставкой по всей России в интернет магазине' ~ seoPage ~ '.' %}
+                {% else %}
+                    {% set seoDescription = seoDescription ~ childsTitle ~ '. С быстрой доставкой по всей России в интернет магазине' ~ seoPage ~ '.' %}
+            {% endif %}
+            {% else %}
+                {% set seoDescription =  'Купить ' ~ topCatCaption ~ '. С быстрой доставкой по всей России в интернет магазине' ~ seoPage ~ '.'%}
+        {% endif %}
+{%- endif -%}
+
+{%- block title -%}
+    {% spaceless %}
+        {%- if attribute(category, 'title'~ app.request.locale) -%}
+            {{ attribute(category, 'title'~ app.request.locale)|escape('html') }}{{ seoPage }}
+        {%- else -%}
+            {#Товары из категории {{ attribute(category, 'caption'~ app.request.locale) }}{{ seoPage }} | OliKids.ru#}
+            {{seoTitle}}
+        {%- endif -%}
+    {% endspaceless %}
+{%- endblock -%}
+
+{%- block meta_keywords -%}
+    {% spaceless %}
+        {%- if attribute(category, 'metakeywords'~ app.request.locale) -%}
+            {{ attribute(category, 'metakeywords'~ app.request.locale)|escape('html') }}
+        {%- else -%}
+            {#каталог, {{ attribute(category, 'caption'~ app.request.locale) }}#}
+            {{seoKeywords}}
+        {%- endif -%}
+    {% endspaceless %}
+{%- endblock -%}
+
+{%- block meta_description -%}
+    {% spaceless %}
+        {%- if attribute(category, 'metadescription'~ app.request.locale) -%}
+            {{ attribute(category, 'metadescription'~ app.request.locale)|escape('html') }}{{ seoPage }}
+        {%- else -%}
+            {#{{ attribute(category, 'caption'~ app.request.locale) }} - полный список товаров на сайте OliKids{{ seoPage }}. Удобный фильтр поможет быстро подобрать товар из категории {{ attribute(category, 'caption'~ app.request.locale) }}, подходящий под Ваши требования.#}
+            {{seoDescription}}
+        {%- endif -%}
+    {% endspaceless %}    
+{%- endblock -%}
+
+{% block seo %}
+    {% spaceless %}
+
+        {% if app.request.query.all|length > 0 %}
+
+            {% if (_page and _page > 1)  %}
+
+                {% set canonical = path(app.request.attributes.get('_route'), {slug: category.slug, page: _page}) %}
+
+            {% else %}
+
+                {% set canonical = path(app.request.attributes.get('_route'), {slug: category.slug}) %}
+
+            {% endif %}
+
+            <link rel="canonical" href="{{ canonical }}" />
+
+        {% endif %}
+
+
+        {% set totalPageNumber = (products.getTotalItemCount / products.getItemNumberPerPage)|round(0, 'ceil') %}
+        
+        {% if (_page - 1 > 0)  %}
+            {% if _page - 1 == 1 %}
+                <link rel="prev" href="{{ path('core_shop_product_catalog_first_page', {slug: category.slug}) }}" />
+            {% else %}
+                <link rel="prev" href="{{ path('core_shop_product_catalog', {slug: category.slug, page: _page - 1}) }}" />
+            {% endif %}
+        {% endif %}
+
+        {% if (_page + 1 <= totalPageNumber) %}
+            {% if not _page %}
+                {% set _page = 1 %}
+            {% endif %}
+            <link rel="next" href="{{ path('core_shop_product_catalog', {slug: category.slug, page: _page + 1}) }}" />
+        {% endif %}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block js_head %}
+    {% spaceless %}
+
+        {{ parent() }}
+        <script>
+            var google_tag_params = {
+                ecomm_pagetype: 'category',
+            };
+            {#settingsJS.extra['pageType'] = 'category';#}
+        </script>
+{#        <script src="{{ asset('bundles/coreproperty/js/frontend.filter.js') }}"></script>#}
+{#        <script src="{{ asset('bundles/coreproduct/js/frontend.catalog.js') }}"></script>#}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    {% spaceless %}
+
+        {% if breadcrumbs is defined %}
+
+            <div id="page_path">
+                <ul class="page_path_links">
+
+                    {% for i,breadcrumb in breadcrumbs %}
+
+                        <li class="page_path_link">
+
+                            {% if i + 1 == breadcrumbs|length %}
+
+                                <strong>{{ breadcrumb.caption }}</strong>
+
+                            {% else %}
+
+                                <a href="{{ breadcrumb.href }}">{{ breadcrumb.caption }}</a>
+
+                            {% endif %}
+
+                        </li>
+
+                    {% endfor %}
+
+                </ul>
+            </div>
+
+        {% endif %}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block promo %}{% endblock %}
+
+{% block main_col %}
+    {% spaceless %}
+        {# устанавливаем роут первой страницы для пагинации #}
+        {% set routeFirsPage = 'core_shop_product_catalog_first_page' %}
+
+        {# выводим блок продуктов с пагинацией и сортировкой #}
+        {{ block('products_container') }}
+        {# вывод текст из категории #}
+        {% if category is defined and category and category.descriptionRu %}
+            <article class="def_style">
+                {{category.descriptionRu | raw}}
+            <article>
+        {% endif %}
+        {# end  вывод текст из категории #}
+    {% endspaceless %}
+{% endblock %}
+
+{% block right_col %}
+
+    <!-- filter with owl -->
+    {% include 'CorePropertyBundle:Filter:layout.html.twig' with filterBuilder %}
+    <!-- /filter with owl -->
+
+{% endblock %}
+

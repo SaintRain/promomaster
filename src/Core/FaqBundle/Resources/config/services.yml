@@ -1,0 +1,6 @@
+services:
+    sonata.admin.faq.article:
+        class: Core\FaqBundle\Admin\ArticleAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, group: FAQ, label: Статьи }
+        arguments: [null, Core\FaqBundle\Entity\Article, CoreFaqBundle:Admin\FaqAdmin]

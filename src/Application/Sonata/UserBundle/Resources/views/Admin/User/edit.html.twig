@@ -1,0 +1,39 @@
+{% extends 'ApplicationSonataAdminBundle:CRUD:base_edit.html.twig' %}
+{% block right_side %}
+    <div class="first_like_span">
+        {% block preview %}
+            <div class="span3 pull-right{% if object.logs | length %} scroll-y{% endif %}">
+                {% if object.logs | length %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="3">
+                                <h4>Данные об авторизации</h4>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Способ</th>
+                            <th>IP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in object.logs|reverse %}
+                            <tr>
+                                <td>{{log.loginDateTime | format_datetime('dd MMMM Y H:mm', app.request.locale, default_timezone) }}</td>
+                                <td>{{log.loginBySocial ? log.loginBySocial : 'Наш сайт'}}&nbsp;</td>
+                                <td>{{log.ip}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}    
+            </div>
+        {% endblock %}
+        {% block form %}
+            <div class="span9 pull-left">
+            {{ parent() }}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

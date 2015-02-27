@@ -1,0 +1,118 @@
+# Вывод первой страницы списка сайтов в личном кабинете
+core_cabinet_site_list_first_page:
+    path:      /cabinet/sites.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:Cabinet:list}
+
+# Вывод списка сайтов в ЛК
+core_cabinet_site_list:
+    path:      /cabinet/sites/{page}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:Cabinet:list, page: 1 }
+    requirements:
+      page: \d+
+
+# редактирование сайта в ЛК
+core_cabinet_site_edit:
+    path:      /cabinet/site_edit_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:Cabinet:edit }
+    requirements:
+      id: \d+
+
+
+# добавление сайта в ЛК
+core_cabinet_site_create:
+    path:      /cabinet/site_create.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:Cabinet:create }
+
+
+# удаление сайта в ЛК
+core_cabinet_site_delete:
+    path:      /cabinet/site_delete_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:Cabinet:delete }
+    requirements:
+      id: \d+
+
+
+
+# Вывод первой страницы списка рекламных мест в личном кабинете
+core_cabinet_adplace_list_first_page:
+    path:      /cabinet/adplaces.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlaceCabinet:list}
+
+# Вывод списка рекламных мест в ЛК
+core_cabinet_adplace_list:
+    path:      /cabinet/adplaces/{page}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlaceCabinet:list, page: 1 }
+    requirements:
+      page: \d+
+
+# редактирование рекламных мест в ЛК
+core_cabinet_adplace_edit:
+    path:      /cabinet/adplace_edit_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlaceCabinet:edit }
+    requirements:
+      id: \d+
+
+
+# добавление рекламного места в ЛК
+core_cabinet_adplace_create:
+    path:      /cabinet/adplace_create.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlaceCabinet:create }
+
+
+# удаление рекламного места в ЛК
+core_cabinet_adplace_delete:
+    path:      /cabinet/adplace_delete_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlaceCabinet:delete }
+    requirements:
+      id: \d+
+
+
+
+
+
+# Вывод первой страницы списка разделов для рекламных мест в личном кабинете
+core_cabinet_section_list_first_page:
+    path:      /cabinet/sections.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SectionCabinet:list}
+
+# Вывод списка разделов для рекламных мест мест в ЛК
+core_cabinet_section_list:
+    path:      /cabinet/sections/{page}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SectionCabinet:list, page: 1 }
+    requirements:
+      page: \d+
+
+# редактирование разделов для рекламных мест в ЛК
+core_cabinet_section_edit:
+    path:      /cabinet/section_edit_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SectionCabinet:edit }
+    requirements:
+      id: \d+
+
+
+# добавление разделов для рекламных мест в ЛК
+core_cabinet_section_create:
+    path:      /cabinet/section_create.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SectionCabinet:create }
+
+
+# удаление разделов для рекламных мест в ЛК
+core_cabinet_section_delete:
+    path:      /cabinet/section_delete_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SectionCabinet:delete }
+    requirements:

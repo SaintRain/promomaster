@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field%}
+
+{%  if object.supplier and object.supplier.caption %}{{object.supplier.caption}}{% endif %}
+    {%  if object.seller and object.seller.caption %} {%  if object.supplier and object.supplier.caption %}<br>{% endif %}
+        {{object.seller.caption}}<br>{% endif %}
+    {%if object.seller and object.seller.isWorkingWithNds %} <small class="muted">(НДС)</small> {%endif%}
+
+{% endblock %}

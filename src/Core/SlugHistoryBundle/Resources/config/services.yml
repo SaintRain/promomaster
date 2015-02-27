@@ -1,0 +1,20 @@
+services:
+# Основной сервис логики
+    core_slug_history_logic:
+        class: Core\SlugHistoryBundle\Logic\SlugHistoryLogic
+        arguments: ['@service_container']
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+# Подписчик
+    core_slug_history_subscriber:
+        class:  Core\SlugHistoryBundle\EventListener\Subscriber
+        tags:
+            - { name: doctrine.event_subscriber }
+        arguments: ['@core_slug_history_logic']
+
+    core_slug_history_form:
+        class: Core\SlugHistoryBundle\Admin\Form\Type\SlugHistoryType
+        tags:
+            - { name: form.type, alias: slug_history }
+        arguments: ['@service_container']

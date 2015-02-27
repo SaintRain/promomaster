@@ -1,0 +1,313 @@
+    {% extends 'ApplicationSonataAdminBundle:CRUD:base_edit.html.twig' %}
+{% block right_side %}
+{% block preview %}
+    {% if admin.id(object) is not null and object.id is not null %}
+        <div class="row-fluid">
+            <div class="clearfix"></div>
+            <div class="span10">
+                <h3>{{object.title}}</h3>
+                <div class="clearfix">
+                    {% for notice_level in ['success','error','info', 'warning'] %}
+                        {% set session_var = 'sonata_flash_' ~ notice_level %}
+                        {% for flash in app.session.flashbag.get(session_var) %}
+                            <div class="alert {{ 'alert-' ~ notice_level }}">
+                                {{ flash|trans([], 'SonataAdminBundle') }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% if form.vars.errors|length > 0 %}
+                        <div class="sonata-ba-form-error">
+                            {{ form_errors(form) }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="span6">
+                <div class="straight-border span12">
+                    <div class="grey-gradient span12">
+                        <div class="with-padding">
+                            <h5 class="pull-left widget-color">Основные cвойства</h5>
+                            <h5 class="pull-right">
+                                <div class="btn-group">
+                                    <a title="Редактировать" id="edit-ticket" class="btn btn-small display-form" href="javascript:void(0);"><i class="icon-pencil"></i></a>
+                                    <a title="Цитировать" id="cite-desc" class="btn btn-small display-form" href="javascript:void(0);"><i class="icon-bullhorn"></i></a>
+                                    <a title="Следить" class="{% if watched %}active {% endif %}btn btn-small watcher" href="{{path('admin_core_troubleticket_troubleticket_watcher', {'id': object.id})}}"><i class="icon-star"></i></a>
+                                    <a title="Копировать" href="{{path('admin_core_troubleticket_troubleticket_copy',{'id':object.id})}}" class="btn btn-small"><i class="icon-file"></i></a>
+                                </div>
+                            </h5>
+                            <div class="clear-fix"></div>
+                        </div>
+                    </div>
+                    <table class="table-striped table no-marg">
+                        <tbody>
+                            <tr>
+                                <td><b>Добавил(а):</b></td>
+                                  <td>
+                                    {% set author = object.authorName ? object.authorName : object.authorEmail %}
+                                    {% if object.user %}
+                                        <a id="cite-person" href="{{path('admin_sonata_user_user_edit',{id:object.user.id})}}">{{ author }}</a>
+                                        {% else %}
+                                        <span id="cite-person">{{ author }}</span>
+                                    {% endif %}
+                                    <span>{{ object.createdDateTime|date("d.m.Y H:i:s", default_timezone) }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Контактый email:</b></td>
+                                <td>{{object.authorEmail}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Заказ:</b></td>
+                                <td>
+                                    {% if object.order %}
+                                        <a href="{{path('admin_core_order_order_edit', {'id' : object.order.id })}}">#{{ object.order.id|idFormat }}</a>,
+                                    {% endif %}
+                                    {{ author }}
+                                    {% if orders %}
+                                        (<a href="{{path('admin_core_order_order_list', {'filter[contragent__user__email][value]': contragentsId, })}}">все заказы пользователя</a>)
+                                        {% else %}
+                                            (<a href="javascript:void(0);">У пользователя нет ни одного заказа</a>)
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                            {% if object.product %}
+
+                                <tr>
+                                    <td><b>Продукт:</b></td>
+                                    <td>
+                                        <a href="{{path('admin_core_product_commonproduct_edit', {'id' : object.product.id })}}">{{ object.product.captionRu }}</a>,
+                                    </td>
+                                </tr>
+
+                            {% endif %}
+
+                            <tr>
+                                <td><b>Статус:</b></td>
+                                <td>
+                                    {% if object.status %}
+                                        {{object.status.captionRu}}
+                                        {% else %}
+                                            {{oldObject.status.captionRu}}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Приоритет:</b></td>
+
+                                <td>
+                                    {% if object.priority %}
+                                        {{object.priority.captionRu}}
+                                        {% else %}
+                                            {{oldObject.priority.captionRu}}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Назначена:</b></td>
+                                <td>
+                                    {% if object.manager or oldObject.manager  %}
+                                        <a href="{{path('admin_sonata_user_user_edit',{'id':(object.manager) ? object.manager.id : oldObject.manager.id})}}">{{(object.manager) ? object.manager.userName : oldObject.manager.userName}}</a>
+                                        {% else %}
+                                            <span class="label label-important">Нет</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Категория:</b></td>
+                                <td>
+                                    {% if object.category %}
+                                        {{object.category.captionRu}}
+                                        {% else %}
+                                            {{oldObject.category.captionRu}}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Готовность:</b></td>
+                                <td>
+                                    <div class="progress progress-info no-marg">
+                                        <div class="bar" style="width: {{object.readiness ~ "%"}}">
+                                            <span>{{object.readiness}}&percnt;</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Обновлено:</b></td>
+                                <td>{{ object.updatedDateTime|date("d.m.Y H:i:s", default_timezone) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="grey-gradient span12 border-t like-first with-double-padding">
+                        <div class="pull-right">
+                            <a class="btn" target="_blank" href="{{path('trouble_ticket_edit',{'hash':object.hash})}}">Просмотреть на сайте</a>
+                        </div>
+                        <div class="clear-fix"></div>
+                    </div>
+                </div>
+            </div>
+            {% if (object.body is not null) or (object.file| length > 0)%}
+            <div class="span5">
+                <div class="straight-border">
+                    <div class="grey-gradient span12">
+                        <div class="with-padding">
+                            <h5 class="pull-left">Дополнительные cвойства</h5>
+                            <div class="clear-fix"></div>
+                        </div>
+                    </div>
+                    <table class="table-striped table">
+                        <tbody>
+                            {% if object.body is not null %}
+                                <tr>
+                                    <td><b>Описание:</b></td>
+                                    <td id="cite-content">{{object.body  | nl2br}}</td>
+                                </tr>
+                            {% endif %}
+                            {% if object.file| length > 0 %}
+                                <tr>
+                                    <td><b>Файлы:</b></td>
+                                    <td>
+                                        <ul data-id={{object.id}}>
+                                            {% for file in object.file %}
+                                                <li class="file-donwload">
+                                                    <a href="{{ asset(file|getFileWebPath) }}"><i class="icon-download-alt"></i>{{file.name}}</a>
+                                                    <a class="trouble-remove-file" data-id="{{file.id}}" href="javascript:void(0);"><i class="icon-remove"></i></a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% if object.logs | length %}
+        <div class="row-fluid">
+            <div class="clear-fix"></div>
+            <div class="span6">
+                <div class="straight-border widget alone">
+                    <div class="grey-gradient span12 like-first border-b">
+                        <div class="with-padding">
+                            <h5 class="pull-left">История</h5>
+                            <div class="clear-fix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <ul class="recent">
+                        {% for log in object.logs %}
+                        <li class="log-num-{{log.id}}" id="log-pos-{{log.id}}">
+                            <div class="ticket-history inner">
+                                <div class="recent-meta">
+                                    <div class="pull-left">
+                                        <span>Обновил(а)</span>
+                                        {% if log.manager %}
+                                            <a href="{{path('admin_sonata_user_user_edit',{id:log.manager.id})}}">
+                                                <span class="ticket-history-header-owner">{{ log.manager.email }}</span>
+                                            </a>
+                                            {% elseif object.user %}
+                                                <a href="{{path('admin_sonata_user_user_edit',{id:object.user.id})}}">
+                                                    <span class="ticket-history-header-owner">{{ object.user.email }}</span>
+                                                </a>
+                                            {% else %}
+                                                <span class="ticket-history-header-owner">{{ object.authorName ? object.authorName : object.authorEmail }}</span>
+                                        {% endif %}
+                                        <span>{{ log.date|time_ago_in_words }}</span>
+                                    </div>
+                                    <div class="pull-right">
+                                        <div class="btn-group">
+                                            {% if log.manager or object.user %}
+                                                {% set curUser = (log.manager) ? log.manager.id : object.user.id %}
+                                                {% if curUser == app.user.id %}
+                                                    <a title="Редактировать" class="ticket-msg-edit btn btn-default"  data-manager="{{app.user.id}}" {% if log.message %} data-msg-num="{{log.message.id}}"{% endif %} data-log-num="{{log.id}}" class="pull-right" href="{{ log.message ? path('admin_core_troubleticket_message_edit', {'id': log.message.id }) : path('admin_core_troubleticket_message_create') }}">
+                                                        <i class="icon-pencil"></i>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if log.message %}
+                                                <a title="Цитировать" class="ticket-cite btn btn-default" href="#edit-msg">
+                                                    <i class="icon-bullhorn"></i>
+                                                </a>
+                                            {% endif %}
+                                                <a title="Посмотреть ответ" href="#log-pos-{{log.id}}" class="scrollify btn btn-default">&num;{{ loop.index }}</a>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div>
+                                    {% if log.changes | length %}
+                                    <ul>
+                                        {% for field,changes in log.changes %}
+                                            {% if field != 'file' %}
+                                                {% set valFrom = null %}
+                                                {% set valTo = null %}
+                                                {% if form.children[field].vars.choices is defined %}
+                                                    {% for  choice in form.children[field].vars.choices %}
+                                                        {% set changesFirstKey = ((changes | length) > 1) ? ((changes | keys) | first) : null %}
+                                                        {% set changesLastKey = (changes | keys) | last %}
+                                                        {% if (choice.value == (changes | first)) or (changesFirstKey == choice.value) %}
+                                                            {% set valFrom = 'изменился с ' ~ choice.label %}
+                                                        {% endif %}
+                                                        {% if (choice.value == (changes | last)) or (changesLastKey == choice.value)%}
+                                                            {% set valTo = ' на ' ~ choice.label %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <li>Параметр <span class="italic">&laquo;{{('parameter.' ~ field) | trans() }}&raquo;</span> {% if valFrom %} {{ valFrom  | e | raw}} {% endif %} {% if valTo %} {{ valTo  | e | raw}}  {% endif %}</li>
+                                                    {% else %}
+                                                        <li>Параметр <span class="italic">&laquo;{{('parameter.' ~ field) | trans() }}&raquo;</span> изменился {% if changes | first %}с {{(changes | first) | e | raw}} {% endif %}на {{(changes | last) | e | raw}}</li>
+                                                {% endif %}
+                                                   {% else %}
+                                                        {% for key, file in changes.data %}
+                                                            {% if object.file.get(key) %}
+                                                            <li>{{('parameter.' ~ changes.operation) | trans()}} файл <a href="{{ asset((object.file.get(key))|getFileWebPath) }}"><i class="icon-download-alt"></i>{{file}}</a></li>
+                                                                {% else %}
+                                                                <li>{{('parameter.' ~ changes.operation) | trans()}} файл <span {% if changes.operation != 'add' %}class="file-removed"{% endif %}>{{file}}</span></li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                    {% if log.message %}
+                                        <article class="ticket-msg-num">
+                                            {{ log.message.body | nl2br }}
+                                        </article>
+                                        {% else %}
+                                        <i class="ticket-msg-num empty"></i>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+    {% endblock %}
+    {% block form %}
+        {% include 'CoreTroubleTicketBundle:Admin:Form/form.html.twig' %}
+    {% endblock %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/coretroubleticket/css/troubleticket.css') }}" type="text/css" media="all" />
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% if object.id is not null %}
+    <script>
+        adminRoutes['admin_core_troubleticket_message_edit'] = "{{path('admin_core_troubleticket_message_edit', {'id': "PLACEHOLDER"})}}";
+        adminRoutes['admin_core_troubleticket_log_delete'] = "{{path('admin_core_troubleticket_log_delete', {'id': "PLACEHOLDER"})}}";
+        adminRoutes['admin_core_troubleticket_message_delete'] = "{{path('admin_core_troubleticket_message_delete', {'id': "PLACEHOLDER"})}}";
+        adminRoutes['admin_faq_articles_articles_by_category'] = "{{path('admin_core_troubleticket_troubleticket_articlesByCategory')}}";
+        adminRoutes['admin_faq_articles_show_ajax'] = "{{path('admin_core_troubleticket_troubleticket_article')}}";
+        adminRoutes['deleteToken'] = '{{deleteToken}}';
+    </script>
+    <script src="{{ asset('bundles/coretroubleticket/js/troubleticket.js') }}"></script>
+    {% endif %}
+{% endblock %}

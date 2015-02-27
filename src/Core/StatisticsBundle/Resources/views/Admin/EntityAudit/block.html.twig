@@ -1,0 +1,179 @@
+
+{#**
+ * Шаблон для вывода истории изменений в сушности (вывобится в левом сайдбаре)
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block audit %}
+    <div id="audit-block-container">
+        <div class="well" id="audit-block">
+            <ol>
+
+                {% for difference in auditData.differences %}
+
+                    {% if difference.type == 'INS' %}
+
+                        <li>
+                            <span class="label label-important">Создание</span>
+                                {{ difference.timestamp }},
+                                {% if difference.user is defined %}
+                                    <a href="{{ path('admin_sonata_user_user_edit', {id: difference.user.id}) }}" target="_blank">{{ difference.username }}</a>
+                                {% else %}
+                                    {{ difference.username }}
+                                {% endif %}
+                        </li>
+
+                    {% elseif difference.type == 'UPD' %}
+
+                        <li>
+                            <span class="label label-success">Изменение</span>
+                                {{ difference.timestamp }},
+                                {% if difference.user is defined %}
+                                    <a href="{{ path('admin_sonata_user_user_edit', {id: difference.user.id}) }}" target="_blank">{{ difference.username }}</a>
+                                {% else %}
+                                    {{ difference.username }}
+                                {% endif %}
+
+                            <ul>
+                                    {% for namespace, diffData in difference.data %}
+
+                                        {% for idDirty, rev in diffData %}
+                                            {% set id = diffData['id'] is defined ? diffData['id'] : idDirty|number_format %}
+                                            {% if rev.type is defined %}
+                                                <li>
+                                                {% if rev.type == 'INS' and rev.fields is defined %}
+
+                                                    <span class="label">{{ ('audit.' ~ namespace ~ '.INS')|trans({'%id%': id}, translationDomain) }}</span>
+                                                    <ul>
+
+                                                    {% for field, value in rev.fields %}
+
+                                                        {% set suffix = auditData.options[namespace]['suffixes'][field] is defined ? auditData.options[namespace]['suffixes'][field] : '' %}
+                                                        {% set prefix = auditData.options[namespace]['prefixes'][field] is defined ? auditData.options[namespace]['prefixes'][field] : '' %}
+                                                        {% set suffix_value = auditData.options[namespace]['suffixes_value'][field] is defined ? auditData.options[namespace]['suffixes_value'][field] : '' %}
+                                                        {% set prefix_value = auditData.options[namespace]['prefixes_value'][field] is defined ? auditData.options[namespace]['prefixes_value'][field] : '' %}
+
+                                                        {% if value.id is defined %}
+                                                            {% set path = path(ServiceContainer.get(admin_pool.adminClasses[value.className]|first).baseRouteName ~ '_edit', {id: value.id}) %}
+                                                            {% set value = '<a href="' ~ path ~ '" target="_blank">' ~ value.caption ~ '</a>' %}
+                                                        {% else %}
+                                                            {% set value = value %}
+                                                        {% endif %}
+
+                                                        <li>
+                                                            {{ prefix ~ ('audit.' ~ namespace ~ '.' ~ field)|trans({}, translationDomain) ~ suffix }}: {{ (prefix_value ~ value ~ suffix_value)|raw }}
+                                                        </li>
+
+                                                    {% endfor %}
+
+                                                {% elseif rev.type == 'UPD' and rev.fields is defined %}
+
+                                                        {% if rev.title is defined %}
+                                                            {% set id = id ~ ' <span class="icon icon-info-sign icon-white audit-icon-show-sub-titles"></span>' %}
+                                                        {% endif %}
+                                                        <span class="label">{{ ('audit.' ~ namespace ~ '.UPD')|trans({'%id%': id}, translationDomain)|raw }}</span>
+
+                                                        {% if rev.title is defined %}
+                                                            <br>
+                                                            <div class="sub-label audit-sub-title">{{ rev.title }}</div>
+                                                            <div class="clearfix"></div>
+                                                        {% endif %}
+                                                    <ul>
+                                                    {% for field, value in rev.fields %}
+
+                                                        {% set suffix = auditData.options[field]['suffix'] is defined ? auditData.options[field]['suffix'] : '' %}
+                                                        {% set prefix = auditData.options[field]['prefix'] is defined ? auditData.options[field]['prefix'] : '' %}
+                                                        {% set suffix_value = auditData.options[field]['suffix_value'] is defined ? auditData.options[field]['suffix_value'] : '' %}
+                                                        {% set prefix_value = auditData.options[field]['prefix_value'] is defined ? auditData.options[field]['prefix_value'] : '' %}
+                                                        {% set suffix = auditData.options[namespace]['suffixes'][field] is defined ? auditData.options[namespace]['suffixes'][field] : suffix %}
+                                                        {% set prefix = auditData.options[namespace]['prefixes'][field] is defined ? auditData.options[namespace]['prefixes'][field] : prefix %}
+                                                        {% set suffix_value = auditData.options[namespace]['suffixes_value'][field] is defined ? auditData.options[namespace]['suffixes_value'][field] : suffix_value %}
+                                                        {% set prefix_value = auditData.options[namespace]['prefixes_value'][field] is defined ? auditData.options[namespace]['prefixes_value'][field] : prefix_value %}
+
+                                                        {% if value.old.id is defined or value.new.id is defined %}
+
+                                                            {% if value.old.id is defined %}
+                                                                {% set path = path(ServiceContainer.get(admin_pool.adminClasses[value.old.className]|first).baseRouteName ~ '_edit', {id: value.old.id}) %}
+                                                                {% set old = '<a href="' ~ path ~ '" target="_blank">' ~ value.old.caption ~ '</a>' %}
+                                                            {% else %}
+                                                                {% set old = value.old %}
+                                                            {% endif %}
+
+                                                            {% if value.new.id is defined %}
+                                                                {% set path = path(ServiceContainer.get(admin_pool.adminClasses[value.new.className]|first).baseRouteName ~ '_edit', {id: value.new.id}) %}
+                                                                {% set new = '<a href="' ~ path ~ '" target="_blank">' ~ value.new.caption ~ '</a>' %}
+                                                            {% else %} {#{ dump(value.new) }#}
+                                                                {% set new = value.new %}
+                                                            {% endif %}
+
+                                                            <li>
+                                                                {{ prefix ~ ('audit.' ~ namespace ~ '.' ~ field)|trans({}, translationDomain) ~ suffix }}: {% if old is not null %}{{ (prefix_value ~ old ~ suffix_value)|raw }} =&gt; {% endif %}{% if value.new is not null %}{{ (prefix_value ~ new ~ suffix_value)|raw }}{% else %}<span class="label label-warning">пусто</span>{% endif %}
+                                                            </li>
+
+                                                        {% elseif value.old is defined or value.new is defined %}
+
+                                                            <li>
+                                                                {{ prefix ~ ('audit.' ~ namespace ~ '.' ~ field)|trans({}, translationDomain) ~ suffix }}: {% if 'textarea' in value.old or 'textarea' in value.new %}<br>{% endif %} {% if value.old is not null and value.old|length > 0 %}{{ (prefix_value ~ value.old ~ suffix_value)|raw }} =&gt; {% endif %}{% if value.new is not null %}{{ (prefix_value ~ value.new ~ suffix_value)|raw }}{% else %}<span class="label label-warning">пусто</span>{% endif %}
+                                                            </li>
+
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                {% elseif rev.type == 'DEL' %}
+
+                                                    <span class="label">{{ ('audit.' ~ namespace ~ '.DEL')|trans({'%id%': id}, translationDomain) }}</span>
+                                                    <ul>
+
+                                                    {% for field, value in rev.fields %}
+
+                                                        {% set suffix = auditData.options[namespace]['suffixes'][field] is defined ? auditData.options[namespace]['suffixes'][field] : '' %}
+                                                        {% set prefix = auditData.options[namespace]['prefixes'][field] is defined ? auditData.options[namespace]['prefixes'][field] : '' %}
+                                                        {% set suffix_value = auditData.options[namespace]['suffixes_value'][field] is defined ? auditData.options[namespace]['suffixes_value'][field] : '' %}
+                                                        {% set prefix_value = auditData.options[namespace]['prefixes_value'][field] is defined ? auditData.options[namespace]['prefixes_value'][field] : '' %}
+
+                                                        {% if value.id is defined %}
+                                                            {% set path = path(ServiceContainer.get(admin_pool.adminClasses[value.className]|first).baseRouteName ~ '_edit', {id: value.id}) %}
+                                                            {% set value = '<a href="' ~ path ~ '" target="_blank">' ~ value.caption ~ '</a>' %}
+                                                        {% else %}
+                                                            {% set value = value %}
+                                                        {% endif %}
+
+                                                        <li>
+                                                            {{ prefix ~ ('audit.' ~ namespace ~ '.' ~ field)|trans({}, translationDomain) ~ suffix }}: {{ (prefix_value ~ value ~ suffix_value)|raw }}
+                                                        </li>
+
+                                                    {% endfor %}
+
+                                                {% endif %}
+
+                                                        </li>
+                                                    </ul>
+
+                                            {% endif %}
+                                        {% endfor %}
+
+                                    {% endfor %}
+
+                                </li>
+                            </ul>
+                        </li>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </ol>
+        </div>
+    </div>
+
+<script>
+    $(function(){
+        $('#audit-block').on('click', '.audit-icon-show-sub-titles', function() {
+            $(this).fadeOut('fast').closest('li').find('.audit-sub-title').slideDown('fast');
+        });
+    })
+</script>
+
+{% endblock %}

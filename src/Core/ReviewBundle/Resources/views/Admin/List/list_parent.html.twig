@@ -1,0 +1,22 @@
+
+{#**
+ * Шаблон для вывода рейтига
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% if value %}
+        {% if field_description.hasAssociationAdmin and field_description.associationadmin.hasRoute('edit') and field_description.associationadmin.isGranted('EDIT', value) %}
+            <a href="{{ field_description.associationadmin.generateObjectUrl(field_description.options.route.name, value, field_description.options.route.parameters) }}">ID: {{ value.id }}</a>
+        {% else %}
+            {{ value|render_relation_element(field_description) }}
+        {% endif %}
+    {% else %}
+        -
+    {% endif %}
+{% endblock %}
+

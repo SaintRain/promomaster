@@ -1,0 +1,5 @@
+services:
+  #сервис логики кеша
+  core_cache_logic:
+    class: Core\CacheBundle\Logic\CacheLogic
+    arguments: ['@beryllium_cache', '@templating', '@security.context']

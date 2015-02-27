@@ -1,0 +1,89 @@
+imports:
+    - app/config/behat_parameters.yml
+    
+default:
+    #список сайтов, Но в нашем случае бандлов, Удобно запускать тесты отдельно для каждого бандла, А не все сразу
+    suites:
+        product:
+            type: symfony_bundle
+            bundle: CoreProductBundle
+            spec_path : %paths.base%/src/
+            contexts:
+                - Core\ProductBundle\Features\Context\ProductFeatureContext:
+                    #протягиваем сервисы
+                    em:   '@doctrine.orm.entity_manager'
+                    validator:   '@validator'
+                - Core\ProductBundle\Features\Context\ProductAdminWebInterfaceFeatureContext: ~
+                - Core\ProductBundle\Features\Context\ProductYmlFeatureContext:
+                    #протягиваем сервисы
+                    em:   '@doctrine.orm.entity_manager'                       
+        category:
+            type: symfony_bundle
+            bundle: CoreCategoryBundle
+            spec_path : %paths.base%/src/
+            contexts:
+                - Core\CategoryBundle\Features\Context\AdminWebInterfaceFeatureContext:
+                    em: '@doctrine.orm.entity_manager'
+        troubleticket:
+            type: symfony_bundle
+            bundle: CoreTroubleTicketBundle
+            spec_path : %paths.base%/src/
+            contexts:
+                #- Core\TroubleTicketBundle\Features\Context\FrontendWebInterfaceFeatureContext:
+                #    em: '@doctrine.orm.entity_manager'
+                - Core\TroubleTicketBundle\Features\Context\AdminWebInterfaceFeatureContext:
+                    em: '@doctrine.orm.entity_manager'
+        delivery:
+            type: symfony_bundle
+            bundle: CoreDeliveryBundle
+            spec_path : %paths.base%/src/
+            contexts:
+                - Core\DeliveryBundle\Features\Context\AdminWebInterfaceFeatureContext:
+                    em: '@doctrine.orm.entity_manager'
+                    validator: '@validator'
+                - Core\DeliveryBundle\Features\Context\ApiFeatureContext: 
+                    pek: '@core_delivery.pek'
+                    jelDor: '@core_delivery.jelDor'
+                    dellin: '@core_delivery.dellin'
+                    ems: '@core_delivery.ems'
+                    postRu: '@core_delivery.postRu'
+                    cdek: '@core_delivery.cdek'
+                    energy: '@core_delivery.energy'
+                    dpd: '@core_delivery.dpd'
+                #- Core\DeliveryBundle\Features\Context\DeliveryLogicFeatureContext:     
+                #    logic: '@core_delivery'
+                #    em: '@doctrine.orm.entity_manager'
+        office_work_time:
+            type: symfony_bundle
+            bundle: CoreOfficeWorkTimeBundle
+            spec_path : %paths.base%/src/
+            contexts:
+                - Core\OfficeWorkTimeBundle\Features\Context\ApiFeatureContext:
+                    basicData: '@basic_data_logic'
+                - Core\OfficeWorkTimeBundle\Features\Context\OfficeWorkTimeLogicFeatureContext: 
+                    logic: '@office_work_time_logic'
+                    em: '@doctrine.orm.entity_manager'
+                - Core\OfficeWorkTimeBundle\Features\Context\AdminWebInterfaceFeatureContext:    
+                    em: '@doctrine.orm.entity_manager'
+        faq:
+            type: symfony_bundle
+            bundle: CoreFaqBundle
+            spec_path : %paths.base%/src/            
+            contexts:
+                - Core\FaqBundle\Features\Context\ArticleAdminWebInterfaceFeatureContext:
+                    em: '@doctrine.orm.entity_manager'
+        logistics:
+            type: symfony_bundle
+            bundle: CoreLogisticsBundle
+            spec_path : %paths.base%/src/
+            contexts:
+                - Core\LogisticsBundle\Features\Context\SupplierPriceAnalysisAdminWebInterfaceFeatureContext:
+        user:
+            type: symfony_bundle
+            bundle: ApplicationSonataUserBundle
+            spec_path : %paths.base%/src/
+            contexts:
+                - Application\Sonata\UserBundle\Features\Context\CommonFeatureContext:
+                    em: '@doctrine.orm.entity_manager'
+                    userManager: '@fos_user.user_manager'
+                

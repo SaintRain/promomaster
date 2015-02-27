@@ -1,0 +1,84 @@
+/* reset */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em,
+img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, input, button, legend, table,
+caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed,  figure, figcaption, footer, header, hgroup, menu, nav, output, ruby,
+section, summary, time, mark, audio, video {margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;font:14px Arial, Helvetica, sans-serif;}
+p, span, label, input, fieldset, ul, li, div, form, a, strong {font:inherit}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display:block}
+html, body{background:#fff}
+body {line-height:1.25;}
+ol, ul {list-style:none}
+blockquote, q {quotes:none}
+blockquote:before, blockquote:after, q:before, q:after {content:'';content:none;}
+table {border-collapse:collapse;border-spacing:0;}
+strong {font-weight:bold}
+input:focus,select:focus,textarea:focus,button:focus,input,select,textarea,button{outline:none;}
+input:invalid,select:invalid,textarea:invalid {-moz-box-shadow:none;box-shadow:none}
+
+/* common */
+a {color:#3888bb;text-decoration:underline}
+a:hover {text-decoration:none}
+.js_link {color:#3888bb;border-bottom:1px #3888bb dotted;cursor:pointer}
+p {margin:0 0 1.5em;line-height:1.35em}
+
+button.submit {
+	border:0;
+	background:transparent;
+	width:auto;
+	cursor:pointer;
+	overflow:visible;
+	vertical-align:middle;
+	white-space:nowrap;
+	margin-left:-3px;
+	//margin-left:-2px;
+	_margin-left:0
+}
+
+
+
+h1, h2, h3, h4, h5 {font:14px 'Trebuchet MS', Helvetica, Arial, sans-serif;}
+h1 {font-size:36px}
+h2 {font-size:32px;margin-bottom:.7em}
+
+::-webkit-input-placeholder {color:#909090;font-style:italic}
+:-moz-placeholder {color:#909090;font-style:italic}
+.placeholder {color:#909090;font-style:italic}
+
+/* layout */
+#header, #promo, #footer, .subscribe_container  {min-width:960px;max-width:1200px;margin:0 auto;padding:0 10px}
+.page_wrap {}
+.content_layout:before, .content_layout:after {content:".";display:block;overflow:hidden;visibility:hidden;font-size:0;line-height:0;width:0;height:0;clear:both;*zoom:1;}
+
+body {background:url('../images/promo_pic.jpg') 50% 0 no-repeat;padding:30px 0;min-width:960px;}
+
+#header {margin-bottom:350px;height:100px;position:relative}
+h1.header_logo {background:url('../images/olikids_logo.png') 0 0 no-repeat;width:234px;height:93px;text-indent:100%;white-space:nowrap;overflow:hidden}
+.socials {position:absolute;right:0;top:25px;}
+.social {float:right;height:20px;margin-left:20px}
+.social_twitter {width:107px !important}
+
+
+#promo {text-align:center;padding-bottom:50px}
+#promo h2 {color:#d4473b;margin-bottom:30px}
+.promo_cats {width:960px;margin:0 auto}
+.promo_cats li {font-size:18px;color:#5d5d5d;margin-right:20px;display:inline-block;//display:inline}
+.promo_cats li:before {color:#4299c9;content:"\2022";font-size:30px;margin-right:20px;vertical-align:middle}
+.promo_cats li.first:before {content:"";}
+
+#subscribe {border-top:1px solid #e5e1d8;background:url('../images/subscribe_bg.jpg') 50% 0 no-repeat;text-align:center;margin-bottom:50px}
+.subscribe_container {padding:50px 0}
+#subscribe h2 {color:#5d5d5d;font-size:20px;margin-bottom:30px}
+.subscribe_input {font-size:18px;vertical-align:middle;background:url('../images/subscribe.png') 0 0 no-repeat;padding-left:20px;margin-right:10px;display:inline-block;//display:inline}
+.subscribe_input div {background:url('../images/subscribe.png') 100% 0 no-repeat;padding-right:20px;display:inline-block;//display:inline}
+.subscribe_input input {height:46px;line-height:44px;background:0;width:215px}
+button.subscribe_submit span {
+	background:#fcbc42 url('../images/subscribe.png') 0 -50px no-repeat;
+	color:#fff;
+	text-shadow:0 -1px 0 #d59b2b;-o-text-shadow:0 -1px 0 #d59b2b;-moz-text-shadow:0 -1px 0 #d59b2b;-webkit-text-shadow:0 -1px 0 #d59b2b;
+	font-size:18px;
+	padding-left:30px;
+	display:inline-block;//display:inline;zoom:1;
+}
+button.subscribe_submit span span {background:url('../images/subscribe.png') 100% -50px no-repeat;padding:0 30px 0 0;height:46px;line-height:44px;}
+
+#footer {color:#494949;}

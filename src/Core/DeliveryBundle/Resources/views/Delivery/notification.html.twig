@@ -1,0 +1,72 @@
+<h4>Уважаемый(ая) {{userFio}}</h4>
+{% spaceless %}
+    <h3>
+        {% if (waybills | length) > 1 %}
+            Для вас были созданы отправления со следующими номерами:
+            {% for waybill in waybills %}
+                &dash;&nbsp; &numero;{{waybill.number}}<br />
+            {% endfor %}
+            {% else %}
+                {% set waybill = waybills | first %}
+                Для вас было создано отправление &numero; {{waybill.number}}
+        {% endif %}
+        
+    </h3>
+{% endspaceless %}
+{% set curLocale = (app.request.locale) ? app.request.locale : 'ru' %}
+<p>Вы можете остледить статус отправления по адресу <a href="{{deliveryCompany.calculator}}">{{attribute(deliveryCompany, 'caption' ~ curLocale)}}</a><p>
+
+<p>-- <br />С вопросами и предложениями обращайтесь через форму <a href="{{contacstUrl}}">обратной связи</a></p>
+
+<p>С уважением и наилучшими пожеланиями,</p>
+<p>команда olikids.ru</p>
+<p>olikids.ru - игрушки и игры</p>
+{% set phonesKeys = {'rostov': 'phones.simple.rostov', 'msk' : 'phones.simple.msk', 'spb' : 'phones.simple.spb'} %}
+{% set phones = ServiceContainer.get('core_config_logic').get('phones') %}
+{% for key, phone in phones %}
+    <p>{{phonesKeys[key] | trans()}}&nbsp;{{phone}}</p>
+{% endfor %}
+<p><a href="{{siteUrl}}">olikids.ru</a></p>
+{#
+
+<h4>Уважаемый(ая) {{helloPrefix}}</h4>
+{% spaceless %}
+    <h3>
+    {% if (waybills | length) > 1 %}
+        Для вас были созданы отправления со следующими номерами:
+        {% for waybill in waybills %}
+            {% if deliveryCompany.name == 'post_ru' and deliveryCompany.tracker %}
+                &dash;&nbsp; &numero;<a href="{{deliveryCompany.tracker}}?{{waybill.number}}">{{waybill.number}}</a><br />
+                {% else %}
+                    &dash;&nbsp; &numero;{{waybill.number}}<br />
+            {% endif %}
+        {% endfor %}
+        {% else %}
+            {% set waybill = waybills | first %}
+            {% spaceless %}
+            Для вас было создано отправление
+            {% if deliveryCompany.name == 'post_ru' and deliveryCompany.tracker %}
+                &dash;&nbsp; &numero;<a href="{{deliveryCompany.tracker}}?{{waybill.number}}">{{waybill.number}}</a><br />
+                {% else %}
+                    &dash;&nbsp; &numero;{{waybill.number}}<br />
+            {% endif %}
+            {% endspaceless %}
+    {% endif %}
+    </h3>
+{% endspaceless %}
+{% set curLocale = (app.request.locale) ? app.request.locale : 'ru' %}
+{% if deliveryCompany.tracker and deliveryCompany.name != 'post_ru' %}
+<p>Вы можете отследить статус отправления по адресу <a href="{{deliveryCompany.tracker}}">{{attribute(deliveryCompany, 'caption' ~ curLocale)}}</a><p>
+{% endif %}
+<p>-- <br />С вопросами и предложениями обращайтесь через форму <a href="{{contacstUrl}}">обратной связи</a></p>
+
+<p>С уважением и наилучшими пожеланиями,</p>
+<p>команда olikids.ru</p>
+<p>olikids.ru - игрушки и игры</p>
+{% set phonesKeys = {'rostov': 'phones.simple.rostov', 'msk' : 'phones.simple.msk', 'spb' : 'phones.simple.spb'} %}
+{% set phones = ServiceContainer.get('core_config_logic').get('phones') %}
+{% for key, phone in phones %}
+    <p>{{phonesKeys[key] | trans()}}&nbsp;{{phone}}</p>
+{% endfor %}
+<p><a href="{{siteUrl}}">olikids.ru</a></p>
+#}

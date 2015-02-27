@@ -1,0 +1,72 @@
+
+{#**
+ * Шаблон для вывода левого столбика (второй блок не считая левого меню) (истории изменений в сушности Audit и т. д.)
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block extra_bottom_block_1 %}
+    {% spaceless %}
+
+        <div class="extra-footer-block-1-container {#span6#}">
+            <div class="extra-block extra-footer-block extra-footer-block-1">
+
+                <ul class="nav nav-tabs">
+
+                    {% if (optionsExtraBlocks['tabs'] is defined and 'audit' in optionsExtraBlocks['tabs']) and object.id  %}
+
+                        <li class="">
+                            <a id="audit_block_btn" href="#audit_block" data-toggle="tab">
+                                <smal>{{ ('audit.tabs.name')|trans({}, admin.translationDomain) }}</smal>
+                            </a>
+                        </li>
+
+                    {% endif %}
+
+                </ul>
+
+                <div class="tab-content">
+
+                    {% if (optionsExtraBlocks['tabs'] is defined and 'audit' in optionsExtraBlocks['tabs']) and object.id %}
+
+                        <div class="tab-pane" id="audit_block">
+                            <div id="audit-block-container">
+                                <div class="well" id="audit-block">
+                                    <img class="ajax-loader-big" src="{{ asset('bundles/applicationsonataadmin/img/ajax-loader-big.gif') }}" title="Загрузка" />
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+
+    {% endspaceless %}
+    <script type="text/javascript">
+        $(function () {
+            //$('.extra-left-block-2 ul.nav li:first a').trigger('click');
+            var data = {
+                id:{% if object.id %}{{ object.id }}{% else %}''{% endif %},
+                namespace: '{% if not get_parent_class(object) %}{{ get_class(object)|escape('js') }}{% else %}{{ get_parent_class(object)|escape('js') }}{% endif %}',
+                translationDomain: '{{ admin.translationDomain }}'
+            };
+            $('#audit_block_btn').on('click', function () {
+                $.ajax({
+                    url: 'https://' + document.domain + '{{ path('core_statistics_get_audit_information') }}',
+                    data: data,
+                    success: function (response) {
+                            $('#audit_block').html(response);
+                        },
+                    error: function (response) {
+                            alert('Произошла ошибка!');
+                            console.log(response);
+                        }
+                });
+            });
+        });
+    </script>
+{% endblock %}

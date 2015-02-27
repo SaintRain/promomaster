@@ -1,0 +1,35 @@
+services:
+# Сервис для продукции
+  core_review_logic:
+    class: Core\ReviewBundle\Logic\ReviewLogic
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+    arguments: ['@service_container']
+
+# Разширения для Twig
+  core_review_twig_extension:
+    class: Core\ReviewBundle\Twig\Extension\ReviewExtension
+    tags:
+      - { name: twig.extension }
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+    arguments: ['@service_container']
+
+# Админский сервис отзывов
+  core_review_admin_review:
+    class: Core\ReviewBundle\Admin\ReviewAdmin
+    arguments: [~, Core\ReviewBundle\Entity\Review, "CoreReviewBundle:Admin\ReviewAdmin"]
+    tags:
+      - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Пользователи, label: Отзывы о товарах }
+
+# Тип формы (проставление оценки через звездочки)
+  core_review_star_rating:
+    class: Core\ReviewBundle\Form\Type\StarRatingType
+    tags:
+        - { name: form.type, alias: star_rating }
+
+# Подписчик
+  core_review_subscriber:
+    class: Core\ReviewBundle\EventListener\Subscriber
+    tags:
+      - { name: doctrine.event_subscriber }
+    arguments: ['@core_review_logic']

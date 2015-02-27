@@ -1,0 +1,71 @@
+
+{#**
+ * Шаблон для вывода характеристик в виде radiobutton
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+{% set curRoute = app.request.attributes.get('_route') %}
+{% set countShow = 8 %}
+
+{% block radio %}
+
+    {% set formElementClass = '' %}
+
+    {% if this.values %}
+
+        <div class="filter_cats filter_group edit-type-radio">
+            <h3>{{ this.caption }}</h3>
+
+            {% set i = 0 %}
+
+            {% for id, value in this.values %}
+
+                {% if i == countShow %}
+
+                    <div class="hidden asSlide">
+
+                {% endif %}
+
+                {% block rowElement %}
+
+                    <label for="filter_{{ this.name }}_{{ id }}">
+
+                        {% block formElement %}
+
+                            <input
+                                type="radio" id="filter_{{ this.name }}_{{ id }}" value="{{ id }}"
+                                name="filter{% if this.is is defined %}[{{ this.is }}][{{ this.type }}]{% endif %}[{{ this.name }}]"
+                                {% if (filterRequest[this.name] is defined and filterRequest[this.name] == id) or (this.is is defined and filterRequest[this.is][this.type][this.name] is defined and filterRequest[this.is][this.type][this.name] == id) %}
+                                    checked="checked"
+                                    class="{{ formElementClass }} active"
+                                {% else %}
+                                    class="{{ formElementClass }}"
+                                {% endif %}
+
+                                >
+
+                        {% endblock %}
+
+                        <span>{{ value.caption }}</span>
+                    </label>
+
+                {% endblock %}
+
+                {% set i = i + 1 %}
+
+            {% endfor %}
+
+            {% if this.values|length > countShow %}
+
+                </div>
+                <!--noindex-->
+                <span class="text_tgl filter-show-all">Показать все</span>
+                <!--/noindex-->
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{#базовый шаблон ЛК#}
+{% extends "CoreCommonBundle::main_layout2.html.twig" %}
+{% use 'ApplicationSonataUserBundle:Profile:left_menu.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/assets/plugins/sky-forms/version-2.0.1/css/custom-sky-forms.css">
+{% endblock %}
+
+{% block content %}
+
+    {% block breadcrumbs %}
+    {% endblock %}
+
+    <div class="profile container content">
+        <div class="row">
+            <!--Left Sidebar-->
+            <div class="col-md-3 md-margin-bottom-40">
+                {{ block('left_menu') }}
+            </div>
+            <!--End Left Sidebar-->
+
+            <div class="col-md-9">
+                <!--Profile Body-->
+                {% block sub_content %}
+                {% endblock %}
+                <!--End Profile Body-->
+            </div>
+        </div>
+        <!--/end row-->
+    </div>
+
+{% endblock %}

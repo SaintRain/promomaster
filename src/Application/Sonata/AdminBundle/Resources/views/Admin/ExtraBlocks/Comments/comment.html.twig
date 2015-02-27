@@ -1,0 +1,35 @@
+
+{#**
+ * Шаблон для вывода комментария
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block comments_block_comment %}
+    {% spaceless %}
+
+        <div class="comment" id="comment-{{ comment.id }}-i" {% if hide_comment is defined %}style="display:none"{% endif %}>
+
+            <div class="comment-header">
+
+                {{- comment.createdAt|date('d.m.Y H:i:s', default_timezone) -}}
+
+                <span class="icon icon-remove pull-right comment-remove" data-id="{{ comment.id }}"></span>
+
+                <div>
+                    <a href='{{ path('admin_sonata_user_user_edit', {id: comment.user.id}) }}' target='_blank'>{{ comment.user.username }}</a>
+                </div>
+
+            </div>
+
+            <div class="comment-body">
+
+                {{- comment.comment|nl2br -}}
+
+            </div>
+
+        </div>
+
+    {% endspaceless %}
+{% endblock %}

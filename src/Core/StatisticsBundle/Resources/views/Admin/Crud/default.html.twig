@@ -1,0 +1,46 @@
+{% extends base_template %}
+
+{% block title %}{{ 'title_dashboard'|trans({}, 'SonataAdminBundle') }}{% endblock%}
+{% block breadcrumb %}{% endblock %}
+{% block content %}
+    {{ sonata_block_render_event('sonata.admin.dashboard.top', { 'admin_pool': admin_pool }) }}
+
+    <div class="row-fluid">
+        <div class="span6">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="{{ url('sonata_admin_dashboard') }}">⌂</a>
+                    <span class="divider">/</span>
+                </li>
+                <li class="active">Статистика</li>
+            </ul>
+        </div>
+    </div>
+
+    {% set _route=app.request.attributes.get('_route') %}        
+        <div class="row-fluid">
+
+            <ul class="nav nav-tabs">
+                <li class="{%if _route=='admin_core_statistics_statistics_list' %} active{%endif%} first">
+                    <a href="{{admin.generateUrl('list')}}">По складу</a>
+                </li>
+                <li class="{%if _route=='admin_core_statistics_statistics_deficitProductStatistics' %} active{%endif%} last">
+                    <a href="{{admin.generateUrl('deficitProductStatistics')}}">Заканчивающиеся товары</a>
+                </li>
+                <li class="{%if _route=='admin_core_statistics_statistics_inventoryStatistics' %} active{%endif%} last">
+                    <a href="{{admin.generateUrl('inventoryStatistics')}}">Инвенторизация</a>
+                </li>
+            <li class="{%if _route=='admin_core_statistics_statistics_virtualUnitsStatistics' %} active{%endif%} last">
+                    <a href="{{admin.generateUrl('virtualUnitsStatistics')}}">Виртуальные товары</a>
+                </li>
+            </ul>
+
+            <div class="content  span10">
+                {%block statisticsContent%}
+                {%endblock%}
+            </div>
+        </div>
+
+        {{ sonata_block_render_event('sonata.admin.dashboard.bottom', { 'admin_pool': admin_pool }) }}
+
+        {% endblock %}

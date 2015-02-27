@@ -1,0 +1,33 @@
+
+{#**
+ *  Шаблон для кастомного вывода пола
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'CorePropertyBundle:Filter/EditType:checkbox.html.twig' %}
+
+{% block checkbox %}
+
+    {% set formElementClass = 'hidden' %}
+
+    {% if this.values %}
+
+        <div class="filter_gender filter_group edit-type-checkbox clearfix">
+
+            {% for id, value in this.values %}
+
+                <span class="filter_gender_tgl filter_gender_tgl_{{ value.name|replace(' ', '_') }} filter-fake-checkbox" title="{{ value.caption }}">{{ value.name == 'boy' ? 'Мальчик' : 'Девочка' }}</span>
+
+                {{ block('formElement') }}
+
+            {% endfor %}
+
+            <div class="clearfix"></div>
+
+        </div>
+
+    {% endif %}
+
+{% endblock %}

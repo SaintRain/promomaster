@@ -1,0 +1,100 @@
+{% block config_data_widget %}
+    <textarea {#style="height: 0; width: 0" class="hidden"#} {{ block('widget_attributes') }} rows="20">{{value}}</textarea>
+    <input type="text" class="span5" value="" id="dataConfigInput" style="display:none">
+    <div id="dataConfigEditContent" style="display:none">
+        <style>
+            .clearable {
+                cursor:pointer;
+            }
+        </style>
+        <div><a class="btn sonata-action-element addNewConfig" href="javascript:void(0);"><i class="icon-plus"></i> Добавить настройку</a></div><br/>
+        <div style="margin-left:0px;display:none;float:none" class="keyError alert alert-error alert-dismissable span5">Нельзя добавлять массив с одинаковыми ключами</div>
+        <table class="table table-bordered table-striped span8" style="margin-left:0px">
+            <thead>
+                <tr>
+                    <th style="width:100px">Ключ</th>
+                    <th style="width:100%">Значение</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script src="{{ asset('bundles/applicationsonataadmin/js/codemirror/codemirror.js') }}"></script>
+    <script src="{{ asset('bundles/applicationsonataadmin/js/codemirror/twig.js') }}"></script>
+    <script src="{{ asset('bundles/applicationsonataadmin/js/codemirror/xml.js') }}"></script>
+    <script src="{{ asset('bundles/applicationsonataadmin/js/codemirror/htmlmixed.js') }}"></script>
+    <script src="{{ asset('bundles/applicationsonataadmin/js/codemirror/htmlembedded.js') }}"></script>
+    <script src="{{ asset('bundles/applicationsonataadmin/js/codemirror/javascript.js') }}"></script>
+    <script src="{{ asset('bundles/applicationsonataadmin/js/codemirror/css.js') }}"></script>
+
+    <link rel="stylesheet" href="{{ asset('bundles/applicationsonataadmin/css/codemirror.css') }}" type="text/css" media="all" />
+
+    <script>
+        var editor;
+        (function($){
+            $(function(){
+               var selectType = $("select[id$='_type']"),
+                   formatType = $("select[id$='_highlight']"),
+                   formatTypeParentBlock = formatType.parents("div[id$='_highlight']");
+               
+               if (selectType.val() == 'text' && formatType.val()) {
+                    activateCodeMirror(formatType.val());
+               }
+               if (selectType.val() != 'text') {
+                   formatTypeParentBlock.addClass('hidden');
+               }
+               selectType.change(function(){
+                   var $this = $(this);
+                   if ($this.val() == 'text') {
+                       formatTypeParentBlock.removeClass('hidden');
+                   } else {
+                       {#
+                       if (editor) {
+                           $('#{{form.vars.id}}').text(editor.getDoc().getValue());
+                           $('#dataConfigInput').val(editor.getDoc().getValue());
+                       } else {
+                           $('#dataConfigInput').val($('#{{form.vars.id}}').val());
+                           console.log($('#{{form.vars.id}}').val());
+                       }
+                       #}
+                       formatTypeParentBlock.addClass('hidden');
+                   }
+                   if ($this.val() == 'text' && formatType.val()) {
+                       activateCodeMirror(formatType.val());
+                   } else if (editor && $this.val() != 'text'){
+                       editor.toTextArea();
+                        editor = null;
+                       $('#{{form.vars.id}}').css({height: '200px', width: '700px'}).removeClass('hidden');
+                   }
+               });
+               
+               formatType.change(function(){
+                   var $this = $(this);
+                   if ($this.val() && selectType.val()) {
+                       if (editor) {
+                        editor.toTextArea();
+                        editor = null;
+                       }
+                       activateCodeMirror($this.val());
+                   } else if (editor && $this.val() != 'text'){
+                       editor.toTextArea();
+                       editor = null;
+                       $('#{{form.vars.id}}').css({height: '200px', width: '700px'}).removeClass('hidden');
+                   }
+               });
+            });
+
+            var activateCodeMirror = function(modeName) {
+                editor = CodeMirror.fromTextArea(document.getElementById("{{form.vars.id}}"),
+                                            {mode: {name: modeName, htmlMode: true}});
+                $('#{{form.vars.id}}').css({height: 0, width: 0, display: 'none'}).addClass('hidden');
+            }
+        })(jQuery)
+        
+        var $typeField = $("#{{sonata_admin.admin.uniqid}}_type"),
+                $dataField = $("#{{sonata_admin.admin.uniqid}}_data");
+    </script>
+    <script type="text/javascript" src="{{ asset('/bundles/coreconfig/js/admin/configData.js') }}"></script>
+
+{% endblock %}

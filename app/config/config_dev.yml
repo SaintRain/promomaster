@@ -1,0 +1,47 @@
+imports:
+    - { resource: config.yml }
+
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing_dev.yml"
+        strict_requirements: true
+    profiler: { only_exceptions: false }
+
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
+
+jns_xhprof:
+    location_web:    http://xhprof
+    entity_manager:  ~
+    entity_class:    Core\StatisticsBundle\Entity\XhprofDetail
+    enable_xhgui:    false
+    enabled:         true
+    command: "option"
+    command_option_name: xhprof
+    request_query_argument: "__xhprof"
+
+web_profiler_extra:
+    routing:
+        enabled:        false
+        display_in_wdt: false
+    container:
+        enabled:        false
+        display_in_wdt: false
+    assetic:
+        enabled:        false
+        display_in_wdt: false
+    twig:
+        enabled:        false
+        display_in_wdt: false
+
+
+#        firephp:
+#            type:  firephp
+#            level: info
+#        chromephp:
+#            type:  chromephp
+#            level: info
+
+#swiftmailer:
+#    delivery_address: me@example.com

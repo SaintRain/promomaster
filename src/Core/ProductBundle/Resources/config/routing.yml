@@ -1,0 +1,94 @@
+# Вывод каталога продуктов по категории
+core_shop_product_catalog:
+    path:      /catalog/{slug}/{page}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreProductBundle:Product:category, page: 1 }
+    requirements:
+      slug: .+
+      page: \d+
+
+# Вывод каталога продуктов по категории, первая страница
+core_shop_product_catalog_first_page:
+    path:      /catalog/{slug}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreProductBundle:Product:category }
+    requirements:
+      slug: .+
+
+# Вывод каталога продуктов по бренду и серии
+core_shop_product_brand_series:
+    path:      /vendors/{slug}/series/{slugSeries}/{page}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreProductBundle:Product:brandAndSeries, page: 1 }
+    requirements:
+      slug: .+
+      slugSeries: .+
+      page: \d+
+
+# Вывод каталога продуктов по бренду, первая страница
+core_shop_product_brand_series_first_page:
+    path:      /vendors/{slug}/series/{slugSeries}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreProductBundle:Product:brandAndSeries }
+    requirements:
+      slug: .+
+      slugSeries: .+
+
+# Вывод каталога продуктов по бренду
+core_shop_product_brand:
+    path:      /vendors/{slug}/{page}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreProductBundle:Product:brand, page: 1 }
+    requirements:
+      slug: .+
+      page: \d+
+
+# Вывод каталога продуктов по бренду, первая страница
+core_shop_product_brand_first_page:
+    path:      /vendors/{slug}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreProductBundle:Product:brand }
+    requirements:
+      slug: .+
+
+# Вывод продукта подробно
+core_product:
+    path:      /products/{slug}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreProductBundle:Product:product }
+    schemes:  [http]
+    requirements:
+      slug: .+
+
+# Обновление товара в избранном (Добавление/Удаление)
+core_product_update_favorites:
+    path:      /ajax/products/favorites/{action}/{id}.{_format}
+    schemes:  [http]
+    defaults:  { _controller: CoreProductBundle:AjaxProduct:updateFavorites }
+    requirements:
+      id: \d+
+      action: add|remove
+      _format: json
+
+# Добавление/Удаление товара в/из корзину
+core_product_update_cart:
+    path:      /ajax/products/cart.json
+    schemes:  [http]
+    defaults:  { _controller: CoreProductBundle:AjaxProduct:updateCart }
+    requirements:
+      _format: json
+
+# Подписка на товар, когда появится в наличии
+core_product_subscribe_to_report:
+    path:      /ajax/products/subscribe_to_report.json
+    schemes:  [http]
+    defaults:  { _controller: CoreProductBundle:AjaxProduct:subscribeToReport }
+
+# Получаем дату и кол-во для товаров со ствтцсом "Ожидается поставки"
+core_product_get_date_and_count_for_nearest_supply:
+    path:      /ajax/products/get_date_and_count_for_nearest_suply.json
+    schemes:  [http]
+    defaults:  { _controller: CoreProductBundle:AjaxProduct:getDateAndCountForNearestSupply }
+
+
+    

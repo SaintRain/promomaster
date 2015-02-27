@@ -1,0 +1,157 @@
+{#**
+ * Шаблон для вывода виджета загрузки файлов на фронтенде
+ * При переопределении шаблона структура должна оставаться как есть, и обязательно должны быть все имеющиеся в шаблоне классы
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block multiupload_file_frontend_widget %}
+
+
+    <div class="CoreFileContainer">
+
+        {{ form_widget(form[form.vars.btnName]) }}
+        {{ form_widget(form.filesToUpload, { attr:{ 'data-count_of_attached_files': files|length } } ) }}
+        {{ form_widget(form.id, { attr: { value: objId, class: 'ajax-id' } } ) }}
+        {{ form_widget(form.type, { attr: { class: 'ajax-type' } } ) }}
+        {{ form_widget(form.fieldName, { attr: { class: 'ajax-field' } } ) }}
+        {{ form_widget(form.namespace_to_attach, { attr: { class: 'ajax-namespace_to_attach' } } ) }}
+        {{ form_widget(form.namespace_to_insert, { attr: { class: 'ajax-namespace_to_insert' } } ) }}
+
+        <input type="hidden" class="ajax-form_id" name="CoreFileBundleInput[{{ form.vars.name }}][form_id]"
+               value="{{ uniqId }}"/>
+
+        {% if showCounterOfFiles %}
+            <br>
+            <div class="CoreFileCounter hidden">
+                Отправлено файлов: <span class="count-of-sended">0</span> из <span class="count-all-to-send">0</span>
+            </div>
+
+        {% endif %}
+
+        {% if showStatusOfUpload %}
+
+            <div style="margin-top: 20px" class="alert alert-danger ajax-error-main hidden hide-by-timer"
+                 data-hide-after="10"></div>
+            {#<div class="alert alert-success ajax-success-main hidden hide-by-timer" data-hide-after="20"></div>#}
+        {% endif %}
+
+        {% if showAttachedFiles %}
+
+            <div class="CoreFileAttached">
+                <ul style="padding-left:0; padding-top:10px">
+                    {% for file in files %}
+
+                        {% if form.vars.type=='flash' %}
+
+                            <li style="list-style-type: none;margin-bottom:10px">
+                                {% if file.id is defined %}
+                                    <span>Размер {{ file.height }}x{{ file.width }}</span>
+                                    &nbsp;<span class="badge badge-u">
+                                    <a class="file-link"
+                                       href="{{ asset(file|getFileWebPath) }}"
+                                       target="_blank">Скачать</a></span><br/>
+                                    <div style="margin-top: 5px">
+                                        <object height="{{ file.height }}" width="{{ file.width }}"
+                                                style="padding-left: 0px"
+                                                type="application/x-shockwave-flash"
+                                                data="{{ asset(file|getFileWebPath) }}">
+                                            <param name="quality" value="high">
+                                            {#<param name="allowScriptAccess" value="always">#}
+                                            <param name="wMode" value="window">
+                                            <param name="swLiveConnect" value="true">
+                                            <param name="wmode" value="transparent">
+                                            <param name="bgcolor" value="#000000">
+                                            {#<param name="allowscriptaccess" value="true">#}
+                                            <param name="allowfullscreen" value="true">
+                                        </object>
+                                    </div>
+                                {% else %}
+                                    {#обрезаем имя, чтоб небыло системного uniqid#}
+                                    {% set name =file.name|split('#') %}
+                                    {{ name[1] }}
+                                {% endif %}
+                            </li>
+                        {% endif %}
+
+
+
+                        {% if form.vars.type=='image' %}
+                            <li style="list-style-type: none;margin-bottom:10px">
+                                {% if file.id is defined %}
+                                    <span>Размер {{ file.height }}x{{ file.width }}</span>
+                                {% else %}
+                                    <span>Размер {{ app.session.get('core_file_image')[uniqId]['base64Extra'][file.name].height -}}
+                                        x{{- app.session.get('core_file_image')[uniqId]['base64Extra'][file.name].width }}</span>
+                                {% endif %}
+                                {% if file.id is defined %}
+                                    &nbsp;<span class="badge badge-u">
+                                    <a class="file-link"
+                                       href="{{ asset(file|getFileWebPath) }}"
+                                       target="_blank">Скачать</a></span>
+                                    {#&nbsp;<span class="fa fa-times file-remove" style="cursor: pointer"#}
+                                    {#{% if file.id is defined %}data-id="{{ file.id }}"#}
+                                    {#{% else %}data-hash="{{ file.name }}"{% endif %}> </span>#}
+                                {% endif %}
+                                <br/>
+
+                                    <span class="file-attachment"><a class="file-link"
+                                                                     href="{{ asset(file|getFileWebPath) }}"
+                                                                     target="_blank"><img
+                                                    style="margin-top: 5px;max-height: 200px;"
+                                                    src="{%- if file.id is defined %}
+                                                                     {{- asset(file|getFileWebPath) -}}
+                                                                     {%- else -%}
+                                                                     {{- app.session.get('core_file_image')[uniqId]['base64'][file.name] -}}
+                                                                     {%- endif -%}"/></a>
+                                    </span>
+                            </li>
+                        {% endif %}
+
+
+
+
+                        {% if form.vars.type=='document' %}
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    <li style="list-style-type: none;margin-bottom:10px" class="hidden">
+                        <span class="file-name"></span><span class="size"></span>&nbsp;<span
+                                class="download badge badge-u"><a class="file-link" href="#" target="_blank">Скачать</a></span>&nbsp;
+                        {% if form.vars.type!='image' and form.vars.type!='flash' %}
+                            <span class="fa fa-times file-remove" style="cursor: pointer"> </span>
+                        {% endif %}
+                        {% if form.vars.type=='image' %}
+                            <br>
+                            <span class="file-attachment"></span>&nbsp;
+                        {% endif %}
+                    </li>
+
+                </ul>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    {% if not libStats %}
+
+        <script>
+            $(function () {
+                $('.hidden').hide();
+            });
+            var core_file_ajax_upload_file = '{{ path('core_file_ajax_upload_file') }}',
+                    core_file_ajax_remove_file = '{{ path('core_file_ajax_remove_file') }}';
+        </script>
+
+        {% javascripts  'bundles/corefile/core_file_frontend.js' output='js/compiled/core_file_frontend.js' filter='yui_js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% block form_row %}
+{% spaceless %}
+    <div class="form_row">
+        {{ form_label(form, null, {'label_attr':{'class':'form_label'} }) }}
+        <div class="form_field{% if form_errors(form) %} form_field_error{% endif %}">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock form_row %}
+
+{% block captcha_widget %}
+{% if is_human %}
+-
+{% else %}
+{% spaceless %}
+<div class="captcha_wrapper">
+    <img id="{{ image_id }}" src="{{ captcha_code }}" alt="" title="captcha" width="{{ captcha_width }}" height="{{ captcha_height }}" class="form_kcaptcha_pic" />
+    {% if reload %}
+    <a class="captcha_reload" href="javascript:reload_{{ image_id }}();">{{ 'Renew'|trans({}, 'gregwar_captcha') }}</a>
+    <script type="text/javascript">
+        function reload_{{ image_id }}() {
+            var img = document.getElementById('{{ image_id }}');
+            img.src = '{{ captcha_code }}?n=' + (new Date()).getTime();
+        }
+    </script>
+    {% endif %}
+</div>
+    {{ form_widget(form) }}
+{% endspaceless %}
+{% endif %}
+{% endblock %}

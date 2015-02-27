@@ -1,0 +1,96 @@
+{#
+ Шаблон для костомных полей у формы редактирования предзаказов
+ @author Sergeev A.M
+ @copyright LLC "PromoMaster"
+#}
+{# переписываем вывод продукта#}
+{#{% block  core_pre_order_admin_product_ajax_entity_widget %}
+    {{ form_widget(form) }}
+    <br/><br/>
+    <p id="OOPBQuantityExtraInfoContent" style="display: none">
+        Остаток у поставщика:
+        <span id="OOPBQuantityLabel" title="Количество товара у поставщика" class="label"></span>
+        <span id="OOPBQuantityUpdatedLabel" class="label label-default" title="Дата обновления остатка"></span>
+
+    </p>
+{% endblock %}#}
+
+{# переписываем вывод ID#}
+{% block core_pre_order_admin_id_text_widget %}
+    {% set order=sonata_admin.admin.subject %}
+    {% if order.id %}
+        <h4>Предзаказ #{{ order.id|idFormat }} <span
+                    style="color:gray">(от {{ order.createdDateTime|date("d.m.Y H:i:s", default_timezone) }})</span></h4>
+    {% else %}
+        <h4>Новый предзаказ <span style="color:gray">(от {{ "now"|date("d.m.Y H:i:s", default_timezone) }})</span></h4>
+    {% endif %}
+{% endblock %}
+
+{#  Переопределение вывода контрагента #}
+{% block core_pre_order_admin_contragent_shtumi_dependent_filtered_entity_widget %}
+    {{ form_widget(form) }}&nbsp;
+    <a class="btn select-contragent-contacts{% if form.vars.disabled %} disabled{% endif %}" href="javascript:void(0);"><i
+                class="icon icon-list"></i>&nbsp;Получатели контрагента</a>
+    <div id="modal-contacts" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-header">
+            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+            <h3>Выберите получателя для автозаполнения</h3>
+        </div>
+        <div class="modal-body">
+            <ul class="unstyled" id="contragent-contacts"></ul>
+        </div>
+        <div class="modal-footer">
+            <a data-dismiss="modal" class="btn" href="#">Закрыть</a>
+        </div>
+    </div>
+    <script>
+        adminRoutes['admin_core_order_preorder_preorder_contact'] = '{{path('admin_core_order_preorder_preorder_contact')}}';
+        adminRoutes['core_pre_order_cost'] = "{{path('core_pre_order_cost')}}";
+    </script>
+    <script src="{{ asset('bundles/coreorder/Admin/js/preorder.js') }}" type="text/javascript"></script>
+{% endblock %}
+{% block core_pre_order_admin_cancelReason_textarea_widget %}
+    <div id="cancel-reason-wr" class="well well-sm span6">
+        <div class="control-group">
+            {{form_label(form.parent.children.preDefinedAnswers)}}
+            <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                {{form_widget(form.parent.children.preDefinedAnswers)}}
+            </div>
+        </div>
+        <div class="control-group">
+            {{ form_widget(form) }}
+        </div>
+        <div>
+            <a id="cancel-predefined-create" class="btn btn-small sonata-ba-action" href="javascript:void(0);">
+                <i class="icon-plus"></i>Добавить ответ
+            </a>
+            <a id="preview-cancel-msg" class="btn-info btn btn-small sonata-ba-action" href="{{path('admin_core_order_preorder_preorder_previewCancelMsg')}}">
+                <i class="icon-eye-open"></i>Просмотреть письмо
+            </a>
+            {% if sonata_admin.admin.subject.isSendCancelMsg %}
+                {% set imagePrefix='' %}
+            {% else %}
+                {%set imagePrefix='dont_'%}
+            {% endif %}
+            <div class="checkbox-msg-wr">
+                {{form_widget(form.parent.children.isSendCancelMsg)}}
+                <label title="Нужно ли отправлять уведомление заказчику при отмене" class="checkbox-label-msg" for="{{form.parent.children.isSendCancelMsg.vars.id}}"></label>
+            </div>
+        </div>
+    </div>
+    <br >
+{% endblock %}
+{% block core_pre_order_admin_compositions_sonata_type_collection_widget %}
+    <div class="control-group">
+        
+        {{ form_widget(form) }}
+        {% if not sonata_admin.admin.subject.order and not app.request.isXmlHttpRequest() %}
+            <br>
+            <div id="pre_order_cost_wr" {%if not  sonata_admin.admin.subject.compositions.count %} style="display:none" {%endif%}>
+                <span class="pre_order_cost_text">Итого:</span>
+                <div id="pre_order_cost">Подождите происходит расчет...</div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}    

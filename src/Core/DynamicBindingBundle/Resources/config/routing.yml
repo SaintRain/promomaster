@@ -1,0 +1,3 @@
+core_dynamic_binding_test:
+    pattern:  /b-test
+    defaults: { _controller: CoreDynamicBindingBundle:Ajax:test }

@@ -1,0 +1,24 @@
+core_review_send:
+    pattern:  /review/send.html
+    schemes:  [http]
+    defaults: { _controller: CoreReviewBundle:Review:send }
+    methods:  [POST]
+
+core_review_rate_ajax:
+    pattern:  /ajax/review/rate.json
+    schemes:  [http]
+    defaults: { _controller: CoreReviewBundle:AjaxReview:rate }
+    methods:  [POST]
+
+core_review_view_more_ajax:
+    pattern:  /ajax/review/view/more.json
+    schemes:  [http]
+    defaults: { _controller: CoreReviewBundle:AjaxReview:viewMore }
+    methods:  [POST]
+
+core_review_change_sort_or_filter_ajax:
+    pattern:  /ajax/review/change/sort.json
+    schemes:  [http]
+    defaults: { _controller: CoreReviewBundle:AjaxReview:changeSortOrFilter }
+    methods:  [POST]
+

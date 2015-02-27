@@ -1,0 +1,42 @@
+{% extends  'CoreCategoryBundle::Admin/Form/caregory_widget.html.twig' %}
+{% block property_category_widget %}
+{% block category_widget %}{{parent()}}{% endblock %}
+{% spaceless %}
+<script>
+    var 
+            PropertySettings = {
+        url_settingscategoryproperty_create: "{{path('admin_core_property_settingscategoryproperty_create')}}?uniqid={{sonata_admin.admin.uniqid}}",
+        url_settingscategoryproperty_edit: "{{path('admin_core_property_settingscategoryproperty_edit', {id:'__id'})}}?uniqid={{sonata_admin.admin.uniqid}}",
+        url_settingscategoryproperty_delete: "{{path('admin_core_property_settingscategoryproperty_delete', {id:'__id'})}}?uniqid={{sonata_admin.admin.uniqid}}",
+
+        settings_category: {
+        {% for sc in sonata_admin.admin.subject.settingsCategory %}
+            {{sc.id}}:{{sc.category.id}},
+        {% endfor %}
+            },
+        uniqid : "{{sonata_admin.admin.uniqid}}",
+        propertyId: "{{sonata_admin.admin.subject.id}}"
+    }
+    </script>
+    <script type="text/javascript" src="{{ asset('/bundles/coreproperty/js/jquery.contextmenu.r2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/bundles/coreproperty/js/property_category.js') }}"></script>
+
+    <style>
+            img.settingsCategory {
+                margin-left: 5px;
+                margin-bottom: 2px;
+                cursor: pointer;
+            }
+        </style>
+
+        <div class="hide" id="propertyCategoryContextMenu">
+            <ul class="propertyCategoryContextMenuUl">
+                <li id="createSettings">Создать настройку</li>
+                <li id="editSettings">Редактировать настройку</li>
+                <li id="removeSettings">Удалить настройку</li>
+                <li id="editCategory">Редактировать категорию</li>
+            </ul>
+        </div>
+{% endspaceless %}
+
+{% endblock %}

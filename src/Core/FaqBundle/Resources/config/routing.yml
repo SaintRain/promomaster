@@ -1,0 +1,38 @@
+core_faq_homepage:
+    pattern: /faq.html
+    schemes:  [http]
+    defaults: { _controller: CoreFaqBundle:Faq:index }
+    requirements:
+        methods: GET
+
+core_faq_search:
+    pattern: /faq/search.html
+    schemes:  [http]
+    defaults: { _controller: CoreFaqBundle:Faq:search }
+    requirements:
+        methods: GET
+
+core_faq_article:
+    pattern: /faq/{categorySlug}/{articleSlug}.html
+    schemes:  [http]
+    defaults: { _controller: CoreFaqBundle:Faq:article }
+    requirements:
+        methods: GET
+        categorySlug: "[a-z0-9\-\__\/]+"
+        articleSlug: "[a-z0-9\-\__\/]+"
+
+core_faq_article_rate:
+    pattern: /faq/{categorySlug}/artilce-{article_slug}/rate.html
+    schemes:  [http]
+    defaults: { _controller: CoreFaqBundle:Faq:articleRate }
+    requirements:
+        methods: POST
+        categorySlug: "[a-z0-9\-\__\/]+"
+
+core_faq_category:
+    pattern: /faq/{categorySlug}.html
+    schemes:  [http]
+    defaults: { _controller: CoreFaqBundle:Faq:category }
+    requirements:
+        methods: GET
+        categorySlug: "[a-z0-9\-\__\/]+"

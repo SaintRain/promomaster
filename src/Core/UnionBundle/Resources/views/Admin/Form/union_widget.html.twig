@@ -1,0 +1,137 @@
+{% block union_widget %}
+
+{# имя поли индекса сортировки#}
+{%if sonata_admin.field_description.options.sortable is defined %}
+{%set sortable=sonata_admin.field_description.options.sortable%}
+{%else%}
+{%set sortable=""%}
+{%endif%}
+
+{# данные для галочек, чтобы не пропали, когда форма ломается#}
+{%if app.request.get(sonata_admin.admin.uniqid)[name] is defined %}
+    {%set dInfo=app.request.get(sonata_admin.admin.uniqid)[name]%}
+    {%set unions=getUnionDataList(form.vars.data, dInfo, targetEntity, options.class)%}
+{%else%}
+    {%set dInfo=false%}
+{%set unions=form.vars.data%}
+{%endif%}
+
+{% spaceless %}
+{% block javascript_union %}
+{%if firstUnion%}
+<script src="{{ asset('bundles/coreunion/Admin/js/union_widget.js')}}" type="text/javascript"></script>
+{%endif%} 
+<script>
+var {{id}}_options = {
+    options: {
+            field_name: "{{name}}",
+            field_id: "{{id}}",
+            subject_id: "{{sonata_admin.admin.subject.id}}",
+            mappedBy: "{{mappedBy}}",
+            targetEntity: "{{targetEntity|url_encode}}",
+            uniqid: "{{sonata_admin.admin.uniqid}}",
+            options: {
+                class: "{{options.class|url_encode}}",
+                hideSubjectInList: "{{form.vars.options.hideSubjectInList}}",
+                setThisToTargetObject: "{{form.vars.options.setThisToTargetObject}}",
+                cascadeUpdateToAllTargetObject: "{{form.vars.options.cascadeUpdateToAllTargetObject}}",
+                deleteable: "{% if form.vars.options.deleteable%}1{%else%}0{%endif%}",
+                columns:{{form.vars.options.columns|json_encode()|raw}},
+                edit_route: "{{form.vars.options.edit_route}}",
+                create_route: "{{form.vars.options.create_route}}",
+                find_route: "{{form.vars.options.find_route}}"
+                },
+            sortable: "{{sortable}}"
+            },
+    set_record_to_union:"{{path('set_record_to_union')}}",
+    unset_record_from_union:"{{path('unset_record_from_union')}}",
+    data: {
+            {%for union in unions%}
+            {{union.targetObject.id}}: {
+                id:{{union.targetObject.id}}
+            },
+            {%endfor%}
+        }
+    }
+
+    jQuery(document).ready(function($) {
+    //Добавить запись
+    $('.{{id}}_addUnionRecord').click(function() {
+    //      document.location = "{{path(form.vars.options.create_route)}}";
+    });
+    
+    //Выбрать запись в ноном окне
+    $('body').on('click', '.{{id}}_selectRecordToUnion', function() {
+    reloadUnionDialogContainer('{{path(form.vars.options.find_route)}}', "{{id}}");
+    });
+    
+    //отметить всё на удаление
+    $('body').on('change', '.select-all-{{name}}-delete', function() {
+    if ($(this).attr('checked')) {
+    $('.{{id}}__delete').attr('checked', $(this).attr('checked'));
+    }
+    else {
+    $('.{{id}}__delete').removeAttr('checked');
+    }
+    });
+    
+    //отметить всё на открепление
+    $('body').on('change', '.select-all-{{name}}-undock', function() {
+    if ($(this).attr('checked')) {
+    $('.{{id}}__undock').attr('checked', $(this).attr('checked'));
+    }
+    else {
+    $('.{{id}}__undock').removeAttr('checked');
+    }
+    });
+
+
+    
+    {% if sortable %}
+    jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody').sortable({
+    axis: 'y',
+            opacity: 0.6,
+            items: 'tr.main-row-collection',
+            stop: apply_position_value_{{ id }}
+    });
+            function apply_position_value_{{ id }}() {
+            // update the input value position
+            jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sonata_admin.field_description.options.sortable }}').each(function(index, element) {
+
+            // remove the sortable handler and put it back
+            jQuery('span.sonata-ba-sortable-handler', element).remove();
+                    jQuery(element).append('<span class="sonata-ba-sortable-handler ui-icon ui-icon-grip-solid-horizontal"></span>');
+                    jQuery('input', element).hide();
+            });
+                    jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sonata_admin.field_description.options.sortable }} input').each(function(index, value) {
+            jQuery(value).val(index + 1);
+            });
+            }
+
+    // refresh the sortable option when a new element is added
+    jQuery('#sonata-ba-field-container-{{ id }}').bind('sonata.add_element', function() {
+    apply_position_value_{{ id }}();
+            jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody').sortable('refresh');
+    });
+            apply_position_value_{{ id }}();    
+    {% endif %}
+    });
+    </script>
+{% endblock %}
+
+    <div>
+{% block buttons_union %}
+            <p><div class="btn-group">
+                <!--<input type="button" class="btn {{id}}_addUnionRecord" name="btn_update_and_list" value="Добавить">&nbsp;-->
+                <input type="button" class="btn {{id}}_selectRecordToUnion" name="btn_update_and_list" value="Выбрать">
+            </div>
+        </p>
+{% endblock %}
+
+
+        <div id="field_container_{{ id }}" class="field-container {% if not unions.count and not dInfo|length %}hide{%endif%}">
+                {{ include  ('CoreUnionBundle::Admin/Form/generate_table.html.twig',{dInfo:dInfo,subject_id:sonata_admin.admin.subject.id, mappedBy:mappedBy, field_id:id, field_name:name, unions:unions, uniqid:sonata_admin.admin.uniqid, options:form.vars.options, sortable:sortable}) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}

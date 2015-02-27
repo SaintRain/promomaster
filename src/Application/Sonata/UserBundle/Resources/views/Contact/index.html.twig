@@ -1,0 +1,58 @@
+{% extends 'ApplicationSonataUserBundle::cabinet_layout.html.twig' %}
+{% block js_head %}
+    {{parent()}}
+    <script>
+        settingsJS.routes['contragent_delete'] = '{{path('application_sonata_user_contragent_delete')}}';
+    </script>
+     {% javascripts  'bundles/applicationsonatauser/js/frontend.contact.js' output='js/compiled/user_frontend_contact.js' filter='yui_js' %}
+    <script src="{{ asset_url}}"></script>
+    {% endjavascripts %}
+    
+{% endblock %}
+{% block main_content %}
+    <div class="main_col_pad">
+        <section class="cabinet_addresses">
+            <h2>Адреса доставки</h2>
+            <div class="cabinet_address_add">
+                <div class="controls">
+                    <a href="{{path('application_sonata_user_contragent_create')}}" class="add with_icon text_tgl">Добавить адрес доставки</a>
+                </div>
+            </div>
+            {% if contragents | length %}
+                <dl class="cabinet_addresses_list">
+                    {% for contragent in contragents %}
+                        <div {{fastEdit(contragent)}} class="contact_contragents">
+                            {% if contragent.organization is defined %}
+                                {% set isIndi = 0 %}
+                                <dt class="cabinet_address_person">{{contragent.organization}}</dt>
+                                {% else %}
+                                    {% set isIndi = 1%}
+                                    <dt class="cabinet_address_person">{{contragent.lastName}} {{contragent.firstName}} {{contragent.surName}}</dt>
+                            {% endif %}
+                            <dd class="cabinet_address">
+                                {% spaceless %}
+                                    <p class="cabinet_address_info">
+                                        {% if contragent.contactEmail %}
+                                            Email: {{contragent.contactEmail}}<br>
+                                        {% endif %}
+                                        {% if contragent.phone1 %}
+                                            Контактный телефон: {{contragent.phone1}}
+                                        {% endif %}
+                                    </p>
+                                {% endspaceless %}
+                                <div class="cabinet_address_controls">
+                                        <a href="{{path('application_sonata_user_contragent_edit', {'contragentId': contragent.id, 'isIndi': isIndi})}}" class="edit with_icon text_tgl">Редактировать</a>
+                                        {% if (contragent.orders | length)  == 0 and (contragent.payments | length == 0) and (contragent.manufacturerDiscounts | length == 0) %}
+                                            <a data-route="contragent_delete" data-contragent="{{ contragent.id}}" href="javascript:void(0);" class="delete with_icon text_tgl">Удалить</a>
+                                        {% endif %}
+                                </div>
+                            </dd>
+                        </div>
+                    {% endfor %}
+                </dl>
+                {% else %}
+                <div class="info_box">Записей не найдено</div>
+            {% endif %}
+        </section>
+    </div>
+{% endblock %}

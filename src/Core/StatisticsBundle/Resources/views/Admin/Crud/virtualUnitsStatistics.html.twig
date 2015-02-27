@@ -1,0 +1,44 @@
+{% extends 'CoreStatisticsBundle:Admin/Crud:default.html.twig' %}
+{%block statisticsContent%}
+<p>Показаны виртуальные товарные единицы, которые забронированы и олачены в заказах. Виртуальные позиции бронируются, если не хватает реального товара.<br/>
+        Указанные  виртуальные товарные единицы следует поставить
+        на склады, чтобы заказы можно было отгрузить.</p>
+<table class="table table-bordered table-hover" style="width:70% ">
+    <thead>
+        <tr>
+            <th>Продукт</th>
+            {%for s in data.stocks%}
+                <th align="center" width="2%" nowrap="">Склад «{{s.captionRu}}»</th>
+            {%endfor%}
+
+                    <th>Всего шт.</th>
+                    <th>Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+    {%for p in data.products%}
+                    <tr>
+                        <td nowrap="nowrap"><a href="{{path('admin_core_product_commonproduct_edit',{id:p.id})}}">{{p.sku}} {{p.captionRu}}</a></td>
+
+                {% set total_quantity=0%}
+            {%for s in data.stocks%}
+
+                        {%if data.p_info[s.id][p.id] is defined %}
+                        {% set total_quantity=total_quantity+data.p_info[s.id][p.id]%}
+                        <td class="error">
+                                {{data.p_info[s.id][p.id]}}
+                            </td>
+                        {%else%}
+                            <td >0</td>
+                        {%endif%}
+            {%endfor%}
+                            <td {%if total_quantity%}class="error"{%endif%}>{{total_quantity}}</td>
+                            <td {%if total_quantity%}class="error"{%endif%}>{{moneyFormat(total_quantity*p.price)}} {{currencyFormat()}}</td>
+                        </tr>
+        {%endfor%}
+                    </tbody>
+                </table>
+{%endblock%}
+
+
+

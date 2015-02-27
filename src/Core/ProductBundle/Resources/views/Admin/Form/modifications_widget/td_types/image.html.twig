@@ -1,0 +1,16 @@
+{% block image_type %}
+
+{% if column.preview is defined%}
+    {% set fileUrl= asset(attribute(d, d_key)|getFileWebPath('preview', column.preview)) %}
+{%else%}
+    {% set fileUrl= asset(attribute(d, d_key)|getFileWebPath('preview')) %}
+{%endif%}
+
+{% if fileUrl and fileUrl!='/'%}
+         {% if column.identifier and d.id!=subject_id%}
+<a target="_blank" href="{{path (options.edit_route, {id:d.id})}}"><img src="{{fileUrl}}"/></a>
+        {%else%}
+    <img src="{{fileUrl}}"/>
+        {%endif%}
+{%endif%}        
+{% endblock %}

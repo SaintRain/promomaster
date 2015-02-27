@@ -1,0 +1,35 @@
+<div class="clearfix"></div>
+<div class="row-fluid alone">
+    {% set url = admin.id(object) is not null ? 'edit' : 'create' %}
+    {% for notice_level in ['success','error','info', 'warning'] %}
+        {% set session_var = 'sonata_flash_' ~ notice_level %}
+        {% for flash in app.session.flashbag.get(session_var) %}
+            <div class="alert {{ 'alert-' ~ notice_level }}">
+                {{ flash|trans([], 'SonataAdminBundle') }}
+            </div>
+        {% endfor %}
+    {% endfor %}    
+    <form class="form-horizontal trouble-ticket-msg-form"
+          action="{{ admin.generateUrl(url, {'id': admin.id(object), 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}" {{ form_enctype(form) }}
+          method="POST" {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}>
+        {% if form.vars.errors|length > 0 %}
+            <div class="sonata-ba-form-error">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+        {{ form_widget(form.body,{'attr':{'class':'msg-body span12'} }) }}
+        {{ form_rest(form) }}
+        {% include 'CoreTroubleTicketBundle:Admin:Form/message_form_actions.html.twig' %}
+        <div class="preview-block modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Примечания</h3>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </form>
+</div>

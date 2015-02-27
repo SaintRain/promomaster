@@ -1,0 +1,18 @@
+{% spaceless %}
+<!doctype html>
+<!--[if lt IE 8]><html lang="ru" class="no-js lt-ie8"> <![endif]-->
+<!--[if gte IE 8]><!--><html lang="ru" class="no-js"> <!--<![endif]-->
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="description" content="{% block meta_description %}{% endblock %}">
+        <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
+        {% block css %}{% endblock %}
+        {% block js_head %}{% endblock %}
+    </head>
+    <body>
+    {% block content %}{% endblock %}
+    </body>
+</html>
+{% endspaceless %}

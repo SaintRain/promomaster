@@ -1,0 +1,103 @@
+{% extends 'CoreTroubleTicketBundle::layout.html.twig'%}
+
+{# SEO - заголовки #}
+{% block title %}Обращение №{{ ticket.id }} от {{ ticket.createdDateTime|date('d.m.Y, H:i', default_timezone) }} | OliKids.ru{% endblock %}
+{% block meta_keywords %}обращение, ответ{% endblock %}
+{% block meta_description %}Обращение №{{ ticket.id }} от {{ ticket.createdDateTime|date('d.m.Y, H:i', default_timezone) }} на сайте OliKids. Как только представитель интернет-магазина ответит Вам - Вы увидите ответ на этой странице.{% endblock %}
+
+{% block trouble_ticket_content %}
+<ul class="cabinet_page_path page_path_links">
+    <li class="page_path_link">
+        <a href="{{app.user ? path('trouble_ticket_index_auth') : path('trouble_ticket_index',{'owner':ticket.owner})}}">Мои обращения</a>
+    </li>
+    <li class="page_path_link">
+        <strong>{{ticket.title}}</strong>
+    </li>
+</ul>
+<div class="cabinet_discussion">
+    <div class="controls">
+        <a target="blank" href="{{ path('trouble_ticket_edit', {'hash':ticket.hash, 'print': 'true'})}}" class="print with_icon text_tgl">Напечатать</a>
+        <span class="text_tgl {% if ticket.status.isEditable %}close_action{% else %}closed{% endif %}" data-id="{{ticket.id}}">{{ticket.status.isEditable ? 'Закрыть обращение': ticket.status.captionRu}}</span>
+    </div>
+    {% if app.user %}
+        <h2>{{ticket.title}}</h2>
+        {% else %}
+            <h1>{{ticket.title}}</h1>
+    {% endif %}
+    <ul class="cabinet_discussion_info">
+        <li>{{ticket.createdDateTime | date('d.m.Y, H:i', default_timezone)}}</li>
+        <li>&numero;{{ticket.id}}</li>
+    </ul>
+    {% if ticket.body or (ticket.file | length) %}
+        <div class="cabinet_discussion_text">
+            {{ticket.body | nl2br}}
+            {% if ticket.file | length %}
+                <h4>Прикрипленные файлы</h4>
+                <br />
+                <ul>
+                    {% for file in ticket.file %}
+                        <li>
+                            <a href="{{ asset(file|getFileWebPath) }}">{{file.name}}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endif %}
+        <section class="cabinet_discussion_comments">
+            {% if ticket.logs | length %}
+                <h3>Обсуждение</h3>
+                <ul class="cabinet_discussion_comments_list">
+                    {% for log in ticket.logs %}
+                        {% if log.message %}
+                            <li class="cabinet_discussion_comment {% if log.manager%}official{% endif %}">
+                                <span class="cabinet_discussion_comment_info">
+                                    {% if log.manager %}
+                                        <strong>{{(log.manager.fullName) ? log.manager.fullName : log.userName}} (сотрудник OliKids)</strong>
+                                        {% elseif ticket.authorName %}
+                                            <strong>{{ ticket.authorName }}</strong>
+                                        {% else %}
+                                            <strong>{{ ticket.authorEmail }}</strong>
+                                    {% endif %}
+                                    <span>{{log.date | date('d.m.Y, H:i', default_timezone)}}</span>
+                                </span>
+                                {% if log.message %}
+                                    <div>{{log.message.body | nl2br}}</div>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if ticket.status.isEditable %}
+            <form class="cabinet_discussion_comments_add" action="{{ path('trouble_ticket_edit',{'hash':ticket.hash}) }}" {{ form_enctype(form) }} method="POST">
+                <div class="form_row{% if form_errors(form.body)%} form_field_error{% endif %}">
+                    {{ form_widget(form.body) }}
+                    {{ form_errors(form.body) }}
+                    {{form_rest(form)}}
+                </div>
+                <div class="form_submit">
+                    <button class="common_button big">
+                        <span>Добавить</span>
+                    </button>
+                </div>
+            </form>
+            {% endif %}
+        </section>
+</div>
+{% endblock %}
+{% block js_head %}
+
+        {{ parent() }}
+        <script>
+            {% if ticket.adminAnswers %}
+                settingsJS.routes['trouble_ticket_read'] = '{{path('trouble_ticket_read',{'hash':ticket.hash})}}';
+                (function($){
+                    $(function(){
+                        readTicket(settingsJS.routes['trouble_ticket_read']);
+                    });
+                })(jQuery)
+            {% endif %}
+            settingsJS.routes['trouble_ticket_close'] = '{{path('trouble_ticket_close',{'id':'PLACEHOLDER'})}}';
+        </script>
+{% endblock%}

@@ -1,0 +1,43 @@
+{% block category_widget %}
+    {% spaceless %}
+    {% block java_script %}
+<script>
+    {%if firstTree%}
+    var treeParams = [];
+    {%endif%}
+    treeParams["{{form.vars.id}}"] = {
+        selected: [{%for cat in form.vars.data%}{{cat.id}},{%endfor%}], //отмеченные данные
+        fieldId: "{{form.vars.id}}",
+        objectId: "{{sonata_admin.admin.subject.id}}"
+    };
+    </script>
+    {%if firstTree%}
+    <script type="text/javascript" src="{{ asset('/bundles/corecategory/js/sprintf.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/bundles/corecategory/js/jstree/_lib/jquery.cookie.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/bundles/corecategory/js/jstree/_lib/jquery.hotkeys.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/bundles/corecategory/js/jstree/jquery.jstree.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/bundles/corecategory/js/treeinclude.js') }}"></script>
+    {%endif%}
+{% endblock %}
+
+    <div class="sonata-ba-side-menu" style="padding: 0px 0;overflow-x: auto;">
+        <div id="findContentForm_{{form.vars.id}}" class="form-inline" action="#" style="padding: 8px">
+            <button class="btn btn-mini" id="openTreeButton_{{form.vars.id}}"  type="button"><i class="icon-folder-open"></i> Развернуть</button>&nbsp;
+            <button class="btn btn-mini"  id="closeTreeButton_{{form.vars.id}}" type="button"><i class="icon-folder-close"></i> Свернуть</button>&nbsp;
+            <button class="btn btn-mini"  id="checkAllTreeButton_{{form.vars.id}}" type="button"><i class="icon-check"></i> Отметить всё</button>&nbsp;
+            <button class="btn btn-mini"  id="uncheckAllTreeButton_{{form.vars.id}}" type="button"> Снять всё</button>&nbsp;
+
+            <button class="btn btn-mini" id="searchTreeButton_{{form.vars.id}}"  type="button"><i class="icon-search"></i> Поиск</button>&nbsp;
+            <span id="findContent_{{form.vars.id}}" style="display:none">
+                <input id="serachKey_{{form.vars.id}}" class="span2" type="text" placeholder="Фраза для поиска...">&nbsp;
+                <button id="findInTreeButton_{{form.vars.id}}" class="btn btn-mini" type="button"><i class="icon-ok"></i> Найти</button>&nbsp;
+                <button id="cleareFindInTreeButton_{{form.vars.id}}" class="btn btn-mini"  type="button"><i class="icon-tint"></i> Очистить</button>&nbsp;
+                <button id="removeFindInTreeButton_{{form.vars.id}}" class="btn btn-mini"  type="button"><i class="icon-remove-sign"></i> Убрать</button>
+            </span>
+        </div>
+        <div id="jsTreeContent_{{form.vars.id}}" >{{treeHtml|raw}}</div>
+        <select {{ block('widget_attributes') }}   multiple="multiple">
+        </select>
+    </div>
+    {% endspaceless %}
+{% endblock %}

@@ -1,0 +1,10 @@
+label_type_yes: Да
+label_type_no: Нет
+breadcrumb:
+  link_property_list: Список характеристик
+  link_property_delete: Удаление характеристики
+  property:
+    edit: Редактирование характеристики
+    create: Создание характеристики
+
+

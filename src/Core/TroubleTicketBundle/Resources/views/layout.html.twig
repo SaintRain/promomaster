@@ -1,0 +1,83 @@
+{% extends "CoreCommonBundle::main_layout.html.twig" %}
+
+{% use 'ApplicationSonataUserBundle:Profile:left_menu.html.twig' %}
+
+{% block content %}
+    <div role="main" class="cabinet_page{% if app.user == null %} guest{% endif %}" id="content">
+        {% block content_header %}
+        {% if app.user %}
+            <h1>Личный кабинет</h1>
+        {% endif %}
+        {% endblock %}
+        <!-- main content col -->
+        <div class="{% if app.user %}main_col {% else %}page_pad{% endif %}">
+            <div class="{% if app.user %} main_col_pad {% else %}main_guest_pad{% endif %}">
+                {% block trouble_ticket_content %}{% endblock %}
+            </div>
+        </div>
+        {% if app.user %}
+
+            {{ block('left_menu') }}
+
+            {#<aside class="side_col">
+                <div class="side_col_pad">
+                    <ul class="sidebar_menu">
+                        <li class="sidebar_menu_item
+                            {%- if app.request.attributes.get('_route') == 'application_sonata_user_profile_orders_history_list_first_page'
+                                or app.request.attributes.get('_route') == 'application_sonata_user_profile_orders_history_list'
+                                or app.request.attributes.get('_route') == 'application_sonata_user_profile_order'%} active{%- endif -%}
+                            ">
+                            {%- if app.request.attributes.get('_route') == 'application_sonata_user_profile_orders_history_list_first_page'
+                                or app.request.attributes.get('_route') == 'application_sonata_user_profile_orders_history_list'
+                                or app.request.attributes.get('_route') == 'application_sonata_user_profile_order' -%}
+                                <span class="sidebar_menu_link">Мои заказы</span>
+                            {%- else -%}
+                                <a href="{{ path('application_sonata_user_profile_orders_history_list_first_page') }}" class="sidebar_menu_link">Мои заказы</a>
+                            {%- endif -%}
+                        </li>
+                        <li class="sidebar_menu_item
+                            {%- if app.request.attributes.get('_route') == 'application_sonata_user_profile_products_favorites_first_page'
+                                or app.request.attributes.get('_route') == 'application_sonata_user_profile_products_favorites' %} active{%- endif -%}
+                            ">
+                            {%- if app.request.attributes.get('_route') == 'application_sonata_user_profile_products_favorites_first_page'
+                                or app.request.attributes.get('_route') == 'application_sonata_user_profile_products_favorites'  -%}
+                                <span class="sidebar_menu_link">Избранные товары</span>
+                            {%- else -%}
+                                <a href="{{ path('application_sonata_user_profile_products_favorites_first_page', {_format:'html'}) }}" class="sidebar_menu_link">Просмотренные товары</a>
+                            {%- endif -%}
+                        </li>
+                        <li class="sidebar_menu_item
+                            {%- if app.request.attributes.get('_route') == 'application_sonata_user_profile_products_history_first_page'
+                                or app.request.attributes.get('_route') == 'application_sonata_user_profile_products_history' %} active{%- endif -%}
+                            ">
+                            {%- if app.request.attributes.get('_route') == 'application_sonata_user_profile_products_history_first_page'
+                                or app.request.attributes.get('_route') == 'application_sonata_user_profile_products_history'  -%}
+                                <span class="sidebar_menu_link">Избранные товары</span>
+                            {%- else -%}
+                                <a href="{{ path('application_sonata_user_profile_products_history_first_page', {_format:'html'}) }}" class="sidebar_menu_link">Просмотренные товары</a>
+                            {%- endif -%}
+                        </li>
+                        <li class="sidebar_menu_item active"><span class="sidebar_menu_link">Мои обращения</span> <span class="notice_indicator">2</span></li>
+                    </ul>
+                    <ul class="sidebar_menu settings">
+                        <li class="sidebar_menu_item{%- if app.request.attributes.get('_route') == 'sonata_user_profile_show'%} active{%- endif -%}">
+                            {%- if app.request.attributes.get('_route') == 'sonata_user_profile_show' -%}
+                                <span class="sidebar_menu_link">Персональная информация</span>
+                            {%- else -%}
+                                <a href="{{ path('sonata_user_profile_show') }}" class="sidebar_menu_link">Персональная информация</a>
+                            {%- endif -%}
+                        </li>
+                        <li class="sidebar_menu_item"><a href="javascript:void(0);" class="sidebar_menu_link">Адреса доставки</a></li>
+                    </ul>
+
+                </div>
+            </aside>#}
+        {% endif %}
+    </div>
+{% endblock %}
+{% block js_head %}
+    {{ parent() }}
+         {% javascripts  'bundles/coretroubleticket/js/frontend.js' output='js/compiled/troubleticket_frontend.js' filter='yui_js' %}
+    <script src="{{ asset_url}}"></script>
+    {% endjavascripts %}    
+{% endblock %}

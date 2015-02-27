@@ -1,0 +1,208 @@
+{#**
+ * Шаблон для генерации письма с заказом для отправкт пользователю не email
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+{% spaceless %}
+
+    {% set user = order.contragent.user %}
+    <p style="width:700px">
+        {{-''-}}Здравствуйте{{helloPrefix}} Ваш заказ принят.<br>
+        {#{%if not user.isEnabled%}
+        {{-''-}}Ссылка на установление пароля: <a href="{{ urlOrder }}" target="_blank">{{ urlOrder }}</a>.<br>
+        {%endif%}#}
+        {{-''-}}Статус заказа вы можете отследить в личном кабинете на странице: <a href="{{ urlOrder }}" target="_blank">{{ urlOrder }}</a><br>
+
+        {%if payUrl%}
+            <br/><a href="{{ payUrl }}" target="_blank"><b>Оплатить заказ на сумму {{ moneyFormat(orderCostInfo['total_cost_all']) }}&nbsp;{{ currencyFormat() }}</b></a><br><br>
+            {%else%}
+                {%if attachment%}
+                    {{-''-}}В прикрепленном файле находится бланк для оплаты заказа в банке.<br>
+                {%endif%}
+        {%endif%}
+        {{-''-}}Будем рады ответить на ваши вопросы по телефонам:
+        {%- set phones = ServiceContainer.get('core_config_logic').get('phones') -%}
+        {%- set phonesCaptions = {'rostov':'Ростов-на-Дону','msk':'Москва','spb': 'Санкт-Петербург'}  -%}
+        {%- for key, phone in phones -%}
+            {%- if phonesCaptions[key] is defined -%}
+
+                <br>{{ phonesCaptions[key] }}: {{ phone }}
+
+            {%- endif -%}
+        {%- endfor -%}
+    </p>
+
+    <h2 style="width:700px">Заказ №{{ order.id|idFormat }}</h2>
+
+    <table width="700px" cellpadding="5" cellspacing="0">
+        <tr>
+            <td width="140px"><b>Статус:</b></td>
+            <td>
+
+                {%- if order.extraStatus -%}
+                    {{ attribute(order.extraStatus, 'caption' ~ ServiceContainer.getParameter('locale')) }}
+                {%- else -%}
+                    В обработке
+                {%- endif -%}
+
+            </td>
+        </tr>
+        <tr>
+            <td><b>Оформлен:</b></td>
+            <td>{{ createdDateTime }}</td>
+        </tr>
+        <tr>
+            <td><b>Сумма заказа:</b></td>
+            <td>{{ moneyFormat(orderCostInfo['history_info'] is defined ? orderCostInfo['history_info']['total_cost_all'] : orderCostInfo['total_cost_all']) }} {{ currencyFormat() }}</td>
+        </tr>
+
+        {% if order.deliveryMethod %}
+
+            <tr>
+                <td><b>Доставка:</b></td>
+                <td>{{ attribute(order.deliveryMethod, 'caption' ~ ServiceContainer.getParameter('locale')) }}</td>
+            </tr>
+
+        {% endif %}
+
+    </table>
+    <br>
+
+    <table class="border" width="700px" border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <td colspan="5" style="text-align: center;"><h2>Состав заказа</h2></td>
+        </tr>
+        <tr>
+            <td align="center"><b>Фото</b></td>
+            <td align="center"><b>Название товара</b></td>
+            <td align="center"><b>Цена</b></td>
+            <td align="center"><b>Кол-во</b></td>
+            <td align="center"><b>Стоимость</b></td>
+        </tr>
+
+        {% for composition in order.compositions %}
+
+            {%- set size = null -%}
+            {%- for pdp in composition.product.productDataProperty -%}
+                {%- if pdp.data.property.name == 'size' -%}
+                    {%- set size = pdp.data.value -%}
+                {%- endif -%}
+            {%- endfor -%}
+
+            <tr>
+                <td>
+                    <a href="http://{{ domain }}{{ path('core_product',{slug: composition.product.slug}) }}" target="_blank">
+                        <img src="http://{{ domain }}{{ asset(composition.product.images|getFileWebPath('preview','100x100_')) }}" width="100xp"/>
+                    </a>
+                </td>
+                <td>
+                    <a href="http://{{ domain }}{{ path('core_product',{slug: composition.product.slug}) }}" target="_blank">{{ attribute(composition.product, 'caption' ~ ServiceContainer.getParameter('locale')) }}</a>
+                    <br>
+                    <span style="font-size:11px">
+                        {{- composition.product.color ? attribute(composition.product.color, 'caption' ~ ServiceContainer.getParameter('locale')) ~ ' цвет' : '' }}{{ (composition.product.color and size) ? ', ' : '' }}{{ size ? size ~ '  размер' : '' }}{% if composition.product.sku %} (SKU: {{ composition.product.sku }}){% endif %}<br>
+                    </span>
+                </td>
+                <td align="right">{{ moneyFormat(composition.price) }}&nbsp;{{ currencyFormat() }}</td>
+                <td align="center">{{ composition.quantity }}&nbsp;шт.</td>
+                <td align="right">
+                    {{- moneyFormat(composition.cost) }}&nbsp;{{ currencyFormat() -}}
+                    <br>
+                    {%- if orderCostInfo['composition'][composition.product.id]['discountValue'] > 0 -%}
+                        {%- if orderCostInfo['composition'][composition.product.id]['isDiscountValueInPercent'] -%}
+                            {{ orderCostInfo['composition'][composition.product.id]['discountValue'] }}&nbsp;%
+                        {%- else -%}
+                            {{ moneyFormat(orderCostInfo['composition'][composition.product.id]['discountValue']) }}&nbsp;{{ currencyFormat() }}
+                        {%- endif -%}
+                    {%- endif -%}
+
+                </td>
+            </tr>
+
+        {% endfor %}
+        <tr>
+            <td colspan="4" align="right">Товаров на сумму:</td>
+            <td align="right">{{ moneyFormat(orderCostInfo['composition_total_cost']) }}&nbsp;{{ currencyFormat() }}</td>
+        </tr>
+        {#<tr>
+            <td>Подарочная упаковка</td>
+            <td class="sum price">399 {{ currencyFormat() }}</td>
+        </tr>#}
+
+        {% if orderCostInfo['delivery_cost'] > 0 and order.deliveryMethod %}
+
+            <tr>
+                <td colspan="4" align="right">Доставка: {{ attribute(order.deliveryMethod, 'caption' ~ ServiceContainer.getParameter('locale')) }}</td>
+                <td align="right">{{ moneyFormat(orderCostInfo['delivery_cost']) }}&nbsp;{{ currencyFormat() }}</td>
+            </tr>
+
+        {% endif %}
+
+        {% if orderCostInfo['total_discount_summ'] > 0 %}
+
+            <tr>
+                <td colspan="4" align="right">Скидка:</td>
+                <td align="right">-{{ moneyFormat(orderCostInfo['total_discount_summ']) }}&nbsp;{{ currencyFormat() }}</td>
+            </tr>
+
+        {% endif %}
+
+        <tr class="cabinet_order_list_total_sum">
+            <td colspan="4" align="right">Общая стоимость c учетом доставки:</td>
+            <td align="right">{{ moneyFormat(orderCostInfo['total_cost_all']) }}&nbsp;{{ currencyFormat() }}</td>
+        </tr>
+    </table>
+
+    <br>
+
+    {% set c = order.contragent %}
+    {%if order.recipientFio or order.recipientCompany or order.deliveryCity or order.recipientPhone
+    or order.recipientEmail%}
+    <table width="700px" cellpadding="5" cellspacing="0">
+        <tr>
+            <td colspan="2" style="text-align: center;"><h2 style="text-align: center;">Получатель и адрес доставки</h2></td>
+        </tr>
+        {% if order.recipientFio %}
+            <tr>
+                <td width="140px"><b>ФИО:</b></td>
+                <td>{{ order.recipientFio }}</td>
+            </tr>
+        {% else %}
+            {%if order.recipientCompany%}
+            <tr>
+                <td width="140px"><b>Организация:</b></td>
+                <td>{{ order.recipientCompany }}</td>
+            </tr>
+            {%endif%}
+        {% endif %}
+
+        {% if order.deliveryCity %}
+            <tr>
+                <td><b>Адрес:</b></td>
+                <td>Российская Федерация, {{ order.deliveryCity.postIndex }}, г. {{ order.deliveryCity.name }}, {{ order.deliveryAddress }}</td>
+            </tr>
+        {% endif %}
+
+        {% if order.recipientPhone %}
+            <tr>
+                <td><b>Контактный телефон:</b></td>
+                <td>{{ order.recipientPhone }}</td>
+            </tr>
+        {% endif %}
+
+        {% if order.recipientEmail %}
+            <tr>
+                <td><b>E-mail:</b></td>
+                <td>{{ order.recipientEmail }}</td>
+            </tr>
+        {% endif %}
+    </table>
+    {%endif%}
+    <br>
+    <p style="width:700px">
+        {{-''-}}С наилучшими пожеланиями,<br>
+        {{-''-}}команда сайта <a href="http://{{domain}}" target="_blank">{{ domain }}</a>.
+        {{-''-}}
+    </p>
+
+{% endspaceless %}

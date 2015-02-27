@@ -1,0 +1,163 @@
+
+{#**
+ * Шаблон для вывода блока c комментариями заказа
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% use 'ApplicationSonataAdminBundle:Admin\\ExtraBlocks\\Comments:comment.html.twig' %}
+
+{% block comments_block %}
+    {% spaceless %}
+
+        <div id="comments-block-container">
+            <div class="well" id="comments-block">
+
+                <div class="comments">
+
+                    {% for comment in object.adminComments|reverse %}
+
+                        {{ block('comments_block_comment') }}
+
+                    {% endfor %}
+
+                </div>
+
+                <form id="comments-form">
+                    <input type="hidden" name="orderId" value="{{ object.id }}">
+                    <input type="hidden" name="class" value="{{ get_class(object) }}">
+                    <textarea name="comment" class="span12" placeholder="Ваш комментарий"></textarea>
+                    <br>
+
+                    {% set checked = '' %}
+                    {% for subscriber in object.subscribersOnAdminComments %}
+                        {% if subscriber.id == app.user.id %}
+                            {% set checked = 'checked="checked"' %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <label>
+                        <input type="checkbox" name="isSubscribe" {{ checked }}> подписаться на комментарии
+                    </label>
+
+                    <input type="submit" value="Сохранить" class="btn btn-small comment-save">
+                    <br>
+                    <div class="comment-ajax-result alert alert-danger"></div>
+                    <div class="comment-ajax-result alert alert-success"></div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+
+            // Подсчет кол-ва комментариев и смена цвета у лейбы с кол-вом
+            function commentsCount() {
+                var c = $('#comments-block .comments .comment').size();
+                var $c = $('#comments-count');
+                if (c > 0 && $c.hasClass('label-warning')) {
+                    $c.removeClass('label-warning').addClass('label-success');
+                } else if (c === 0 && $c.hasClass('label-success')) {
+                    $c.removeClass('label-success').addClass('label-warning');
+                }
+                $c.text(c);
+            }
+
+            $(function(){
+
+                // подсветка границы при наведении на крестик
+                $('#comments-block-container').on({
+                    mouseover: function(){
+                        $(this).closest('.comment').css('border-color', '#E9322D');
+                    },
+                    mouseout: function(){
+                        $(this).closest('.comment').css('border-color', '#E3E3E3');
+                    }
+                }, '.comment-remove');
+
+                // подсветка коментария по id
+                if (location.hash) {
+                    if ($(location.hash + '-i').is('div')) {
+                        $(location.hash + '-i').css('border-color', 'rgba(82, 168, 236, 0.8)');
+                    }
+                }
+
+                // ajax запрос на добавление коментария или подписки/отписки от комментариев
+                $('#comments-block-container').on({
+                    click: function(e){
+                        e.preventDefault();
+                        $('.comment-save').attr('disabled', 'disabled');
+                        $('.comment-ajax-result').hide();
+                        var formData = $(this).closest('form#comments-form').serializeArray();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ path('application_sonata_admin_comment_leave') }}',
+                            data: formData
+                        })
+                        .done(function(result) {
+                            if (undefined !== result.error) {
+                                $('.comment-ajax-result.alert-danger').html(result.error.join('<br>')).slideDown('fast');
+                            } else if (undefined !== result.success) {
+                                $('.comment-ajax-result.alert-success').html(result.success.join('<br>')).slideDown('fast');
+                                $('form#comments-form textarea').val('');
+                            }
+
+                            if (undefined !== result.other) {
+                                if (undefined !== result.other.commentHtml) {
+                                    $('#comments-block-container .comments').prepend(result.other.commentHtml);
+                                    $('#comments-block-container .comments .comment:first').css('border-color', '#3ED500').slideDown('fast', function(){
+                                        commentsCount();
+                                        $(this).effect('highlight', {'color': '#DFF0D8'}, 2000);
+                                        $(this).find('.comment-header').effect('highlight', {'color': '#DFF0D8'}, 2000);
+                                    });
+                                }
+                            }
+                            $('.comment-save').attr('disabled', false);
+                        })
+                        .fail(function() {
+                            $('.comment-ajax-result.alert-danger').text('При сохранении произошла ошибка, возможно сохранение не произошло!').slideDown('fast');
+                            $('.comment-save').attr('disabled', false);
+                        });
+                    }
+                }, '.comment-save');
+
+                // Удаление комментария
+                $('#comments-block-container').on({
+                    click: function(e){
+                        e.preventDefault();
+                        if (!confirm('Подтвердите удаление комментария!')) {
+                            return false;
+                        }
+                        $('.comment-ajax-result').hide();
+                        var $this = $(this);
+                        var id = $this.data('id');
+                        var className = $('#comments-form input[name="class"]').val();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ path('application_sonata_admin_comment_remove') }}',
+                            data: {id: id, orderId: {{ object.id }}, class: className }
+                        })
+                        .done(function(result) {
+                            if (undefined !== result.error) {
+                                $('.comment-ajax-result.alert-danger').html(result.error.join('<br>')).slideDown('fast');
+                            } else if (undefined !== result.success) {
+                                $('.comment-ajax-result.alert-success').html(result.success.join('<br>')).slideDown('fast');
+                                $this.closest('div.comment').slideUp('fast', function(){
+                                    $(this).remove();
+                                    commentsCount();
+                                });
+                            }
+                        })
+                        .fail(function() {
+                            $('.comment-ajax-result.alert-danger').text('При удалении произошла ошибка, возможно удаление не произошло!').slideDown('fast');
+                        });
+                    }
+                }, '.comment-remove');
+
+            });
+        </script>
+
+    {% endspaceless %}
+{% endblock %}

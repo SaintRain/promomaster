@@ -1,0 +1,26 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field %}
+    
+    {% if object.contragents | length %}
+        {% set ids = '' %}
+        {% set ordersTotal = 0 %}
+        {% for contragent in object.contragents %}
+            {% if contragent.orders | length %}
+                {% if ordersTotal > 0 %}
+                    {% set ids = ids ~ ',' ~ contragent.id %}
+                    {% else %}
+                        {% set ids = ids ~ contragent.id %}
+                {% endif %}
+                {% set ordersTotal = ordersTotal + (contragent.orders | length) %}
+            {% endif %}
+        {% endfor %}
+        {% if ordersTotal > 0 %}
+            <a target="blank" href="{{path('admin_core_order_order_list', {'filter[contragent__user__email][value]': ids})}}">{{'orderCount' | transchoice(ordersTotal)}}</a>
+            {% else %}
+                <div class="label">Заказов нет</div>
+        {% endif %}
+        {% else %}
+            <div class="label">Заказов нет</div>
+    {% endif %}
+    
+{% endblock %}

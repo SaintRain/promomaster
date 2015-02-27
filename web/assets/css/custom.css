@@ -1,0 +1,47 @@
+/* Социальные кнопки для авторизации */
+.social_btn {display:inline-block;//display:inline;zoom:1;width:33px;height:32px;font-size:5px;background:url('/images/sprites/social.png') 0 0 no-repeat;vertical-align:middle}
+.social_facebook {cursor:pointer;background-position:0 0}
+.social_facebook:hover {cursor:pointer;background-position:0 -32px}
+.social_vkontakte {cursor:pointer;background-position:-33px 0}
+.social_vkontakte:hover {cursor:pointer;background-position:-33px -32px}
+.social_twitter {cursor:pointer;background-position:-66px 0}
+.social_twitter:hover {cursor:pointer;background-position:-66px -32px}
+.social_yandex {cursor:pointer;background-position:-99px 0}
+.social_yandex:hover {cursor:pointer;background-position:-99px -32px}
+.social_google {cursor:pointer;background-position:-132px 0}
+.social_google:hover {cursor:pointer;background-position:-132px -32px}
+.social_odnoklassniki {cursor:pointer;background-position:-165px 0}
+.social_odnoklassniki:hover {cursor:pointer;background-position:-165px -32px}
+.login_social {margin:0;padding-top:0px;margin-top:0; margin-bottom: 10px; text-align: center;}
+.login_social h2, .login_social h3 {display:inline-block;margin:0 20px 0 0;vertical-align:middle;//display:inline;zoom:1}
+
+/* Для ошибок в формах */
+div.state-error >input {
+    background: #fff0f0;
+}
+.form_field_error_txt {
+    color:#AB4141;
+}
+.rulesError {
+    display: none;
+}
+
+.sky-form-other-style   {
+    padding: 0px 0px 0px !important;
+    border: 0px  !important;
+}
+.margin-bottom-20 {
+    margin-bottom: 20px !important;
+}
+
+span.help {
+    font-size: 11px;
+}
+
+/* обшие стили для формы multiupload_image */
+/*.count-of-uploaded-files{display:none;}*/
+/*.sonata-bc .form-horizontal input.hidden-always{display: none;}*/
+/*.sonata-bc .hide-by-timer{margin: 10px 0px 10px 0px !important;}*/
+/*.sonata-bc .table-bordered td.b-l-none{border-left: none;}*/
+/*.sonata-bc .table th, .sonata-bc .table td.text-center{text-align: center;}*/
+/*.counter-of-files,.counter-of-documents{display: none;}*/

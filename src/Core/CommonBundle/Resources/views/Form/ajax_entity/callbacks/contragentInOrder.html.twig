@@ -1,0 +1,70 @@
+<script>
+    function contragentFormatResult{{ id }}(result) {
+    {#        console.log(result)#}
+            return  contragentFormatCommon{{ id }}(result);
+        }
+
+        function contragentFormatSelection{{ id }}(result) {
+            var html = contragentFormatCommon{{ id }}(result),
+                    id = "{{ id }}",
+                    fio = '',
+                    organization = '',
+                    passport='';
+
+            if (result.lastName) {
+                fio = result.lastName;
+            }
+
+            if (result.firstName) {
+                fio = fio + ' ' + result.firstName;
+            }
+            if (result.surName) {
+                fio = fio + ' ' + result.surName;
+            }
+
+            if (result.organization) {
+                organization = result.organization;
+            }
+            
+            if (result.passport) {
+                passport = result.passport;
+            }
+            
+   {#         console.log(organization)
+            //проставляем ФИО и компанию, паспорт
+            $('input[id $= "contragentCompany"]').val(organization);
+            $('input[id $= "contragentFio"]').val(fio);
+            if ($('input[id $= "recipientPassport"]').val()) {
+                $('input[id $= "recipientPassport"]').val(passport);
+            }#}
+
+            return html;
+        }
+
+        function contragentFormatCommon{{ id }}(result) {
+            var html = '',
+                    subText = '';
+
+            if (result.lastName) {
+                subText = result.lastName;
+            }
+            if (result.firstName) {
+                subText = subText + ' ' + result.firstName;
+            }
+
+            if (result.surName) {
+                subText = subText + ' ' + result.surName;
+            }
+
+            if (result.organization) {
+                subText = subText + ' ' + result.organization;
+            }
+
+            html = '<b>' + result.userEmail + '</b>' + '<i id="ticket_owner" style="display: none;">' + result.userId + '</i>';
+            if (subText) {
+                html = html + ', ' + subText;
+            }
+            return html;
+        }
+
+</script>

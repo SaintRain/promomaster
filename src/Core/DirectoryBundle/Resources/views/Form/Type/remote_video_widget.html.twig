@@ -1,0 +1,36 @@
+{% form_theme form 'CoreCommonBundle:Form:choice_widget_with_data_attr.html.twig' %}
+{% block remote_video_form_frontend_widget %}
+    {% spaceless %}
+        <fieldset class="remote-wrapper">
+            <div class="span4">
+                <div class="control-group">
+                    {{form_label(attribute(form, 'caption' ~ prefix), null, {'label_attr' : {'class': ' control-label extra-label'} })}}
+                    <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                        {{form_widget(attribute(form, 'caption' ~ prefix))}}
+                    </div>
+                </div>
+
+                <div class="control-group ">
+                    {{form_label(form.code, null, {'label_attr' : {'class': ' control-label extra-label'} })}}
+                    <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                        {{form_widget(form.code)}}
+                    </div>
+                </div>
+
+                <div class="control-group ">
+                    {{form_label(form.videoHosting, null, {'label_attr' : {'class': ' control-label extra-label'} })}}
+                    <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                        {{form_widget(form.videoHosting)}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="span4">
+                {% set curCode = (form.code.vars.value) ? form.code.vars.value : '' %}
+                {% for hosting in form.vars.hostings %}
+                    <iframe class="hidden {{hosting.name}} remote-video-container" width="560" height="315" src="{{hosting.playerUri}}{{curCode}}" frameborder="0"></iframe>
+                {% endfor %}
+            </div>
+        </fieldset>
+    {% endspaceless %}
+{% endblock  %}

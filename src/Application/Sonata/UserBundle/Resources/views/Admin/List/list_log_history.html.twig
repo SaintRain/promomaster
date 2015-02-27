@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.logs | length %}
+        <div> Дата: {{object.logs.last.loginDateTime | date("d.m.Y H:i:s", default_timezone) }}</div>
+        <div>Способ: {{object.logs.last.loginBySocial ? object.logs.last.loginBySocial : 'Наш сайт'}}</div>
+        <div>IP: {{object.logs.last.ip}}</div>
+        {% else %}
+            <div class="label">Записей нет</div>
+    {% endif %}
+{% endblock %}

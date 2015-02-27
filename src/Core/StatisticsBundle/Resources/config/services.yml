@@ -1,0 +1,66 @@
+parameters:
+#    core_statistics.example.class: Core\StatisticsBundle\Example
+
+services:
+# Сервис для работы со статистиками продукта
+  core_product_statistics_logic:
+    class: Core\StatisticsBundle\Logic\ProductStatisticsLogic
+    arguments: ['%default_timezone%', '@doctrine', '@session', '@simplethings_entityaudit.reader']
+
+  # Сервис для работы со статистикой для главной страницы админки
+  core_dashboard_statistics_logic:
+    class: Core\StatisticsBundle\Logic\DashboardStatisticsLogic
+    arguments: ['%default_timezone%', '@doctrine.orm.entity_manager', '@session', '@simplethings_entityaudit.reader', '@liip_monitor.runner']
+
+  # Логика для отображения изменений в сущностях
+  core_audit_logic:
+    class: Core\StatisticsBundle\Logic\AuditLogic
+    arguments: ['%default_timezone%', '@doctrine', '@simplethings_entityaudit.reader', '@simplethings_entityaudit.config']
+
+
+  #админский сервис для вывода статистик
+  core_statistics_admin:
+    class: Core\StatisticsBundle\Admin\StatisticsAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Статистика, label: Статистика по продуктам }
+    arguments: [null, Core\StatisticsBundle\Entity\Statistics, CoreStatisticsBundle:Admin\StatisticsAdmin]
+
+  #логика для вывода статистики по складам
+  core_statistics_stock_logic:
+    class: Core\StatisticsBundle\Logic\StockStatisticsLogic
+    arguments: ['@doctrine.orm.entity_manager']
+
+  #логика для вывода статистики заканчивающегося товара
+  core_statistics_deficit_product_logic:
+    class: Core\StatisticsBundle\Logic\DeficitProductStatisticsLogic
+    arguments: ['@doctrine.orm.entity_manager']
+
+  #логика для вывода инвенторизации
+  core_statistics_inventory_logic:
+    class: Core\StatisticsBundle\Logic\InventoryStatisticsLogic
+    arguments: ['@doctrine.orm.entity_manager', '@templating', '@tfox.mpdfport']
+
+  #логика для вывода статистики по виртуальным позициям
+  core_statistics_virtual_units_logic:
+    class: Core\StatisticsBundle\Logic\VirtualUnitsStatisticsLogic
+    arguments: ['@doctrine.orm.entity_manager']
+
+  #логика для незавершенного заказа
+  core_statistics_not_finished_order_logic:
+    class: Core\StatisticsBundle\Logic\NotFinishedOrderLogic
+    arguments: ['@doctrine.orm.entity_manager', '@session', '@security.context']
+
+  #подписчик для незавершенного заказа
+  core_statistics_not_finished_order_listener:
+    class: Core\StatisticsBundle\EventListener\NotFinishedOrderListener
+    arguments: ['@core_statistics_not_finished_order_logic']
+    tags:
+      - { name: kernel.event_listener, event: core_file_image.not_finished_order_create_update, method: onNotFinishedOrderCreateUpdate, priority: 255}
+      - { name: kernel.event_listener, event: core_statistics.not_finished_order_delete, method: onNotFinishedOrderDelete, priority: 255}
+
+  #админский сервис для вывода статистик
+  core_statistics_not_finished_order_admin:
+    class: Core\StatisticsBundle\Admin\NotFinishedOrderAdmin
+    tags:
+      - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Бухгалтерия, label: Незавершенные заказы }
+    arguments: [null, Core\StatisticsBundle\Entity\NotFinishedOrder, null]

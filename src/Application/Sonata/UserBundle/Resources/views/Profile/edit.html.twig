@@ -1,0 +1,124 @@
+{#редактирование профиля ЛК#}
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}Редактирование вашего профиля{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Персональная информация</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li class="active">Персональная информация</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+{% block sub_content %}
+    {#форма редактирования профиля ЛК#}
+    {% for flashMessage in app.session.flashbag.get('profile_edit_success') %}
+        <div class="alert alert-success fade in">
+            {{ flashMessage|trans({}) | raw }}
+        </div>
+    {% endfor %}
+
+    {% if form.vars.errors | length %}
+        <div class="alert alert-danger fade in">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <form class="sky-form sky-form-other-style"  action="{{ path('sonata_user_profile_show') }}" {{ form_enctype(form) }} method="POST">
+        <header  class="sky-form-other-style">Редактирование профиля</header><br/>
+        <fieldset class="sky-form-other-style">
+
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.firstname) %}state-error{% endif %}">
+                    <label>Имя</label>
+                    {{ form_widget(form.firstname,{ 'attr': {'class': 'form-control margin-bottom-20'} }) }}
+                    {{ form_errors(form.firstname) }}
+
+                </div>
+                <div class="col-sm-6  {% if form_errors(form.lastname) %}state-error{% endif %}">
+                    <label>Фамилия</label>
+                    {{ form_widget(form.lastname,{ 'attr': {'class': 'form-control margin-bottom-20'} }) }}
+                    {{ form_errors(form.lastname) }}
+                </div>
+            </div>
+
+            {#<div class="margin-bottom-20 {% if form_errors(form.firstname) %}state-error{% endif %}">#}
+            {#<label>Имя</label>#}
+            {#{{ form_widget(form.firstname,{ 'attr': {'class': 'form-control margin-bottom-20'} }) }}#}
+            {#{{ form_errors(form.firstname) }}#}
+            {#</div>#}
+
+            {#<div class="margin-bottom-20 {% if form_errors(form.lastname) %}state-error{% endif %}">#}
+            {#<label>Фамилия</label>#}
+            {#{{ form_widget(form.lastname,{ 'attr': {'class': 'form-control margin-bottom-20'} }) }}#}
+            {#{{ form_errors(form.lastname) }}#}
+            {#</div>#}
+
+            <div class="margin-bottom-20 {% if form_errors(form.email) %}state-error{% endif %}">
+                <label>Email </label>
+                {{ form_widget(form.email,{ 'attr': {
+                    'class': 'form-control '} }) }}
+                {{ form_errors(form.email) }}
+            </div>
+
+            <div class="margin-bottom-20 {% if form_errors(form.phone) %}state-error{% endif %}">
+                <label>Телефон </label>
+                {{ form_widget(form.phone,{ 'attr': {
+                    'class': 'form-control '} }) }}
+                {{ form_errors(form.phone) }}
+            </div>
+
+
+            <div class="margin-bottom-20 {% if form_errors(form.isRssNews) %}state-error{% endif %}">
+                <label class="checkbox">
+                    {{ form_widget(form.isRssNews) }}<i></i> Получать рассылку</label>
+                {{ form_errors(form.isRssNews) }}
+                </label>
+            </div>
+
+
+            <div class=" margin-bottom-20">
+                <h3>Изменить пароль</h3>
+            </div>
+
+            <div class="row ">
+                <div class="col-sm-6  {% if form_errors(form.plainPassword.first) %}state-error{% endif %}">
+                    <label>Новый пароль </label>
+                    {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.plainPassword.first) }}
+
+                </div>
+                <div class="col-sm-6  {% if form_errors(form.plainPassword.second) %}state-error{% endif %}">
+                    <label>Повторите пароль </label>
+                    {{ form_widget(form.plainPassword.second, { 'attr': { 'class': 'form-control'} }) }}
+                    {{ form_errors(form.plainPassword.second) }}
+                </div>
+            </div>
+
+            <div class=" margin-bottom-20">
+            </div>
+
+            {{ form_rest(form) }}
+        </fieldset>
+
+        <footer class="sky-form-other-style">
+            <div class="row">
+                <div class="col-lg-6 checkbox">
+                </div>
+                <div class="col-lg-6 text-right">
+                    <button class="btn-u" type="submit">Сохранить</button>
+                </div>
+            </div>
+        </footer>
+    </form>
+{% endblock %}

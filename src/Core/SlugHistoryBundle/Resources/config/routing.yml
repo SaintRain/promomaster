@@ -1,0 +1,5 @@
+core_slug_history_editor_ajax:
+    pattern:  /admin/ajax/slug_history/editor.json
+    schemes:  [https]
+    defaults: { _controller: CoreSlugHistoryBundle:AdminAjaxSlugHistory:editorSlug }
+    methods:  [POST]

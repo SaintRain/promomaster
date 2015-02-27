@@ -1,0 +1,101 @@
+
+{#**
+ * Шаблон для вывода истории баланса у контрагента
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block balance_history_tbody %}
+    {% spaceless %}
+
+        {%- if balanceHistory -%}
+
+            <tbody id="table-export-to-csv" class="table-highlight-on-hover" data-csv-name="balance_history-{{ 'now'|date('d-m-Y_H-i-s', default_timezone) }}{% if object is defined %}-No{{ object.id }}{% endif %}.csv">
+
+                <tr>
+                    <td class="table-th">Дата</td>
+                    <td class="table-th">Дебет</td>
+                    <td class="table-th">Кредит</td>
+                    <td class="table-th">Баланс</td>
+                    <td class="table-th">Описание</td>
+                </tr>
+
+                {%- set balance = 0 -%}
+                {%- set dateShort = balanceHistory|first.date|getMonthWord(true)|capitalize -%}
+                {%- for i,item in balanceHistory -%}
+
+                {%- set dateShortTmp = item.date|getMonthWord(true)|capitalize -%}
+                {%- if dateShort != dateShortTmp or i == 0 -%}
+                    {%- set dateShort = dateShortTmp -%}
+
+                    <tr>
+                        <th colspan="5" class="table-th">{{ dateShort }}</th>
+                    </tr>
+
+                {%- endif -%}
+
+                    <tr>
+                        <td>
+                            {{- item.date|date('d.m.Y', default_timezone) -}}
+                        </td>
+                        <td align="right" {#{% if item.amount < 0 %} error{% endif %}#}>
+                            <div class="text-right">
+
+                                {%- if not item.type -%}
+                                    {%- if item.amount %}-{% endif %}{{- moneyFormat(item.amount) }} {{ currencyFormat() -}}
+                                    {%- set balance = balance - item.amount -%}
+                                {%- endif -%}
+
+                            </div>
+                        </td>
+                        <td align="right" {#{% if item.amount > 0 %} success{% endif %}#}>
+                            <div class="text-right">
+
+                                {%- if item.type -%}
+                                    {{- moneyFormat(item.amount) }} {{ currencyFormat() -}}
+                                    {%- set balance = balance + item.amount -%}
+                                {%- endif -%}
+
+                            </div>
+                        </td>
+                        <td align="right" class="{% if balance < 0 %}error{% elseif balance > 0 %}success{% endif %}">
+                            <div class="text-right">
+
+                                    {{- moneyFormat(balance) }} {{ currencyFormat() -}}
+
+                            </div>
+                        </td>
+                        <td>
+                            {{- item.description|raw|nl2br -}}
+                        </td>
+                    </tr>
+
+                {%- endfor -%}
+
+                <tr>
+                    <td></td>
+                    <td style="border-left: none;"></td>
+                    <td style="border-left: none;"><div class="text-right">Итого:</div></td>
+                    <td class="{% if balance < 0 %}error{% elseif balance > 0 %}success{% endif %}">
+                        <div class="text-right">
+                            <span class="text-right">
+
+                                {{- moneyFormat(balance) }} {{ currencyFormat() -}}
+
+                            </span>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+
+            </tbody>
+
+        {%- else -%}
+
+            Контрагент еще не совершал никаких операций!
+
+        {%- endif -%}
+
+    {% endspaceless %}
+{% endblock %}

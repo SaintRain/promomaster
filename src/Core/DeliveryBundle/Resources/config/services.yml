@@ -1,0 +1,122 @@
+parameters:
+   core_delivery.companiesWithKeys: ['cdek', 'dellin', 'ems', 'dpd']
+   core_delivery.companyEmail : %default_email%
+services:
+
+  #Админский класс транспортных компаний
+  core_delivery_company_admin:
+    class: Core\DeliveryBundle\Admin\CompanyAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Доставка, label: Компании }
+    arguments: [null, Core\DeliveryBundle\Entity\Company, null]
+
+  #Админский класс доставок транспортных компаний
+  core_delivery_services_admin:
+    class: Core\DeliveryBundle\Admin\ServiceAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Доставка, label: Способы доставки }
+    arguments: [null, Core\DeliveryBundle\Entity\Service, CoreDeliveryBundle:Admin\ServiceAdmin]
+    calls:
+    - [ setSubClasses, [ { "Service": Core\DeliveryBundle\Entity\Service, "ServiceWithAddress": Core\DeliveryBundle\Entity\ServiceWithAddress, "ServiceInCity": Core\DeliveryBundle\Entity\ServiceInCity} ] ]
+
+ #Админский класс доставок транспортных компаний
+  core_delivery_adress_admin:
+    class: Core\DeliveryBundle\Admin\AddressAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Доставка, label: Пункты выдачи}
+    arguments: [null, Core\DeliveryBundle\Entity\Address, null]
+
+ #Админский класс типов доставок транспортных компаний
+  core_delivery_services_type_admin:
+    class: Core\DeliveryBundle\Admin\ServiceTypeAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Доставка, label: Типы доставок }
+    arguments: [null, Core\DeliveryBundle\Entity\ServiceType, null]
+
+  #Класс для рассылки писем
+  core_delivery_mailer:
+    class: Core\DeliveryBundle\Logic\Mailer
+    arguments: ['@mailer', '@router', '@templating','@translator', {'fromEmail': %default_email_sender_name%}]
+    
+  #Базовый класс доставок
+  core_delivery:
+    class: Core\DeliveryBundle\Logic\DeliveryContext
+    arguments: ['@session', '@doctrine.orm.entity_manager', '@core_order_logic', %core_delivery.companyEmail%, %kernel.root_dir%, '@core_order_mailer_logic']
+    calls:
+        - [create, [{"cdek":"@core_delivery.cdek", "dpd":"@core_delivery.dpd", "pek":"@core_delivery.pek", "dellin":"@core_delivery.dellin", "post_ru":"@core_delivery.postRu", "ems":"@core_delivery.ems", "energy":"@core_delivery.energy", "jel_dor":"@core_delivery.jelDor"}] ]
+  # Сервис ТК СДЭК
+  core_delivery.cdek:
+    class: Core\DeliveryBundle\Logic\Cdek
+    arguments:
+      options:
+        operation: %core_delivery.cdek.options%
+        internalCodes: %core_delivery.cdek.InternalCodes%
+    lazy: true
+
+  # Сервис ТК DPD
+  core_delivery.dpd:
+    class: Core\DeliveryBundle\Logic\Dpd
+    arguments:
+      options:
+        operation: %core_delivery.dpd.options%
+        internalCodes: %core_delivery.dpd.InternalCodes%
+    lazy: true
+
+  # Сервис ТК ПЭК
+  core_delivery.pek:
+    class: Core\DeliveryBundle\Logic\Pek
+    arguments:
+      options:
+        operation: %core_delivery.pek.options%
+    lazy: true
+
+  # Сервис ТК Деловые линии
+  core_delivery.dellin:
+    class: Core\DeliveryBundle\Logic\Dellin
+    arguments:
+      options:
+        operation: %core_delivery.dellin.options%
+    lazy: true
+
+  # Сервис ТК Почта Росси
+  core_delivery.postRu:
+    class: Core\DeliveryBundle\Logic\PostRu
+    arguments:
+      options:
+        operation: %core_delivery.postRu.options%
+    lazy: true
+
+  # Сервис ТК EMS
+  core_delivery.ems:
+    class: Core\DeliveryBundle\Logic\Ems
+    arguments:
+      options:
+        operation: %core_delivery.ems.options%
+    lazy: true
+
+  # Сервис ТК ЖелДорАльянс
+  core_delivery.jelDor:
+    class: Core\DeliveryBundle\Logic\JelDor
+    arguments:
+      options:
+        operation: %core_delivery.jelDor.options%
+    lazy: true
+
+  # Сервис ТК Энергия
+  core_delivery.energy:
+    class: Core\DeliveryBundle\Logic\Energy
+    arguments:
+      options:
+        operation: %core_delivery.energy.options%
+    lazy: true
+
+  # валидатор проверки соотвествия внутренних системных кодов компаниям
+  core_delivery.internal_codes_validator:
+      class: Core\DeliveryBundle\Validator\Constraints\InternalCodeValidator
+      arguments:
+          internalNames:
+              # имя ТК в БД: список внутренних кодов
+              dpd: %core_delivery.dpd.InternalCodes%
+              cdek: %core_delivery.cdek.InternalCodes%
+      tags:
+            - { name: validator.constraint_validator, alias: core_delivery_internal_code }

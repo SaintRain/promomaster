@@ -1,0 +1,143 @@
+
+{#**
+ * Шаблон для вывода правого блока с заказом на страницах Данные покупателя, Доставка, Оплата
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+
+{% block order_summary_block %}
+
+    <aside class="side_col">
+        <div class="side_col_pad">
+
+            <div class="call_us_sidebox">
+                <h2>Есть вопросы? Звоните!</h2>
+
+                {% set phones = ServiceContainer.get('core_config_logic').get('phones') %}
+                {% set phonesCaptions = {'rostov':'в Ростове-на-Дону','msk':'в Москве','spb': 'в Санкт-Петербурге'}  %}
+
+                <strong class="text-phone-selected">{{ phones['rostov'] }}</strong>
+                <br>
+                <span class="text_tgl text-city-selected">{{ phonesCaptions['rostov'] }}</span>
+                <div class="header_contacts_dropdown dropdown">
+                    <ul>
+                        {% for key, phone in phones %}
+                            {% if phonesCaptions[key] is defined %}
+
+                                <li id="{{ key }}" {% if key == 'rostov' %}class="selected"{% endif %}><strong class="text-phone">{{ phone }}</strong><br><span class="text-city">{{ phonesCaptions[key] }}</span></li>
+
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="work_time_sidebox">
+                <h2>Время работы:</h2>
+                <strong>Пн. &mdash;&nbsp;Пт. с&nbsp;09:00 до&nbsp;18:00&nbsp;МСК</strong><br>
+            </div>
+
+            {% if data.orderCostInfo is defined and data.orderCostInfo.total_cost > 0 %}
+
+                {% set orderCostInfo = data.orderCostInfo %}
+
+                {% if orderCostInfo %}
+
+                    <section class="order_summary">
+                        <h2>Ваш заказ <span class="order_summary_count">{{ orderCostInfo.total_quantity }}</span></h2>
+                        <table class="order_summary_products_list">
+                            <tbody>
+
+                                {% for product in data.products %}
+
+                                    <tr class="order_summary_product">
+                                        <td>
+                                            <strong class="order_summary_product_name">{{ attribute(product, 'caption' ~ app.request.locale) }} ({{ data.sessionOrder['products'][product.id]['quantity'] }} шт.)</strong>
+                                            <p class="order_summary_product_specs">
+
+                                                {%- set size = null -%}
+                                                {%- for pdp in product.productDataProperty -%}
+                                                    {%- if pdp.data.property.name == 'size' -%}
+                                                        {%- set size = pdp.data.value -%}
+                                                    {%- endif -%}
+                                                {%- endfor -%}
+
+                                                {{- product.color ? attribute(product.color, 'caption' ~ app.request.locale) ~ ' цвет' : '' }}{{ (product.color and size) ? ', ' : '' }}{{ size ? size ~ '  размер' : '' }}{% if product.sku %} (SKU: {{ product.sku }}){% endif %}<br>
+
+                                                {% if product.orderOnly %}
+
+                                                    Под заказ{% if product.deliveryDays %}. Время обработки {{ product.deliveryDays }} {{ declOfNum(product.deliveryDays, ['день','дня','дней']) }}.{%  endif %}
+
+                                                {% endif %}
+
+                                            </p>
+                                        </td>
+                                        <td class="order_summary_product_price">
+                                            <div class="product_price">{{ moneyFormat(orderCostInfo['composition'][product.id]['cost']) }} {{ currencyFormat() }}</div>
+
+                                            {% if orderCostInfo['composition'][product.id]['discountValue'] %}
+
+                                                <span class="discount">{{ moneyFormat(orderCostInfo['composition'][product.id]['discountValue']) }}{% if orderCostInfo['composition'][product.id]['isDiscountValueInPercent'] %}%{% else %} {{ currencyFormat() }}{% endif %}</span>
+
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                        <table class="order_summary_total">
+                            <tbody>
+                                <tr>
+                                    <td>Товаров на сумму</td>
+                                    <td class="sum price">{{ moneyFormat(orderCostInfo.composition_total_cost) }} {{ currencyFormat() }}</td>
+                                </tr>
+                                {#
+                                <tr>
+                                    <td>Подарочная упаковка</td>
+                                    <td class="sum price">399 {{ currencyFormat() }}</td>
+                                </tr>
+                                #}
+
+                                {% if orderCostInfo['delivery_cost'] %}
+
+                                    <tr>
+                                        <td>Доставка: «{{ data.order.deliveryMethod.captionRu }}»</td>
+                                        <td class="sum price">{{ moneyFormat(orderCostInfo.delivery_cost) }} {{ currencyFormat() }}</td>
+                                    </tr>
+
+                                {% endif %}
+
+                                {% if orderCostInfo['total_discount_summ'] %}
+
+                                    <tr class="discount">
+                                        <td>Скидка</td>
+                                        <td class="sum price">-{{ moneyFormat(orderCostInfo.total_discount_summ) }} {{ currencyFormat() }}</td>
+                                    </tr>
+
+                                {% endif %}
+
+                                <tr class="order_summary_total_sum">
+
+                                    {% if orderCostInfo['delivery_cost'] %}
+                                        <td>Общая стоимость с учетом доставки</td>
+                                    {% else %}
+                                        <td>Общая стоимость без учета доставки</td>
+                                    {% endif %}
+
+                                    <td class="sum price">{{ moneyFormat(orderCostInfo.total_cost) }} {{ currencyFormat() }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+
+                {% endif %}
+            {% endif %}
+
+        </div>
+    </aside>
+
+{% endblock %}

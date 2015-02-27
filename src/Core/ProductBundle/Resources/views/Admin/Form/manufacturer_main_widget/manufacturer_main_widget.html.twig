@@ -1,0 +1,78 @@
+{% block manufacturer_main_widget %}
+    {{ block ('choice_widget') }}
+
+    <a style="margin-left:5px;display:none" id="manufacturerMainIdLink" title="Перейти на редактирование" target="_blank"
+       href="#">
+        <i class="icon-edit"></i>
+    </a>
+    <script>
+        $(document).ready(function() {
+            var manufacturerMainId ={% if sonata_admin.admin.subject.manufacturerMain%}{{sonata_admin.admin.subject.manufacturerMain.id}}{%else%} false{%endif%},
+                    isChanged = false;
+
+            function setManufacturerMain() {
+                var manufacturerMain = $("#{{sonata_admin.admin.uniqid}}_manufacturerMain");
+
+                $('#manufacturerMainIdLink').hide();
+
+                //очищаем и подсвечиваем новю категорию
+                manufacturerMain.empty()
+                        .append($('<option></option>')
+                                .val('').attr('selected', 'selected').html('Ничего не выбрано...'));
+                manufacturerMain.select2("val", '')
+
+                //берём отмеченные категории
+                $('#{{sonata_admin.admin.uniqid}}_manufacturers').find(":selected").each(function(index) {
+                    var text = $(this).text(),
+                            id = parseInt($(this).val());
+
+                    if (isChanged) {
+                        if (isChanged === id) {
+                            manufacturerMain.append($('<option></option>').val(id).html(text));
+                            manufacturerMain.select2("val", id)
+                            $('#manufacturerMainIdLink').show();
+                        }
+                        else {
+                            manufacturerMain.append($('<option></option>').val(id).html(text));
+                        }
+                    }
+                    else if (manufacturerMainId === id) {
+                        manufacturerMain.append($('<option></option>').val(id).html(text));
+                        manufacturerMain.select2("val", id);
+                        $('#manufacturerMainIdLink').show();
+                    }
+                    else {
+                        manufacturerMain.append($('<option></option>').val(id).html(text));
+                    }
+
+                });
+            }
+
+
+            $("#{{sonata_admin.admin.uniqid}}_manufacturerMain").on('change', function() {
+                manufacturerMainId = false;
+
+                //выставляем ссылку редактирования
+                var manufacturerMain=$(this);
+                var link = "{{path('admin_core_manufacturer_manufacturer_edit', {id:'__s'})}}";
+                var m_id=manufacturerMain.find(":selected").attr('value');
+                if (m_id) {
+                    $('#manufacturerMainIdLink').show().attr('href', link.replace('__s', m_id));
+                }
+                else {
+                    $('#manufacturerMainIdLink').hide();
+                }
+
+                isChanged = parseInt($(this).val());
+
+            });
+
+            $("#{{sonata_admin.admin.uniqid}}_manufacturers").change(function(event) {
+                setManufacturerMain();
+            });
+            setManufacturerMain();
+
+        });
+    </script>
+
+{%endblock%}

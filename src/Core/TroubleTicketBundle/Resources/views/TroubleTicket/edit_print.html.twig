@@ -1,0 +1,61 @@
+{% extends 'CoreCommonBundle::main_layout.html.twig'%}
+{% block header %} {% endblock %}
+{% block footer %} {% endblock %}
+{% block menu %} {%endblock %}
+{% block content %}
+<div role="main" class="cabinet_page{% if app.user == null %} guest{% endif %}" id="content">
+    <div class="cabinet_discussion">
+        {% if app.user %}
+            <h2>{{ticket.title}}</h2>
+            {% else %}
+                <h1>{{ticket.title}}</h1>
+        {% endif %}
+        <ul class="cabinet_discussion_info">
+            <li>{{ticket.createdDateTime | date('d.m.Y, H:i', default_timezone)}}</li>
+            <li>&numero;{{ticket.id}}</li>
+        </ul>
+        {% if ticket.body or (ticket.file | length) %}
+            <div class="cabinet_discussion_text">
+                {{ticket.body | raw}}
+                {% if ticket.file | length %}
+                    <h4>Прикрипленные файлы</h4>
+                    <br />
+                    <ul>
+                        {% for file in ticket.file %}
+                            <li>
+                                <a href="{{ asset(file|getFileWebPath) }}">{{file.name}}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endif %}
+            <section class="cabinet_discussion_comments">
+                {% if ticket.logs | length %}
+                    <h3>Обсуждение</h3>
+                    <ul class="cabinet_discussion_comments_list">
+                        {% for log in ticket.logs %}
+                            {% if log.message %}
+                                <li class="cabinet_discussion_comment {% if log.manager%}official{% endif %}">
+                                    <span class="cabinet_discussion_comment_info">
+                                        {% if log.manager %}
+                                            <strong>{{log.manager.userName}} (сотрудник OliKids)</strong>
+                                            {% elseif ticket.authorName %}
+                                                <strong>{{ ticket.authorName }}</strong>
+                                            {% else %}
+                                                <strong>{{ ticket.authorEmail }}</strong>
+                                        {% endif %}
+                                        <span>{{log.date | date('d.m.Y, H:i', default_timezone)}}</span>
+                                    </span>
+                                    {% if log.message %}
+                                        <div>{{log.message.body | raw}}</div>
+                                    {% endif %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig' %}
+{% block admin_date_range_widget %}
+    {% spaceless %}
+        <div class="label-inline date-range-wrapper">
+            {% set selector = {} %}
+                {% for child in form %}
+                    {{ form_label(child) }}
+                    {{ form_widget(child,{'attr':{'class':' span4 datepicker-with-range'} }) }}
+
+                    {% set selector = selector | merge({(loop.index0) : "#" ~ child.vars.id}) %}
+                        {% endfor %}
+                            {% set selector = selector|join(', ') %}
+                                {% if widgetConfig.ranges %}
+                                    <div class="dropdown" style="float:right">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-hover="dropdown" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu" style="right: 0; left: auto;" aria-labelledby="dropdownMenu1">
+
+                                            <li>
+                                                <a class="date-range" data-from="{{'now'|date("d.m.Y", default_timezone)}}" href="javascript:void(0);">Сегодня</a>
+                                            </li>
+                                            <li>
+                                                <a class="date-range" data-from="{{oneDay|date("d.m.Y", default_timezone)}}" data-to="{{oneDay|date("d.m.Y")}}" href="javascript:void(0);">Вчера</a>
+                                            </li>
+                                            <li>
+                                                <a class="date-range" data-from="{{twoDays|date("d.m.Y", default_timezone)}}" data-to="{{twoDays|date("d.m.Y")}}" href="javascript:void(0);">Позавчера</a>
+                                            </li>
+                                            <li>
+                                                <a class="date-range" data-from="{{sevenDays|date("d.m.Y", default_timezone)}}" href="javascript:void(0);">7 дн.</a>
+                                            </li>
+                                            <li>
+                                                <a class="date-range" data-from="{{firstDayOfWeek|date("d.m.Y", default_timezone)}}" data-to="{{middleDayOfWeek|date("d.m.Y")}}" href="javascript:void(0);">Нач. недели</a>
+                                            </li>
+                                            <li>
+                                                <a class="date-range" data-from="{{firstDayOfMonth|date("d.m.Y", default_timezone)}}" data-to="{{middleDayOfMonth|date("d.m.Y")}}" href="javascript:void(0);">Нач. месяца</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            {% endspaceless %}
+                                <script type="text/javascript">
+                                    // обработчик datepicker
+                                    (function($) {
+                                        $(function() {
+                                            $('.date-range').click(function() {
+                                                var $this = $(this),
+                                                        parentBlock = $(this).parents('div.date-range-wrapper'),
+                                                        dateFromField = $('input[name*="from"]', parentBlock),
+                                                        dateToField = $('input[name*="to"]', parentBlock),
+                                                        dateFrom = $this.attr('data-from'),
+                                                        dateTo = $this.attr('data-to'),
+                                                        minDateTo;
+                                                'input[name="filter[updatedDateTime][value][from]"]'
+                                                dateFromField.val(dateFrom);
+                                                dateToField.val(dateTo);
+                                                minDateTo = dateFrom.split('.').reverse();
+                                                minDateTo = new Date(minDateTo.join('/'));
+                                                dates.filter(dateToField).datepicker("option", 'minDate', minDateTo);
+                                                $('.dropdown.open .dropdown-toggle').dropdown('toggle');
+                                            });
+                                            var dates = $('{{selector | raw}}').datepicker({                            {% if widgetConfig.start == false %}
+                                minDate: new Date(2008, 11, 1),                                                            {% else %}
+                                                                            minDate: new Date({{widgetConfig.start * 1000 }}),                            {% endif %}
+                                    {% if widgetConfig.end %}
+                                                    maxDate: "+0D",                                                        {% endif %}
+                                                                                                dateFormat: "dd.mm.yy",
+                                                                                                changeMonth: true,
+                                                                                                changeYear: true,
+                                                                                                onClose: function(selectedDate)
+                                                                                                {
+                                                                                                    var $this = $(this),
+                                                                                                            instance = $this.data("datepicker"),
+                                                                                                            dateToField = $this.parents('.date-range-wrapper').find('input[name*="to"]'),
+                                                                                                            date = $.datepicker.parseDate(
+                                                                                                                    instance.settings.dateFormat ||
+                                                                                                                    $.datepicker._defaults.dateFormat,
+                                                                                                                    selectedDate, instance.settings);
+                                                                                                    if ($this.is('input[name*="from"]'))
+                                                                                                    {
+                                                                                                        dates.filter(dateToField).datepicker("option", 'minDate', date);
+                                                                                                    }
+                                                                                                }
+                                                                                            });
+                                                                                        });
+                                                                                    })(jQuery)
+                                </script>
+                                {% endblock %}

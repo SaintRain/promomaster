@@ -1,0 +1,27 @@
+application_sonata_admin_comment_leave:
+    path:      /order/comment/leave
+    defaults:  { _controller: ApplicationSonataAdminBundle:AjaxExtraBlocksAdmin:leaveComment }
+
+application_sonata_admin_comment_remove:
+    path:      /order/comment/remove
+    defaults:  { _controller: ApplicationSonataAdminBundle:AjaxExtraBlocksAdmin:removeComment }
+
+application_sonata_admin_tickets_attach:
+    path:      /order/tickets/attach
+    defaults:  { _controller: ApplicationSonataAdminBundle:AjaxExtraBlocksAdmin:attachTickets }
+
+application_sonata_admin_tickets_detach:
+    path:      /order/tickets/remove
+    defaults:  { _controller: ApplicationSonataAdminBundle:AjaxExtraBlocksAdmin:detachTickets }
+
+application_sonata_admin_phpinfo:
+    path:      /admin/phpinfo
+    defaults:  { _controller: ApplicationSonataAdminBundle:CustomPagesAdmin:printPhpInfo }
+
+application_sonata_admin_log:
+    path:      /admin/log
+    defaults:  { _controller: ApplicationSonataAdminBundle:CustomPagesAdmin:printLog }
+
+sonata_admin_set_object_field_value:
+    path:      /core/set-object-field-value
+    defaults:  { _controller: sonata.admin.controller.admin:setObjectFieldValueAction }

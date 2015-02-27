@@ -1,0 +1,34 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+    {%if object.data%}
+        {%if object.type=='string'%}            
+            {{object.data}}
+        {%else%}
+            {%if object.type=='text'%}            
+                <div style="width:100%;  height:100px;overflow: scroll">{{object.data}}</div>                
+            {%else%}
+                {% if object.type=='array'%}
+                    {%set mas=object.data|split("\n") %}
+                    {%set ind=0%}
+                    {%for m in mas%}
+                        {%if ind==1%}
+                            {%set value=m%}
+                            {%set ind=0%}
+
+                                <div data-original-title="{{key}}" data-toggle="popover" class="btn btn-small with-popover" data-placement="left" data-toggle="popover" data-content="{{value}}">{{key}}</div>&nbsp;
+
+
+                        {%else%}
+                            {%set key=m%}
+                            {%set ind=ind+1%}
+                        {%endif%}
+                    {%endfor%}
+                {%endif%}
+            {%endif%}
+
+
+        {%endif%}
+    {%endif%}
+
+{% endblock %}

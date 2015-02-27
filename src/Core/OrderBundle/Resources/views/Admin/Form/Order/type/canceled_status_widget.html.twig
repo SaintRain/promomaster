@@ -1,0 +1,109 @@
+{% block  canceled_status_widget %}
+    {% set order=sonata_admin.admin.subject %}        
+        <input  type="checkbox" {%if data%} checked="checked"  {%endif%} {{ block('widget_attributes') }} value="1">
+
+        <div class="extraCanceledFields well well-sm" style="width:450px;margin-top:10px;margin-bottom: 0px;display:none">
+            <table cellpadding="5" cellspacing="0">
+                <tr>
+                    <td>Причина отмены *</td>
+                    <td>
+                        <select {%if order.isCanceledStatus and not noDisable%} disabled {%endif%} style="width:300px" class="reasonSelect"  name="cancelExtra[reasonForCanceling]" >
+                            <option value="">Ничего не выбрано...</option>
+                            {%for r in reasons%}
+                                {%if not order.shippedDateTime and ((r.name==constant('Core\\OrderBundle\\Entity\\Order::returnCanceledReasonName') or r.name==constant('Core\\OrderBundle\\Entity\\Order::reorderCanceledReasonName')) and
+                                (order.reasonForCanceling.name  is not defined or (order.reasonForCanceling.name!=constant('Core\\OrderBundle\\Entity\\Order::returnCanceledReasonName') and order.reasonForCanceling.name!=constant('Core\\OrderBundle\\Entity\\Order::reorderCanceledReasonName'))))
+                                %}
+                                {%else%}
+                                    <option data-name="{{r.name}}" value="{{r.id}}" {%if order.reasonForCanceling and order.reasonForCanceling.id==r.id %} selected="selected" {%endif%}>{{r.captionRu}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </td>
+                </tr>
+
+                <tr class="stockForCancelingRow">
+                    <td>Склад, на который вернули весь товар *</td>
+                    <td>
+                        <select {%if order.isCanceledStatus and not noDisable%} disabled {%endif%} style="width:300px" class="stockForCanceling"  name="cancelExtra[stockForCanceling]" >
+                            <option value="">Ничего не выбрано...</option>
+                            {%for s in stocks%}
+                                <option value="{{s.id}}" {%if order.stockForCanceling and order.stockForCanceling.id==s.id %} selected="selected" {%endif%}>{{s.captionRu}}</option>
+                            {%endfor%}
+                        </select>
+                    </td>
+                </tr>
+
+
+                <tr >
+                    <td>Удержать с баланса&nbsp;</td>
+                    <td>
+                        <input data-mask="money" id="uderjatSbalansa" {%if order.isCanceledStatus  and not noDisable%} disabled {%endif%} value="{{order.keepMoneySumForCanceling|number_format(2, ',', '.')}}" style="width:200px"  type="text" name="cancelExtra[keepMoneySumForCanceling]"  >&nbsp;{{currencyFormat()}}
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">Комментарий *<br /><span style="color: gray">Текст будет доступен клиенту в e-mail и личном кабинете</span></td>
+                    <td>
+                        <textarea {%if order.isCanceledStatus  and not noDisable%} disabled {%endif%}  style="width:300px" rows="4"  name="cancelExtra[commentForCanceling]" class="reasonComment span5">{{order.commentForCanceling}}</textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <script>
+            $(document).ready(function() {
+
+                showHideExtraCanceledFields(false);
+                showHideChancelStock();
+
+                $('.reasonSelect').change(function() {
+                    showHideChancelStock();
+                });
+
+                $('.cancelledStatus').click(function() {
+                    showHideExtraCanceledFields({%if not order.isCanceledStatus and order.isDeliveryIncludedInPayment and order.shippedDateTime%}true{%else%}false{%endif%});
+                });
+
+                function showHideChancelStock() {
+                    var status = $('.reasonSelect').find(":selected").attr('data-name');
+
+                    if (status === '{{constant('Core\\OrderBundle\\Entity\\Order::returnCanceledReasonName')}}' || status === '{{constant('Core\\OrderBundle\\Entity\\Order::otherCanceledReasonName')}}') {
+                        
+                    {%if order.shippedDateTime or order.stockForCanceling %}
+                        $('.stockForCancelingRow').show();
+                        $('.stockForCanceling').attr('required', 'required');
+                        {%else%}
+                            $('.stockForCancelingRow').hide();
+                        $('.stockForCanceling').removeAttr('required');
+                        {%endif%}
+                    }
+                    else {
+                        $('.stockForCancelingRow').hide();
+                        $('.stockForCanceling').removeAttr('required');
+                    }
+                }
+
+                function showHideExtraCanceledFields(setSum) {
+                    if ($('.cancelledStatus').attr("checked") === "checked") {
+                        var delliverySumForKeepMoneySumForCanceling = "{%if order.deliveryCost%}{{order.deliveryCost}}{%else%}0.00{%endif%}";
+                        if (setSum && $('#uderjatSbalansa').val() == '0,00') {   //проставляем сумму доставки, которую следует удержать с баланса
+                            $('#uderjatSbalansa').inputmask('remove');
+                            $('#uderjatSbalansa').attr('value', delliverySumForKeepMoneySumForCanceling.replace('.', ','));
+                            $('#uderjatSbalansa').attr('data-mask', 'money');
+                            setTimeout('setMaskForInputs();', 1);   //нужен такой кастыль, иначе в хроме не верно отрабатывает
+
+                        }
+                        $('.extraCanceledFields').show();
+                        $('.reasonSelect').attr('required', 'required');
+                        $('.reasonComment').attr('required', 'required');
+
+                    }
+                    else {
+                        $('.extraCanceledFields').hide();
+                        $('.reasonSelect').removeAttr('required');
+                        $('.reasonComment').removeAttr('required');
+                        $('.stockForCanceling').removeAttr('required');
+                    }
+                }
+            });
+        </script>
+        {% endblock %}

@@ -1,0 +1,141 @@
+<div class="row-fluid play {% if (admin.id(object) is not null and object.id is not null) %} hidden {% endif %}" id="trouble-ticket-form">
+    <div class="clearfix"></div>
+    <div class="straight-border alone">
+    <div>
+
+        {% if admin.id(object) is not null and object.id is not null %}
+            {% set url = 'edit' %}
+            {% elseif admin.id(object) is not null and object.id is null %}
+                {% set url = 'copy' %}
+            {% elseif admin.id(object) is null and object.id is null %}
+                {% set url = 'create' %}
+        {% endif %}
+
+        <form class="form-horizontal trouble-ticket-form"
+              action="{{ admin.generateUrl(url, {'id': admin.id(object), 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}" {{ form_enctype(form) }}
+              method="POST" {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}>
+            <input id="objectId" type="hidden" value="{{object.id}}" >
+            <input id="uniqid" type="hidden" value="{{admin.uniqid}}" >
+            {% if form.vars.errors|length > 0 %}
+                <div class="sonata-ba-form-error">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+            <fieldset id="edit-msg" class="row-fluid">
+                <div class="grey-gradient span12 border-b">
+                    <div class="with-padding">
+                        <h5 class="pull-left widget-color">
+                            Свойства
+                            {% if admin.id(object) is not null and object.id is not null %}
+                                (<a class="more-info-ctrl" href="javascript:void(0);">Больше</a>)
+                            {% endif %}
+                        </h5>
+                        <div class="clear-fix"></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="clearfix"></div>
+                <div class="alone"></div>
+                <div class="row-fluid trouble-ticket-more-info">
+                    <div class="span12">
+                        <div class="control-group {% if form_errors(form.title) %}error{% endif %}">
+                            {{ form_label(form.title)}}
+                            <div class="controls">{{ form_widget(form.title,{'attr':{'class':'span11'} })}}</div>
+                        </div>
+                        <div class="control-group">
+                            {{ form_label(form.body)}}
+                            <div class="controls">{{ form_widget(form.body)}}</div>
+                        </div>
+                    </div>
+                </div>
+                {% if form.user is defined %}
+                   <div class="row-fluid">
+                       <div class="span8">
+                           <div class="control-group {% if form_errors(form.user) %}error{%endif%}">
+                               {{ form_label(form.user)}}
+                               <div class="controls">{{ form_widget(form.user)}}</div>
+                           </div>
+                       </div>
+                   </div>
+                {% endif %}
+                <div class="row-fluid">
+                    <div class="controls span6">
+                        <div class="control-group {% if form_errors(form.status) %}error{%endif%}">
+                            {{ form_label(form.status)}}
+                            <div class="controls">{{ form_widget(form.status)}}</div>
+                        </div>
+                        <div class="control-group {% if form_errors(form.priority) %}error{%endif%}">
+                            {{ form_label(form.priority)}}
+                            <div class="controls">{{ form_widget(form.priority)}}</div>
+                        </div>
+                    </div>
+                    <div class="controls span6 special-controls">
+                        <div class="control-group {% if form_errors(form.category) %}error{%endif%}">
+                            {{ form_label(form.category)}}
+                            <div class="controls">{{ form_widget(form.category)}}</div>
+                        </div>
+                        <div class="control-group">
+                            {{ form_label(form.readiness)}}
+                            <div class="controls">{{ form_widget(form.readiness)}}</div>
+                        </div>
+                        {#
+                        <div class="control-group">
+                            {{ form_label(form.order)}}
+                            <div class="controls">{{ form_widget(form.order)}}</div>
+                        </div>
+                        #}
+                    </div>
+                    <div>
+                        <div class="span8">
+                            <div class="control-group {% if form_errors(form.manager) %}error{%endif%}">
+                                {{ form_label(form.manager)}}
+                                <div class="controls">
+                                    <div class="fix-error">
+                                    {{ form_widget(form.manager)}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if admin.id(object) is not null and object.id is not null %}
+                <div class="row-fluid" id="edit-msg">
+                    <div class="control-group">
+                        <div class="controls">
+                            <a class="predefinded-answers" href="{{path('admin_core_troubleticket_troubleticket_categories')}}">Предопределенные ответы</a>
+                        </div>
+                    </div>
+                    {% for message in form.messages %}
+                        <div class="control-group">
+                            {#<label class="control-label" >Примечания</label>#}
+                            {{- form_label(message.body,'Примечания') -}}
+                            <div class="controls edit-msg">
+                                {{- form_widget(message.body,{'attr':{'class': 'msg-body main span11'} }) -}}
+                            </div>
+                            <div class="hidden">
+                                {{- form_widget(message.troubleTicket) -}}
+                                {{- form_widget(message.manager) -}}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% do form.messages.setRendered() %}
+                </div>
+                {% endif %}
+            </fieldset>
+            {{form_rest(form)}}
+            {% include 'CoreTroubleTicketBundle:Admin:Form/form_actions.html.twig' %}
+            <div class="preview-block modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">Предпросмотр</h3>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">{{'Close' | trans()}}</button>
+                    <button class="btn btn-primary">{{'Save changes' | trans()}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>

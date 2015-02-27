@@ -1,0 +1,15 @@
+
+{#**
+ * Шаблон для вывода суммы денег на списке записей
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+    <span style="color:{{ object.type ? 'green' : 'red' }}">{{ object.type == false and value != 0 ? '-' : '' }}{{ moneyFormat(value) }} {{ currencyFormat() }}</span>
+
+{% endblock %}

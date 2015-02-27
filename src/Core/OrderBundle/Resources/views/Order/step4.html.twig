@@ -1,0 +1,135 @@
+
+{#**
+ * Шаблон для вывода выбора способа оплаты
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'CoreCommonBundle::main_layout.html.twig' %}
+
+{% use 'CoreOrderBundle:Order/Block:summary_info.html.twig' %}
+{% use 'CoreOrderBundle:Order/Block:breadcrumbs.html.twig' %}
+
+{% block title %}Оформление заказа - оплата | OliKids.ru{% endblock %}
+{% block meta_keywords %}заказ, оформление, оплата{% endblock %}
+{% block meta_description %}Страница оформления заказа на сайте OliKids - выбор способа оплаты. Выберите наиболее подходящий Вам способ оплаты и нажмите кнопку &quot;Перейти к оплате&quot;.{% endblock %}
+
+{% block menu %} {% endblock %}
+
+{% block js_head %}
+    {% spaceless %}
+        {{ parent() }}
+        {#
+        {% if data.products is defined and data.products|length %}
+            {% set cartCost = moneyFormat(data.orderCostInfo['total_cost']) %}
+                {% else %}
+                    {% set cartCost = null %}
+        {% endif %}
+        #}
+        <script>
+            {% if data and data.products is defined and data.products|length %}
+                {% set cartCost = data.orderCostInfo['total_cost'] %}
+                    var google_tag_params = {
+                        ecomm_pagetype: 'purchase',
+                        ecomm_totalvalue: '{{ cartCost}}'
+                    };
+                    {% else %}
+                        var google_tag_params = {
+                            ecomm_pagetype: 'purchase'
+                        };
+            {% endif %}
+                {#
+            settingsJS.extra['pageType'] = 'purchase';
+            settingsJS.extra['cartCost'] = '{{ cartCost }}';
+                #}
+        </script>
+        {% javascripts
+            'bundles/coreorder/js/frontend.order.js'
+            'bundles/coreorder/js/steps.js'
+
+            output='js/compiled/order.js'
+            filter='yui_js' %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block content %}
+    {% spaceless %}
+        {{ block('order_breadcrumbs_block') }}
+
+        <div id="content" class="order_page" role="main">
+
+            <!-- main content col -->
+            <div class="main_col">
+                <div class="main_col_pad">
+
+                    {% if messages.error is defined %}
+
+                        <div class="payment-result alert alert-error">
+
+                            {{ messages.error|join('<br>')|raw|nl2br }}
+
+                        </div>
+
+                    {% elseif messages.success is defined %}
+
+                        <div class="payment-result alert alert-success">
+
+                            {{ messages.success|join('<br>')|raw|nl2br }}
+
+                        </div>
+
+                    {% endif %}
+
+                    {% if data.orderCostInfo is defined and data.orderCostInfo.total_cost > 0 %}
+
+                        <h2>Способ оплаты</h2>
+
+                        {% include 'CoreOrderBundle:Order/Block:payment_system_switcher.html.twig' %}
+
+                        <form method="POST">
+
+                            <input id="PaymentSystem" type="hidden" name="PaymentSystem">
+
+                            <div class="order_proceed">
+                                <a class="order_proceed_goprev" href="{{ path('core_order_cart_step3') }}">Доставка</a>
+                                <button class="common_button big with_arrow" type="submit"><span class="text-trigger">Перейти к оплате...</span></button>
+                            </div>
+
+                        </form>
+
+                     {% else %}
+
+                        <div class="info_box">{{ 'order.label.cartIsEmpty'|trans }}</div>
+
+                    {% endif %}
+
+                </div>
+            </div>
+            <!-- /main content col -->
+
+            <!-- side content col -->
+            {{ block('order_summary_block') }}
+            <!-- /side content col -->
+
+        </div>
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block footer %}
+
+    {% set mixMarketList = ServiceContainer.get('core_config_logic').get('mix-market') %}
+    {%- if app.environment == 'prod' -%}
+
+        {% set mixMarketList = ServiceContainer.get('core_config_logic').get('mix-market') %}
+        {{ mixMarketList['cart'] | raw }}
+
+    {%- endif -%}
+
+    {{ parent() }}
+
+{% endblock %}

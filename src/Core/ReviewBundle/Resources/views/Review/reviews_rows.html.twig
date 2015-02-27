@@ -1,0 +1,155 @@
+
+{#**
+ * Шаблон для вывода отзывов
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block reviews_rows %}
+    {% spaceless %}
+
+        {% set i = 0 %}
+
+        {% for id, review in reviews if i < reviewsShow %}
+
+            {% if review.object is defined %}
+                {% set review = review.object %}
+            {% endif %}
+
+           {# {% set isFiltred = true %}
+            {% if app.request.cookies.get('reviews_filter') %}
+                {% if app.request.cookies.get('reviews_filter') == review.rating %}
+                    {% set isFiltred = true %}
+                {% else %}
+                    {% set isFiltred = false %}
+                {% endif %}
+            {% endif %}#}
+
+            {% if review.lvl == 0 and (reviewsFilterRating is not defined or not reviewsFilterRating or reviewsFilterRating == review.rating)  %}
+
+                {% set i = i + 1 %}
+
+                <li {{fastEdit(review)}} class="product_discussion_node">
+
+                    <div id="review-{{ review.id }}" class="product_discussion_comment">
+
+                        {% block reviewOne %}
+
+                            {% if review.rating %}
+
+                                {{ drawStarsByRating(review.rating)|raw }}
+
+                                <br>
+
+                            {% endif %}
+
+                            <span class="product_discussion_author">
+                                <strong>
+
+                                    {%- if review.user.firstname or review.user.lastname -%}
+                                        {{ review.user.lastname }} {{ review.user.firstname }}
+                                    {%- else -%}
+                                        {{ review.user.username }}
+                                    {%- endif -%}
+
+                                </strong>, {{ review.createdAt|date('d.m.Y, H:i', default_timezone) -}}
+                                {%- if (reviews[id].isBuy) -%}
+                                    , Уже купил(а)
+                                {%- endif -%}
+                            </span>
+                            <p>{{ review.review|nl2br }}</p>
+                            {% if review.pros %}<p><strong>Плюсы:</strong> {{ review.pros|nl2br }}</p>{% endif %}
+                            {% if review.cons %}<p><strong>Минусы:</strong> {{ review.cons|nl2br }}</p>{% endif %}
+
+                            {% if review.photos.count or review.remoteVideos.count %}
+
+                                <ul class="product_opinion_photos">
+
+                                    {% if review.photos.count %}
+
+                                        {% for photo in review.photos %}
+
+                                            <li class="product_opinion_photo">
+                                                <a class="fancybox-button" rel="fancybox-{{ review.id }}" href="{{ asset(photo|getFileWebPath('watermark', 'watermark_', true)) }}">
+                                                    <img src="{{ asset(photo|getFileWebPath('preview', '35x35_')) }}" alt="{{ attribute(photo, 'alt' ~ app.request.locale) ? attribute(photo, 'alt' ~ app.request.locale) : 'Фото №' ~ photo.id }}">
+                                                </a>
+                                            </li>
+
+                                        {% endfor %}
+
+                                    {% endif %}
+
+
+                                    {% if review.remoteVideos.count %}
+
+                                        {% for video in review.remoteVideos %}
+
+                                            <li class="product_opinion_photo">
+                                                <a class="fancybox-button" rel="fancybox-{{ review.id }}" data-fancybox-type="iframe" rel="fancybox-button" href="{{ video.videoHosting.playerUri }}{{ video.code }}">
+                                                    <img width="35px" height="35px" src="{{ asset('images/video_preview.png') }}" alt="{{ attribute(video, 'caption' ~ app.request.locale ) }}"/>
+                                                </a>
+                                            </li>
+
+                                        {% endfor %}
+
+                                    {% endif %}
+
+                                </ul>
+
+                            {% endif %}
+
+                            <div class="product_opinion_rate{% if app.user and review.user.id == app.user.id %} product_opinion_rate_disabled"{% else %}" data-id="{{ review.id }}" data-url="{{ path('core_review_rate_ajax') }}{% endif %}">
+                                <span class="product_opinion_rate_label">Помог ли вам этот отзыв?</span>
+                                <span class="product_opinion_rate_button positive with_icon {% if not(app.user and review.user.id == app.user.id) and reviews[review.id] is defined and reviews[review.id]['isExistPositive'] %}selected{% endif %}" title="Да">{{ reviewsAll[review.id]['countPositive'] }}</span>
+                                <span class="product_opinion_rate_button negative with_icon {% if not(app.user and review.user.id == app.user.id) and reviews[review.id] is defined and reviews[review.id]['isExistNegative'] %}selected{% endif %}" title="Нет">{{ reviewsAll[review.id]['countNegative'] }}</span>
+                            </div>
+
+                        {% endblock %}
+
+                        {#{% if app.user and review.user.id != app.user.id %}#}
+
+                            <span class="reply_tgl text_tgl with_icon with_icon_right reviews-give-answer" data-trigger-text="Скрыть форму" data-id="{{ review.id }}">Ответить</span>
+
+                        {#{% else %}
+
+                            <br/>
+
+                        {% endif %}#}
+
+                        <div class="reviews-give-answer-form-container"></div>
+
+                    </div>
+
+                    {% if review.children %}
+
+                        <ul {{fastEdit(review)}} class="product_discussion_nodes">
+
+                            {% set children = review.children %}
+
+                            {% for review in children %}
+                                {% if review.isEnabled %}
+
+                                    <div {{fastEdit(review)}} class="product_discussion_comment">
+
+                                        {{ block ('reviewOne') }}
+
+                                        <div class="clearfix"></div>
+
+                                    </div>
+
+                                {% endif %}
+                            {% endfor %}
+
+                        </ul>
+
+                    {% endif %}
+
+                <li>
+
+            {% endif %}
+
+        {% endfor %}
+
+    {% endspaceless %}
+{% endblock %}

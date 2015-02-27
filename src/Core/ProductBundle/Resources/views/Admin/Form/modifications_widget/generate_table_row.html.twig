@@ -1,0 +1,58 @@
+{% block generate_table_row %}
+<tr class="main-row-collection {{field_id}}_row_id_{{d.id}}">
+    
+    {% if options.deleteable %}
+    <td><input type="checkbox" {%if d.id!=subject_id %}  class="{{field_id}}__delete"   name="{{uniqid}}[{{field_name}}][_delete][]" value="{{d.id}}"
+ {%if dInfo is defined and isCheckedForModificationDelete(d.id, dInfo)%} checked="checked" {%endif%}
+{%else%} disabled {%endif%}>
+                   </td>
+{%endif%}    
+               <td><input type="checkbox" {%if d.id!=subject_id %} class="{{field_id}}__undock" name="{{uniqid}}[{{field_name}}][_undock][]" value="{{d.id}}"
+{%if dInfo is defined and isCheckedForModificationUndock(d.id, dInfo)%} checked="checked" {%endif%}
+
+{%else%} disabled {%endif%}><input type="hidden" name="{{uniqid}}[{{field_name}}][ids][]" value="{{d.id}}"></td>
+                          <td><input type="radio"
+{%if dInfo is defined and dInfo and isGeneralForModification(d.id, dInfo)%} checked {%else%}{%if d.id==general_id %} checked{%endif%}{%endif%}  name="{{uniqid}}[{{field_name}}][general]" value="{{d.id}}"></td>
+
+                    {% for d_key,column in options.columns%}
+                                     <td>
+                            {%if column.template is defined %}
+{%else%}
+
+{%if column.type is defined and column.type=='boolean'%}
+    {{ include  ('CoreProductBundle::Admin/Form/modifications_widget/td_types/boolean.html.twig', {field_id:field_id, subject_id:subject_id, d:d, d_key:d_key}) }}
+    {%else%}
+        {%if column.type is defined and column.type=='money'%}
+            {{ include  ('CoreProductBundle::Admin/Form/modifications_widget/td_types/money.html.twig', {field_id:field_id, subject_id:subject_id, d:d, d_key:d_key}) }}
+        {%else%}
+            {%if column.type is defined and column.type=='image'%}
+                {{ include  ('CoreProductBundle::Admin/Form/modifications_widget/td_types/image.html.twig', {field_id:field_id, subject_id:subject_id, d:d, d_key:d_key}) }}
+            {%else%}
+            {%if column.type is defined and column.type=='color'%}
+                {{ include  ('CoreProductBundle::Admin/Form/modifications_widget/td_types/color.html.twig', {field_id:field_id, subject_id:subject_id, d:d, d_key:d_key}) }}
+            {%else%}
+            {%if column.type is defined and column.type=='product_data_property'%}
+                {{ include  ('CoreProductBundle::Admin/Form/modifications_widget/td_types/product_data_property.html.twig', {field_id:field_id, subject_id:subject_id, d:d, d_key:d_key}) }}
+            {%else%}
+
+         {% if column.identifier is defined and column.identifier and d.id!=subject_id%}
+                                             <a target="_blank" href="{{path (options.edit_route, {id:d.id})}}">{{attribute(d, d_key)}}</a>
+        {%else%}
+            {{attribute(d, d_key)}}
+        {%endif%}
+        {%endif%}
+        {%endif%}
+        {%endif%}
+        {%endif%}
+    {%endif%}
+{%endif%}
+                                         </td>
+    {%endfor%}
+                {% if sortable %}
+                                         <td class="sonata-ba-td-{{field_id}}-{{sortable}} hidden">
+                                             <input type="hidden"
+                                                    name="{{uniqid}}[{{field_name}}][_indexPosition][]" value="{{attribute(d, sortable)}}"></td>
+                {%endif%}
+                              </tr>
+
+{% endblock %}

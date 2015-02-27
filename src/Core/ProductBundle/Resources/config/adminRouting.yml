@@ -1,0 +1,50 @@
+#Создаём модификацию
+product_modification_create:
+    path:      /product_modification_create
+    schemes:  [https]
+    defaults:  { _controller: CoreProductBundle:ProductModification:createProductModification }
+    
+#Создаём дубликат
+product_dublicate_create:
+    path:      /product_dublicate_create
+    schemes:  [https]
+    defaults:  { _controller: CoreProductBundle:ProductModification:createProductDublicate }
+
+
+#Прицепляем запись как модификацию
+set_record_to_modification:
+    path:      /set_record_to_modification
+    schemes:  [https]
+    defaults:  { _controller: CoreProductBundle:ProductModification:setRecordToModification }
+
+#Отцепляем запись из модификаций
+unset_record_from_modification:
+    path:      /unset_record_from_modification
+    schemes:  [https]
+    defaults:  { _controller: CoreProductBundle:ProductModification:unsetRecordFromModification }
+
+#роутер для загрузки   прайса
+core_product_upload_price_file:
+    path:      core_product_upload_price_file.html
+    schemes:  [https]
+    defaults:  { _controller: CoreProductBundle:AjaxProduct:uploadPriceFile }
+
+#проверка  парсинга прайса
+core_product_upload_check_status:
+    path:      core_product_upload_check_status.html
+    schemes:  [https]
+    defaults:  { _controller: CoreProductBundle:AjaxProduct:uploadPriceFileCheckStatus }
+
+
+#роутер для начала генерации YML-файла
+core_product_yml_generator_start:
+    path:      core_product_yml_generator_start.html
+    schemes:  [https]
+    defaults:  { _controller: CoreProductBundle:AjaxProduct:ymlGeneratorStart }
+
+#проверка  генерации YML-файла
+core_product_yml_generator_check_status:
+    path:      core_product_yml_generator_check_status.html
+    schemes:  [https]
+    defaults:  { _controller: CoreProductBundle:AjaxProduct:ymlGeneratorCheckStatus }
+

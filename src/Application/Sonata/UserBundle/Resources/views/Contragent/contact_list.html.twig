@@ -1,0 +1,44 @@
+{% set isIndiContragent = (contragent.organization is defined) ? false : true %}
+<dl class="cabinet_addresses_list contact_list">
+    {% if contacts | length %}
+        <h2>{% if isIndiContragent %}Получатели{% else %}Адреса{% endif %}</h2>
+        <div class="cabinet_address_add">
+            <div class="controls">
+                <a href="{{path('application_sonata_user_contact_create', {'contragentId': contragent.id})}}" class="add with_icon text_tgl">{% if isIndiContragent %}Добавить получателя{% else %}Добавить адрес{% endif %}</a>
+            </div>
+        </div>
+    {% endif %}
+    {% for contact in contacts %}
+        <div {{fastEdit(contact)}} class="contact_contragents">
+            {% if contact.lastName is defined and contact.firstName is defined %}
+                <dt class="cabinet_address_person">{{contact.lastName}}&nbsp;{{contact.firstName}}</dt>
+            {% endif %}
+            <dd class="cabinet_address">
+                {% spaceless %}
+                    <p class="cabinet_address_info">
+                        Адрес: {{contact.address}}, {{contact.city.name}}, {#{{contact.postIndex}}, {{contact.city.country.getCaption()}}#}<br>
+                        {% if isIndiContragent and contact.phone is defined and contact.phone %}
+                            Контактный телефон: {{contact.phone}}
+                        {% endif %}
+                    </p>
+                {% endspaceless %}
+                <div class="cabinet_address_controls">
+                    <a href="{{path('application_sonata_user_contact_edit', {'contactId': contact.id})}}" class="edit with_icon text_tgl">Редактировать</a>
+                    <a data-route="contact_delete" data-contact="{{ contact.id}}" href="{{path('application_sonata_user_contact_delete')}}" class="delete with_icon text_tgl">Удалить</a>
+                </div>
+            </dd>
+        </div>
+        {% else %}
+            <div class="attention_box">
+                <h4>Информация о {% if isIndiContragent %}получателях{% else %}адресах{% endif %} не найдена</h4>
+                <br />
+                <div class="cabinet_address_add">
+                    <div class="controls">
+                        <span>Вы можете</span>
+                        <a href="{{path('application_sonata_user_contact_create', {'contragentId': contragent.id})}}" class="add with_icon text_tgl">Добавить</a>
+                        <span>&nbsp; неограниченное число {% if isIndiContragent %}получателей{% else %}адресов{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+</dl>

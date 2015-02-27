@@ -1,0 +1,13 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+    {%if object.cannotRemove is defined%}<span style="display:none" class="cannotRemove"></span>{%endif%}
+    <a href="{{path('admin_core_product_commonproduct_edit', {id:object.id})}}">
+        {% if object.images %}
+            <img class="img-thumbnail" src="{{ asset(object.images|getFileWebPath('preview', '64x64_')) }}"/>
+        {%else%}
+            <img title="Нет фото" width="64px" src="{{asset('/bundles/coreproduct/Admin/img/no_image.png')}}"/>
+        {%endif%}
+    </a>
+
+{% endblock %}

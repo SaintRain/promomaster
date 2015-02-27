@@ -1,0 +1,95 @@
+{% extends 'ApplicationSonataUserBundle::cabinet_layout.html.twig' %}
+
+{# SEO - заголовки #}
+{% block title %}Редактирование контрагента {{ contragent.listName|escape('html') }} | OliKids.ru{% endblock %}
+{% block meta_keywords %}редактирование, контрагент{% endblock %}
+{% block meta_description %}Страница редактирования контрагента на сайте OliKids. Вы можете изменить персональные данные контрагента или добавить адреса доставки.{% endblock %}
+
+{% block js_head %}
+    {{parent()}}
+    <script>
+        settingsJS.routes['contact_delete'] = '{{path('application_sonata_user_contact_delete')}}';
+    </script>
+     {% javascripts  'bundles/applicationsonatauser/js/frontend.contact.js' output='js/compiled/user_frontend_contact.js' filter='yui_js' %}
+    <script src="{{ asset_url}}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block main_content %}
+    <div {{fastEdit(contragent)}} class="main_col_pad">
+        <section class="cabinet_addresses">
+            {% if contragent.id %}
+                <h2>Редактирование "{{ contragent.listName }}"</h2>
+                {% else %}
+                    <h2>Новый контрагент</h2>
+            {% endif %}
+            {% for flashMessage in app.session.flashbag.get('contact_success') %}
+                    <div class="info_box success">
+                        <h6>{{ flashMessage|trans({}) }}</h6>
+                    </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('contragent_success_edit') %}
+                    <div class="info_box success">
+                        <h6>{{ flashMessage|trans({}) }}</h6>
+                    </div>
+            {% endfor %}
+            <div class="cabinet_address_add no_limit">
+                <div class="brown_gradient_box">
+                    {% form_theme form 'CoreCommonBundle:Form:row.html.twig' %}
+                    {% if contragent.organization is defined %}
+                        {% set isIndi = 0 %}
+                        {% include 'ApplicationSonataUserBundle:Contragent:Form/legal_form.html.twig' %}
+                        {% else %}
+                            {% set isIndi = 1 %}
+                            {% include 'ApplicationSonataUserBundle:Contragent:Form/indi_form.html.twig' %}
+                    {% endif %}
+                </div>
+                {#
+                {% set isIndiContragent = (contragent.organization is defined) ? false : true %}
+                <dl class="cabinet_addresses_list contact_list">
+                    {% if contragent.contactList | length %}
+                        <h2>{% if isIndiContragent %}Адресаты{% else %}Адреса{% endif %}</h2>
+                        <div class="cabinet_address_add">
+                            <div class="controls">
+                                <a href="{{path('application_sonata_user_contact_create', {'contragentId': contragent.id})}}" class="add with_icon text_tgl">{% if isIndiContragent %}Добавить адресата{% else %}Добавить адрес{% endif %}</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% for contact in contragent.contactList %}
+                        <div {{fastEdit(contact)}} class="contact_contragents">
+                            {% if contact.lastName is defined and contact.firstName is defined %}
+                                <dt class="cabinet_address_person">{{contact.lastName}}&nbsp;{{contact.firstName}}</dt>
+                            {% endif %}
+                            <dd class="cabinet_address">
+                                {% spaceless %}
+                                    <p class="cabinet_address_info">
+                                        Адрес: {{contact.address}}, {{contact.city.name}}<br>
+                                        {% if isIndiContragent and contact.phone is defined and contact.phone %}
+                                            Контактный телефон: {{contact.phone}}
+                                        {% endif %}
+                                    </p>
+                                {% endspaceless %}
+                                <div class="cabinet_address_controls">
+                                    <a href="{{path('application_sonata_user_contact_edit', {'contactId': contact.id})}}" class="edit with_icon text_tgl">Редактировать</a>
+                                    <a data-route="contact_delete" data-contact="{{ contact.id}}" href="{{path('application_sonata_user_contact_delete')}}" class="delete with_icon text_tgl">Удалить</a>
+                                </div>
+                            </dd>
+                        </div>
+                        {% else %}
+                            <div class="attention_box">
+                                <h4>Не найдено ни одного адресата</h4>
+                                <br />
+                                <div class="cabinet_address_add">
+                                    <div class="controls">
+                                        <span>Вы можете</span>
+                                        <a href="{{path('application_sonata_user_contact_create', {'contragentId': contragent.id})}}" class="add with_icon text_tgl">Добавить</a>
+                                        <span>нового адресата</span>
+                                    </div>
+                                </div>
+                            </div>
+                    {% endfor %}
+                </dl>
+                #}
+            </div>
+        </section>
+    </div>
+{% endblock %}

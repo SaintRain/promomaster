@@ -1,0 +1,25 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     symfony
+    database_user:     root
+    database_password: ~
+
+    mailer_encryption: null
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+
+    locale:            ru
+    domain_ru:         www.olikids.ru
+    secret:            ThisTokenIsNotSoSecretChangeIt
+    filebrowserBrowseRoute: elfinder  #папка куда будут сохраняться файлы из elfinder-менеджера
+    default_timezone: Europe/Moscow
+    default_currency: RUB
+    default_email: info@olikids.ru
+    default_email_sender_name: info@olikids.ru
+    java_path: /usr/bin/java    #папка, где хранится ява
+    router.request_context.host: %domain_ru%  #дефолтный домен, нужен для консоли, чтобы ставить правильный домен на роуты
+    router.request_context.base_url: app_dev.php #для прода ставим null

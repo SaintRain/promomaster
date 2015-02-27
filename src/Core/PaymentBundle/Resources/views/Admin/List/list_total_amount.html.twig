@@ -1,0 +1,27 @@
+
+{#**
+ * Шаблон для вывода общей суммы денег внесенных через определенную платежную систему на списке записей
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+    {% set totalAmount = 0 %}
+
+    {% for payment in value %}
+        {% if payment.isPassed %}
+            {% if payment.type == '+' %}
+                {% set totalAmount = totalAmount + payment.amount %}
+            {% else %}
+                {% set totalAmount = totalAmount - payment.amount %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+    <span style="color:{{ totalAmount >= 0 ? 'green' : 'red' }}">{{ moneyFormat(totalAmount) }} {{ currencyFormat() }}</span>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+
+
+<form method="post" action= "https://www.paypal.com/cgi-bin/webscr">
+    <input type="hidden" name="cmd" value="_xclick">
+    <input type="hidden" name="business" value="info@olikids.ru">
+    <input type="hidden" name="return" value="info@olikids.ru">
+    <input type="hidden" name="cancel_return" value="info@olikids.ru">
+    <input type="hidden" name="notify_url" value="info@olikids.ru">
+    <input type="hidden" name="item_name" value="Item name">
+    <input type="hidden" name="item_number" value="1234">
+    <input type="hidden" name="amount" value="1">
+    <input type="hidden" name="no_shipping" value="1">
+    <input type="hidden" name="currency_code" value="RUB">
+    <input type="submit" value="Buy Now">
+</form>
+
+
+  {#  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Hello World - Google  Web Search API Sample</title>
+    <script src="https://www.google.com/jsapi"
+        type="text/javascript"></script>
+    <script language="Javascript" type="text/javascript">
+    //<!
+    google.load('search', '1');
+
+    function OnLoad() {
+      // Create a search control
+      var searchControl = new google.search.SearchControl();
+
+      searchControl.addSearcher(new google.search.ImageSearch());
+
+
+      // tell the searcher to draw itself and tell it where to attach
+      searchControl.draw(document.getElementById("searchcontrol"));
+
+      // execute an inital search
+      searchControl.execute("VW GTI");
+    }
+    google.setOnLoadCallback(OnLoad);
+
+    //]]>
+    </script>
+  </head>
+  <body>
+    <div id="searchcontrol">Loading</div>
+  </body>#}
+</html>

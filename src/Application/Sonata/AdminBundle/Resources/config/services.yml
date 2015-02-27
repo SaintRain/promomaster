@@ -1,0 +1,11 @@
+services:
+  application_sonata_admin_date_range_form:
+    class: Application\Sonata\AdminBundle\Admin\Form\Type\DateRangeType
+    arguments: ['@translator']
+    tags:
+        - { name: form.type, alias: admin_date_range }
+
+# логика для заказов
+  application_sonata_admin_extra_blocks_logic:
+    class: Application\Sonata\AdminBundle\Logic\ExtraBlocksLogic
+    arguments: ['%domain_ru%', '%default_email%', '@doctrine', '@security.context', '@templating', '@mailer']

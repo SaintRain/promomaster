@@ -1,0 +1,95 @@
+{% extends base_template %}
+
+{% block actions %}
+    <div class="sonata-actions btn-group">
+        {% include 'SonataAdminBundle:Button:edit_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:history_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+        {% include 'SonataAdminBundle:Button:list_button.html.twig' %}
+    </div>
+{% endblock %}
+
+{% block side_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active'}, 'list') }}{% endblock %}
+
+{% block show %}
+    <div class="sonata-ba-view">
+
+        {{ sonata_block_render_event('sonata.admin.show.top', { 'admin': admin, 'object': object }) }}
+
+        {% for name, view_group in admin.showgroups %}
+            <table class="table table-bordered">
+                {% if name %}
+                    <thead>
+                    <tr class="sonata-ba-view-title">
+                        <th colspan="2">
+                            {{ admin.trans(name) }}
+                        </th>
+                    </tr>
+                    </thead>
+                {% endif %}
+
+                <tbody>
+                    <tr class="sonata-ba-view-container">
+                        <td>Покупатель</td>
+                        <td>
+                            {% if object.contragent %}
+                                <a href="{{path('admin_sonata_user_commoncontragent_edit',{'id':object.contragent.id})}}">{{object.contragent.listName}}</a>
+                                {% else %}
+                                    <span class="label label-important">нет</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr class="sonata-ba-view-container">
+                        <td>Способ доставки</td>
+                        <td>
+                            {% if object.deliveryMethod %}
+                                <a href="{{path('admin_core_delivery_service_edit',{'id':object.deliveryMethod.id})}}">{{object.deliveryMethod.captionRu}}</a>
+                                {% else %}
+                                    <span class="label label-important">нет</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr class="sonata-ba-view-container">
+                        <td>Состав заказа</td>
+                        <td>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td>Продукт</td>
+                                        <td>Базовая цена</td>
+                                        <td>Количество</td>
+                                        <td>Итого</td>
+                                    </tr>
+                                </thead>
+                            {% set totalCost = 0 %}
+                            {% for composition in object.compositions %}
+                                {% set totalCost = totalCost + (composition.cost * 1) %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{path('admin_core_product_commonproduct_edit',{'id':composition.product.id})}}">{{ composition.product.captionRu }}</a>
+                                            ( <a href="{{ path('core_product', {'slug' : composition.product.slug}) }}">Посмотреть на сайте</a> )
+                                        </td>
+                                        <td>{{ composition.price }} руб.</td>
+                                        <td>{{ composition.quantity }}</td>
+                                        <td>{{ composition.cost }} руб.</td>
+                                    </tr>
+                            {% endfor %}
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3">Итого</td>
+                                        <td colspan="4">
+                                            <div class="label">{{ totalCost }} руб.</div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endfor %}
+
+        {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
+
+    </div>
+{% endblock %}

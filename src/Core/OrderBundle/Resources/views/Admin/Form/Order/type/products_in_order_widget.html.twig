@@ -1,0 +1,427 @@
+{% block products_in_order_widget %}
+    {% set order=sonata_admin.admin.subject%}
+                
+        {% set costInfo=order.costInfo%}
+
+            {% if not sonata_admin.field_description.hasassociationadmin %}
+                {% for element in value %}
+                    {{ element|render_relation_element(sonata_admin.field_description) }}
+                {% endfor %}
+            {% else %}
+
+
+                <div id="field_container_{{ id }}" class="field-container">
+                    <span id="field_widget_{{ id }}" >
+                        {% if sonata_admin.edit == 'inline' %}
+                            {% if sonata_admin.inline == 'table' %}
+                                {% if form.children|length > 0 %}
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                {% for field_name, nested_field in form.children|first.children %}
+                                                    {% if field_name == '_delete' %}
+                                                        <th>
+                                                            Уд.
+                                                        </th>
+                                                    {% else %}
+                                                        <th {{ nested_field.vars['required']  ? 'class="required"' : '' }}{% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %} style="display:none;"{% endif %}>
+                                                            {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label) }}
+                                                        </th>
+                                                    {% endif %}
+                                                {% endfor %}
+
+                                                {%if order.id is defined%}
+                                                    <th style="width:300px">
+                                                        Бронирование по складам
+                                                    </th>
+                                                {%endif%}
+
+                                            </tr>
+                                        </thead>
+                                        <tbody class="sonata-ba-tbody">
+                                            {% for nested_group_field_name, nested_group_field in form.children %}
+                                                {% set composition=nested_group_field.vars.value%}
+                                                    <tr>
+                                                        {% for field_name, nested_field in nested_group_field.children %}
+
+                                                            <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group{% if nested_field.vars.errors|length > 0 %} error{% endif %}"{% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %} style="display:none;"{% endif %}>
+                                                                {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                                                    {# если продукт назначен, то его нельзя поменять, только удалить #}
+                                                                    {%if field_name=='product' and composition.product%}
+                                                                        {{ form_widget(nested_field, {read_only:true}) }}
+                                                                    {%else%}
+
+                                                                {%if field_name=='defaultSupplier' %}
+                                                                    {% if  not order.shippedDateTime or not form.parent.vars.valid %}
+                                                                    {{ form_widget(nested_field, {read_only:false, disabled:false}) }}
+                                                                        {% else %}
+                                                                            {{ form_widget(nested_field, {disabled:true}) }}
+                                                                        {% endif %}
+                                                                {% else %}
+                                                                    {{ form_widget(nested_field) }}
+                                                                    {% endif %}
+
+                                                                    {%endif%}
+
+                                                                    {# в чем скидка измеряется #}
+                                                                    {% if field_name=='discountValue' %}
+                                                                        {%if composition.isDiscountValueInPercent or not composition.id%}
+                                                                            %
+                                                                        {%else%}
+                                                                            {{currencyFormat()}}
+                                                                        {%endif%}
+                                                                    {%endif%}
+
+                                                                    {# Выводим общее количества товара по всем складам #}
+                                                                    {% if field_name=='quantity' %}
+                                                                        {%if composition.product%}
+                                                                            {% set totalQuantity=0 %}
+                                                                                {% for pa in composition.product.productAvailability %}
+                                                                                    {% set totalQuantity=totalQuantity+pa.quantity%}
+                                                                                        {%endfor%}
+                                                                                            {% if totalQuantity %}
+                                                                                                &nbsp;<span class="label" title="Количество товара доступное для бронирования">{{totalQuantity}} шт.</span>
+                                                                                            {%else%}
+                                                                                                &nbsp;<span class="label label-important" title="Товар закончился">нет</span>
+                                                                                            {%endif%}
+                                                                                            {%endif%}
+                                                                                                {%endif%}
+
+                                                                                                    {% set dummy = nested_group_field.setrendered %}
+                                                                                                        {% else %}
+
+                                                                                                            {# если продукт назначен, то его нельзя поменять, только удалить #}
+                                                                                                            {%if field_name=='product' and composition.product%}
+                                                                                                                {{ form_widget(nested_field, {read_only:true}) }}
+                                                                                                            {%else%}
+                                                                                                                {#нельзя удалять позиции, если у них есть серийники#}
+                                                                                                                {% if composition.units.count or nested_field.vars['read_only'] %}
+                                                                                                                    {{ form_widget(nested_field, {disabled:true}) }}
+                                                                                                                {%else%}
+                                                                                                                    {{ form_widget(nested_field) }}
+                                                                                                                {%endif%}
+
+                                                                                                            {%endif%}
+
+
+                                                                                                            {% endif %}
+                                                                                                                {% if nested_field.vars.errors|length > 0 %}
+                                                                                                                    <div class="help-inline sonata-ba-field-error-messages">
+                                                                                                                        {{ form_errors(nested_field) }}
+                                                                                                                    </div>
+                                                                                                                {% endif %}
+
+                                                                                                            </td>
+
+
+                                                                                                            {% endfor %}
+                                                                                                                {%if order.id is defined%}
+                                                                                                                    <td>
+
+                                                                                                                        {# выводим склады #}
+                                                                                                                        {%if composition.booking %}
+                                                                                                                            {% for pb in composition.booking %}
+                                                                                                                                {%if pb.id%}
+
+                                                                                                                                    <div>
+                                                                                                                                        <a href="{{path('admin_core_logistics_stock_edit', {id:pb.stock.id})}}"><b>{{pb.stock.captionRu}}</b></a>
+
+                                                                                                                                        <!--
+                                                                                                                                        <a href="#" title="некоторые позиции в данный момент в транзите, остальные можно отправить в транзит" class="truck-exclamation" data-stock="{{pb.stock.id}}" data-quantity="{{pb.quantity}}" data-composition="{{composition.id}}">
+                                                                                                                                        <img src="{{asset('bundles/coreorder/Admin/img/truck-exclamation.png')}}"/>
+                                                                                                                                        </a>
+                                                                                                                                        -->
+                                                                                                                                        &nbsp;
+                                                                                                                                        <span class="truck-arrow" data-stock="{{pb.stock.id}}" data-composition="{{composition.id}}" {%if not pb.transit %} style="display:none" {%endif%}>
+                                                                                                                                            <img  title="все позиции уже в транзите в данный момент" src="{{asset('bundles/coreorder/Admin/img/truck-arrow.png')}}" />
+                                                                                                                                            &nbsp;
+                                                                                                                                            {% if pb.transit and pb.transit.toStock %}
+                                                                                                                                                <a {% if pb.transit.status %}title="{{pb.transit.status.captionRu}}"{%endif%} href="{{path('admin_core_logistics_stock_edit', {id:pb.transit.toStock.id})}}">{{pb.transit.toStock.captionRu}}</a>
+                                                                                                                                            {%endif%}
+                                                                                                                                        </span>
+
+                                                                                                                                        {%if pb.stock.id!=order.stock.id  %}
+                                                                                                                                            <a class="truck-plus" {%if pb.transit %} style="display:none" {%endif%} href="#" title="позиции можно отправить в транзит" data-book="{{pb.id}}"  data-stock="{{pb.stock.id}}" data-quantity="{{pb.quantity}}" data-composition="{{composition.id}}">
+                                                                                                                                                <img src="{{asset('bundles/coreorder/Admin/img/truck-plus.png')}}"/>
+                                                                                                                                            </a>
+                                                                                                                                        {%endif%}
+
+                                                                                                                                    </div>
+                                                                                                                                    <div>
+                                                                                                                                        <span class="label  label-success">Забронировано {{pb.quantity}} шт.</span>
+                                                                                                                                        {% for pa in composition.product.productAvailability %}
+                                                                                                                                            {%if pa.stock.id==pb.stock.id %}
+                                                                                                                                                {% if pa.quantity>0 %}
+                                                                                                                                                    <span class="label label-info" >Осталось {{pa.quantity}} шт.</span>
+                                                                                                                                                {%else%}
+                                                                                                                                                    <span class="label label-important" >Товара нет</span>
+                                                                                                                                                {%endif%}
+                                                                                                                                            {%endif%}
+                                                                                                                                        {%endfor%}
+                                                                                                                                    </div>
+                                                                                                                                {%endif%}
+                                                                                                                            {%endfor%}
+                                                                                                                        {%endif%}
+                                                                                                                        </div>
+                                                                                                                    </td>
+                                                                                                                {%endif%}
+
+                                                                                                            </tr>
+                                                                                                            {% endfor %}
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                                <div id="orderInfoBlockSource">
+                                                                                                        {%set weightVolumeInfo=costInfo.weightVolumeInfo%}
+                                                                                                            <div class="well well-sm" style="float:right; width: 350px; margin-left: 15px; margin-top: 10px; margin-bottom: 0px;">
+                                                                                                                {%if not order.isShippedStatus and not order.isCanceledStatus and costInfo.renewal_info_is_different is defined%}Всё, что нужно отгрузить{%endif%}
+                                                                                                                <div>Всего: <b>{{costInfo.total_quantity}} шт.</b></div>
+                                                                                                                <div>Общий вес: <b>{{weightVolumeInfo.weight}} кг</b>&nbsp;&nbsp;&nbsp;Общий объем: <b>{{weightVolumeInfo.volume}} м3</b></div>
+                                                                                                                <div>Стоимость без скидки, без доставки: <b>{{moneyFormat(costInfo.composition_total_price)}} {{currencyFormat()}}</b></div>
+                                                                                                                <div>Стоимость со скидкой, без доставки: <b>{{moneyFormat(costInfo.composition_total_cost)}} {{currencyFormat()}}</b></div>
+                                                                                                                <div>Общая скидка: {{costInfo.total_discount}} % = {{moneyFormat(costInfo.total_discount_summ)}} {{currencyFormat()}}</div>
+                                                                                                                <div>Доставка: <b>
+                                                                                                                        {%if order.isDeliveryIncludedInPayment %}
+                                                                                                                            {{moneyFormat(costInfo.delivery_cost)}} {{currencyFormat()}}
+                                                                                                                        {%else%}
+                                                                                                                            оплачивается отдельно
+                                                                                                                        {%endif%}
+                                                                                                                    </b></div>
+                                                                                                                <div>Общая стоимость: <span class="label label-success">{{moneyFormat(costInfo.total_cost)}} {{currencyFormat()}}</span> <span class="label">{%if not order.ndsTax%} Без НДС{%else%} НДС {{order.ndsTax}} %{%endif%}</span></div>
+                                                                                                            </div>
+
+
+                                                                                                            {%if order.shippedDateTime and not order.isShippedStatus and not order.isCanceledStatus and costInfo.renewal_info_is_different is defined%}
+                                                                                                                {%set costInfoHistory=costInfo.history_info%}
+                                                                                                                    {%set weightVolumeInfoHistory=costInfoHistory.weightVolumeInfo%}
+                                                                                                                        <div class="well well-sm" style="float:right; width: 350px; margin-top: 10px; margin-bottom: 0px;color:gray">
+                                                                                                                            Вместе с ранее отгруженными продуктами
+                                                                                                                            <div>Всего: <b>{{costInfoHistory.total_quantity}} шт.</b></div>
+                                                                                                                            <div>Общий вес: <b>{{weightVolumeInfoHistory.weight}} кг</b>&nbsp;&nbsp;&nbsp;Общий объем: <b>{{weightVolumeInfoHistory.volume}} м3</b></div>
+                                                                                                                            <div>Стоимость без скидки, без доставки: <b>{{moneyFormat(costInfoHistory.composition_total_price)}} {{currencyFormat()}}</b></div>
+                                                                                                                            <div>Стоимость со скидкой, без доставки: <b>{{moneyFormat(costInfoHistory.composition_total_cost)}} {{currencyFormat()}}</b></div>
+                                                                                                                            <div>Общая скидка: {{costInfoHistory.total_discount}} % = {{moneyFormat(costInfoHistory.total_discount_summ)}} {{currencyFormat()}}</div>
+                                                                                                                            <div>Доставка: <b>
+                                                                                                                                    {%if order.isDeliveryIncludedInPayment %}
+                                                                                                                                        {{moneyFormat(costInfoHistory.delivery_cost)}} {{currencyFormat()}}
+                                                                                                                                    {%else%}
+                                                                                                                                        оплачивается отдельно
+                                                                                                                                    {%endif%}
+                                                                                                                                </b></div>
+                                                                                                                            <div>Общая стоимость: <span class="label ">{{moneyFormat(costInfoHistory.total_cost)}} {{currencyFormat()}}</span>
+                                                                                                                                <span class="label">{%if costInfo.shipped_order_info_history.ndsTax is not defined or not costInfo.shipped_order_info_history.ndsTax%} Без НДС{%else%} НДС {{costInfo.shipped_order_info_history.ndsTax}} %{%endif%}</span></div>
+                                                                                                                        </div>
+                                                                                                                        {%endif%}
+                                                                                                                        </div>
+
+                                                                                                                            <br/>
+
+                                                                                                                            {% endif %}
+                                                                                                                                {% elseif form.children|length > 0 %}
+                                                                                                                                    {% set associationAdmin = sonata_admin.field_description.associationadmin %}
+
+                                                                                                                                        <div>
+                                                                                                                                            {% for nested_group_field in form.children %}
+                                                                                                                                                <ul class="nav nav-tabs">
+                                                                                                                                                    {% for name, form_group in associationAdmin.formgroups %}
+                                                                                                                                                        <li class="{% if loop.first %}active{% endif %}">
+                                                                                                                                                            <a href="#{{ associationAdmin.uniqid }}_{{ loop.parent.loop.index }}_{{ loop.index }}" data-toggle="tab">
+                                                                                                                                                                <i class="icon-exclamation-sign has-errors hide"></i>
+                                                                                                                                                                {{ associationAdmin.trans(name, {}, form_group.translation_domain) }}
+                                                                                                                                                            </a>
+                                                                                                                                                        </li>
+                                                                                                                                                    {% endfor %}
+                                                                                                                                                </ul>
+
+                                                                                                                                                <div class="tab-content">
+                                                                                                                                                    {% for name, form_group in associationAdmin.formgroups %}
+                                                                                                                                                        <div class="tab-pane {% if loop.first %}active{% endif %}" id="{{ associationAdmin.uniqid }}_{{ loop.parent.loop.index }}_{{ loop.index }}">
+                                                                                                                                                            <fieldset>
+                                                                                                                                                                <div class="sonata-ba-collapsed-fields">
+                                                                                                                                                                    {% for field_name in form_group.fields %}
+                                                                                                                                                                        {% set nested_field = nested_group_field.children[field_name] %}
+                                                                                                                                                                            {% if associationAdmin.formfielddescriptions[field_name] is defined %}
+                                                                                                                                                                                {{ form_row(nested_field, {
+                                                            'inline': 'natural',
+                                                            'edit'  : 'inline'
+                                                        }) }}
+                                                                                                                                                                                {% set dummy = nested_group_field.setrendered %}
+                                                                                                                                                                                    {% else %}
+                                                                                                                                                                                        {{ form_row(nested_field) }}
+                                                                                                                                                                                        {% endif %}
+                                                                                                                                                                                            {% endfor %}
+                                                                                                                                                                                            </div>
+                                                                                                                                                                                        </fieldset>
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    {% endfor %}
+                                                                                                                                                                                    </div>
+
+                                                                                                                                                                                    {% if nested_group_field['_delete'] is defined %}
+                                                                                                                                                                                        {{ form_row(nested_group_field['_delete']) }}
+                                                                                                                                                                                    {% endif %}
+                                                                                                                                                                                    {% endfor %}
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    {% endif %}
+                                                                                                                                                                                        {% else %}
+                                                                                                                                                                                            {{ form_widget(form) }}
+                                                                                                                                                                                            {% endif %}
+
+                                                                                                                                                                                            </span>
+
+                                                                                                                                                                                            {% if sonata_admin.edit == 'inline' %}
+
+                                                                                                                                                                                                {% if sonata_admin.field_description.associationadmin.hasroute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+                                                                                                                                                                                                    <span id="field_actions_{{ id }}" >
+                                                                                                                                                                                                        <a
+                                                                                                                                                                                                        href="{{ sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) }}"
+                                                                                                                                                                                                        onclick="return start_field_retrieve_{{ id }}(this);"
+                                                                                                                                                                                                        class="btn sonata-ba-action"
+                                                                                                                                                                                                        title="{{ btn_add|trans({}, btn_catalogue) }}"
+                                                                                                                                                                                                        >
+                                                                                                                                                                                                        <i class="icon-plus"></i>
+                                                                                                                                                                                                        {{ btn_add|trans({}, btn_catalogue) }}
+                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                    </span>
+                                                                                                                                                                                                {% endif %}
+
+                                                                                                                                                                                                {# add code for the sortable options #}
+                                                                                                                                                                                                {% if sonata_admin.field_description.options.sortable is defined %}
+                                                                                                                                                                                                    <script type="text/javascript">
+                                                                                                                                                                                                                jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody').sortable({
+                                                                                                                                                                                                        axis: 'y',
+                                                                                                                                                                                                                opacity: 0.6,
+                                                                                                                                                                                                                items: 'tr',
+                                                                                                                                                                                                                stop: apply_position_value_{{ id }}
+                                                                                                                                                                                                        });
+                                                                                                                                                                                                                function apply_position_value_{{ id }}() {
+                                                                                                                                                                                                                // update the input value position
+                                                                                                                                                                                                                jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sonata_admin.field_description.options.sortable }}').each(function(index, element) {
+                                                                                                                                                                                                                // remove the sortable handler and put it back
+                                                                                                                                                                                                                jQuery('span.sonata-ba-sortable-handler', element).remove();
+                                                                                                                                                                                                                        jQuery(element).append('<span class="sonata-ba-sortable-handler ui-icon ui-icon-grip-solid-horizontal"></span>');
+                                                                                                                                                                                                                        jQuery('input', element).hide();
+                                                                                                                                                                                                                });
+                                                                                                                                                                                                                        jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sonata_admin.field_description.options.sortable }} input').each(function(index, value) {
+                                                                                                                                                                                                                jQuery(value).val(index + 1);
+                                                                                                                                                                                                                });
+                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                        // refresh the sortable option when a new element is added
+                                                                                                                                                                                                        jQuery('#sonata-ba-field-container-{{ id }}').bind('sonata.add_element', function() {
+                                                                                                                                                                                                        apply_position_value_{{ id }}();
+                                                                                                                                                                                                                jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody').sortable('refresh');
+                                                                                                                                                                                                        });
+                                                                                                                                                                                                                apply_position_value_{{ id }}();                                                                                                                                                                                                    </script>
+                                                                                                                                                                                                {% endif %}
+
+                                                                                                                                                                                                {# include association code #}
+                                                                                                                                                                                                {% include 'SonataDoctrineORMAdminBundle:CRUD:edit_orm_one_association_script.html.twig' %}
+
+                                                                                                                                                                                            {% else %}
+                                                                                                                                                                                                <span id="field_actions_{{ id }}" >
+                                                                                                                                                                                                    {% if sonata_admin.field_description.associationadmin.hasroute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+                                                                                                                                                                                                        <a
+                                                                                                                                                                                                        href="{{ sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) }}"
+                                                                                                                                                                                                        onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                                                                                                                                                                                                        class="btn sonata-ba-action"
+                                                                                                                                                                                                        title="{{ btn_add|trans({}, btn_catalogue) }}"
+                                                                                                                                                                                                        >
+                                                                                                                                                                                                        <i class="icon-plus"></i>
+                                                                                                                                                                                                        {{ btn_add|trans({}, btn_catalogue) }}
+                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                    {% endif %}
+                                                                                                                                                                                                </span>
+
+                                                                                                                                                                                                <div style="display: none" id="field_dialog_{{ id }}">
+
+                                                                                                                                                                                                </div>
+
+
+
+                                                                                                                                                                                                {% include 'SonataDoctrineORMAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
+                                                                                                                                                                                            {% endif %}
+                                                                                                                                                                                        </div>
+                                                                                                                                                                                        {% endif %}
+
+                                                                                                                                                                                            {# окно в котором указывается склады#}
+                                                                                                                                                                                            <div style="display: none;overflow:hidden" id="dialogTransit{{ id }}">
+                                                                                                                                                                                                <label>Склад, на который нужно переместить:</label>
+                                                                                                                                                                                                <label id="errorStockLabel" style="color:red">Укажите склад</label>
+                                                                                                                                                                                                <div class="controls ">
+                                                                                                                                                                                                    <input style="width:250px" type="hidden" id="selectedStockForTransit">
+                                                                                                                                                                                                </div>
+                                                                                                                                                                                                <div class="well well-small form-actions">
+                                                                                                                                                                                                    <input type="button" class="btn btn-primary" name="addToTransit" value="Переместить">
+                                                                                                                                                                                                </div>
+                                                                                                                                                                                            </div>
+
+                                                                                                                                                                                            <script>
+
+                                                                                                                                                                                                        var allStocks = {
+                                                                                                                                                                                                {% for stock in  stocks%}
+                                                                                                                                                                                                    {{stock.id}}: {
+                                                                                                                                                                                                                captionRu:"{{stock.captionRu|e}}"
+                                                                                                                                                                                                                },                                                                                                                                                                                                {%endfor%}
+                                                                                                                                                                                                                            }
+
+
+                                                                                                                                                                                                                    $('input[name="addToTransit"]').click(function(){
+                                                                                                                                                                                                                    if ($('#selectedStockForTransit').val()) {
+
+                                                                                                                                                                                                                    var data = {
+                                                                                                                                                                                                                    toStock:$('#selectedStockForTransit').val(),
+                                                                                                                                                                                                                            fromStock:$('#selectedStockForTransit').attr('data-stock'),
+                                                                                                                                                                                                                            quantity:$('#selectedStockForTransit').attr('data-quantity'),
+                                                                                                                                                                                                                            book:$('#selectedStockForTransit').attr('data-book'),
+                                                                                                                                                                                                                            composition:$('#selectedStockForTransit').attr('data-composition')
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                    $.get("{{path('core_order_add_to_transit')}}",
+                                                                                                                                                                                                                            data, function(res) {
+
+                                                                                                                                                                                                                            if (typeof res.errors !== 'undefined') {
+                                                                                                                                                                                                                            for (var index in res.errors) {
+                                                                                                                                                                                                                            if (res.errors[index] == 'NotEnoughRealProducts') {
+                                                                                                                                                                                                                            $('#dialogTransit{{ id }}').dialog('close');
+                                                                                                                                                                                                                                    alert('Нельзя отправить товарные продукции в транзит, т.к. не хватает реального товара на складе!');
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                            else {
+                                                                                                                                                                                                                            $('a.truck-plus[data-stock="' + data.fromStock + '"][data-composition="' + data.composition + '"]').hide();
+                                                                                                                                                                                                                                    $('span.truck-arrow[data-stock="' + data.fromStock + '"][data-composition="' + data.composition + '"]')
+                                                                                                                                                                                                                                    .show().append($('#selectedStockForTransit').select2('data').text);
+                                                                                                                                                                                                                                    $('#dialogTransit{{ id }}').dialog('close');
+                                                                                                                                                                                                                            }
+
+
+
+                                                                                                                                                                                                                            //console.log(res)
+
+                                                                                                                                                                                                                            });
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                    else {
+                                                                                                                                                                                                                    $('#errorStockLabel').show();
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                    })
+                                                                                                                                                                                                                            $('a.truck-plus').click(function(){
+                                                                                                                                                                                                                    $('#errorStockLabel').hide();
+                                                                                                                                                                                                                            $('#selectedStockForTransit').
+                                                                                                                                                                                                                            attr('data-quantity', $(this).attr('data-quantity')).
+                                                                                                                                                                                                                            attr('data-composition', $(this).attr('data-composition')).
+                                                                                                                                                                                                                            attr('data-book', $(this).attr('data-book')).
+                                                                                                                                                                                                                            attr('data-stock', $(this).attr('data-stock'));
+                                                                                                                                                                                                                            //формируем список складов и прячем склад с которого нужно перевезти
+                                                                                                                                                                                                                            $('#select').select2("val", "");
+                                                                                                                                                                                                                            var data = [];
+                                                                                                                                                                                                                            for (var s_id in allStocks) {
+                                                                                                                                                                                                                    if (s_id != $(this).attr('data-stock')) {
+                                                                                                                                                                                                                    data.push({id: s_id, text: allStocks[s_id].captionRu });
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                    $('#selectedStockForTransit').select2({data:data})
+
+                                                                                                                                                                                                                            $('#dialogTransit{{ id }}').dialog({width: 400, height: 200, modal: true, title: "Транзит позиций между складами"});
+                                                                                                                                                                                                                    });
+
+                                                                                                                                                                                            </script>
+
+                                                                                                                                                                                            {% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field%}
+    {%for b in object.manufacturers%}
+        <li><a href="{{path('admin_core_manufacturer_manufacturer_edit', {id:b.id})}}">{{b.captionRu}}</a></li>
+    {%endfor%}
+{% endblock %}

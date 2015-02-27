@@ -1,0 +1,80 @@
+services:
+
+# Админские сервисы
+#  core_file_image_form_admin:
+#    class: Core\FileBundle\Admin\Form\ImageFileAdminForm
+#    tags:
+#    - { name: sonata.admin,  manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, show_in_dashboard: false }
+#    arguments: [null, Core\FileBundle\Entity\ImageFile, null, null]
+
+# Админские сервисы
+  core_file_image_admin:
+    class: Core\FileBundle\Admin\CommonAdminFile
+    tags:
+    - { name: sonata.admin,  manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, show_in_dashboard: false }
+    arguments: [core_file_image_admin, Core\FileBundle\Entity\ImageFile, null]
+
+  core_file_document_admin:
+    class: Core\FileBundle\Admin\CommonAdminFile
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, show_in_dashboard: false }
+    arguments: [core_file_document_admin, Core\FileBundle\Entity\DocumentFile, null]
+
+
+  core_file_flash_admin:
+    class: Core\FileBundle\Admin\CommonAdminFile
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, show_in_dashboard: false }
+    arguments: [core_file_document_admin, Core\FileBundle\Entity\FlashFile, null]
+
+
+# Формы
+  core_file_form_multiupload_image:
+    class: Core\FileBundle\Admin\Form\Type\MultiuploadImageType
+    tags:
+        - { name: form.type, alias: multiupload_image }
+    arguments: [%core_file%, '@core_file_logic']
+
+  core_file_form_multiupload_document:
+    class: Core\FileBundle\Admin\Form\Type\MultiuploadDocumentType
+    tags:
+        - { name: form.type, alias: multiupload_document }
+    arguments: [%core_file%, '@core_file_logic']
+
+  core_file_form_multiupload_file_fronend:
+    class: Core\FileBundle\Form\Type\MultiuploadFileFrontendType
+    #public: true
+    scope: request
+    tags:
+        - { name: form.type, alias: multiupload_file_frontend }
+    arguments: [%core_file%, '@core_file_logic', '@request', '@session']
+
+# Twig расширения
+  # Общие функции для бандла
+  core_file.twig.file_function_extension:
+    class: Core\FileBundle\Twig\FileFunctionExtension
+    tags:
+        - { name: twig.extension }
+
+  # Фильтры
+  core_file.twig.file_filter_extension:
+    class: Core\FileBundle\Twig\FileFilterExtension
+    tags:
+        - { name: twig.extension }
+    arguments: [%core_file%, '@core_file_logic']
+
+# Сервис для работы с картинками
+  core_file_logic:
+    class: Core\FileBundle\Logic\FileLogic
+    arguments: [%core_file%, '@translator', '@doctrine', '@session', '@core_color_logic', '@service_container']
+
+
+
+
+
+# Подписчик
+  core_file_subscriber:
+    class: Core\FileBundle\EventListener\Subscriber
+    tags:
+      - { name: doctrine.event_subscriber }
+    arguments: [%core_file%, '@core_file_logic']

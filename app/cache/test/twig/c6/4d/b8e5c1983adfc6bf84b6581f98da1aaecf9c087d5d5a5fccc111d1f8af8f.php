@@ -1,0 +1,56 @@
+<?php
+
+/* CoreLogisticsBundle:Admin/Stock/Form:edit.html.twig */
+class __TwigTemplate_c64db8e5c1983adfc6bf84b6581f98da1aaecf9c087d5d5a5fccc111d1f8af8f extends Twig_Template
+{
+    public function __construct(Twig_Environment $env)
+    {
+        parent::__construct($env);
+
+        $this->parent = $this->env->loadTemplate("ApplicationSonataAdminBundle:CRUD:base_edit.html.twig");
+
+        $this->blocks = array(
+            'stylesheets' => array($this, 'block_stylesheets'),
+        );
+    }
+
+    protected function doGetParent(array $context)
+    {
+        return "ApplicationSonataAdminBundle:CRUD:base_edit.html.twig";
+    }
+
+    protected function doDisplay(array $context, array $blocks = array())
+    {
+        $this->parent->display($context, array_merge($this->blocks, $blocks));
+    }
+
+    // line 2
+    public function block_stylesheets($context, array $blocks = array())
+    {
+        // line 3
+        echo "    ";
+        $this->displayParentBlock("stylesheets", $context, $blocks);
+        echo "
+<style>
+        .sonata-bc .table {
+            width: auto;    
+        }
+    </style>
+";
+    }
+
+    public function getTemplateName()
+    {
+        return "CoreLogisticsBundle:Admin/Stock/Form:edit.html.twig";
+    }
+
+    public function isTraitable()
+    {
+        return false;
+    }
+
+    public function getDebugInfo()
+    {
+        return array (  31 => 3,  28 => 2,);
+    }
+}

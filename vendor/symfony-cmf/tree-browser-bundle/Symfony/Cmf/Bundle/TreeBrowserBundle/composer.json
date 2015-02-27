@@ -1,0 +1,38 @@
+{
+    "name": "symfony-cmf/tree-browser-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony CMF Tree Browser Bundle",
+    "keywords": ["Symfony CMF", "tree", "phpcr"],
+    "homepage": "http://cmf.symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Symfony CMF Community",
+            "homepage": "https://github.com/symfony-cmf/TreeBrowserBundle/contributors"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "~2.3",
+        "friendsofsymfony/jsrouting-bundle": "~1.1"
+    },
+    "require-dev": {
+        "symfony-cmf/testing": "1.1.*"
+    },
+    "suggest": {
+        "doctrine/phpcr-bundle": "1.*",
+        "doctrine/phpcr-odm": "1.*"
+    },
+    "autoload":{
+        "psr-0":{
+            "Symfony\\Cmf\\Bundle\\TreeBrowserBundle": ""
+        }
+    },
+    "target-dir": "Symfony/Cmf/Bundle/TreeBrowserBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

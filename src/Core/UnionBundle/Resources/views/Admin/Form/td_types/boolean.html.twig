@@ -1,0 +1,7 @@
+{% block boolean_type %}
+        {% if attribute(d, d_key)%}
+<span class="label label-success">да</span>        
+        {%else%}
+<span class="label label-important">нет</span>
+            {%endif%}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "ApplicationSonataUserBundle::layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}Регистрация{% endblock %}
+{% block meta_keywords %}Регистрация на сайте{% endblock %}
+{% block meta_description %}Регистрация на сайте Оликидс.ру{% endblock %}
+
+{% block content %}
+<div id="page_path">
+    <ul class="page_path_links">
+            <li class="page_path_link"><a href="{{path('core_common_index')}}">OliKids</a></li>
+            <li class="page_path_link">
+                <strong>Регистрация</strong>
+            </li>
+    </ul>
+</div>
+<div role="main" class="registration_page" id="content">
+    <div class="page_pad">
+        <h1>Регистрация</h1>
+        {% include "ApplicationSonataUserBundle:Registration:register_content.html.twig" %}
+        <div class="registration_benefits">
+            <h2>Зарегистрируйтесь на OliKids.ru прямо сейчас! Это займет одну минуту и даст Вам еще больше возможностей.</h2>
+            <ul class="round_bullet">
+                <li>Только зарегистрированный пользователь может купить игрушки на нашем сайте.</li>
+                <li>Мы запомним все Ваши данные, и при оформлении новых заказов Вам не придется указывать свои имя, фамилию, адрес и т. д.</li>
+                <li>Вы всегда будете в курсе состояния своих заказов: вся история и статус будут выводиться в личном кабинете.</li>
+                <li>Мы внимательно следим за Вашими предпочтениями и будем предлагать товары, которые могли бы Вас заинтересовать.</li>
+                <li>Мы регулярно оповещаем своих клиентов о своих новостях, свежих поступлениях, а также конкурсах и акциях.</li>
+                <li>Ваше мнение будет услышано — после регистрации у Вас появится возможность оставлять комментарии на сайте. Нам важно мнение Вас и Вашего ребенка!</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

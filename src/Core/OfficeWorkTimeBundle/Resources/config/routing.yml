@@ -1,0 +1,3 @@
+switch_language:
+    path:      /switchlanguage/{activeLanguage}
+    defaults:  { _controller: CoreLanguageBundle:Language:switchLanguage }   

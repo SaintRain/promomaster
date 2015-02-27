@@ -1,0 +1,34 @@
+{% extends 'ApplicationSonataUserBundle::cabinet_layout.html.twig' %}
+{% block js_head %}
+    {{ parent() }}
+    {% javascripts  'bundles/applicationsonatauser/js/contact.js' output='js/compiled/user_contact.js' filter='yui_js' %}
+    <script src="{{ asset_url}}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block main_content %}
+    <div {{fastEdit(contact)}} class="main_col_pad">
+        <section class="cabinet_addresses">
+            {% set isIndiContragent = (contact.contragent.organization is defined) ? false : true %}
+            {% if isIndiContragent %}
+                <h2>Редактирование получателя: "{{ contact.lastName }} {{ contact.firstName }}"</h2>
+            {% else %}
+                <h2>Редактирование адреса: "{{ contact.address }}"</h2>
+            {% endif %}
+            {% for flashMessage in app.session.flashbag.get('contact_success') %}
+                <div class="info_box success">
+                    <h6>{{ flashMessage|trans({}) }}</h6>
+                </div>
+            {% endfor %}
+            <div class="cabinet_address_add no_limit">
+                <div class="brown_gradient_box">
+                    {% form_theme form 'CoreCommonBundle:Form:row.html.twig' %}
+                    {% include 'ApplicationSonataUserBundle:Contact:Form/contact_form.html.twig' %}
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+{% block title %}Изменение контактной информации{% endblock %}
+{% block meta_keywords %}Изменение контактной информации{% endblock %}
+{% block meta_description %}Изменение контактной информации{% endblock %}

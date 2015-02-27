@@ -1,0 +1,31 @@
+services:
+# Сервис для работы с цветами продукта
+  core_color_logic:
+    class: Core\ColorBundle\Logic\ColorLogic
+    arguments: ['@translator', '@doctrine', '@session']
+
+# Тип формы для админки (выбор цвета продукта)
+  core_admin_form_type_color:
+    class: Core\ColorBundle\Admin\Form\Type\ColorType
+    tags:
+        - { name: form.type, alias: admin_form_type_color }
+    arguments: ['@core_color_logic', '@doctrine']
+
+# Тип формы для админки (выбор цвета продукта)
+  core_color_colorpicker:
+    class: Core\ColorBundle\Form\Type\ColorpickerType
+    tags:
+        - { name: form.type, alias: colorpicker }
+    arguments: ['@core_color_logic', '@doctrine']
+
+  core_color_admin:
+    class: Core\ColorBundle\Admin\ColorAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Системное, label: Цвета }
+    arguments: [null, Core\ColorBundle\Entity\Color, CoreColorBundle:Admin\ColorAdmin]
+
+  core_color_pallete_admin:
+    class: Core\ColorBundle\Admin\ColorPaletteAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, show_in_dashboard: false }
+    arguments: [null, Core\ColorBundle\Entity\ColorPalette, null]

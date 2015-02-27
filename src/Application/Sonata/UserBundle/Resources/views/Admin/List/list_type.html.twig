@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.legalForm is defined %}
+        <div class="label label-info">Юридическое лицо</div>
+        {% else %}
+        <div class="label label-success">Физическое лицо</div>
+    {% endif %}
+{% endblock %}

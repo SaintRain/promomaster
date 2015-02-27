@@ -1,0 +1,15 @@
+
+{#**
+ * Шаблон для вывода даты по гринвичу
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+    {{ value|date('d.m.Y') }}
+
+{% endblock %}

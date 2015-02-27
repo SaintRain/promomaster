@@ -1,0 +1,155 @@
+
+{% if adplace.id %}
+    <h3>Редактирование настроек вашего рекламного места</h3>
+{% else %}
+    <h3>Добавление нового рекламного места в систему</h3>
+{% endif %}
+
+
+    {#форма редактирования профиля ЛК#}
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+
+            &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_adplace_create') }}'><i
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще рекламное место</a>
+            &nbsp;&nbsp;&nbsp;
+            <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_adplace_list_first_page') }}'><i
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку рекламных мест</a>
+
+        </div>
+    {% endfor %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% if form.vars.errors | length %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+<form style="clear: both" class="sky-form sky-form-other-style"
+      action="{% if adplace.id %}{{ path('core_cabinet_adplace_edit', {id:adplace.id}) }}{% else %}{{ path('core_cabinet_adplace_create') }}{% endif %}" {{ form_enctype(form) }}
+      method="POST">
+    <fieldset class="sky-form-other-style">
+
+        <div class="row margin-bottom-20">
+            <div class="col-lg-6  {% if form_errors(form.site) %}state-error{% endif %}">
+                <label>Сайт*</label>
+                {{ form_widget(form.site,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.site) }}
+                <span class="help">Выберите сайт на котором распологается рекламное место.</span>
+            </div>
+        </div>
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6  {% if form_errors(form.name) %}state-error{% endif %}">
+                <label>Название*</label>
+                {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
+
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6  {% if form_errors(form.size) %}state-error{% endif %}">
+                <label>Размер*</label>
+                {{ form_widget(form.size,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.size) }}
+            </div>
+        </div>
+
+        <div class="row margin-bottom-20 extraSize" style="display: none">
+            <div class="col-sm-6  {% if form_errors(form.height) %}state-error{% endif %}">
+                <label>Высота*</label>
+                {{ form_widget(form.height,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.height) }}
+                <span class="help">Введите высоту рекламного места в пикселях.</span>
+            </div>
+        </div>
+
+        <div class="row margin-bottom-20 extraSize" style="display: none">
+            <div class="col-sm-6  {% if form_errors(form.width) %}state-error{% endif %}">
+                <label>Ширина*</label>
+                {{ form_widget(form.width,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.width) }}
+                <span class="help">Введите ширину рекламного места в пикселях.</span>
+            </div>
+        </div>
+
+
+        <div class="margin-bottom-20 {% if form_errors(form.isShowInCatalog) %}state-error{% endif %}">
+            <label class="checkbox">
+                {{ form_widget(form.isShowInCatalog) }}<i></i> Выводить в каталог</label>
+            {{ form_errors(form.isShowInCatalog) }}
+            </label>
+        </div>
+
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6  {% if form_errors(form.sections) %}state-error{% endif %}">
+                <label>Разделы</label>
+                {{ form_widget(form.sections,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.sections) }}
+            </div>
+        </div>
+
+
+        <div class="margin-bottom-20">
+        </div>
+
+        {{ form_rest(form) }}
+
+        <div class="text-right">
+            <button class="btn-u" type="submit">{% if adplace.id %}Сохранить{% else %}Добавить{% endif %}</button>
+            &nbsp;&nbsp;
+            <a href="{{ path('core_cabinet_site_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+            {% if adplace.id %}
+                &nbsp;&nbsp; или &nbsp;&nbsp;
+                <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>
+            {% endif %}
+        </div>
+    </fieldset>
+</form>
+
+
+<script>
+    $(function () {
+        $('#form_size').change(function () {
+            if ($(this).find('option:selected').attr('data-name') == 'specialnoe') {
+                $('.extraSize').show();
+                $('#form_height').attr('required', 'required');
+                $('#form_width').attr('required', 'required');
+            }
+            else {
+                $('.extraSize').hide();
+                $('#form_height').removeAttr('required');
+                $('#form_width').removeAttr('required');
+            }
+        });
+
+        $('#form_size').change();
+
+        {% if adplace.id %}
+        $('.delete').click(function () {
+            var res = confirm('Вы действительно хотите удалить это рекламное место из системы?');
+            if (res) {
+                window.location.href = '{{ path('core_cabinet_adplace_delete', {id:adplace.id}) }}';
+            }
+        });
+        {% endif %}
+    })
+</script>
+
+
+

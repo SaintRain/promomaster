@@ -1,0 +1,23 @@
+services:
+    
+    basic_data_logic:
+        class: Core\OfficeWorkTimeBundle\Logic\BasicDataLogic
+        arguments: [%core_office_work_time%, '@translator', '@request_stack']
+        lazy: true
+        
+    office_work_time_logic:
+        class: Core\OfficeWorkTimeBundle\Logic\OfficeWorkTimeLogic
+        arguments: 
+            parameters: %core_office_work_time%
+            services:
+                basic_data: '@basic_data_logic'
+            em: '@doctrine.orm.entity_manager'
+            config: '@core_config_logic'
+        lazy: true
+        
+    office_work_time_admin:
+        class: Core\OfficeWorkTimeBundle\Admin\ScheduleAdmin
+        arguments: [null, Core\OfficeWorkTimeBundle\Entity\Schedule, null]
+        tags:
+            - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Системное, label: Производственный календарь }
+        

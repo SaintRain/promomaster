@@ -1,0 +1,9 @@
+{% extends 'SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig' %}
+{% block contragent_email_type_widget %}
+    {% spaceless %}
+        <div class="full-search">
+            {{ form_widget(form.email, {'attr':{'class':'span8'} }) }}
+            {{ form_widget(form.full) }}
+        </div>
+    {% endspaceless %}
+{% endblock %}

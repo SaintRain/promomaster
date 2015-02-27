@@ -1,0 +1,128 @@
+services:
+#сервис для редактирования размеров рекламных мест
+  core_ad_place_size_admin:
+    class: Core\DirectoryBundle\Admin\AdPlaceSizeAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Материалы, label: Размеры рекламных мест }
+    arguments: [null, Core\DirectoryBundle\Entity\AdPlaceSize,null]
+
+
+
+  #сервис для редактирования стран
+  core_country_admin:
+    class: Core\DirectoryBundle\Admin\CountryAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Системное, label: Страны }
+    arguments: [null, Core\DirectoryBundle\Entity\Country, CoreDirectoryBundle:Admin\CountryAdmin]
+
+  #сервис для редактирования регионов
+  core_region_admin:
+    class: Core\DirectoryBundle\Admin\RegionAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Системное, label: Регионы }
+    arguments: [null, Core\DirectoryBundle\Entity\Region, null]
+
+  #сервис для редактирования город
+  core_city_admin:
+    class: Core\DirectoryBundle\Admin\CityAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Системное, label: Города }
+    arguments: [null, Core\DirectoryBundle\Entity\City, null]
+
+  #сервис для редактирования гео названий городов
+  core_geo_city_admin:
+    class: Core\DirectoryBundle\Admin\GeoCityAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Системное, label: Гео Названия Городов, show_in_dashboard: false}
+    arguments: [null, Core\DirectoryBundle\Entity\GeoCity, null]
+
+  #сервис для редактирования видео
+  core_video_admin:
+    class: Core\DirectoryBundle\Admin\VideoAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Системное, label: Видео, show_in_dashboard: false }
+    arguments: [null, Core\DirectoryBundle\Entity\RemoteVideo, null]
+
+  #сервис для редактирования видео-хостингов
+  core_video_hosting_admin:
+    class: Core\DirectoryBundle\Admin\VideoHostingAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Системное, label: Видео-Хостинги }
+    arguments: [null, Core\DirectoryBundle\Entity\VideoHosting, null]
+
+  #сервис для редактирования валют
+  core_currency_admin:
+    class: Core\DirectoryBundle\Admin\CurrencyAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Системное, label: Валюты }
+    arguments: [null, Core\DirectoryBundle\Entity\Currency, CoreDirectoryBundle:Admin\CurrencyAdmin]
+
+  #сервис для редактирования списка Организационно-правовых форма
+  core_legal_form_admin:
+    class: Core\DirectoryBundle\Admin\LegalFormAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Системное, label: "Правовые формы"}
+    arguments: [null, Core\DirectoryBundle\Entity\LegalForm, null]
+
+
+
+  #Форма для фильтра по email (не -точное)
+  core_directory_filter_name_type:
+    class: Core\DirectoryBundle\Admin\Form\Type\FilterNameType
+    arguments: ['@translator']
+    tags:
+        - { name: form.type, alias: filter_name_type }
+  #Форма для фильтра по столицам
+  core_directory_filter_capitals_type:
+    class: Core\DirectoryBundle\Admin\Form\Type\CapitalsType
+    arguments: ['@translator']
+    tags:
+        - { name: form.type, alias: filter_capitals_type }
+
+  #Тип формы для редактировани тегов продукта
+  core_directory_product_tags:
+    class: Core\DirectoryBundle\Admin\Form\Type\ProductTagsType
+    tags:
+        - { name: form.type, alias: product_tags_type }
+    arguments: ['@core_directory_product_tags_logic']
+
+  #Бизнес логика для редактирования тегов у продуктов
+  core_directory_product_tags_logic:
+    class: Core\DirectoryBundle\Logic\ProductTagsLogic
+    arguments: ['@doctrine.orm.entity_manager']
+
+    #сервис для редактирования  тегов у продуктов
+  core_directory_product_tags_admin:
+    class: Core\DirectoryBundle\Admin\ProductTagsAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, show_in_dashboard: false , label_translator_strategy: sonata.admin.label.strategy.underscore, group: Системное, label: "Теги продуктов"}
+    arguments: [null, Core\DirectoryBundle\Entity\ProductTags, null]
+
+  #Форма видео с хостингов
+  core_directory_remote_video_type:
+    class: Core\DirectoryBundle\Form\Type\RemoteVideoFormType
+    arguments: ['@doctrine.orm.entity_manager']
+    tags:
+        - { name: form.type, alias: remote_video_form }
+
+  #Форма видео с хостингов
+  core_directory_remote_video_type_frontend:
+    class: Core\DirectoryBundle\Form\Type\RemoteVideoFormTypeFrontend
+    arguments: ['@doctrine.orm.entity_manager']
+    tags:
+        - { name: form.type, alias: remote_video_form_frontend }
+
+
+  #сервис для редактирования единиц измерения
+  core_directory_unit_of_measure_admin:
+    class: Core\DirectoryBundle\Admin\UnitOfMeasureAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Системное, label: Единицы измерения }
+    arguments: [null, Core\DirectoryBundle\Entity\UnitOfMeasure, null]
+
+  #сервис для редактирования групп для единиц измерения
+  core_directory_unit_of_measure_group_admin:
+    class: Core\DirectoryBundle\Admin\UnitOfMeasureGroupAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Системное, label: "Группы для единиц измерения" }
+    arguments: [null, Core\DirectoryBundle\Entity\UnitOfMeasureGroup, null]

@@ -1,0 +1,62 @@
+{% spaceless %}
+    <!doctype html>
+    <!--[if lt IE 8]><html lang="ru" class="no-js lt-ie8"> <![endif]-->
+    <!--[if gte IE 8]><!--><html lang="ru" class="no-js"> <!--<![endif]-->
+        <head>
+            <title>{% block title %}{% endblock %}</title>
+            <meta charset="utf-8">
+            <meta name="description" content="{% block meta_description %}{% endblock %}">
+            <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+            <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
+            {#<base href="" target="_blank">#}
+
+            {% stopwatch "seo" %}
+            {% block seo %}
+
+                    {% set canonicalException = [
+                        'core_order_finish',
+                        'core_order_finish_with_payment_id',
+                        'core_order_finish_with_order_id'
+                    ] %}
+
+                    {% if app.request.query.all|length > 0 and app.request.attributes.get('_route') and app.request.attributes.get('_route') not in canonicalException %}
+
+                        <link rel="canonical" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" />
+
+                    {% endif %}
+
+            {% endblock %}
+            {% endstopwatch %}
+
+            {% block css %}
+            {% endblock %}
+            
+            {% block js_head %}
+            {% endblock %}
+            {#инициализация быстрого редактирования#}
+            {{ fastEditInit() }}
+
+        </head>
+
+        <body>
+
+            <!-- Header -->
+        {% block header %}{% endblock %}
+        <!-- EndHeader -->
+
+        <!-- Menu -->
+    {% block menu %}{% endblock %}
+    <!-- EndMenu -->
+
+    <!-- Content -->
+{% block content %}{% endblock %}
+<!-- EndContent -->
+
+<!-- Footer -->
+{% block footer %}{% endblock %}
+<!-- EndFooter -->
+
+{% block js_footer %}{% endblock %}
+</body>
+</html>
+{% endspaceless %}

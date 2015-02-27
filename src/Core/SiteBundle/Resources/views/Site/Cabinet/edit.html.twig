@@ -1,0 +1,144 @@
+{#редактирование сайта в ЛК#}
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}{% if site.id %}Редактирование настроек сайта {{ site.domain }}{% else %}Добавление сайта в систему{% endif %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Сайты</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li><a href="{{ path('core_cabinet_site_list_first_page') }}">Список ваших сайтов</a></li>
+                    <li class="active">Редактирование настроек вашего сайта</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block sub_content %}
+
+    {% if site.id %}
+        <h3>Редактирование настроек вашего сайта</h3>
+    {% else %}
+        <h3>Добавление нового сайта в систему</h3>
+    {% endif %}
+
+
+    {#форма редактирования профиля ЛК#}
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+
+            &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_site_create') }}'><i
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще сайт</a>
+            &nbsp;&nbsp;&nbsp;
+            <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_site_list_first_page') }}'><i
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку сайтов</a>
+
+        </div>
+    {% endfor %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% if form.vars.errors | length %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <form style="clear: both" class="sky-form sky-form-other-style"
+          action="{% if site.id %}{{ path('core_cabinet_site_edit', {id:site.id}) }}{% else %}{{ path('core_cabinet_site_create') }}{% endif %}" {{ form_enctype(form) }}
+          method="POST">
+        <fieldset class="sky-form-other-style">
+
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.domain) %}state-error{% endif %}">
+                    <label>Адрес сайта*</label>
+                    {{ form_widget(form.domain,{ 'attr': {'class': 'form-control'} }) }}
+                    <span class="help">Введите полный адрес вашего сайта начиная с http://</span>
+                    {{ form_errors(form.domain) }}
+                </div>
+            </div>
+            <div class="row margin-bottom-20">
+                <div class="col-lg-12  {% if form_errors(form.categories) %}state-error{% endif %}">
+                    <label>Тематика сайта*</label>
+                    {{ form_widget(form.categories,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.categories) }}
+                </div>
+            </div>
+
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.mirrors) %}state-error{% endif %}">
+                    <label>Зеркала</label>
+                    {{ form_widget(form.mirrors,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.mirrors) }}
+                    <span class="help">Альтернативные адреса вашего сайта.</span>
+                </div>
+            </div>
+
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.keywords) %}state-error{% endif %}">
+                    <label>Ключевые слова (каждое с новой строки)</label>
+                    {{ form_widget(form.keywords,{ 'attr': {'class': 'form-control'} }) }}
+                    <span class="help">Ключевые слова используются для повышения релевантности поиска в каталоге системы.</span>
+                    {{ form_errors(form.keywords) }}
+                </div>
+            </div>
+
+
+            <div class="margin-bottom-20">
+            </div>
+
+            {{ form_rest(form) }}
+
+            <div class="text-right">
+                <button class="btn-u" type="submit">{% if site.id %}Сохранить{% else %}Добавить{% endif %}</button>
+                &nbsp;&nbsp;
+                <a href="{{ path('core_cabinet_site_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+                {% if site.id %}
+                    &nbsp;&nbsp; или &nbsp;&nbsp;
+                    <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>
+                {% endif %}
+            </div>
+
+        </fieldset>
+
+
+    </form>
+
+
+
+    <script>
+        $(function () {
+
+            {% if site.id %}
+            $('.delete').click(function () {
+                var res = confirm('Вы действительно хотите удалить этот баннер из системы?');
+                if (res) {
+                    window.location.href = '{{ path('core_cabinet_site_delete', {id:site.id}) }}';
+                }
+            });
+            {% endif %}
+        })
+    </script>
+
+
+{% endblock %}

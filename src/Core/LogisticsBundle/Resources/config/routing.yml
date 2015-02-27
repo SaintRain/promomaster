@@ -1,0 +1,4 @@
+core_logistics_delete_book_from_transit:
+    path:      core_logistics_delete_book_from_transit
+    schemes:  [https]
+    defaults:  { _controller: CoreLogisticsBundle:AjaxLogisticsAdmin:deleteBookFromTransit }

@@ -1,0 +1,13 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field %}
+    <div class="centered">
+        <div class="inline-center">
+            <i title="Помогло" class="icon-thumbs-up"></i>
+            <span title="Помогло">{{object.goodRate}}</span>
+        </div>
+        <div class="inline-center">
+            <i title="Не помогло" class="icon-thumbs-down"></i>
+            <span title="Не помогло">{{object.badRate}}</span>
+        </div>
+    </div>
+{% endblock %}

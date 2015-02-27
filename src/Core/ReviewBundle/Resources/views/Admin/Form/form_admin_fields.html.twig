@@ -1,0 +1,157 @@
+
+{#**
+ * Шаблон для переопределения вывода элементов редактирования у отзыва
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% use 'SonataAdminBundle:Form:form_admin_fields.html.twig' %}
+
+{# дочерние отзывы #}
+{% block core_review_admin_review_children_sonata_type_collection_widget %}
+
+    {% if not sonata_admin.field_description.hasassociationadmin %}
+        {% for element in value %}
+            {{ element|render_relation_element(sonata_admin.field_description) }}
+        {% endfor %}
+    {% else %}
+
+        <div id="field_container_{{ id }}" class="field-container">
+            <span id="field_widget_{{ id }}" >
+                {% if form.children|length > 0 %}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                {% for field_name, nested_field in form.children|first.children %}
+                                    {% if field_name not in ['product','parent'] %}
+
+                                        {% if field_name == '_delete' %}
+                                            <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
+                                        {% else %}
+                                            <th {#{{ nested_field.vars['required']  ? 'class="required"' : '' }}#}{% if ((nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden'])) or field_name in ['product','parent'] %} style="display:none;"{% endif %}>
+                                                {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label) }}
+                                            </th>
+                                        {% endif %}
+
+                                    {% endif %}
+                                {% endfor %}
+                                <th>
+                                    Действия
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="sonata-ba-tbody">
+                            {% for nested_group_field_name, nested_group_field in form.children %}
+                                <tr>
+                                    {% for field_name, nested_field in nested_group_field.children %}
+
+                                        {% set object = value.get(nested_field.parent.vars.name) %}
+
+                                        <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group{% if nested_field.vars.errors|length > 0 %} error{% endif %}"{% if ((nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden'])) or field_name in ['product','parent'] %} style="display:none;"{% endif %}>
+                                            {% if field_name in ['id','createdAt','updatedAt'] %}
+                                                {{ nested_field.vars.value}}
+                                            {% elseif field_name in ['user'] %}
+                                                <a href="{{ path('admin_sonata_user_user_edit', {id: nested_field.vars.value}) }}">{{ object.user.email }}</a>
+                                            {% elseif field_name in ['rating'] %}
+                                                <div style="width:85px">{{ form_widget(nested_field) }}</div>
+                                            {% elseif field_name in ['review','pros','cons'] %}
+                                                {% if nested_field.vars.value %}
+
+                                                    <span class="icon-eye-open" style="cursor: help;" data-toggle="popover" data-html="true" data-placement="left" data-content="{{ nested_field.vars.value }}" onmouseover="
+                                                        $(this).popover('show');
+                                                        $('.popover').css({width:500, marginLeft:-280+'px'});
+                                                        " onmouseout="$(this).popover('destroy');" data-original-title="Просмотр"></span>
+
+                                                    <span class="hidden">{{ form_widget(nested_field) }}</span>
+
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            {% elseif field_name in ['photos'] %}
+
+                                                {% for n, photo in object.photos %}
+                                                    <a class="fancybox-button" rel="fancybox-{{ nested_group_field.vars.value.id }}" href="{{ asset(photo|getFileWebPath) }}"><img src="{{ asset(photo|getFileWebPath('preview','35x35_')) }}"/></a>
+                                                    {% if (n + 1) % 5 == 0 %}
+                                                        <br>
+                                                    {% endif %}
+                                                {% endfor %}
+
+                                                <span class="hidden">{{ form_widget(nested_field) }}</span>
+
+                                            {% elseif field_name in ['videos'] %}
+
+                                                {% for n, video in object.videos %}
+                                                    <a target="_blank" href="{{ asset(video|getFileWebPath) }}">Скачать ({{ video.size|getHumanFileSize }})</a>
+                                                    <br>
+                                                {% endfor %}
+
+                                                <span class="hidden">{{ form_widget(nested_field) }}</span>
+
+                                            {% elseif field_name in ['likes'] %}
+
+                                                {% set likes = object.likes %}
+                                                {{ block('core_review_admin_review_likes_entity') }}
+
+                                            {% else %}
+                                                {{ form_widget(nested_field) }}
+                                                {% set dummy = nested_group_field.setrendered %}
+                                            {% endif %}
+
+                                            {% if nested_field.vars.errors|length > 0 %}
+                                                <div class="help-inline sonata-ba-field-error-messages">
+                                                    {{ form_errors(nested_field) }}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+
+                                    {% endfor %}
+                                    <td>
+                                        <a href="{{ path('admin_core_review_review_edit', {id: nested_group_field.vars.value.id}) }}" class="btn edit_link btn-small" title="Редактировать">
+                                            <i class="icon-edit"></i>
+                                            Редактировать
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </span>
+            <br>
+            <a target="_blank" class="btn sonata-action-element" href="{{ path('admin_core_review_review_create', {review_parent_id: form.vars.sonata_admin.admin.subject.id, review_product_id: form.vars.sonata_admin.admin.subject.product.id}) }}">
+            <i class="icon-plus"></i>
+            Добавить новый</a>
+
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{# лайки #}
+{% block core_review_admin_review_likes_entity_widget %}
+
+    {% set likes = form.vars.sonata_admin.admin.subject.likes %}
+
+    {% block core_review_admin_review_likes_entity %}
+
+        {% set positive = 0 %}
+        {% set negative = 0 %}
+
+        {% for like in likes %}
+            {% if like.type %}
+                {% set positive = positive + 1 %}
+            {% else %}
+                {% set negative = negative + 1 %}
+            {% endif %}
+        {% endfor %}
+
+        <span style="white-space: nowrap;">
+            <span>{{ positive }} <span class="icon-thumbs-up"></span></span>
+            &nbsp;
+            <span>{{ negative }} <span class="icon-thumbs-down"></span></span>
+        </span>
+
+    {% endblock %}
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{#**
+ *  Шаблон для костомных полей у формы редактирования производителя
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+
+{#  Фиксируем по ширине таблицу серий #}
+{% block core_brand_admin_seriesList_sonata_type_collection_widget %}
+    <div style="width:750px">
+        {{ block('sonata_type_collection_widget') }}
+    </div>
+
+{% endblock %}

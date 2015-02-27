@@ -1,0 +1,18 @@
+{% block formactions %}
+    <div class="well well-small form-actions preview-container">
+        <button class="btn btn-info persist-preview preview-action" name="btn_preview" type="button">
+            <i class="icon-eye-open"></i>
+            {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
+        </button>
+        <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="{{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}"/>
+
+        <button class="btn btn-danger decline-action" type="button" name="btn_preview_decline">
+            <i class="icon-remove"></i>
+            {{ 'btn_preview_decline'|trans({}, 'SonataAdminBundle') }}
+        </button>
+
+        {% if admin.isAclEnabled() and admin.hasroute('acl') and admin.isGranted('MASTER', object) %}
+            <a class="btn" href="{{ admin.generateObjectUrl('acl', object) }}">{{ 'link_edit_acl'|trans({}, 'SonataAdminBundle') }}</a>
+        {% endif %}
+    </div>
+{% endblock formactions %}

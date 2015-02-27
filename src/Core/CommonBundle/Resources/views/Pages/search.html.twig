@@ -1,0 +1,155 @@
+
+{#**
+ * Шаблон для отображения результатов поиска
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'CoreCommonBundle::main_layout.html.twig' %}
+
+{% use 'CoreProductBundle:Catalog:products_container.html.twig' %}
+
+{% set _page = app.request.attributes.get('page') %}
+
+{% block title %}Поиск по сайту{% if (_page and _page > 1)  %}, страница {{ _page }}{% endif %}{% endblock %}
+{% block meta_keywords %}поиск, запрос{% endblock %}
+{% block meta_description %}Результаты поиска по запросу {{ query }} на сайте OliKids{% if (_page and _page > 1)  %}, страница {{ _page }}{% endif %}.{% endblock %}
+
+{% block seo %}
+    {% spaceless %}
+
+        {% if app.request.query.all|length > 0 %}
+
+            {% if (_page and _page > 1)  %}
+
+                {% set canonical = path(app.request.attributes.get('_route'), {page: _page}) %}
+
+            {% else %}
+
+                {% set canonical = path(app.request.attributes.get('_route')) %}
+
+            {% endif %}
+
+            <link rel="canonical" href="{{ canonical }}" />
+
+        {% endif %}
+
+        {% if products|length %}
+            {% set totalPageNumber = (products.getTotalItemCount / products.getItemNumberPerPage)|round(0, 'ceil') %}
+
+            {% if (_page - 1 > 0)  %}
+                {% if _page - 1 == 1 %}
+                    <link rel="prev" href="{{ path('core_common_search_first_page') }}" />
+                {% else %}
+                    <link rel="prev" href="{{ path('core_common_search', {page: _page - 1}) }}" />
+                {% endif %}
+            {% endif %}
+
+            {% if (_page + 1 <= totalPageNumber) %}
+                {% if not _page %}
+                    {% set _page = 1 %}
+                {% endif %}
+                <link rel="next" href="{{ path('core_common_search', {page: _page + 1}) }}" />
+            {% endif %}
+        {% endif %}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block js_head %}
+    {% spaceless %}
+
+        {{ parent() }}
+        <script>
+            var google_tag_params = {
+                ecomm_pagetype: 'searchresults',
+            };
+            {#settingsJS.extra['pageType'] = 'searchresults';#}
+        </script>
+{#        <script src="{{ asset('bundles/coreproperty/js/frontend.filter.js') }}"></script>#}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block content %}
+    {% spaceless %}
+
+        {# устанавливаем роут первой страницы для пагинации #}
+        {% set routeFirsPage = 'core_common_search_first_page' %}
+
+        <div id="page_path">
+            <ul class="page_path_links">
+                <li class="page_path_link">
+                    <a href="{{ path('core_common_index') }}">Главная</a>
+                </li>
+                <li class="page_path_link">
+                    <strong>Поиск</strong>
+                </li>
+            </ul>
+        </div>
+
+        <!-- content with cols -->
+        <div id="content" role="main">
+
+            {% if not filterBuilder and products%}
+
+                {#{% set totalPage = (products.getTotalItemCount / products.getItemNumberPerPage)|round(0, 'ceil') %}#}
+                {% if products.getTotalItemCount %}
+                    <h2>Поиск "{{ query }}"</h2>
+                    <h3>По вашему запросу найдено {{ products.getTotalItemCount ~ ' ' ~ declOfNum(products.getTotalItemCount, ['товар', 'товара', 'товаров'] ) }}</h3>
+                {% else %}
+                    <h2>По Вашему запросу "{{ query }}" ничего не найдено</h2>
+                    <h3>Попробуйте видоизменить Ваш поисковый запрос, и тогда возможно что-то и найдется.</h3>
+                {% endif %}
+
+                <br>
+
+            {% endif %}
+
+            {% if (app.request.query.get('query') or app.request.query.get('form')) and query|length <= 2 %}
+                <h3>Минимальная длина поискового запроса 3 символа!<br>Допустимые символы: цифры, буквы, пробел, тире!</h3>
+            {% endif %}
+
+            <!-- main content col -->
+            <div class="main_col" {% if not filterBuilder %}style="margin: 0 auto; float:none;"{% endif %}>
+                <div class="main_col_pad">
+
+                    <!-- products showcase -->
+                        {% if products %}
+                            {# подключаем шаблон с выводом товара в виде сетки #}
+                            {{ block('products_container') }}
+                        {% endif %}
+                    <!-- /products showcase -->
+
+                    {#<!-- pagination -->
+                    <div class="pagination">
+
+                        {{ knp_pagination_render(products, 'CoreProductBundle:Catalog:pagination.html.twig',{}, { routeFirsPage: routeFirsPage }) }}
+
+                    </div>
+                    <!-- /pagination -->#}
+
+                </div>
+            </div>
+            <!-- /main content col -->
+
+            {% if filterBuilder %}
+
+                <!-- side content col -->
+                <aside class="side_col">
+                    <div class="side_col_pad">
+                        <!-- filter with owl -->
+                        {% include 'CorePropertyBundle:Filter:layout.html.twig' with filterBuilder %}
+                        <!-- /filter with owl -->
+                    </div>
+                </aside>
+                <!-- /side content col -->
+
+            {% endif %}
+
+        </div>
+        <!-- /content with cols -->
+
+    {% endspaceless %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'CoreStatisticsBundle:Admin/Crud:default.html.twig' %}
+{%block statisticsContent%}
+
+<div id="filters" class="well well-small" style="position: relative;">
+    <form id="filter_form" method="GET" action="{{path('core_statistics_generate_inventory')}}" target="_blank">
+        <input type="hidden" name="key" value="print_docs">
+        <input type="hidden" name="action" value="admin_print_stats_inventory">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="adminTableFilters">
+            <tbody>
+                <tr><td valign="top"><b>Склад(ы)</b>:
+                            {%for s in data.stocks%}
+                                <label >
+                                    <input type="checkbox" name="filter[id_store][]" value="{{s.id}}" checked=""> {{s.captionRu}}{% if s.isGeneralStock%} (главный склад){%endif%}
+                                </label>
+                            {%endfor%}                        
+                            </td>
+                            <td valign="top"><b>Учитывать</b>:
+                                    <label ><input type="radio" name="filter[only_free]" value="0" checked=""> всё, что лежит на складе</label>
+                                    <label><input type="radio" name="filter[only_free]" value="1"> только свободные позиции</label></td>
+                            <td valign="top"><b>Показывать</b>:
+                                <label ><input type="radio" name="filter[type]" value="sum" checked=""> в сумме по всем выбранным складам</label>
+                                <label><input type="radio" name="filter[type]" value="separate"> по каждому выбранному складу отдельно</label>
+                                </td>
+                                <td valign="top"><b>Формат</b>:
+                                    <label ><input type="radio" name="format" value="pdf" checked=""> PDF</label>
+                                    <label><input type="radio" name="format" value="html"> HTML</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br>
+                                <input type="submit" class="btn btn-primary" name="btn_update_and_edit" value="Сформировать">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+
+{%endblock%}

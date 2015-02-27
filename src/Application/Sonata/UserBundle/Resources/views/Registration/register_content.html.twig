@@ -1,0 +1,115 @@
+{% extends "CoreCommonBundle::main_layout2.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+{% block content %}
+    <!--=== Breadcrumbs ===-->
+    <div class="breadcrumbs">
+        <div class="container">
+            <h1 class="pull-left">Регистрация</h1>
+            <ul class="pull-right breadcrumb">
+                <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                <li class="active">Регистрация</li>
+            </ul>
+        </div>
+        <!--/container-->
+    </div><!--/breadcrumbs-->
+    <!--=== End Breadcrumbs ===-->
+
+
+    <!--=== Content Part ===-->
+    <div class="container content">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                <form id="regForm" class="reg-page"
+                      action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST">
+                    <div class="reg-header">
+                        <h2>Регистрация в системе</h2>
+
+                        <p>Вы уже зарегистрированы? Нажмите <a href="{{ path('fos_user_security_login') }}"
+                                                               class="color-green">авторизоваться</a>, чтобы войти в
+                            личный кабинет.</p>
+                    </div>
+
+                    <label>Имя</label>
+                    {#<input type="text" class="form-control margin-bottom-20">#}
+                    {{ form_widget(form.firstname,{ 'attr': {'class': 'form-control margin-bottom-20'} }) }}
+                    {{ form_errors(form.firstname) }}
+                    <label>Фамилия</label>
+                    {#<input type="text" class="form-control margin-bottom-20">#}
+                    {{ form_widget(form.lastname,{ 'attr': {'class': 'form-control margin-bottom-20'} }) }}
+                    {{ form_errors(form.lastname) }}
+
+                    <div class="margin-bottom-20 {% if form_errors(form.email) %}state-error{% endif %}">
+                        <label>Email <span class="color-red">*</span></label>
+                        {{ form_widget(form.email,{ 'attr': {
+                            'class': 'form-control '} }) }}
+                        {{ form_errors(form.email) }}
+                    </div>
+
+                    <div class="row margin-bottom-20">
+                        <div class="col-sm-6  {% if form_errors(form.plainPassword.first) %}state-error{% endif %}">
+                            <label>Пароль <span class="color-red">*</span></label>
+                            {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control'} }) }}
+                            {{ form_errors(form.plainPassword.first) }}
+
+                        </div>
+                        <div class="col-sm-6  {% if form_errors(form.plainPassword.second) %}state-error{% endif %}">
+                            <label>Повторите пароль <span class="color-red">*</span></label>
+                            {{ form_widget(form.plainPassword.second, { 'attr': { 'class': 'form-control'} }) }}
+                            {{ form_errors(form.plainPassword.second) }}
+
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-6 checkbox">
+                            <label>
+                                <input id="isAgreeWithRules"
+                                       name="isAgreeWithRules" {% if app.request.get('isAgreeWithRules') %} checked {% endif %}
+                                       type="checkbox">
+                                Я прочитал и согласен с <a href="page_terms.html" class="color-green">условиями
+                                    пользования</a>
+                            </label>
+
+                            <div class="form_field_error_txt rulesError">
+                                Необходимо согласиться с условиями сервиса
+                            </div>
+                        </div>
+                        <div class="col-lg-6 text-right">
+                            <button class="btn-u" type="submit">Зарегистрироваться</button>
+                        </div>
+                    </div>
+                    {{ form_rest(form) }}
+                </form>
+            </div>
+        </div>
+    </div><!--/container-->
+    <!--=== End Content Part ===-->
+    <script>
+
+        $(function () {
+
+            $('#isAgreeWithRules').click(function () {
+                $('.rulesError').hide();
+            });
+            $('#regForm').submit(function () {
+                if (!$('#isAgreeWithRules').is(':checked')) {
+                    $('.rulesError').show();
+                    return false;
+                }
+                else {
+                    $('.rulesError').hide();
+                    return true;
+                }
+            });
+
+        })
+
+    </script>
+
+{% endblock %}

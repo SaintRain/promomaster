@@ -1,0 +1,88 @@
+{#форма редактирования стороннего баннера#}
+<form id="form_code" style="clear: both;{% if not show %}display: none{% endif %}" class="sky-form sky-form-other-style"
+      action="{% if banner.id %}{{ path('core_cabinet_banner_edit', {id:banner.id}) }}{% else %}{{ path('core_cabinet_banner_create') }}{% endif %}" {{ form_enctype(form) }}
+      method="POST">
+
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+            &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_banner_create') }}'><i
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще баннер</a>
+            &nbsp;&nbsp;&nbsp;
+            <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_banner_list_first_page') }}'><i
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку баннеров</a>
+        </div>
+    {% endfor %}
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+    {% if form.vars.errors | length %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <fieldset class="sky-form-other-style">
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6"><label>Тип баннера*</label><select {% if banner.id %} disabled {% endif %}
+                        type="text"
+                        name="banner_type"
+                        required="required"
+                        class="banner_type form-control">
+                    <option value="image">
+                        Изображение
+                    </option>
+                    <option value="flash">Flash</option>
+                    <option selected value="code">HTML / Сторонний
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6  {% if form_errors(form.name) %}state-error{% endif %}">
+                <label>Название *</label>
+                {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+
+
+        <div class="row margin-bottom-20">
+            <div class="col-lg-12  {% if form_errors(form.code) %}state-error{% endif %}">
+                <label>Код *</label>
+                {{ form_widget(form.code,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.code) }}
+            </div>
+        </div>
+
+
+        <div class=" margin-bottom-20">
+        </div>
+
+        {{ form_rest(form) }}
+
+        <div class="text-right">
+
+            <button class="btn-u" type="submit">{% if banner.id %}Сохранить{% else %}Добавить{% endif %}</button>
+            &nbsp;&nbsp;
+            <a href="{{ path('core_cabinet_banner_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+            {% if banner.id %}
+                &nbsp;&nbsp; или &nbsp;&nbsp;
+                <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>
+            {% endif %}
+
+        </div>
+
+    </fieldset>
+
+</form>

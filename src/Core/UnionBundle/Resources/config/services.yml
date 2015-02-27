@@ -1,0 +1,47 @@
+services:
+  #тип формы для объединения записей
+  core_union_form_type:
+    class: Core\UnionBundle\Admin\Form\Type\UnionType
+    tags:
+        - { name: form.type, alias: union }
+    arguments: ['@core_union_logic']
+ 
+ # логика для бандла обьединений
+  core_union_logic:
+    class: Core\UnionBundle\Logic\UnionLogic
+    arguments: ['@doctrine.orm.entity_manager',  '@validator', '@templating', '@core_file_logic']
+
+  # подписчик событий
+  core_union_subscriber:
+    class: Core\UnionBundle\EventListener\UnionSubscriber
+    tags:
+            - { name: doctrine.event_subscriber }        
+    arguments: ['@service_container']
+
+  # расширения для восстановления галочек, если форма сломалась
+  checked_union.twig.extension:
+     class: Core\UnionBundle\Twig\CheckedUnionRowExtension
+     arguments: ['@service_container']
+     tags:
+      - { name: twig.extension }
+
+  #админский класс, нужен для редактирования количества продукта в составном продукте
+  core_union_product_composition:
+    class: Core\UnionBundle\Admin\ProductCompositionsUnionAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, show_in_dashboard: false}
+    arguments: [null, Core\UnionBundle\Entity\ProductCompositionsUnion, null]
+
+    #админский класс, нужен для редактирования количественной альтернативы продукта
+  core_union_product_quantity_alternative:
+    class: Core\UnionBundle\Admin\ProductQuantityAlternativeUnionAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, show_in_dashboard: false}
+    arguments: [null, Core\UnionBundle\Entity\ProductQuantityAlternativeUnion, null]
+    
+  # подписчик событий
+  core_union_composite_product_subscriber:
+    class: Core\UnionBundle\EventListener\CompositeProductUnionSubscriber
+    tags:
+            - { name: doctrine.event_subscriber }
+    arguments: ['@service_container']

@@ -1,0 +1,37 @@
+# Вывод первой страницы списка баннеров в личном кабинете
+core_cabinet_banner_list_first_page:
+    path:      /cabinet/banners.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Cabinet:list}
+
+# Вывод списка баннеров в ЛК
+core_cabinet_banner_list:
+    path:      /cabinet/banners/{page}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Cabinet:list, page: 1 }
+    requirements:
+      page: \d+
+
+# редактирование баннера в ЛК
+core_cabinet_banner_edit:
+    path:      /cabinet/banner_edit_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Cabinet:edit }
+    requirements:
+      id: \d+
+
+# добавление баннера в ЛК
+core_cabinet_banner_create:
+    path:      /cabinet/banner_create.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Cabinet:create }
+
+# удаление баннера в ЛК
+core_cabinet_banner_delete:
+    path:      /cabinet/banner_delete_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Cabinet:delete }
+    requirements:
+      id: \d+
+
+

@@ -1,0 +1,15 @@
+
+{#**
+ * Шаблон для вывода id с ведущими нулями
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+    <a href="{{ path('admin_core_payment_payment_edit', { id: object.id }) }}">{{ object.id|idFormat }}</a>
+
+{% endblock %}

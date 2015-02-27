@@ -1,0 +1,34 @@
+{#**
+ * Шаблон для генерации письма с заказом для отправкт менеджеру сайта
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+{% spaceless %}
+
+    Создан новый заказ <a href="http://{{ domain }}{{ path('admin_core_order_order_edit', {id: order.id}) }}">№{{ order.id|idFormat }}</a> ({{ createdDateTime }})<br>
+    на сумму {{ moneyFormat(orderCostInfo['total_cost_all']) }}&nbsp;{{ currencyFormat() }}<br>
+
+    {% if order.payments.count %}
+
+        Оплата: {{ order.payments.first.system.captionRu }}<br>
+
+    {% endif %}
+
+    {% if order.deliveryMethod %}
+
+        Доставка: {{ order.deliveryMethod.captionRu }}<br>
+        Адрес Доставки: {{order.deliveryCity.name}}, {{order.deliveryAddress}}<br>
+    {% endif %}
+        Пользователь: {% if order.contragent.user.lastname or order.contragent.user.firstname %} {{order.contragent.user.lastname}} {{order.contragent.user.firstname}}, {% endif %} {% if order.contragent.user.phone %}{{order.contragent.user.phone}}, {% endif %}{{order.contragent.user.email}}<br>
+        Плательщик: {% if order.contragent.organization is defined %}{{order.contragent.organization}}{% else %}{{order.contragent.contactFio}}{% endif %}, {{order.contragent.phone1}}, {{order.contragent.contactEmail}}<br>
+        {% if order.contragent.firstName is defined %}
+            Получатель: {% if order.recipientFio %}{{order.recipientFio}}, {% endif %}{% if order.recipientPhone %}{{order.recipientPhone}}, {% endif %}{% if order.recipientEmail %}{{order.recipientEmail}}{% endif %}<br>
+        {% endif %}
+        Состав заказа:
+        {% for comp in order.compositions %}
+            {{comp.product.captionRu}} - {{comp.quantity}} {%if comp.product.unitOfMeasure%}{{comp.product.unitOfMeasure.shortCaptionRu}}{%endif%}<br/>
+        {% endfor   %}
+    <a href="http://{{ domain }}{{ path('admin_core_order_order_edit', {id: order.id}) }}">ссылка на заказ в админке</a><br>
+
+{% endspaceless %}

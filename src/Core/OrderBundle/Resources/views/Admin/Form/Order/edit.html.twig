@@ -1,0 +1,109 @@
+{% extends 'ApplicationSonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block sonata_tab_content %}
+    <div class="tab-content order-num" data-order="{{object.id}}">
+        
+        {% for name, form_group in admin.formgroups %}
+            <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">
+                <fieldset>
+                    <div  {% if loop.first %}style="float:left;" {%endif%} class="sonata-ba-collapsed-fields">
+                        {% if form_group.description != false %}
+                            <p>{{ form_group.description|raw }}</p>
+                        {% endif %}
+                                                                      
+                        {% for field_name in form_group.fields %}
+                                        
+                            {% if admin.formfielddescriptions[field_name] is defined %}
+                                {% if form[field_name].vars.prototype is defined %}
+                                    <div class="control-group">
+                                        {{form_label(form[field_name])}}
+                                        <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                                            <div class="tabbable tab-collection">
+                                                <ul class="nav nav-tabs {% if form[field_name] | length == 0 %} only-add {% endif %}">
+                                                    {% if form[field_name].vars.allow_add %}
+                                                        <li class="{% if (form[field_name] | length) == 0 %}active {% endif %}">
+                                                            <a data-toggle="tab" href="#" class="add-tab">
+                                                                <span>Добавить накладную</span>
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                    {% for nested in form[field_name] %}
+                                                        {% spaceless %}
+                                                        <li {% if loop.first%} class="active" {% endif %}>
+                                                            <a data-toggle="tab" href="#{{nested.vars.id}}" class="tabs-toogle">
+                                                                <i class="icon-exclamation-sign has-errors hide {% if not nested.vars.valid %}tabs-errors{% endif %}"></i>
+                                                                <span>Накладная № {{loop.index}}</span>
+                                                                {% if form[field_name].vars.allow_delete and nested.children.number.vars.attr['data-forbidden-delete'] %}
+                                                                    <span title="удалить" class="ui-icon ui-icon-close collection-modify-delete"></span>
+                                                                {% endif %}
+                                                            </a>
+                                                        </li>
+                                                        {% endspaceless %}
+                                                    {% endfor %}
+                                                </ul>
+                                                <div class="tab-content" id="{{form[field_name].vars.id}}" data-prototype="{% filter escape %}{% include 'CoreOrderBundle:Admin/Form/Blocks:collection_widget_tabs.html.twig' with {'form': form[field_name].vars.prototype, 'id':form[field_name].vars.id, 'isActive': false} %}{% endfilter %}">
+                                                    {% for nested in form[field_name] %}
+                                                        {% include 'CoreOrderBundle:Admin/Form/Blocks:collection_widget_tabs.html.twig' with {'form': nested, 'id':nested.vars.id, 'isActive': loop.first} %}
+                                                        {% do nested.setRendered() %}
+                                                    {% endfor %}
+                                                </div>
+                                                {% do form[field_name].setRendered() %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    {{ form_row(form[field_name])}}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    
+                      {% if loop.index==1 %}
+                            <div style="float:left;width:350px" id="orderInfoBlock"></div>
+                            <script>
+    $(function() {
+        var content=$('#orderInfoBlockSource').html();
+        $('#orderInfoBlock').html(content);
+    })
+</script>
+                        {%endif%}
+                </fieldset>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/coreorder/Admin/css/style.css') }}" type="text/css" media="all" />
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{ asset('bundles/coreorder/Admin/js/unit_serial_number_widget.js')}}" type="text/javascript"></script>
+    <script type="text/javascript">
+        adminRoutes['admin_core_delivery_service_deliveryPrice'] = '{{path('admin_core_delivery_service_deliveryPrice')}}';
+        adminRoutes['admin_core_delivery_service_waybill'] = '{{path('admin_core_delivery_service_waybill')}}';
+        adminRoutes['admin_core_delivery_service_print_waybill'] = '{{path('admin_core_delivery_service_printWaybill', {'id':'PLACEHOLDER'})}}';
+        adminRoutes['admin_core_delivery_service_cancel'] = '{{path('admin_core_delivery_service_cancel')}}';
+        adminRoutes['admin_core_delivery_service_deliveryCity'] = '{{path('admin_core_delivery_service_deliveryCity')}}';
+        
+    $(function() {
+        $('img.sendEmailOrderStatus').click(function() {
+            var dataTarget=$(this).attr('data-target'),            
+             $checkbox=$('input[id $= "_'+dataTarget+'"]').first();                         
+             if ($checkbox.is(':checked')) {
+                 $(this).attr('src', "{{asset('bundles/coreorder/Admin/img/dont_send_email.png')}}");
+                 $checkbox.removeAttr('checked');
+             }
+             else {                 
+                 $(this).attr('src', "{{asset('bundles/coreorder/Admin/img/send_email.png')}}");
+                 $checkbox.attr('checked','checked');
+             }
+        })
+    })        
+    </script>
+    <script src="{{ asset('bundles/coreorder/Admin/js/edit.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/coredelivery/js/waybill.js') }}" type="text/javascript"></script>    
+{% endblock %}
+
+

@@ -1,0 +1,14 @@
+{# Дефолтный шаблон для отображения формы. Для каждой категории можно задать свой шаблон.
+Для этого следует создать шаблон в этой же директории [имя сущности категории]_edit.html #}
+{% block form_content %}
+
+{# Можно вывести каждое поле отдельно вот так
+<div class="control-group">
+    <label class="control-label" for="isEnabled">{{ form_label(form.isEnabled) }}</label>
+    <div class="controls">
+        {{ form_widget(form.isEnabled) }}
+      {{ form_errors(form.isEnabled) }}
+    </div>
+#}
+{% endblock %}
+

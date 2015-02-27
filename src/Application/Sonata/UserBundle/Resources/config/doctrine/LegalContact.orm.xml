@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <!--Kaluzhniy. N. -->
+  <entity repository-class="Application\Sonata\UserBundle\Entity\Repository\LegalContactRepository" name="Application\Sonata\UserBundle\Entity\LegalContact">
+    <many-to-one target-entity="Application\Sonata\UserBundle\Entity\LegalContragent" field="contragent" inversed-by="contactList">
+        <join-column  on-delete="cascade" referenced-column-name="id" nullable="false"/>
+        <cascade>
+            <cascade-persist />
+        </cascade>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,22 @@
+
+{#**
+ * Шаблон для вывода большого текста
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+    {% if value %}
+        <span class="icon-eye-open" style="cursor: help;" data-toggle="popover" title="Просмотр" data-html="true" data-content="{{ value }}" onmouseover="
+                $(this).popover('show');
+                $('.popover').css({width:700});
+              " onmouseout="$(this).popover('destroy')"></span>
+    {% else %}
+        -
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,96 @@
+{#Основной футер#}
+{% set noIndex =  (app.request and app.request.attributes.get('_route') == 'core_common_index') ? false : true %}
+<footer id="footer">
+    <div class="footer_container">
+        <div class="grid_container">
+            <ul class="footer_cats grid_item">
+                {{ render (controller ('CoreCommonBundle:Fragments:categoriesInDown', {'request': app.request})) }}
+            </ul>
+            <ul class="footer_brands grid_item">
+                {{ render (controller ('CoreCommonBundle:Fragments:brandsInDown', {'request': app.request})) }}
+            </ul>
+            <div class="footer_support grid_item">
+
+                {% set phones = ServiceContainer.get('core_config_logic').get('phones') %}
+                {% set phonesCaptions = {'rostov':'Ростов н/Д','msk':'Москва','spb': 'СПб'}  %}
+
+                <ul>
+                    {% for key, phone in phones %}
+                        {% if phonesCaptions[key] is defined %}
+
+                            <li>{{ phonesCaptions[key] }}: {{ phone }}</li>
+
+                        {% endif %}
+                    {% endfor %}
+                    {#
+                    <li>Skype: olikids.ru</li>
+                    #}
+                </ul>
+                {% if noIndex %}<!--noindex-->{% endif %}
+                <ul>
+                    <li>
+                        <a {% if noIndex %}rel="nofollow" {% endif %}href="{{path('core_common_about')}}">О магазине</a>
+                    </li>
+                    <li>
+                        <a {% if noIndex %}rel="nofollow" {% endif %}href="{{path('trouble_ticket_contact')}}">Контактная информация</a>
+                    </li>
+                    <li>
+                        <a {% if noIndex %}rel="nofollow" {% endif %}href="{{path('core_faq_homepage')}}">Помощь</a>
+                    </li>
+
+                    {{ render (controller ('CoreCommonBundle:Fragments:howToBecomeAPartner', {'request': app.request})) }}
+
+                </ul>
+                {% if noIndex %}<!--/noindex-->{% endif %}
+                <ul>
+                    <li>
+                        <a target="_blank" href="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=2508/*http://market.yandex.ru/shop/239839/reviews">
+                            <img src="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=2505/*http://grade.market.yandex.ru/?id=239839&amp;action=image&amp;size=0" border="0" width="88" height="31" alt="Читайте отзывы покупателей и оценивайте качество магазина на Яндекс.Маркете">
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=1248/*http://market.yandex.ru/shop/239839/reviews/add">
+                            <img src="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=1248/*http://img.yandex.ru/market/informer12.png" border="0" alt="Оцените качество магазина на Яндекс.Маркете.">
+                        </a>
+                    </li>
+                    {% if noIndex == false %}
+                    <li>
+                        <a target="_blank" href="http://www.kids-price.ru">
+                            <img height="31" width="88" alt="Kids-Price.Ru - цены на детские товары, коляски, автомобильные детские кресла, одежду и обувь." src="http://www.kids-price.ru/i/banner.gif" border="0">
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="footer_info grid_item">
+
+                {{ render (controller ('CoreCommonBundle:Fragments:PaymentSystemInDown', {'request': app.request})) }}
+
+                {{ render (controller ('CoreCommonBundle:Fragments:deliveryCompaniesInDown', {'request': app.request})) }}
+            </div>
+        </div>
+        {% if app.environment == 'prod' %}
+            {% set mixMarketList = ServiceContainer.get('core_config_logic').get('mix-market') %}
+            {{ mixMarketList['main'] | raw }}
+            {% set metrics = ServiceContainer.get('core_config_logic').get('metrics') %}
+            {% for metric in metrics %}
+                {% spaceless %}
+                {{ metric | raw }}
+                {% endspaceless %}
+            {% endfor %}
+
+            {% set otherScripts = ServiceContainer.get('core_config_logic').get('other-scripts') %}
+            {% for other in otherScripts %}
+                {% spaceless %}
+                    {{ other | raw }}
+                {% endspaceless %}
+            {% endfor %}
+        {% endif %}
+        {% if noIndex %}<!--noindex-->{% endif %}
+        <div class="footer_copyright">&copy; {{ "now"|date("Y", default_timezone) }} Olikids. <a {% if noIndex %}rel="nofollow" {% endif %}href="{{path('core_common_privacy_policies')}}">Политика конфиденциальности</a></div>
+        {% if noIndex %}<!--/noindex-->{% endif %}
+        <script>
+            console.log(google_tag_params);
+        </script>
+    </div>
+</footer>

@@ -1,0 +1,28 @@
+
+{#**
+ * Шаблон для вывода ссылок на файлы в админке на списке записей
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+    {% for document in value %}
+        <a class="btn btn-small" href="{{ asset(document|getFileWebPath) }}" target="_blank" title="Скачать '{{ document.name }}'">
+            <span class="icon-download"></span>
+            Скачать
+        </a>
+        <br />
+    {% else %}
+        -
+    {% endfor %}
+
+{% endblock %}
+
+
+
+
+

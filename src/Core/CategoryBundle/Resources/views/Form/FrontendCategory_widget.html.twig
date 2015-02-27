@@ -1,0 +1,68 @@
+{% block FrontendCategory_widget %}
+    <div class="row">
+        <div class="col-sm-6  ">
+
+            <select name="selectMainCat" class="selectMainCat form-control">
+                <option value="0" style="color:gray">...Выберите раздел</option>
+                {% for d in categories %}
+                    <option {% if app.request.get('selectMainCat')==d.id %} selected {% endif %} value="{{ d.id }}">{{ d.captionRu }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-sm-12  ">
+            {% for d in categories %}
+                <div id="subCat{{ d.id }}" class="subCat" data-parent-id="{{ d.id }}" style="{% if app.request.get('selectMainCat')!=d.id %}display:none;{% endif %}clear: both">
+                    <span class="help">Отметьте разделы, которые соответствуют тематике вашего сайта:</span><br/>
+                    <br/>
+                    {% for d2 in d.__children %}
+                        <div style="float: left;width:270px; "><label class="checkbox"><input
+
+                                        class="text_input"
+                                        type="checkbox"
+                                        value="{{ d2.id }}"
+                                        name="form[categories][]"><i></i> {{ d2.captionRu }}
+                            </label>&nbsp;&nbsp;</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+    <script>
+        $(function () {
+
+            //отмечаем чекбоксы
+            var selected = [{%for cat in form.vars.data%}{{cat.id}}, {%endfor%}]; //отмеченные данные
+            for (var s_id in selected) {
+                var pId = $('input[type="checkbox"][value="' + selected[s_id] + '"]')
+                        .prop("checked", true)
+                        .parents('.subCat')
+                        .show()
+                        .attr('data-parent-id');
+
+                $('.selectMainCat').val(pId);
+            }
+
+            $('.selectMainCat').change(function () {
+                var id = $(this).find('option:selected').val();
+                $('.subCat').hide();
+                $('#subCat'+id).show();
+            });
+
+            //очищаем предыдущие значения
+            $('.selectMainCat').parents('form').submit(function () {
+                $('.subCat:hidden').find('input[type="checkbox"]').each(function () {
+                    $(this).prop("checked", false);
+                })
+            })
+
+        })
+
+    </script>
+
+{% endblock %}

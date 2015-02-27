@@ -1,0 +1,181 @@
+{#{% extends "CoreOrderBundle:Admin/Documents:layout.html.twig" %}#}
+{#договор поставки#}
+{%block content%}
+    {%if  order.costInfo is not defined %}
+        {% set costInfo=ServiceContainer.get('core_order_logic').computeOrderCostInfo(order)%}
+            {%endif%}
+                {% spaceless %}
+                    <style type="text/css">table, td, th, div {font-family:Verdana, Arial;font-size:12px;}</style>
+                    <div>
+                        <div style="float:left;width:70%;">
+                            <div style="font-size:14px"><strong>ДОГОВОР ПОСТАВКИ № {{order.id|idFormat}}</strong></div>
+                            <div style="">{%if order.createdDateTime%}{{order.createdDateTime|localizeddate("none", "none", null, default_timezone, '"d" MMMM  Y г.')}}{%else%}&quot;___&quot;&nbsp;&nbsp;______________&nbsp;&nbsp;20___&nbsp;&nbsp;г.{%endif%}</div>
+                        </div>
+                        {%if order.createdDateTime%}
+                            <div style="float:right; width: 52mm; height: 14mm; text-align: center;">
+                                <barcode code="001{{order.id}}{{order.createdDateTime|date('Ymd', default_timezone)}}" type="C128C" />
+                                <div style="font-size:7pt;">001{{order.id|idFormat}}{{order.createdDateTime|date('Ymd', default_timezone)}}</div>
+                            </div>
+                        {%endif%}
+                        <div style="clear:both;"></div>
+                    </div>
+
+
+                    <p>
+                        {{order.seller.legalForm.fullCaptionRu}} {{order.seller.caption}}, {% if order.seller.legalForm.captionRu in ['ИП', 'ЧП', 'ПБОЮЛ']|keys %}именуемый{%else%}именуемое{%endif%} в дальнейшем "Поставщик", 
+                        в лице {{order.seller.nameOfTheHeadInGenitive}}, действующего на основании {{order.seller.headActsUnder}}, с одной стороны, и&nbsp;
+                        {%if order.contragent.legalForm is defined%}
+                            {{order.contragent.legalForm.captionRu}}  &quot;{{order.contragentCompany}}&quot;, именуемое в дальнейшем "Покупатель", в лице {{order.contragent.chiefPosition}} {{order.contragent.chiefFio}}, действующего на основании _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                        {%else%}
+                            {{order.contragentFio}}
+                            проживающий по адресу {% if order.deliveryPostcode %}{{order.deliveryPostcode}}, {%endif%}{%if order.deliveryCity%}{{order.deliveryCity.name}},{%endif%} {{order.deliveryAddress}}, именуемый в дальнейшем "Покупатель", действующий от своего имени
+                        {%endif%}
+                        , с другой стороны, заключили настоящий договор о нижеследующем:
+                    </p>
+
+                    <div style="text-align:center;font-size:13px">1. Предмет договора</div>
+                    <p>1.1. Поставщик обязуется передать в собственность Покупателя , а Покупатель принять и оплатить товар:</p>
+
+
+                    <table border="1" cellspacing="0" cellpadding="5" width="780" style="border-style: solid; border-color: #000; border-width:.25pt; border-collapse: collapse;"><tbody>
+                            <tr valign="top">
+                                <td><b>№</b></td>
+                                <td nowrap><b>Наименование товара</b></td>
+                                <td nowrap><b>Ед. изм.</b></td>
+                                <td nowrap><b>Кол-во (шт.)</b></td>
+                                <td nowrap><b>Цена ({{currencyFormat()}})</b></td>
+                                <td nowrap><b>Сумма ({{currencyFormat()}})</b></td>
+                            </tr>
+                            {%set index=0%}
+                                {%for comp_index, comp in order.compositions%}
+                                    <tr valign="top">
+                                        <td>{{comp_index+1}}</td>
+                                        <td>{{comp.product.sku}} {{comp.product.captionRu}}</td>
+                                        <td align="left">{%if comp.product.unitOfMeasure%}{{comp.product.unitOfMeasure.shortCaptionRu}}{%else%}&mdash;{%endif%}</td>
+                                        <td align="right">{{comp.quantity}}</td>
+                                        <td align="right">{% if costInfo.history_info is defined%}{{moneyFormat(costInfo.history_info.composition[comp.product.id].cost_per_one_unit)}}{%else%}{{moneyFormat(costInfo.composition[comp.product.id].cost_per_one_unit)}}{%endif%}</td>
+                                        <td align="right">{{moneyFormat(comp.cost)}}</td>
+                                    </tr>
+                                    {%set index=comp_index+1%}
+                                        {%endfor%}
+
+                                            {%if order.deliveryMethod is defined and order.isDeliveryIncludedInPayment and order.deliveryCost>0%}
+                                                <tr>
+                                                    <td>{{index+1}}</td>
+                                                    <td>Возмещение услуг доставки</td>
+                                                    <td align="left">шт</td>
+                                                    <td align="right">1</td>
+                                                    <td align="right">{{moneyFormat(order.deliveryCost)}}</td>
+                                                    <td align="right">{{moneyFormat(order.deliveryCost)}}</td>
+                                                </tr>
+                                            {%endif%}
+                                            {%if order.seller.isWorkingWithNds and order.ndsTax%}
+                                                <tr valign="top">
+                                                    <td nowrap="nowrap">&nbsp;</td>
+                                                    <td align="right" colspan="4">В том числе НДС ({{order.ndsTax}}%):</td>
+                                                    <td align="right" valign="bottom">{{moneyFormat(costInfo.nds_tax)}}</td>
+                                                </tr>
+                                            {%endif%}
+                                            <tr valign="top">
+                                                <td nowrap="nowrap">&nbsp;</td>
+                                                <td align="right" colspan="4">Всего к оплате:</td>
+                                                <td align="right" valign="bottom">{% if costInfo.history_info is defined%}{{ costInfo.history_info.total_cost}}{%else%}{{costInfo.total_cost}}{%endif%}</td>
+                                            </tr>
+
+                                        </tbody></table>
+
+                                    <p>Сумма прописью: {%if costInfo.history_info is defined%}{{ amount2str(costInfo.history_info.total_cost)}}{%else%}{{ amount2str(costInfo.total_cost)}}{%endif%}
+                                        {%if order.seller.isWorkingWithNds and order.ndsTax%}, в т. ч. НДС {{order.ndsTax}}% - {{moneyFormat(costInfo.nds_tax)}} {{currencyFormat()}}{%endif%}
+                                    </p>
+                                    <p>1.2. Право собственности на товар переходит к Покупателю с момента фактической передачи ему товара.</p>
+
+                                    <div style="text-align:center;font-size:13px">2. Порядок поставки товара. Приемка товара.</div>
+                                    <p>
+                                        2.1. Поставщик производит поставку в течение пяти дней с момента поступления средств от Покупателя на расчетный счет поставщика.<br />
+                                        2.2. Доставка товара осуществляется {{order.deliveryMethod.captionRu}} (далее по тексту "Перевозчик"), затраты на доставку{%if order.isDeliveryIncludedInPayment and order.deliveryCost>0%} выделяются в счете отдельной строкой{%else%} в стоимость товаров не включена{%endif%}.<br />
+                                        2.3. Покупатель обязан совершить все необходимые действия, обеспечивающие принятие товаров, поставленных в соответствии с настоящим договором. Передача товара Покупателю удостоверяется соответствующей отметкой на товарной накладной.<br />
+                                        2.4. При получении поставленного товара Покупатель обязуется незамедлительно осмотреть товар, проверить его количество и качество. В случае выявления недостатков товаров Покупатель в присутствии представителя Перевозчика составляет соответствующий акт, подписываемый сторонами.<br />
+                                        2.5. В случае обоснованного отказа Покупателя от переданного Поставщиком товара, он обязуется обеспечить сохранность (ответственное хранение) этого товара и незамедлительно уведомить Поставщика о своем отказе принять товар с указанием мотивов отказа.
+                                    </p>
+
+                                    <div style="text-align:center;font-size:13px">3. Цены по договору и порядок расчетов</div>
+                                    <p>
+                                        3.1. Цена товара согласовывается сторонами путем обмена соответствующими документами (заявкой на поставку товара и счетом на оплату поставляемого товара).<br />
+                                        3.2. Передаваемые товары оплачиваются Покупателем в безналичной форме путем перечисления денежных средств в срок не позднее трех календарных дней с момента выставления счета на оплату Поставщиком.
+                                    </p>
+
+                                    <div style="text-align:center;font-size:13px">4.Ответственность сторон</div>
+                                    <p>
+                                        4.1. Любая из сторон настоящего договора, не исполнившая обязательства по договору или исполнившая их ненадлежащим образом, несет ответственность за это при наличии вины (умысла или неосторожности, небрежности, неосмотрительности).<br />
+                                        4.2. За просрочку отгрузки товара Поставщик уплачивает Покупателю неустойку в размере 0,1 % от суммы неотгруженого товара за каждый день просрочки.<br />
+                                        4.3. Уплата неустойки (штрафа, пени) и возмещение убытков, причиненных ненадлежащим исполнением обязательств, не освобождает стороны договора от исполнения обязательств по договору в полном объеме.<br />
+                                    </p>
+
+                                    <div style="text-align:center;font-size:13px">5. Прочие положения</div>
+                                    <p>
+                                        5.1. Настоящий договор действует с момента подписания его сторонами до полного исполнения ими своих обязательств.<br />
+                                        5.2. Споры, которые могут возникнуть при исполнении настоящего договора, будут разрешаться путем переговоров. В случае недостижения согласия споры разрешаются в судебном порядке в Арбитражном суде по месту нахождения истца.<br />
+                                        5.3. Изменения и дополнения к настоящему договору оформляются в письменном виде, подписываются сторонами и являются неотъемлемой частью настоящего договора.<br />
+                                        5.4. В случае изменения юридического адреса или обслуживающего банка стороны договора обязаны в семидневный срок уведомить об этом друг друга.
+                                    </p>
+
+                                    <pagebreak />
+
+                                    <div style="text-align:center;font-size:13px">6. Адреса, банковские реквизиты и подписи сторон</div>
+
+                                    <table border="0" cellspacing="0" cellpadding="5" width="780"><tbody>
+                                            <tr>
+                                                <td width="45%"><b>Поставщик:</b></td>
+                                                <td width="10%">&nbsp;</td>
+                                                <td width="45%"><b>Покупатель:</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="45%" valign="top">
+                                                    {{order.seller.legalForm.captionRu}} {{order.seller.caption}}<br />
+                                                    {{order.seller.addressUr}}<br />
+                                                    ИНН {{order.seller.inn}}<br />
+                                                    р/с {{order.seller.paymentAccount}} в {{order.seller.bank.captionFull}}<br />
+                                                    к/с {{order.seller.corrAccount}}<br />
+                                                    БИК {{order.seller.bank.bic}}
+                                                </td>
+                                                <td width="10%">&nbsp;</td>
+                                                <td width="45%" valign="top">
+                                                    {%if order.contragent.legalForm is defined%}
+                                                        {{order.contragent.legalForm.captionRu}}  &quot;{{order.contragentCompany}}&quot;<br />
+                                                        {{order.contragent.addressLegal}}<br />
+                                                        ИНН {{order.contragent.inn}}<br />
+                                                        р/с {{order.contragent.bankAccount}} в {{order.contragent.bank.captionFull}}<br />
+                                                        к/с {{order.contragent.corrAccount}}<br />
+                                                        БИК {{order.contragent.bank.bic}}
+                                                    {%else%}
+                                                        {{order.contragentFio}}<br />
+                                                        {% if order.deliveryPostcode %}{{order.deliveryPostcode}}, {%endif%}{%if order.deliveryCity%}{{order.deliveryCity.name}},{%endif%} {{order.deliveryAddress}}
+                                                        {%if order.contragent.passport is defined and order.contragent.passport%}
+                                                            <br />Паспорт {{order.contragent.passport}}
+                                                        {%endif%}
+                                                    {%endif%}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" align="center">Подписи сторон</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="45%"><b>Поставщик:</b></td>
+                                                <td width="10%">&nbsp;</td>
+                                                <td width="45%"><b>Покупатель:</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="45%">{% if order.seller.legalForm.captionRu!='ИП'%}{{order.seller.positionOfTheHead}} {%endif%}{{order.seller.legalForm.captionRu}} {{order.seller.caption}}</td>
+                                                <td width="10%">&nbsp;</td>
+                                                <td width="45%">{%if order.contragent.legalForm is defined%}{%if order.contragent.legalForm.captionRu!='ИП'%}{{order.contragent.chiefPosition}} {%endif%}{{order.contragent.legalForm.captionRu}}  &quot;{{order.contragentCompany}}&quot;
+                                                    {%else%}{{order.contragentFio}}{%endif%}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="45%">________________________ {{order.seller.nameOfTheHead}}</td>
+                                                        <td width="10%">&nbsp;</td>
+                                                        <td width="45%">____________________________________________________</td>
+                                                    </tr>
+                                                </tbody></table>
+
+                                            {% endspaceless %}
+                                                {%endblock%}

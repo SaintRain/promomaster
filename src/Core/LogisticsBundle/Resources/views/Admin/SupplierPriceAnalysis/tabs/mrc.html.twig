@@ -1,0 +1,192 @@
+{# Вкладка МРЦ#}
+<div class="tab-pane " id="{{ uniqid }}_{{ ind+3 }}">
+    <fieldset>
+        <div class="sonata-ba-collapsed-fields">
+            <p>Минимальная рекомендованная цена</p>
+            <p>
+                <input type="button" class="btn updateProductMrcButton" value="Обновить МРЦ для выбранных товаров">&nbsp;
+                <input  type="button" class="btn disabledMrcProductButton"
+                        value="Отключить от публикации выбранные товары">
+                &nbsp;
+                <input style="display:none" type="button" class="btn enableMrcProductButton" value="Включить на публикацию">
+            </p>
+            <h3>Фильтры</h3>
+            <label style="float: left"><input checked type="radio" name="mrcFilter" value="mrcAllProducts" >&nbsp;Все товары <span id="mrcAllProductsQuantity"></span></label>
+            <label style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;<input name="mrcFilter" value="mrcPriceHike" type="radio" >&nbsp;Подорожавшие <span id="mrcPriceHikeQuantity"></span></label>
+            <label style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;<input name="mrcFilter" value="mrcDepreciation" type="radio" >&nbsp;Подешевевшие <span id="mrcDepreciationQuantity"></span></label>
+            <label style="float: left">&nbsp;&nbsp;&nbsp;&nbsp;<input name="mrcFilter" value="mrcNothing" type="radio" >&nbsp;Без изменения <span id="mrcNothingQuantity"></span></label>
+            <label>&nbsp;&nbsp;&nbsp;&nbsp;<input name="mrcFilter" value="mrcDisabledInBaseandHasInPrice" type="radio" >&nbsp;Сняты с публикации или производства <span id="mrcDisabledInBaseandHasInPriceQuantity"></span></label>
+
+
+            <br>
+            <table class="table table-bordered table-hover" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width: 50px">№</th>
+                        <th style="width:30%">Название товара</th>
+                        <th>Закупочная цена<br/><span style="font-size:10px">На момент загрузки прайса</span></th>
+                        <th>Закупочная в прайсе</th>
+                        <th>Изменение закупочной цены</th>
+                        <th>МРЦ в базе<br/><span style="font-size:10px">На момент загрузки прайса</span></th>
+                        <th>МРЦ в прайсе</th>
+                        <th>Изменение цены</th>
+                        <th style="width:15px"><input title="Выбрать все" name="setMrcPriceAll"
+                                                      type="checkbox" value="1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in extra.analysisMRC %}
+                        <tr class="priceMrcTr {{ d.extra.flag }} {{ d.extra.flag2 }} {%if d.extra.difCurrency is defined %}error{%endif%}">
+                            <td>{{ loop.index }}</td>
+                            <td nowrap>
+                                <a href="{{ path('admin_core_product_commonproduct_edit',{id:d.product.id}) }}">{{ d.product.article }} {{ d.product.sku }} {{ d.product.captionRu }}</a>
+                                <span class="money">{{moneyFormat(d.product.price) }} {{currencyFormat()}}</span>                            
+                            </td>
+                            <td>    
+                                <span class="money">{{ moneyFormat(extra.ph[d.product.id].orderOnlyPriceBuying) }} {{ extra.ph[d.product.id].OOPBCurrency.symbol }}</span>
+                                {%if d.extra.difCurrency is defined %}
+                                    <span class="label label-important">валюта отличается в прайсе</span>
+                                {%endif%}
+                            </td>
+                            <td>
+                                <span class="money">{{ moneyFormat(d.priceData.orderOnlyPriceBuying) }} {{ d.product.OOPBCurrency.symbol}}</span>
+                            </td>
+                            <td nowrap>
+                                     <span class="money">{{ moneyFormat(d.extra.orderOnlyPriceBuyingChange) }} {{ currencyFormat() }}</span>
+                                ( {{ d.extra.orderOnlyPriceBuyingChangeInPercent }}
+                                    %) {% if d.extra.orderOnlyPriceBuyingChangeFlag!='nothing' %} {% if d.extra.orderOnlyPriceBuyingChangeInPercent > 0 %}&#8593;{% else %}&#8595;{% endif %}{% endif %}
+                            </td>
+
+                            <td nowrap>
+                                <span class="money">{{ moneyFormat(extra.ph[d.product.id].mrc) }} {{ currencyFormat() }}</span>
+                            </td>
+
+                            <td nowrap>
+                                <span class="money">{{ moneyFormat(d.priceData.mrc) }} {{ d.product.OOPBCurrency.symbol}}</span>
+                            </td>
+                            <td nowrap>
+                                <span class="money">{{ moneyFormat(d.extra.difference) }} {{ currencyFormat() }}</span>
+                                ( {{ d.extra.differenceInPercent }}
+                                %) {% if d.extra.flag!='nothing' %} {% if d.extra.difference > 0 %}&#8593;{% else %}&#8595;{% endif %}{% endif %}
+                            </td>
+                            <td>
+                                {%if d.extra.difCurrency is not defined %}
+                                    <input class="setMrcPrice"
+                                           data-product-id="{{ d.product.id }}"
+                                           data-new-price="{{ d.priceData.mrc }}"
+                                           type="checkbox" value="1">
+                                {%endif%}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+</div>
+<script>
+    $(function () {
+
+        $('#mrcAllProductsQuantity').html('(' + $('.priceMrcTr').length + ')');
+        $('#mrcPriceHikeQuantity').html('(' + $('.priceMrcTr.priceHike').length + ')');
+        $('#mrcDepreciationQuantity').html('(' + $('.priceMrcTr.depreciation').length + ')');
+        $('#mrcNothingQuantity').html('(' + $('.priceMrcTr.nothing').length + ')');
+        $('#mrcDisabledInBaseandHasInPriceQuantity').html('(' + $('.priceMrcTr.disabledInBaseandHasInPrice').length + ')');
+
+        //обработчики фильтров
+        $('input[name="mrcFilter"]').change(function () {
+            //сбрасываем все галочки
+            $('input[name="setMrcPriceAll"]').removeAttr('checked', 'checked');
+            $('.setMrcPrice').removeAttr('checked', 'checked');
+
+            $('.enableMrcProductButton').hide();
+            $('.disabledMrcProductButton').show();
+            if ($(this).val() == 'mrcAllProducts') {
+                $('.priceMrcTr').show();
+            }
+            else if ($(this).val() == 'mrcPriceHike') {
+                $('.priceMrcTr').hide();
+                $('.priceMrcTr.priceHike').show();
+            }
+            else if ($(this).val() == 'mrcDepreciation') {
+                $('.priceMrcTr').hide();
+                $('.priceMrcTr.depreciation').show();
+            }
+            else if ($(this).val() == 'mrcNothing') {
+                $('.priceMrcTr').hide();
+                $('.priceMrcTr.nothing').show();
+            }
+            else if ($(this).val() == 'mrcDisabledInBaseandHasInPrice') {
+                $('.priceMrcTr').hide();
+                $('.disabledMrcProductButton').hide();
+                $('.priceMrcTr.disabledInBaseandHasInPrice').show();
+                $('.enableMrcProductButton').show();
+            }
+            //динамическая нумерация строк
+            var ind = 1;
+            $('.priceMrcTr:visible').each(function () {
+                $(this).find('td').first().html(ind);
+                ind++;
+            });
+        });
+
+        //включить товары, которые есть в прайсе и базе, но скрыты от публикации
+        $('.enableMrcProductButton').click(function () {
+            var ids = [];
+            if ($('input[name="mrcFilter"]:checked').val() == 'mrcDisabledInBaseandHasInPrice') {
+                $('.setMrcPrice:checked').each(function (obj) {
+                    var item = {
+                        id: $(this).attr('data-product-id')
+                    }
+                    ids.push(item);
+                });
+            }
+
+            if (ids.length > 0) {
+                $.post("{{ admin.generateObjectUrl('enableProduct', admin.subject) }}", {ids: ids})
+                        .done(function (data) {
+                            alert("Выбранные товары были включены на публикацию! Обновите страницу.");
+                        });
+            }
+            else {
+                alert('Отметьте продукты, которые нужно включить на публикацию.');
+            }
+        });
+
+        //установить  цены для MRC
+        $('.updateProductMrcButton').click(function () {
+            var ids = [];
+            $('.setMrcPrice:checked').each(function (obj) {
+                var item = {
+                    id: $(this).attr('data-product-id'),
+                    price: $(this).attr('data-new-price')
+                }
+                ids.push(item);
+            });
+            if (ids.length > 0) {
+                $.post("{{ admin.generateObjectUrl('setMrcPriceForProductsFromPrice', admin.subject) }}", {ids: ids})
+                        .done(function (data) {
+                            alert("Новые МРЦ цены установлены! Обновите страницу.");
+                        });
+            }
+            else {
+                alert('Отметьте продукты, которые нужно обновить.');
+            }
+        });
+
+        //выбрать все
+        $('input[name="setMrcPriceAll"]').change(function () {
+            if ($(this).is(':checked')) {
+                $('.setMrcPrice').each(function () {
+                    if ($(this).parents('tr').is(':visible')) {
+                        $(this).attr('checked', 'checked');
+                    }
+                });
+            }
+            else {
+                $('.setMrcPrice').removeAttr('checked', 'checked');
+            }
+        });
+
+    });
+</script>

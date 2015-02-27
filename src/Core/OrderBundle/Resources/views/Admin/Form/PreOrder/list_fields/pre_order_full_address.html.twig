@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% for caption in object.fullAddress %}
+        {{caption}}
+        {% if loop.first %}
+            <br />
+        {% endif %}
+    {% endfor %}
+{% endblock %}

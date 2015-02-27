@@ -1,0 +1,269 @@
+{#**
+ *  Шаблон для переопределения вывода списка товаров у поставки
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{#  Фиксируем по ширине таблицу серийников #}
+{% block core_logistics_supply_admin_products_sonata_type_collection_widget %}
+
+    {% if not sonata_admin.field_description.hasassociationadmin %}
+        {% for element in value %}
+            {{ element|render_relation_element(sonata_admin.field_description) }}
+        {% endfor %}
+    {% else %}
+   {%set canDelete=false%}
+        <div id="field_container_{{ id }}" class="field-container">
+        <span id="field_widget_{{ id }}" >
+            {% if sonata_admin.edit == 'inline' %}
+                {% if sonata_admin.inline == 'table' %}
+                    {% if form.children|length > 0 %}
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                {% for field_name, nested_field in form.children|first.children %}
+                                    {% if field_name == '_delete' %}
+                                        {%set canDelete=true%}
+                                        <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
+                                    {% else %}
+                                        <th {{ nested_field.vars['required']  ? 'class="required"' : '' }}{% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %} style="display:none;"{% endif %}>
+                                            {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label) }}
+                                            
+                                            {% if field_name == 'costPriceForOneUnit' %}
+                                                <span style="font-size:10px;line-height: 0px">(вычисляется авт. после сохранения)</span>
+                                            {%endif%}
+                                        </th>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody class="sonata-ba-tbody">
+                            {% set totalPrice = 0 %}
+                            {% set totalCount = 0 %}
+                            {% set totalCostPriceForOneUnit = 0 %}                            
+
+                            {% for nested_group_field_name, nested_group_field in form.children %}                                                                                                
+
+                            {% if nested_group_field.vars.value.product %}
+                                        
+                                            {% set totalPrice = totalPrice + nested_group_field.vars.value.quantity*nested_group_field.vars.value.priceInGeneralCurrency %}                                        
+                                       
+                                            {% set totalCount = totalCount + nested_group_field.vars.value.quantity %}
+                                                                                                                        
+                                            {% set totalCostPriceForOneUnit = totalCostPriceForOneUnit + nested_group_field.vars.value.quantity*nested_group_field.vars.value.costPriceForOneUnit %}                                        
+                                        
+                                        {%endif%}
+                                        
+                                <tr 
+                                    {% if nested_group_field.vars.value.product and 
+                                        nested_group_field.vars.value.product.price < nested_group_field.vars.value.costPriceForOneUnit|floatval %}
+                                                                                
+                                    class="error" {%endif%}>
+                                    {% for field_name, nested_field in nested_group_field.children %}                                        
+                                        <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group{% if nested_field.vars.errors|length > 0 %} error{% endif %}"{% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %} style="display:none;"{% endif %}>
+                                            {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                                {{ form_widget(nested_field) }}
+
+                                                {% set dummy = nested_group_field.setrendered %}
+                                            {% else %}
+                                                {{ form_widget(nested_field) }}
+                                            {% endif %}
+                                            {% if nested_field.vars.errors|length > 0 %}
+                                                <div class="help-inline sonata-ba-field-error-messages">
+                                                    {{ form_errors(nested_field) }}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            <tr>                               
+                                 {% if canDelete  %}<td></td>{%endif%}
+                                <td>Итого:</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>                                
+                                
+                                <td class="money"><span id="totalPrice">{{ moneyFormat(totalPrice) }}</span> {{ currencyFormat() }}</td>                                
+                                <td class="money"><span id="totalCostPriceForOneUnit">{{ moneyFormat(totalCostPriceForOneUnit) }}</span> {{ currencyFormat() }}</td>
+                                <td><span id="totalCount">{{ totalCount }}</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <script>
+                            $(function(){
+                                $('input[id $= "_priceInGeneralCurrency"], input[id $= "_quantity"]').keyup(function(){
+                                    var totalPrice = 0,
+                                    totalCount = 0,
+                                    totalCostPriceForOneUnit=0;
+                             
+                                    $('input[id $= "_priceInGeneralCurrency"]').each(function(){
+                                        if ($(this).val()) {                                            
+                                            var quantity=parseInt($(this).parents('tr').find('input[id $= "_quantity"]').first().val());
+                                           if (!quantity) {
+                                               quantity=0;
+                                           }
+                                            totalPrice += parseFloat($(this).val())*quantity;
+                                        }
+                                    });
+                                    
+                                      $('input[id $= "_costPriceForOneUnit"]').each(function(){
+                                        if ($(this).val()) {                                            
+                                            var quantity=parseInt($(this).parents('tr').find('input[id $= "_quantity"]').first().val());
+                                            if (!quantity) {
+                                               quantity=0;
+                                           }
+                                            totalCostPriceForOneUnit += parseFloat($(this).val())*quantity;
+                                        }
+                                    });                                    
+                                    $('input[id $= "_quantity"]').each(function(){
+                                        if ($(this).val()) {
+                                            var quantity=parseInt($(this).val());
+                                              if (!quantity) {
+                                               quantity=0;
+                                           }
+                                            totalCount += quantity;
+                                        }
+                                    });
+                                    $('#totalPrice').text(totalPrice);
+                                    $('#totalCount').text(totalCount);
+                                    $('#totalCostPriceForOneUnit').text(totalCostPriceForOneUnit);
+                                    
+                                });
+                            });
+                        </script>
+                    {% endif %}
+                {% elseif form.children|length > 0 %}
+                    {% set associationAdmin = sonata_admin.field_description.associationadmin %}
+
+                    <div>
+                        {% for nested_group_field in form.children %}
+                            <ul class="nav nav-tabs">
+                                {% for name, form_group in associationAdmin.formgroups %}
+                                    <li class="{% if loop.first %}active{% endif %}">
+                                        <a href="#{{ associationAdmin.uniqid }}_{{ loop.parent.loop.index }}_{{ loop.index }}" data-toggle="tab">
+                                            <i class="icon-exclamation-sign has-errors hide"></i>
+                                            {{ associationAdmin.trans(name, {}, form_group.translation_domain) }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                            <div class="tab-content">
+                                {% for name, form_group in associationAdmin.formgroups %}
+                                    <div class="tab-pane {% if loop.first %}active{% endif %}" id="{{ associationAdmin.uniqid }}_{{ loop.parent.loop.index }}_{{ loop.index }}">
+                                        <fieldset>
+                                            <div class="sonata-ba-collapsed-fields">
+                                                {% for field_name in form_group.fields %}
+                                                    {% set nested_field = nested_group_field.children[field_name] %}
+                                                    {% if associationAdmin.formfielddescriptions[field_name] is defined %}
+                                                        {{ form_row(nested_field, {
+                                                        'inline': 'natural',
+                                                        'edit'  : 'inline'
+                                                        }) }}
+                                                        {% set dummy = nested_group_field.setrendered %}
+                                                    {% else %}
+                                                        {{ form_row(nested_field) }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            {% if nested_group_field['_delete'] is defined %}
+                                {{ form_row(nested_group_field['_delete']) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% else %}
+                {{ form_widget(form) }}
+            {% endif %}
+
+        </span>
+
+            {% if sonata_admin.edit == 'inline' %}
+
+                {% if sonata_admin.field_description.associationadmin.hasroute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+                    <span id="field_actions_{{ id }}" >
+                    <a
+                            href="{{ sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) }}"
+                            onclick="return start_field_retrieve_{{ id }}(this);"
+                            class="btn sonata-ba-action"
+                            title="{{ btn_add|trans({}, btn_catalogue) }}"
+                            >
+                        <i class="icon-plus"></i>
+                        {{ btn_add|trans({}, btn_catalogue) }}
+                    </a>
+                </span>
+                {% endif %}
+
+                {# add code for the sortable options #}
+                {% if sonata_admin.field_description.options.sortable is defined %}
+                    <script type="text/javascript">
+                        jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody').sortable({
+                            axis: 'y',
+                            opacity: 0.6,
+                            items: 'tr',
+                            stop: apply_position_value_{{ id }}
+                        });
+
+                        function apply_position_value_{{ id }}() {
+                            // update the input value position
+                            jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sonata_admin.field_description.options.sortable }}').each(function(index, element) {
+                                // remove the sortable handler and put it back
+                                jQuery('span.sonata-ba-sortable-handler', element).remove();
+                                jQuery(element).append('<span class="sonata-ba-sortable-handler ui-icon ui-icon-grip-solid-horizontal"></span>');
+                                jQuery('input', element).hide();
+                            });
+
+                            jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sonata_admin.field_description.options.sortable }} input').each(function(index, value) {
+                                jQuery(value).val(index + 1);
+                            });
+                        }
+
+                        // refresh the sortable option when a new element is added
+                        jQuery('#sonata-ba-field-container-{{ id }}').bind('sonata.add_element', function() {
+                            apply_position_value_{{ id }}();
+                            jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody').sortable('refresh');
+                        });
+
+                        apply_position_value_{{ id }}();
+
+                    </script>
+                {% endif %}
+
+                {# include association code #}
+                {% include 'SonataDoctrineORMAdminBundle:CRUD:edit_orm_one_association_script.html.twig' %}
+
+            {% else %}
+                <span id="field_actions_{{ id }}" >
+                {% if sonata_admin.field_description.associationadmin.hasroute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+                    <a
+                            href="{{ sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) }}"
+                            onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                            class="btn sonata-ba-action"
+                            title="{{ btn_add|trans({}, btn_catalogue) }}"
+                            >
+                        <i class="icon-plus"></i>
+                        {{ btn_add|trans({}, btn_catalogue) }}
+                    </a>
+                {% endif %}
+            </span>
+
+                <div style="display: none" id="field_dialog_{{ id }}">
+
+                </div>
+
+                {% include 'SonataDoctrineORMAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+{% endblock %}

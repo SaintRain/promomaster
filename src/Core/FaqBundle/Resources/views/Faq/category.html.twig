@@ -1,0 +1,52 @@
+{% extends "CoreFaqBundle::layout.html.twig" %}
+
+{%- block title -%}
+    {%- if attribute(category, 'title'~ app.request.locale) -%}
+        {{ attribute(category, 'title'~ app.request.locale)|escape('html') }}
+    {%- else -%}
+        Помощь - {{ attribute(category, 'caption' ~ app.request.locale) }} | OliKids.ru
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block meta_keywords -%}
+    {%- if attribute(category, 'metakeywords'~ app.request.locale) -%}
+        {{ attribute(category, 'metakeywords'~ app.request.locale)|escape('html') }}
+    {%- else -%}
+        помощь, вопросы, фак, FAQ, {{ attribute(category, 'caption' ~ app.request.locale) }}
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block meta_description -%}
+    {%- if attribute(category, 'metadescription'~ app.request.locale) -%}
+        {{ attribute(category, 'metadescription'~ app.request.locale)|escape('html') }}
+    {%- else -%}
+        {{ attribute(category, 'caption' ~ app.request.locale) }} в интернет-магазине OliKids. Если Вы не смогли найти ответ на свой вопрос - пожалуйста, свяжитесь с нами.
+    {%- endif -%}
+{%- endblock -%}
+
+{% block main_content %}
+    <ul class="info_page_path page_path_links">
+	<li class="page_path_link">
+            <a href="{{path('core_common_index')}}">OliKids</a>
+        </li>
+        <li class="page_path_link">
+            <a href="{{path('core_faq_homepage')}}">Помощь</a>
+        </li>
+	<li class="page_path_link">
+            <strong>{{ attribute(category, 'caption' ~ app.request.locale) }}</strong>
+        </li>
+    </ul>
+    <h1 {{fastEdit(category)}}>{{ attribute(category, 'caption' ~ app.request.locale) }}</h1>
+    {% include 'CoreFaqBundle:Faq:search_form.html.twig' with {'form' : searchForm} %}
+    <div class="help_cats">
+        <ul class="round_bullet">
+        {% for article in articles %}
+            <li>
+                <a href="{{path('core_faq_article', {'categorySlug': category.slug, 'articleSlug':article.slug})}}">{{ attribute(article, 'caption' ~ app.request.locale) }}</a>
+            </li>
+            {% else %}
+                <div class="info_box">Раздел находится в стадии наполнения</div>
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

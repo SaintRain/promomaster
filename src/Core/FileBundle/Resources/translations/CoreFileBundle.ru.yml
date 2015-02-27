@@ -1,0 +1,66 @@
+#admin:
+label:
+  id: ID
+  file: Файл
+  actions: Действия
+  caption: Заголовок
+  alt: Аттрибут Alt
+  images: Картинки
+  files: Файлы
+  name: Название
+  size: Размер
+form:
+  multiupoad:
+    delete: Удалить
+    download: Скачать
+    delete_selected_photo: Удалить отмеченные фото
+    photo: Фото
+    preview: Превью
+    view: Просмотр
+    crop: Обрезать
+    upload: Загрузить
+    upload_other: Загрузить другой файл
+    watermark:
+      with: С ватермарком #С водяным знаком
+      without: Без водяного знака
+    id: ID
+    crop_title: Обрезка изображения
+    cancel: Отмена
+    ok: OK
+    view_original_image: Открыть оригинальную картинку
+    original:
+      image: Оригинал
+    select_all: Выбрать все
+action_delete: Удалить
+
+error:
+  empty:
+    data: 'Получены пустые данные!'
+    replace: 'Не был получен путь нового файла!'
+    origin: 'Не был получен путь старого файла!'
+    action: 'Не получено действие!'
+    files: 'Ни один файл не был получен'
+    configs: 'Не найдены кофиги для "%in%"'
+    attach_object: 'Не получен связной объкт'
+  error: 'Ошибка при получении данных: "%in%"'
+  no_target_action: 'Действие "%in%" не зарегистрировано!'
+  bad_image_size: 'Картинка должна быть точного размера: <b>%w%x%h%px</b>'
+  received_image_size: 'Размер загруженной картинки: <b>%w%x%h%px</b>'
+  cannot_open_file: 'Ошибка при чтении файла: %in%'
+  cannot_get_file: 'Ошибка при получении файла'
+  bad_file_type: 'Файл <b>%in%</b> имеет запрещенный <b>"%mime%"</b> MIME-тип!'
+  big_file_size: 'Размер файла <b>%in%</b> слишком большой!'
+  cannot_get_session_id: 'Невозможно получить ID сессии'
+  max_count_files: 'Максимальное разрешенное количество загруженых файлов: <b>%in%</b>'
+  not_found:
+    object: 'Запись с id: %in% не найдена!'
+msg:
+  accept:
+    file_type: 'Список разрешенных MIME-типов файлов: <br>%in%'
+    file_size: 'Максимальный допустимый размер файла <b>%in%</b>'
+
+success:
+  update:
+    image: 'Картинка успешно обновлена.'
+  upload: 'Файл <b>%in%</b> успешно загружен.'
+  delete: 'Файл успешно удален.'

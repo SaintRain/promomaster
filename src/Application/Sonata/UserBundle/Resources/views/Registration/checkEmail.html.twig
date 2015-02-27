@@ -1,0 +1,31 @@
+{% extends "CoreCommonBundle::main_layout2.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+{% block content %}
+    <!--=== Breadcrumbs ===-->
+    <div class="breadcrumbs">
+        <div class="container">
+            <h1 class="pull-left">Регистрация</h1>
+            <ul class="pull-right breadcrumb">
+                <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                <li class="active">Регистрация</li>
+            </ul>
+        </div>
+        <!--/container-->
+    </div><!--/breadcrumbs-->
+    <!--=== End Breadcrumbs ===-->
+
+
+    <!--=== Content Part ===-->
+    <div class="container content">
+        <div class="alert alert-success fade in margin-bottom-40">
+            <h4>Ваша регистрация успешно завершена. Подтверждение выслано на ваш E-mail.</h4>
+        </div>
+    </div><!--/container-->
+    <!--=== End Content Part ===-->
+
+{% endblock %}

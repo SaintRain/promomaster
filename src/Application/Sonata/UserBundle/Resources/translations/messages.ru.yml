@@ -1,0 +1,81 @@
+# Переводы
+form:
+  label:
+    empty: Необходимо выбрать
+    reset:
+      submit: Восстановить
+      link: Напомнить пароль
+    profile:
+      email: "E-mail:"
+      password: "Изменить пароль:"
+      new_pass: "Новый пароль:"
+      new_pass_confirm: "Пароль еще раз:"
+      firstname: "Имя:"
+      lastname: "Фамилия:"
+      phone: "Телефон:"
+      notation: 'Примечание:'
+      rssNews: Получать новости 
+    contragent:
+      kpp: КПП
+      kppOnOff: Без КПП
+      onec: ID 1C-Бухгалтерии
+      onecOnOff: Нет ID-1C
+      email: E-mail пользователя
+      emailFull: точное совпадение
+      subclass: Тип заказчика
+    legal:
+        caption: Юридическое лицо
+        legalForm: Организационно-правовая форма
+        name: Название организации
+        inn: ИНН
+        kpp: КПП
+        ogrn: ОГРН
+        chiefPosition: Должность руководителя
+        chiefFio: ФИО руководителя
+        bank: БИК банка
+        bankPlaceholder: Введите BIC-код
+        bankAccount: Расчетный счет в банке
+        addressLegal: Юридический адрес
+        addressPost: Почтовый адрес
+        contactFio: ФИО контактного лица
+        site: Сайт компании
+        fax: Факс
+    indi:
+        caption: Физическое лицо
+        firstName: Имя
+        lastName: Фамилия
+        surName: Отчество
+        passport: Паспорт
+        phone: Телефон
+        #phone: Контактный телефон "%string%"
+    address:
+        caption: 'Адрес:'
+        city: 'Город:'
+        postIndex: 'Индекс:'
+        cityPlaceholder: Введите название города
+    contact:
+        phone: Контактный телефон
+        email: 'E-mail:'
+        city: 'Город:'
+        address: 'Адрес:'
+        postIndex: 'Индекс:'
+        mark: 'Примечание:'
+    error:
+        main: При заполнении формы произошли ошибки
+profile:
+  edit:
+    success: Данные успешно обновлены
+    changeEmail:
+      subject: Изменение email на сайте olikids.ru
+      msg: Данные успешно обновлены <br /> Ваш Email будет изменен после его активации по ссылки в высланом нами письме
+      success: Ваш email успешно изменен
+      notation: 'Примечание:'
+flash:
+    contact_indi_success: Получатель успешно добавлен
+    contact_legal_success: Адрес успешно добавлен
+filter:
+    label_groups: Группы
+History products: Просмотренные товары
+Featured products: Избранные товары
+Clear history: Очистить историю просмотра
+orderCount: '1 заказ|%count% заказа|%count% заказов'

@@ -1,0 +1,12 @@
+{% extends 'SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig' %}
+{% block kpp_type_widget %}
+    {% spaceless %}
+        <div class="with-exclude">
+            {{ form_widget(form.kpp, {'attr':{'class':'span8'} }) }}
+            {{ form_widget(form.kppOnOff) }}
+        </div>
+    {% endspaceless %}
+    {#
+    <script type="text/javascript" src="{{ asset('bundles/applicationsonatauser/js/admin.js') }}"></script>
+    #}
+{% endblock %}

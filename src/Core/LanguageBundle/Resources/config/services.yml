@@ -1,0 +1,16 @@
+services:
+    language_switcher_extension:
+        class: Core\LanguageBundle\Twig\LanguageSwitcherExtension
+        arguments: [%core_language%, '@session', '@language_switcher_logic']
+        tags:
+            - { name: twig.extension }
+
+    language_switcher_logic:
+        class: Core\LanguageBundle\Logic\LanguageLogic
+        arguments: [ %core_language%, '@session' ]
+        
+    language_text_case_form:
+        class: Core\LanguageBundle\Form\Type\TextCaseType
+        arguments: ['%core_language%']
+        tags:
+          - { name: form.type, alias: textCase }

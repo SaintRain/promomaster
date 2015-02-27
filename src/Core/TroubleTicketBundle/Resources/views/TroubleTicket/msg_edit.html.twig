@@ -1,0 +1,25 @@
+{#
+{% set ticketLink = 'http://' ~ base_url ~ path('trouble_ticket_edit',{'hash':ticket.hash}) %}
+{% set contactsLink = 'http://' ~ base_url ~ path('trouble_ticket_contact') %}
+#}
+<h3>Уважаемый(ая) {{ticket.authorName ? ticket.authorName : ticket.authorEmail}}!</h3>
+<p>В интернет магазине olikids.ru на Ваше сообщение №{{ticket.id}} пришел ответ.</p>
+<p>Прочитать ответ, а также посмотреть всю историю сообщений Вы можете по данной ссылке:</p>
+<a href="{{ticketLink}}">{{ticketLink}}</a>
+
+<p>Если в течение 14 дней Вы не ответите на сообщение, то вопрос считается автоматически закрытым.</p>
+<p>Помимо этого, Вы сможете возобновить вопрос, обратившись в техподдержку.</p>
+
+<p>Просим вас не отвечать на это уведомление: оно выслано автоматически.</p>
+
+
+<p>-- <br />С вопросами и предложениями обращайтесь через форму <a href="{{contactsLink}}">обратной связи</a></p>
+
+<p>С уважением и наилучшими пожеланиями,</p>
+<p>команда {{base_url}}</p>
+{% set phonesKeys = {'rostov': 'phones.simple.rostov', 'msk' : 'phones.simple.msk', 'spb' : 'phones.simple.spb'} %}
+{% set phones = ServiceContainer.get('core_config_logic').get('phones') %}
+{% for key, phone in phones %}
+    <p>{{phonesKeys[key] | trans()}}&nbsp;{{phone}}</p>
+{% endfor %}
+<p>{{base_url}}</p>

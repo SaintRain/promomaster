@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity repository-class="Application\Sonata\UserBundle\Entity\Repository\AdminCommentToUserRepository" name="Application\Sonata\UserBundle\Entity\AdminCommentToUser" table="core_admin_comments_to_user">
+
+        <id name="id" column="id" type="bigint">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="createdAt" type="datetime" />
+        <field name="comment" type="text" nullable="false"/>
+
+        <!--Пользователь, к которому оставили комментарий-->
+        <many-to-one field="toUser"
+                     target-entity="User"
+                     inversed-by="adminComments">
+            <join-column name="user_id_to" on-delete="cascade" referenced-column-name="id"/>
+        </many-to-one>
+
+        <!--Пользователь, который оставил комментарий-->
+        <many-to-one field="user"
+                     target-entity="User">
+            <join-column name="user_id_from" on-delete="set null" referenced-column-name="id"/>
+        </many-to-one>
+
+    </entity>
+
+</doctrine-mapping>

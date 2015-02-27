@@ -1,0 +1,193 @@
+
+{#**
+ * Шаблон для вывода отзывов у товара
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% use 'CoreReviewBundle:Review:reviews_with_link_more.html.twig' %}
+
+{% block reviews_layout %}
+    {% set productCaptionCase = getCaseByKey(attribute(currentProduct, 'captionCase' ~ app.request.locale), 'prepositional') %}
+        {% set productCaptionCase =  (productCaptionCase) ? productCaptionCase : attribute(currentProduct, 'caption'~ app.request.locale) %}
+    {% spaceless %}
+
+        <div class="product_opinions_discussions">
+            <div class="product_page_pad">
+                <!-- tabs with header -->
+                <div class="header_tabs">
+                    <h2 id="reviews" class="header_tab">Отзывы и обсуждения покупателей</h2>
+                </div>
+                <!-- product opinions -->
+                <section class="product_opinions cols_container" id="reviews-section"
+                        {% if app.user -%}
+                            data-is-logged="1"
+                        {%- else -%}
+                            data-is-logged="0" data-login-url="{{ path('fos_user_security_login') }}"
+                        {%- endif -%}>
+                    <div class="main_col">
+                        <div class="main_col_pad">
+
+                            {% if reviews|length %}
+
+                                <ul id="reviews-sort" class="text_tabs" data-url="{{ path('core_review_change_sort_or_filter_ajax') }}" data-slug="{{ currentProduct.slug }}">
+    {#                            <li class="text_tab text_tab_active" data-sort="all"><span>Все</span></li>#}
+                                    <li id="reviews-sort-new-do" class="text_tab text_tab_active" data-sort="new"><span>Новые</span></li>
+                                    <li id="reviews-sort-rating-do" class="text_tab" data-sort="rating"><span>Рейтинг</span></li>
+                                    <li id="reviews-sort-positive-do" class="text_tab" data-sort="positive"><span>Полезные</span></li>
+                                </ul>
+
+                                {% if app.user %}
+
+                                    <span onclick="location.href = '#review-anchor-add'" class="prodct_opinion_add_tgl text_tgl with_icon">Добавить отзыв{% if productCaptionCase %} о {{ productCaptionCase }} {% endif %}</span>
+
+                                {% endif %}
+
+                            {% else %}
+
+                                <h4>Нет отзывов к данному товару</h4>
+
+                            {% endif %}
+
+                            {% set flash = app.session.get('flash_review') %}
+                            {% if flash %}
+                                <div class="clearfix"></div>
+                                {% if flash.error is defined %}
+
+                                    <div class="alert alert-error">
+
+                                        {{ flash.error|join('<br>')|raw }}
+
+                                    </div>
+
+                                {% endif %}
+
+                                {% if flash.success is defined %}
+
+                                    <div class="alert alert-success">
+
+                                        {{ flash.success|join('<br>')|raw }}
+
+                                    </div>
+
+                                {% endif %}
+                                {% set flash = app.session.remove('flash_review') %}
+                                <div class="clearfix"></div>
+                            {% endif %}
+
+                            {{ block('reviews_with_link_more') }}
+
+                            <div class="clearfix"></div>
+                            <div class="product_opinion_add">
+                                <h3 id="review-anchor-add">Добавить отзыв{% if productCaptionCase %} о {{ productCaptionCase }} {% endif %}</h3>
+
+                                {% if app.user %}
+                                    <div id="reviews-form-container">
+                                        <form class="reviews-form" name="core_review_form_type" method="POST" enctype="multipart/form-data" action="{{ path('core_review_send') }}">
+
+                                            {{ form_widget(reviewForm.user) }}
+                                            {{ form_widget(reviewForm.product) }}
+
+                                            <div class="product_opinion_add_main_col">
+                                                <div class="form_row">
+
+                                                    {{ form_widget(reviewForm.review, {attr:{class: 'text_input text-review' } }) }}
+
+                                                </div>
+
+                                                <div class="reviews-answer-form-without-this">
+
+                                                    {#<div class="form_row">
+                                                        <span id="reviews-add-pros-and-cons" class="text_tgl pros-and-cons-is-visible" data-trigger-text="Указать плюсы и минусы">Скрыть и очистить дополнительные поля</span>
+                                                    </div>#}
+
+                                                    <div id="reviews-pros-and-cons-container" style="display: block;">
+
+                                                        <div id="review-rating" class="form_row">
+                                                            <label>Ваша оценка: </label>
+                                                            <br>
+                                                            <span class="product_rate product_rating_stars big">
+                                                                {{ form_widget(reviewForm.rating) }}
+                                                            </span>
+                                                        </div>
+                                                        <div class="form_row">
+                                                            {{ form_widget(reviewForm.pros) }}
+                                                        </div>
+                                                        <div class="form_row">
+                                                            {{ form_widget(reviewForm.cons) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form_submit">
+                                                    <ul class="upload_add">
+                                                        {#<li><button type="button" name="core_review_form_type[videos][]" class="upload_video icon_tgl" title="Добавить видео"></button></li>#}
+                                                        <li>{{ form_widget(reviewForm.photos) }}</li>
+                                                    </ul>
+                                                    <button class="common_button big button_send"><span><i class="button_icon"></i>Добавить</span></button>
+                                                </div>
+                                            </div>
+                                            {#{{ form_label(reviewForm.remoteVideos) }}#}
+                                            {#{{ form_errors(reviewForm.remoteVideos) }}
+                                            <br>
+                                            <ul class="{{ reviewForm.remoteVideos.vars.id }}" data-prototype="{% filter escape %}{% include 'CoreReviewBundle:Review/Form:remoteVideo_widget.html.twig' with {'form': reviewForm.remoteVideos.vars.prototype, 'prefix':(app.request.locale | capitalize)} %}{% endfilter %}">
+                                                {% for remoteVideo in reviewForm.remoteVideos %}
+                                                    <li>
+                                                        {{ form_errors(remoteVideo) }}
+                                                        {{ form_widget(remoteVideo) }}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% do reviewForm.remoteVideos.setRendered() %}#}
+                                            {{ form_rest(reviewForm) }}
+
+                                        </form>
+                                    </div>
+                                {% else %}
+
+                                    Чтобы оставить отзыв или комментарий, пожалуйста <a href="{{ path('fos_user_security_login') }}">авторизуйтесь</a> или <a href="{{ path('fos_user_registration_register') }}">зарегистрируйтесь</a>.
+
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="side_col">
+                        <div class="side_col_pad">
+
+                            <section class="product_ratinginfo">
+                                {% if reviewsStars is defined and reviewsStars['total'] is defined and reviewsStars['total'] > 0 %}
+                                    <h3>Рейтинг товара</h3>
+
+                                    <div class="product_ratinginfo_general">
+                                        {{ drawStarsByRating(currentProduct.reviewsRating, 'big')|raw }}
+                                        {{ reviewsStars.userCount }} {{ declOfNum(reviewsStars.userCount, ['покупатель','покупателя', 'покупателей']) }} оценили товар
+                                        <span class="product_ratinginfo_stats">{{ currentProduct.reviewsRating|number_format(1,'.','') }} из 5 звезд</span>
+                                    </div>
+
+                                    <div class="product_ratinginfo_filter">
+                                        <h6>Отзывы с оценкой</h6>
+                                        <ul id="reviews-filter" class="product_ratinginfo_filter_list" data-url="{{ path('core_review_change_sort_or_filter_ajax') }}">
+                                            <li id="reviews-filter-5-do" data-filter="5" class="product_ratinginfo_filter_item {% if reviewsStars['five'] == 0 %}not-active{% endif %}"><a>5 звезд</a><span class="rating_scale">{% if reviewsStars['five'] %}<span class="rating_scale_indicator" style="width:{{ reviewsStars['five'] / reviewsStars['total'] * 100 }}%">&nbsp;</span>{% endif %}</span> {{ reviewsStars['five'] }}</li>
+                                            <li id="reviews-filter-4-do" data-filter="4" class="product_ratinginfo_filter_item {% if reviewsStars['four'] == 0 %}not-active{% endif %}"><a>4 звезды</a><span class="rating_scale">{% if reviewsStars['four'] %}<span class="rating_scale_indicator" style="width:{{ reviewsStars['four'] / reviewsStars['total'] * 100 }}%">&nbsp;</span>{% endif %}</span> {{ reviewsStars['four'] }}</li>
+                                            <li id="reviews-filter-3-do" data-filter="3" class="product_ratinginfo_filter_item {% if reviewsStars['three'] == 0 %}not-active{% endif %}"><a>3 звезды</a><span class="rating_scale">{% if reviewsStars['three'] %}<span class="rating_scale_indicator" style="width:{{ reviewsStars['three'] / reviewsStars['total'] * 100 }}%">&nbsp;</span>{% endif %}</span> {{ reviewsStars['three'] }}</li>
+                                            <li id="reviews-filter-2-do" data-filter="2" class="product_ratinginfo_filter_item {% if reviewsStars['two'] == 0 %}not-active{% endif %}"><a>2 звезды</a><span class="rating_scale">{% if reviewsStars['two'] %}<span class="rating_scale_indicator" style="width:{{ reviewsStars['two'] / reviewsStars['total'] * 100 }}%">&nbsp;</span>{% endif %}</span> {{ reviewsStars['two'] }}</li>
+                                            <li id="reviews-filter-1-do" data-filter="1" class="product_ratinginfo_filter_item {% if reviewsStars['one'] == 0 %}not-active{% endif %}"><a>1 звезда</a><span class="rating_scale">{% if reviewsStars['one'] %}<span class="rating_scale_indicator" style="width:{{ reviewsStars['one'] / reviewsStars['total'] * 100 }}%">&nbsp;</span>{% endif %}</span> {{ reviewsStars['one'] }}</li>
+                                        </ul>
+                                    </div>
+
+                                {% endif %}
+
+                            </section>
+
+                        </div>
+                    </div>
+                </section>
+                    <!-- product discussions -->
+            </div>
+        </div>
+
+    {% endspaceless %}
+{% endblock %}

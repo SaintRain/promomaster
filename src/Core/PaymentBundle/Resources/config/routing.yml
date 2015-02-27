@@ -1,0 +1,14 @@
+core_payment_back_redirect_result:
+  pattern:  /payment/feedback/{paymentSystem}.html
+  schemes:  [http, https]
+  defaults: { _controller: CorePaymentBundle:PaymentSystem:doPassed }
+  requirements:
+    paymentSystem: WebMoney|BankTransfer|Qiwi|YandexMoney|PlasticCard|Robokassa|PaymentOnDelivery|PayPal|PlasticCardTerminal
+
+core_payment_bank_transfer_print_invoice:
+  pattern:  /payment/bank_transfer/print/{type}/{id}.html
+  schemes:  [http]
+  defaults: { _controller: CorePaymentBundle:PaymentSystem:bankTransferPrint }
+  requirements:
+    type: invoice|savings_bank
+    id: \d+

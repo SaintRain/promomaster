@@ -1,0 +1,15 @@
+services:
+  #админсике классы для баннеров
+  core_banner_admin:
+    class: Core\BannerBundle\Admin\BannerAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Материалы, label: Баннеры }
+    arguments: [null, Core\BannerBundle\Entity\CommonBanner, null]
+    calls:
+    - [ setSubClasses, [ { "Графический баннер": Core\BannerBundle\Entity\ImageBanner, "Flash баннер": Core\BannerBundle\Entity\FlashBanner, "Баннер по коду": Core\BannerBundle\Entity\CodeBanner} ] ]
+
+
+  # логика для баннеров
+  core_banner_logic:
+    class: Core\BannerBundle\Logic\BannerLogic
+    arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic']

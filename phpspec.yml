@@ -1,0 +1,8 @@
+#создание спеки на класс: bin/phpspec describe Core\\ProductBundle\\Command\\YmlCommand
+#запуск спек из деректории  bin/phpspec run src/Core/ProductBundle/Spec/Command
+
+#расширение нужно, чтоб спеки падали в папки бандлов, иначе будут падать в src/spec
+extensions:
+    - PhpSpec\Symfony2Extension\Extension
+#формат вывода    
+formatter.name: progress

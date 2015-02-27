@@ -1,0 +1,12 @@
+{% block image_type %}
+{%if subject_id%}
+{% set url = path('sonata_admin_set_object_field_value', { 'context': 'list', 'field': d_key, 'objectId': union.id, 'code': column.code }) %}
+<span  class="x-editable editable editable-click" data-type="number" data-value="{{union.quantity}}" data-title="Количество" data-pk="{{union.id}}"
+      data-url="{{url}}" data-original-title="">
+                {{union.quantity}}
+            </span>
+{%else%}
+<a class="x-editable-cannot" href="javascript:void(0)">{{union.quantity}}</a>
+{%endif%}
+
+{% endblock %}

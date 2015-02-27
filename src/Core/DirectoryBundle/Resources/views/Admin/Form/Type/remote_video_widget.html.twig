@@ -1,0 +1,45 @@
+
+{#**
+ * Шаблон для вывода виджета видео с хостингов
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig' %}
+{% block remote_video_form_widget %}
+    {% spaceless %}
+        <fieldset class="remote-wrapper">
+            <div class="span6">
+                <div class="control-group">
+                    {{form_label(attribute(form, 'caption' ~ (app.request.locale | capitalize)), null, {'label_attr' : {'class': ' control-label extra-label'} })}}
+                    <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                        {{form_widget(attribute(form, 'caption' ~ (app.request.locale | capitalize)))}}
+                    </div>
+                </div>
+
+                <div class="control-group ">
+                    {{form_label(form.code, null, {'label_attr' : {'class': ' control-label extra-label'} })}}
+                    <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                        {{form_widget(form.code)}}
+                    </div>
+                    <span class="span11 remote-video-help help-block sonata-ba-field-help"></span>
+                </div>
+
+                <div class="control-group ">
+                    {{form_label(form.videoHosting, null, {'label_attr' : {'class': ' control-label extra-label'} })}}
+                    <div class="controls sonata-ba-field sonata-ba-field-standard-natural">
+                        {{form_widget(form.videoHosting)}}
+                    </div>
+                </div>
+            </div>
+            <div class="span5">
+                {% set curCode = (form.code.vars.value) ? form.code.vars.value : '' %}
+                {% for hosting in hostings %}
+                    {% set playerUri = hosting.playerUri | replace({'http://' : 'https://'})%}
+                    <iframe class="hidden {{hosting.name}} remote-video-container" width="180" height="110" src="{{playerUri}}{{curCode}}" frameborder="0"></iframe>
+                {% endfor %}
+            </div>
+        </fieldset>
+    {% endspaceless %}
+{% endblock %}

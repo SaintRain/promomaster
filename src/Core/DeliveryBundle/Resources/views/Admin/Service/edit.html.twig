@@ -1,0 +1,9 @@
+{% extends 'ApplicationSonataAdminBundle:CRUD:edit.html.twig'%}
+{% form_theme form 'CoreCommonBundle:Form:choice_widget_with_data_attr.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        adminRoutes['delivery_bundle_internal_codes'] = '{{path('admin_core_delivery_service_intenalCodes')}}';
+    </script>
+    <script src="{{ asset('bundles/coredelivery/js/backend.js') }}"></script>
+{% endblock %}

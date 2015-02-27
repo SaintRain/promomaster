@@ -1,0 +1,57 @@
+<form action="{% if contragent is defined %}{{path('application_sonata_user_contact_create', {'contragentId': contragent.id })}}{% else %}{{path('application_sonata_user_contact_edit', {'contactId': contact.id })}}{% endif %}" method="POST" {{ form_enctype(form)}}>
+    {% if not form.vars.valid %}
+        <div class="attention_box">{{'form.label.error.main' | trans}}</div>
+    {% endif %}
+    {% if  form.lastName is defined and form.firstName is defined %}
+        <fieldset class="form_fieldset">
+            {{form_row(form.lastName)}}
+            {{form_row(form.firstName)}}
+        </fieldset>
+    {% endif %}
+    {% if  form.passport is defined %}
+        <fieldset class="form_fieldset">
+            {{form_row(form.passport)}}
+        </fieldset>
+    {% endif %}
+    {% if  form.phone is defined and form.contactEmail is defined %}
+    <fieldset class="form_fieldset">
+        {{form_row(form.phone)}}
+        {{form_row(form.contactEmail)}}
+    </fieldset>
+    {% endif %}
+    <fieldset class="form_fieldset">
+        {{form_row(form.city)}}
+        {{form_row(form.address)}}
+        {% if form.postIndex is defined %}
+            <div class="form_row ">
+                {{form_label(form.postIndex, null, {'label_attr': {'class': 'form_label'} })}}
+                <div class="form_row_field{% if form_errors(form.postIndex) %} form_field_error{% endif %}">
+                    {{form_widget(form.postIndex)}}
+                    <a target="blank" href="http://www.russianpost.ru/rp/servise/ru/home/postuslug/searchops1">{{'order.label.indexLabel' | trans()}}</a>
+                    {{ form_errors(form.postIndex) }}
+                </div>
+            </div>
+        {% endif %}
+    </fieldset>
+    {% if form.mark is defined %}
+        <fieldset class="form_fieldset">
+            {{form_row(form.mark)}}
+        </fieldset>
+    {% endif %}
+    <div class="form_padding_group">
+        {{form_rest(form)}}
+        <button type="submit" class="common_button big">
+            <span>{% if contragent is defined %}Добавить{% else %}Сохранить{% endif %}</span>
+        </button>
+        {% set contragent = (contragent is defined) ? contragent : contact.contragent %}
+        {% if contragent.organization is defined %}
+            {% set isIndi = 0 %}
+            {% else %}
+                {% set isIndi = 1 %}
+        {% endif %}
+            {#
+            <a href="{{path('application_sonata_user_contragent_edit', {'contragentId': contragent.id, 'isIndi': isIndi})}}" class="text_tgl">Отменить</a>        
+            #}
+            <a href="{{path('application_sonata_user_contragent_index')}}" class="text_tgl">Отменить</a>
+    </div>
+</form>

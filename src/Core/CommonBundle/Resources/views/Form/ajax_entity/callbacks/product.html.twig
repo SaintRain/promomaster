@@ -1,0 +1,27 @@
+<script>
+    function productFormatResult{{ id }}(result) {
+        var html = "<div class=\"media\">";
+        if (!result.images) {
+            result.images = "/bundles/coreproduct/Admin/img/no_image.png";
+        }
+        if (!result.sku) {
+            result.sku = "";
+        }
+
+        html = html + '<div class="pull-left"><img class="media-object" width="60px" src="' + result.images + '"/></div>';
+        html = html + "<div class=\"media-body\">" + (result.sku ? "<b>" + result.sku + "</b><br/>" : "") + result.captionRu + "<br>Цена: " + result.price.toString().replace('.', ',') + " {{currencyFormat()}}</div>";
+        html = html + (result.sku ? "" : "<br/>") + "</div>";
+
+        return html;
+    }
+
+    function productFormatSelection{{ id }}(result) {
+        if (!result.sku) {
+            result.sku = "";
+        }
+        var html = (result.sku ? "<b>" + result.sku + "</b> " : '') + result.captionRu + ', Цена: <b class="money">' + result.price.toString().replace('.', ',') + ' {{currencyFormat()}}</b>';
+        return html;
+    }
+
+</script>
+

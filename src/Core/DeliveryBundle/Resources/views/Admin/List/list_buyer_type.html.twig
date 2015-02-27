@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.buyerType == 'IndiContragent' %}
+        <span class="label label-info">Физическое лицо</span>
+        {% elseif object.buyerType == 'LegalContragent' %}
+            <span class="label label-info">Юридическое лицо</span>
+            {% else %}
+        <span class="label label-default">Не указано</span>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+{% if object.virtualCategoryList | length %}
+    <ul class="unstyled">
+    {% for cat in object.virtualCategoryList %}
+        <li>
+            <span class="label {% if cat.isEnabled %}label-info{% else %}label-default{% endif%}">{{  cat.captionRu}}<span>
+        </li>
+    {% endfor %}
+    </ul>
+    {% else %}
+        <div class="label label-default">Нет</div>
+{% endif %}
+{% endblock %}

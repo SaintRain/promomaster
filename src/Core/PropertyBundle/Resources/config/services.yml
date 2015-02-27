@@ -1,0 +1,51 @@
+services:
+  #сервис для редактирования характеристик
+  core_shop_property_admin:
+    class: Core\PropertyBundle\Admin\PropertyAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Продукция, label: Характеристики }
+    arguments: [null, Core\PropertyBundle\Entity\Property, CorePropertyBundle:Admin\PropertyAdmin]
+
+  #сервис для редактирования справочных данных для характеристик
+  core_shop_property_data_admin:
+    class: Core\PropertyBundle\Admin\DataPropertyAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, show_in_dashboard: false }
+    arguments: [null, Core\PropertyBundle\Entity\DataProperty, CorePropertyBundle:Admin\PropertyAdmin, null]
+
+  #сервис для редактирования установленных свойств характеристик для продукта
+  core_shop_property_data_product_admin:
+    class: Core\PropertyBundle\Admin\ProductDataPropertyAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  show_in_dashboard: false }
+    arguments: [null, Core\PropertyBundle\Entity\ProductDataProperty, null]
+
+  #сервис для редактирования настроек характеристики для категорий
+  core_shop_property_settings_category_admin:
+    class: Core\PropertyBundle\Admin\SettingsCategoryPropertyAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  show_in_dashboard: false, label: Настройки для категории }
+    arguments: [null, Core\PropertyBundle\Entity\SettingsCategoryProperty, null]
+
+  core_shop_property_form_type:
+    class: Core\PropertyBundle\Admin\Form\Type\PropertyType
+    tags:
+        - { name: form.type, alias: property }
+    arguments: ['@core_shop_property_logic']
+
+  core_shop_property_category_form_type:
+    class: Core\PropertyBundle\Admin\Form\Type\PropertyCategoryType
+    tags:
+        - { name: form.type, alias: property_category }
+    arguments: ['@core_shop_category_logic']
+
+  core_shop_property_logic:
+    class: Core\PropertyBundle\Logic\PropertyLogic
+    arguments: ['@doctrine.orm.entity_manager']
+
+  # сервис содержащий логику для фильтра товаров
+  core_property_filter_logic:
+    class: Core\PropertyBundle\Logic\FilterLogic
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+    arguments: ['%locale%', '%default_currency%', '@doctrine', '@templating', '@translator', '@service_container']

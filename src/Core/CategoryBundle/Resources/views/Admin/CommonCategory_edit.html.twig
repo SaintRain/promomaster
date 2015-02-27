@@ -1,0 +1,61 @@
+{% extends 'ApplicationSonataAdminBundle:CRUD:list.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+
+<script type="text/javascript" src="{{ asset('/bundles/corecategory/js/sprintf.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/bundles/corecategory/js/jstree/_lib/jquery.cookie.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/bundles/corecategory/js/jstree/_lib/jquery.hotkeys.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/bundles/corecategory/js/jstree/jquery.jstree.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/bundles/corecategory/js/treeadmin.js') }}"></script>
+<script type="text/javascript">
+    var treeParams = {
+        canRequestNodeData: {% if app.request.cookies.has('jstree_select') and object %}false{%else%}true{%endif%},
+        needFixAfterMove: true,
+        linkJSTree: false,
+        jstree_selectId: null,
+        editUrl: "{{link_format}}",
+        deleteUrl: "{{deleteUrl}}",
+        createUrl: "{{ admin.generateUrl('create')}}",
+        adminUniqid: "{{admin.uniqid}}",
+        csrf_token: "{{csrf_token(admin.uniqid)}}"
+    };
+</script>
+{% endblock %}
+
+{% block list_table %}
+    <div class="row-fluid">
+        <div class="sidebar span3">
+            <div class="well sonata-ba-side-menu" style="padding: 8px 0;overflow-x: auto;">
+                <div style="padding: 8px">
+                    <button class="btn btn-mini" id="openTreeButton"  type="button"><i class="icon-folder-open"></i> Развернуть</button>
+                    <button class="btn btn-mini"  id="closeTreeButton" type="button"><i class="icon-folder-close"></i> Свернуть</button>
+                    <button class="btn btn-mini" id="searchTreeButton"  type="button"><i class="icon-search"></i> Поиск</button>
+                </div>
+
+                <div id="findContent" style="display:none;padding: 8px">
+                    <form id="findContentForm" action="#" >
+                        <input id="serachKey" class="span10" type="text" placeholder="Фраза для поиска...">
+                        <div>
+                            <button id="findInTreeButton" class="btn btn-mini" type="button"><i class="icon-ok"></i> Найти</button>
+                            <button id="cleareFindInTreeButton" class="btn btn-mini"  type="button"><i class="icon-tint"></i> Очистить</button>
+                            <button id="removeFindInTreeButton" class="btn btn-mini"  type="button"><i class="icon-remove-sign"></i> Убрать</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="jsTreeContent" >{{treeHtml|raw}}</div>
+            </div>
+        </div>
+        <div class="content span9">
+            <div class="sonata-ba-form">
+                    {% block right_side %}{{formCreate|raw}}{% endblock %}
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+<h4>Тикет #{{ticket.id}} был обновлен: ({% if log.manager is not null %} {{log.manager.userName}} {% elseif ticket.authorName %} {{ticket.authorName}} {% else %} {{ticket.authorEmail}} {% endif %})</h4>
+{% if log.changes | length %}
+<ul>
+    {% for field, changes in log.changes %}
+        {% if field != 'file'%}
+            <li>
+                <span>Параметр <b><i>{{('parameter.' ~ field) | trans()}}</i></b> изменился</span>
+                {% if oldTicket.getValueForKey(field) %}
+                    <span>c {{oldTicket.getValueForKey(field)}}</span>
+                {% endif %}
+                {% if ticket.getValueForKey(field) %}
+                    <span>на {{ticket.getValueForKey(field)}}</span>
+                {% endif %}
+            </li>
+            {% else %}
+            {% for key, file in changes.data %}
+                {% if ticket.file.get(key) %}
+                    {% set fileLink = 'http://' ~ base_url ~ (asset((ticket.file.get(key)) | getFileWebPath)) %}
+                    <li>Файл <a href="{{fileLink}}">{{file}}</a> {{('parameter.' ~ changes.operation) | trans()}}</li>
+                    {% else %}
+                        <li>Файл <span {% if changes.operation != 'add' %}class="file-removed"{% endif %}>{{file}}</span> {{('parameter.' ~ changes.operation) | trans()}}</li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+<br />
+{% if message %}
+    {{message.body | raw}}
+{% endif %}
+<hr />
+<h1>
+    {% set ticketLink = 'http://' ~ base_url ~ path('admin_core_troubleticket_troubleticket_edit',{'id':ticket.id}) %}   
+    <a target="_blank" href="{{ticketLink}}">{{ticket.title}}</a>
+</h1>
+<ul>
+    <li>Добавил(а): {{(ticket.authorName) ? ticket.authorName : ticket.authorEmail}}</li>
+    <li>Контактый email: {{ticket.authorEmail}}</li>
+    <li>Статус: {{ticket.status.captionRu}}</li>
+    <li>Приоритет: {{ticket.priority.captionRu}}</li>
+    <li>Назначена: {{ (ticket.manager) ? ticket.manager.userName : 'Нет' }}</li>
+    <li>Категория: {{ticket.category.captionRu}}</li>
+    <li>Готовность: {{ticket.readiness}}%</li>
+</ul>

@@ -1,0 +1,6 @@
+{% if object.isActive %}
+<a target="_blank" href="{{path('core_faq_article', {'categorySlug': object.category.slug, 'articleSlug': object.slug})}}" class="btn view_link btn-small">
+    <i class="icon-zoom-in"></i>
+    <span>Показать на сайте</span>
+</a>
+{% endif %}

@@ -1,0 +1,53 @@
+{% extends 'CoreStatisticsBundle:Admin/Crud:default.html.twig' %}
+{%block statisticsContent%}
+    <p>Показаны товары, которых на складе осталось менее 5 шт. <br/>В данной статистике не отображаются товары, которых никогда не было на складе, также не учтены виртуальные позиции.</strong></p>
+<table class="table table-bordered table-hover" style="width:50%">
+    <thead>
+        <tr>
+            <th align="center" width="1%" nowrap="">№</th>
+            <th align="center" nowrap="nowrap" >Модель</th>
+            <th align="center" width="1%" nowrap="">Всего (шт.)</th>
+                {%for s in data.stocks%}
+                <th align="center" width="2%" nowrap="">Склад {{s.captionRu}}</th>
+                {%endfor%}
+        </tr>
+    </thead>
+
+    <tbody>
+        {%for manufacturer in data.manufacturers%}
+            {% if data.defProducts[manufacturer.id] is defined %}
+                <tr><td colspan="100%">{{manufacturer.captionRu}}</td></tr>
+                    {%for d in data.defProducts[manufacturer.id]%}
+                    <tr>
+                        <td>{{d.number}}</td>
+                        <td nowrap="nowrap"><a href="{{path('admin_core_product_commonproduct_edit', {id:d.product.product_id})}}">{{d.product.product_captionRu}}</a></td>
+                        <td
+                            {%if not d.total_quantity%}
+                                class="error"
+                            {%else%}
+                                {% if d.total_quantity<3%}class="warning"{%endif%}
+                            {%endif%}
+                            >{{d.total_quantity}}</td>
+                        {%for s_id,s in data.stocks%}
+                            <td
+                                {%if d.info[s_id] is defined and d.info[s_id].quantity is defined%}
+                                    {%if d.info[s_id].quantity>0 and d.info[s_id].quantity<3%}
+                                        class="warning"
+                                    {%else%}
+                                        {%if not d.info[s_id].quantity %}
+                                            class="error"
+                                        {%endif%}
+                                    {%endif%}
+                                {%else%}
+                                    class="error"
+                                {%endif%}
+                                >{%if d.info[s_id] is defined and d.info[s_id].quantity is defined%}{{d.info[s_id].quantity}}{%else%}0{%endif%}</td>
+                        {%endfor%}
+                    </tr>
+                {%endfor%}
+
+            {%endif%}
+        {%endfor%}
+    </tbody>
+</table>
+{%endblock%}

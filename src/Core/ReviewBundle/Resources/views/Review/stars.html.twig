@@ -1,0 +1,29 @@
+
+{#**
+ * Шаблон для прорисовки звезд (оценка товара)
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block stars %}
+    {% spaceless %}
+        {% if rating > 0 %}
+
+            <span class="product_rating_stars {{ size }}">
+
+                {% for i in 1..rating %}
+                    <span class="product_rating_star">&nbsp;</span>
+                {% endfor %}
+
+                {% if half > 0 %}
+
+                    <span class="product_rating_star half">&nbsp;</span>
+
+                {% endif %}
+
+            </span>
+
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}

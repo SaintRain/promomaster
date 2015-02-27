@@ -1,0 +1,18 @@
+delivery_index:
+    path:      /delivery
+    schemes:  [http]
+    defaults:  { _controller: CoreDeliveryBundle:Delivery:index }
+delivery_calculate:
+    path: /ajax/delivery.json
+    schemes:  [http]
+    defaults:  { _controller: CoreDeliveryBundle:Delivery:calculate }
+    #methods: [POST]
+delivery_product_calculate:
+    path: /ajax/procduct/delivery.json
+    schemes:  [http]
+    defaults:  { _controller: CoreDeliveryBundle:Delivery:calculateProduct }
+    #methods: [POST]
+delivery_print_waybill:
+    path: /delivery/print-waybill-{hash}.html
+    schemes:  [https]
+    defaults:  { _controller: CoreDeliveryBundle:Delivery:printWaybill }

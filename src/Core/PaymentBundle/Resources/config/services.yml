@@ -1,0 +1,137 @@
+services:
+
+# Сервисы логики #############################################
+
+  # Сервис для платежек и баланса
+  core_payment_logic:
+    class: Core\PaymentBundle\Logic\PaymentLogic
+    arguments: ['@service_container', '@doctrine', '@session', '@translator', '@core_order_logic', '@router']
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+  # Общий сервис для работы с платежами
+  core_payment_system_logic:
+    class: Core\PaymentBundle\Logic\PaymentSystem\PaymentSystemLogic
+    arguments: ['@service_container']
+
+#  # Сервис для работы с WebMoney
+#  core_payment_logic_webmoney:
+#    class: Core\PaymentBundle\Logic\PaymentSystem\WebMoneyLogic
+#    parent: core_payment_system_logic
+#    tags:
+#      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+  # Сервис для работы с Robokassa
+  core_payment_logic_robokassa:
+    class: Core\PaymentBundle\Logic\PaymentSystem\RobokassaLogic
+    parent: core_payment_system_logic
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+#  # Сервис для работы с Qiwi
+#  core_payment_logic_qiwi:
+#    class: Core\PaymentBundle\Logic\PaymentSystem\QiwiLogic
+#    parent: core_payment_system_logic
+#    tags:
+#      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+#
+  # Сервис для работы с YandexMoney
+  core_payment_logic_yandexmoney:
+    class: Core\PaymentBundle\Logic\PaymentSystem\YandexMoneyLogic
+    parent: core_payment_system_logic
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+  # Сервис для работы с PlasticCard
+  core_payment_logic_plasticcard:
+    class: Core\PaymentBundle\Logic\PaymentSystem\PlasticCardLogic
+    parent: core_payment_system_logic
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+  # Сервис для работы с PlasticCardTerminal
+  core_payment_logic_plasticcardterminal:
+    class: Core\PaymentBundle\Logic\PaymentSystem\PlasticCardTerminalLogic
+    parent: core_payment_system_logic
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+  # Сервис для работы с BankTransfer
+  core_payment_logic_banktransfer:
+    class: Core\PaymentBundle\Logic\PaymentSystem\BankTransferLogic
+    parent: core_payment_system_logic
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+  # Сервис для работы с PaymentOnDelivery
+  core_payment_logic_paymentondelivery:
+    class: Core\PaymentBundle\Logic\PaymentSystem\PaymentOnDeliveryLogic
+    parent: core_payment_system_logic
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+  # Сервис для работы с PayPal
+  core_payment_logic_paypal:
+    class: Core\PaymentBundle\Logic\PaymentSystem\PayPalLogic
+    parent: core_payment_system_logic
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+# Формы #############################################
+  # Сервис главной формы для пополнения баланса
+  core_payment_form_type_payment_system:
+    class: Core\PaymentBundle\Form\Type\PaymentSystem\PaymentSystemType
+    tags:
+      - { name: form.type, alias: core_payment_type_payment_system }
+    arguments: ['@service_container']
+
+#  # Сервис формы WebMoney
+#  core_payment_form_type_webmoney:
+#    class: Core\PaymentBundle\Form\Type\PaymentSystem\WebMoneyType
+#    tags:
+#      - { name: form.type, alias: core_payment_type_webmoney }
+#    arguments: ['@core_payment_logic_webmoney']
+#
+#  # Сервис формы Robokassa
+#  core_payment_form_type_robokassa:
+#    class: Core\PaymentBundle\Form\Type\PaymentSystem\RobokassaType
+#    tags:
+#      - { name: form.type, alias: core_payment_type_robokassa }
+#    arguments: ['@core_payment_logic_robokassa']
+
+# Админские сервисы #############################################
+  # Основной админский сервис для платежных систем
+  core_payment_admin_payment_system_common:
+    class: Core\PaymentBundle\Admin\CommonPaymentSystemAdmin
+    arguments: [~, Core\PaymentBundle\Entity\PaymentSystem\CommonPaymentSystem, SonataAdminBundle:CRUD]
+    tags:
+      - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Бухгалтерия, label: Платежные системы }
+    calls:
+      - [ setSubClasses, [ { WebMoney: 'Core\PaymentBundle\Entity\PaymentSystem\WebMoney', Robokassa: Core\PaymentBundle\Entity\PaymentSystem\Robokassa, Qiwi: Core\PaymentBundle\Entity\PaymentSystem\Qiwi, YandexMoney: Core\PaymentBundle\Entity\PaymentSystem\YandexMoney, PlasticCard: Core\PaymentBundle\Entity\PaymentSystem\PlasticCard, PlasticCardTerminal: Core\PaymentBundle\Entity\PaymentSystem\PlasticCardTerminal, BankTransfer: Core\PaymentBundle\Entity\PaymentSystem\BankTransfer, PaymentOnDelivery: Core\PaymentBundle\Entity\PaymentSystem\PaymentOnDelivery, PayPal: Core\PaymentBundle\Entity\PaymentSystem\PayPal } ] ]
+
+  core_payment_admin_robokassa_system:
+    class: Core\PaymentBundle\Admin\RobokassaSubsystemAdmin
+    arguments: [~, Core\PaymentBundle\Entity\PaymentSystem\RobokassaSubsystem, SonataAdminBundle:CRUD]
+    tags:
+      - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, show_in_dashboard: false }
+
+  # Админский сервис платежей
+  core_payment_admin:
+    class: Core\PaymentBundle\Admin\PaymentAdmin
+    arguments: [~, Core\PaymentBundle\Entity\Payment, CorePaymentBundle:Admin\PaymentAdmin]
+    tags:
+      - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Бухгалтерия, label: Платежи }
+
+# Разширения для Twig для работы с платежами
+  core_payment_twig_extension:
+    class: Core\PaymentBundle\Twig\Extension\PaymentExtension
+    tags:
+      - { name: twig.extension }
+    arguments: ['@service_container']
+
+# Подписчик
+  core_payment_subscriber:
+    class: Core\PaymentBundle\EventListener\Subscriber
+    tags:
+      - { name: doctrine.event_subscriber }
+    arguments: ['@service_container']

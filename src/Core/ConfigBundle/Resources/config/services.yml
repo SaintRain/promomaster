@@ -1,0 +1,25 @@
+services:
+  #админский класс для редактирования настроек
+    core_config_admin:
+        class: Core\ConfigBundle\Admin\ConfigAdmin
+        tags:
+        - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Системное, label: Настройки, show_in_dashboard: true }
+        arguments: [null, Core\ConfigBundle\Entity\Config, null]
+
+    #админский класс для редактирования групп настроек
+    core_config_group_admin:
+        class: Core\ConfigBundle\Admin\GroupAdmin
+        tags:
+        - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Системное, label: Группы для настроек, show_in_dashboard: true }
+        arguments: [null, Core\ConfigBundle\Entity\Group, null]
+
+    core_config_data_form_type:
+        class: Core\ConfigBundle\Admin\Form\Type\ConfigDataType
+        tags:
+        - { name: form.type, alias: config_data }
+        arguments: ['@core_config_logic']
+    
+  #Логика настроек
+    core_config_logic:
+        class: Core\ConfigBundle\Logic\ConfigLogic
+        arguments: ['@doctrine.orm.entity_manager']

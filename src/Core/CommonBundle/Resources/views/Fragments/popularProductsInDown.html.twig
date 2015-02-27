@@ -1,0 +1,32 @@
+
+{#**
+ * Шаблон для отображения популярных продуктов
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+
+{% block products_grid %}
+    {% spaceless %}
+        <div class="showcase_horizontal showcase_box">
+            <div class="products_grid row_four">
+                <div class="showcase_container">
+                    <span class="showcase_nav prev disabled"><span class="showcase_nav_btn">Предыдущие</span></span>
+                    <span class="showcase_nav next"><span class="showcase_nav_btn">Следующие</span></span>
+                    <div class="products_wrapper">
+                        <div class="products_grid_line grid_container">
+                            {# устанавливаем класс для продукта #}
+                            {% set productItemContainerClass = 'product_min' %}
+                            {% for i, product in products %}
+                                {{ block('product') }}
+                                {% include 'CoreProductBundle:Catalog:product_cell.html.twig' %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endspaceless %}
+{% endblock %}

@@ -1,0 +1,15 @@
+
+{#**
+ * Шаблон для вывода баланса на списке контрагентов в админке
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% set balance = getBalance(object, true) %}
+
+<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}{% if balance < 0 %} error{% elseif balance > 0 %} success{% endif %}" objectId="{{ admin.id(object) }}">
+    <span class="text-nowrap">{{ moneyFormat(balance) }} {{ currencyFormat() }}</span>
+</td>
+
+

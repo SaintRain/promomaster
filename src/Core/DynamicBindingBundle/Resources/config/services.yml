@@ -1,0 +1,6 @@
+#services:
+#    core_dynamic_binding.listener:
+#        class: Core\DynamicBindingBundle\Subscriber\SequencePrefixSubscriber
+#        arguments: [%core_dynamic_bindig%]
+#        tags:
+#            - { name: doctrine.event_subscriber }

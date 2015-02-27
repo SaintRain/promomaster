@@ -1,0 +1,42 @@
+"Производитель 
+(Название 
+На русском/английском языке, 
+или ID) ";"Страна происхождения товара 
+(2-х буквенный код)";"Бренд
+(Название 
+На русском/английском языке, 
+или ID) ";"Серия
+(Название 
+На русском/английском языке, 
+или ID) ";Артикул производителя;Наш артикул;Наименование;Штрихкод(ы);Категория (название категории, или ID);"Категория
+(Название подкатегории, или ID, или несколько названий/ID через запятую )";"Масса нетто
+(число+килограмм)";"Масса брутто
+(число+килограмм)";"Длина 
+Упаковки
+(число+см)";"Ширина упаковки
+(число+см)";"Высота 
+Упаковки
+(число+см)";"Цена 
+(число+руб)";"Фото 
+(ссылка)";"Цена 
+Под заказ (руб)"
+Peg-Perego;IT;Peg-Perego;Коляски Peg-Perego для новорожденных;nosku112312;;Коляска Culla Auto, Latte (белый);;637;;1;1;1;1;1;245;;
+Peg-Perego;IT;Peg-Perego;Коляски Peg-Perego для новорожденных;1312312;;Коляска Culla Auto, Gold;;637;;1;1;1;1;1;294;;
+Peg-Perego;IT;Peg-Perego;Коляски Peg-Perego для новорожденных;13123123;;Коляска Culla Auto, Malva;;637;;1;1;1;1;1;256;;
+Peg-Perego;IT;Peg-Perego;Коляски Peg-Perego прогулочные;nosku4;;Коляска Aria Completo, Eclipse;;637;;1;1;1;1;1;146;;
+Peg-Perego;IT;Peg-Perego;Коляски Peg-Perego прогулочные;nosku5;;Коляска Aria Completo, Oceano;;637;;1;1;1;1;1;146;;
+Peg-Perego;IT;Peg-Perego;Коляски Peg-Perego прогулочные;nosku6;;Прогулочная коляска BOOK Completo, Oceano;;637;;1;1;1;1;1;261;;
+Peg-Perego;IT;Peg-Perego;Коляски Peg-Perego прогулочные;nosku7;;Прогулочная коляска BOOK Completo, Geo;;637;;1;1;1;1;1;261;;
+Peg-Perego;IT;Peg-Perego;Коляски Peg-Perego прогулочные;nosku8;;Прогулочный блок Book Plus Completo, Ardesia;;637;;1;1;1;1;1;181;;
+Peg-Perego;IT;Peg-Perego;Коляски Peg-Perego прогулочные;nosku9;;Прогулочный блок Book Plus Completo, Avana;;637;;1;1;1;1;1;181;;
+Peg-Perego;IT;Peg-Perego;Коляски Peg-Perego прогулочные;nosku10;;Прогулочный блок Book Plus Completo, Eclipse;;637;;1;1;1;1;1;181;;
+Peg-Perego;IT;Peg-Perego;Коляски Peg-Perego прогулочные;nosku11;;Прогулочный блок Book Plus Completo, Luna;;637;;1;1;1;1;1;181;;
+Peg-Perego;IT;Peg-Perego;Коляски / 2 в 1 и 3 в 1;nosku12;;Модульный сет, Agata;;637;;1;1;1;1;1;249;;
+Peg-Perego;IT;Peg-Perego;Коляски / 2 в 1 и 3 в 2;nosku13;;Модульный сет, Ardesia;;637;;1;1;1;1;1;283;;
+Peg-Perego;IT;Peg-Perego;Коляски / 2 в 1 и 3 в 3;nosku14;;Модульный сет, Avana;;637;;1;1;1;1;1;283;;
+Peg-Perego;IT;Peg-Perego;Коляски / 2 в 1 и 3 в 4;nosku15;;Модульный сет, Chocolat;;637;;1;1;1;1;1;283;;
+Peg-Perego;IT;Peg-Perego;Коляски / 2 в 1 и 3 в 5;nosku16;;Модульный сет, Denim;;637;;1;1;1;1;1;289;;
+Peg-Perego;IT;Peg-Perego;Коляски / 2 в 1 и 3 в 6;nosku17;;Модульный сет, Eclipse;;637;;1;1;1;1;1;283;;
+Peg-Perego;IT;Peg-Perego;Коляски / 2 в 1 и 3 в 7;nosku18;;Модульный сет, Geo;;637;;1;1;1;1;1;249;;
+Peg-Perego;IT;Peg-Perego;Коляски / 2 в 1 и 3 в 8;nosku19;;Модульный сет, Luna;;637;;1;1;1;1;1;283;;
+Peg-Perego;IT;Peg-Perego;Коляски / 2 в 1 и 3 в 9;nosku20;;Модульный сет, Perla;;637;;1;1;1;1;1;249;;

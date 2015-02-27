@@ -1,0 +1,36 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+    {% spaceless %}
+
+        {% set p = object.palette %}
+
+        {% if (p|length) %}
+
+            {% set tooltip = '<div style="width: 500px">' %}
+                {% for c in p %}
+                    {% set tooltip = tooltip ~ '<div style="width:18px;height:18px;float:left;border:solid 1px #ddd;background-color: #' ~ c.hex ~ '"></div>' %}
+                {% endfor %}
+            {% set tooltip = tooltip ~ '</div><div class="clearfix"></div>' %}
+
+            <span
+                class="icon-eye-open"
+                style="cursor: help;"
+                data-toggle="popover"
+                title="Оттенки"
+                data-html="true"
+                data-content="{{ tooltip }}"
+                onmouseover="
+                    $(this).popover('show');
+                    $('.popover').css({width:528});
+                "
+                onmouseout="$(this).popover('destroy')"
+            ></span>&nbsp;{{ p|length }}
+        {% else %}
+            -
+        {% endif %}
+
+    {% endspaceless %}
+
+{% endblock %}

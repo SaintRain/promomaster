@@ -1,0 +1,133 @@
+
+{#**
+ * Шаблон для вывода блока cо звазанными тикетами
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% use 'ApplicationSonataAdminBundle:Admin\\ExtraBlocks\\Tickets:tickets.html.twig' %}
+
+{% block tickets_block %}
+    {% spaceless %}
+
+        <div id="tickets-block-container">
+            <div class="well" id="tickets-block">
+
+                <form id="tickets-form">
+                    <input type="hidden" name="id" value="{{ object.id }}">
+                    <input type="hidden" name="class" value="{{ get_parent_class(object) ? get_parent_class(object) : get_class(object) }}">
+                    <input type="text" name="ids" class="span12" placeholder="Привязать тикеты (ID через запятую)" title="Привязать тикеты (ID через запятую)">
+                    <input type="submit" value="Сохранить" class="btn btn-small tickets-attach">
+                    <br>
+                    <div class="tickets-ajax-result alert alert-danger"></div>
+                    <div class="tickets-ajax-result alert alert-success"></div>
+                </form>
+
+                <div class="tickets-table">
+
+                    {% set tickets = object.tickets %}
+                    {{ block('tickets_block_tickets_table') }}
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <script>
+
+            // Подсчет кол-ва тикетов и смена цвета у лейбы с кол-вом
+            function ticketsCount() {
+                var c = $('#tickets-block .tickets-row').size();
+                var $c = $('#tickets-count');
+                if (c > 0 && $c.hasClass('label-warning')) {
+                    $c.removeClass('label-warning').addClass('label-success');
+                } else if (c === 0 && $c.hasClass('label-success')) {
+                    $c.removeClass('label-success').addClass('label-warning');
+                    $('.tickets-table').html('')
+                }
+                $c.text(c);
+            }
+
+
+
+            $(function(){
+                // ajax запрос на связывание тикета
+                $('#tickets-block-container').on({
+                    click: function(e){
+                        e.preventDefault();
+                        $('.tickets-attach').attr('disabled', 'disabled');
+                        $('.tickets-ajax-result').hide();
+                        var formData = $(this).closest('form#tickets-form').serializeArray();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ path('application_sonata_admin_tickets_attach') }}',
+                            data: formData
+                        })
+                        .done(function(result) {
+                            if (undefined !== result.error) {
+                                $('.tickets-ajax-result.alert-danger').html(result.error.join('<br>')).slideDown('fast');
+                            } else if (undefined !== result.success) {
+                                $('.tickets-ajax-result.alert-success').html(result.success.join('<br>')).slideDown('fast');
+                                $('form#tickets-form input[name="ids"]').val('');
+                            }
+
+                            if (undefined !== result.other) {
+                                if (undefined !== result.other.ticketsHtml) {
+                                    $('.tickets-table').html(result.other.ticketsHtml)
+                                }
+                                if (undefined !== result.other.ids) {
+                                    var ids = result.other.ids;
+                                    for (i in ids) {
+                                        $('tr#i-' + ids[i]).effect('highlight', {'color': '#DFF0D8'}, 2000);
+                                    }
+                                }
+                            }
+                            ticketsCount();
+                            $('.tickets-attach').attr('disabled', false);
+                        })
+                        .fail(function() {
+                            $('.tickets-ajax-result.alert-danger').text('При добавлении тикета(ов) произошла ошибка, возможно добавлении не произошло!').slideDown('fast');
+                            $('.tickets-attach').attr('disabled', false);
+                        });
+                    }
+                }, '.tickets-attach');
+
+                // Удаление тикета
+                $('#tickets-block-container').on({
+                    click: function(e){
+                        e.preventDefault();
+                        if (!confirm('Подтвердите удаление связи с тикетом!')) {
+                            return false;
+                        }
+                        $('.tickets-ajax-result').hide();
+                        var $this = $(this);
+                        var id = $this.data('id');
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ path('application_sonata_admin_tickets_detach') }}',
+                            data: {id: id, objectId: {{ object.id }}, class: '{{ (get_parent_class(object) ? get_parent_class(object) : get_class(object))|escape('js') }}' }
+                        })
+                        .done(function(result) {
+                            if (undefined !== result.error) {
+                                $('.tickets-ajax-result.alert-danger').html(result.error.join('<br>')).slideDown('fast');
+                            } else if (undefined !== result.success) {
+                                $('.tickets-ajax-result.alert-success').html(result.success.join('<br>')).slideDown('fast');
+                                $this.closest('tr.tickets-row').remove();
+                            }
+                            ticketsCount();
+                        })
+                        .fail(function() {
+                            $('.comment-ajax-result.alert-danger').text('При удалении произошла ошибка, возможно удаление не произошло!').slideDown('fast');
+                        });
+                    }
+                }, '.tickets-remove');
+
+            });
+        </script>
+
+    {% endspaceless %}
+{% endblock %}

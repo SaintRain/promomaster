@@ -1,0 +1,18 @@
+<div class="btn-group" id="langSwitchButtonsContent">
+    {% for key,lang in configs.languages %}
+        <button type="button" data-lang="{{key}}" class="langSwitch btn {%if key==configs.active%}btn-info{%endif%}">{{lang.caption}}</button>
+    {%endfor%}
+    </div><br/>
+
+{# переключатель языка в формах редактирования #}
+    <script type="text/javascript">
+        var languageSwitcher = {
+            activeLang: '{{configs.active}}',
+            defaultLang: '{{configs.default}}',
+            classId:'{{configs.classId}}',
+            switch_language_url: '{{path('switch_language',{activeLanguage:configs.default})}}',
+            needFixActiveLanguageInSession:false
+
+        }
+        </script>
+        <script src="{{ asset('bundles/corelanguage/js/language_switcher.js') }}" type="text/javascript"></script>

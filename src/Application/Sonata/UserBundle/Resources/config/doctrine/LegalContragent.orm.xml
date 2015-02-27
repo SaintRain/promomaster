@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <!--Kaluzhniy. N. -->
+  <entity repository-class="Application\Sonata\UserBundle\Entity\Repository\LegalContragentRepository" name="Application\Sonata\UserBundle\Entity\LegalContragent">
+    <many-to-one target-entity="Core\LogisticsBundle\Entity\Bank" field="bank" >
+        <join-column on-delete="cascade" referenced-column-name="id"/>
+    </many-to-one>
+    <many-to-one target-entity="Core\DirectoryBundle\Entity\LegalForm" field="legalForm">
+        <join-column name="legal_form_id" on-delete="cascade" referenced-column-name="id"/>
+    </many-to-one>
+    <field name="organization" type="string" column="organization" length="255"/>
+    <field name="inn" type="string" column="inn" length="50"/>
+    <field name="kpp" type="string" column="kpp" length="50"/>
+    <field name="ogrn" type="string" column="ogrn" length="50"/>
+    <field name="chiefPosition" type="string" column="chief_position" length="255"/>
+    <field name="chiefFio" type="string" column="chief_fio" length="255"/>
+    <field name="addressLegal" type="string" column="address_legal" length="255"/>
+    <field name="addressPost" type="string" column="address_post" length="255"/>
+    <field name="fax" type="string" column="fax" nullable="true" length="50"/>
+    <field name="contactFio" type="string" column="contact_fio" length="255"/>    
+    <field name="bankAccount" type="string" column="bank_account" length="25"/>
+    <field name="corrAccount" type="string" length="50"/>
+    <field name="site" type="string" column="site" length="150" nullable="true"/>
+    <one-to-many field="contactList" target-entity="Application\Sonata\UserBundle\Entity\LegalContact" mapped-by="contragent" orphan-removal="true" index-by="id">
+        <cascade>
+            <cascade-persist />
+        </cascade>
+    </one-to-many>
+  </entity>
+</doctrine-mapping>

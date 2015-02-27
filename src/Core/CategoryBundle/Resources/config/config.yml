@@ -1,0 +1,7 @@
+services:
+  core_shop_category_admin_product:
+    class: Core\CategoryBundle\Admin\CommonAdminCategory2
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Продукция, label: Категории продукции }
+    arguments: [null, Core\CategoryBundle\Entity\ProductCategory, "CoreCategoryBundle:Admin\CommonAdminCategory"]
+

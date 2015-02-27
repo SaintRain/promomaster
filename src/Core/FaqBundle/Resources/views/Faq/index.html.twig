@@ -1,0 +1,70 @@
+{% extends "CoreFaqBundle::layout.html.twig" %}
+
+{# SEO - заголовки #}
+{%- block title -%}
+    {%- if rootCategory and attribute(rootCategory, 'title'~ app.request.locale) -%}
+        {{ attribute(rootCategory, 'title'~ app.request.locale)|escape('html') }}
+    {%- else -%}
+        Помощь и наиболее часто задаваемые вопросы | OliKids.ru
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block meta_keywords -%}
+    {%- if rootCategory and attribute(rootCategory, 'metakeywords'~ app.request.locale) -%}
+        {{ attribute(rootCategory, 'metakeywords'~ app.request.locale)|escape('html') }}
+    {%- else -%}
+        помощь, вопросы, фак, FAQ
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block meta_description -%}
+    {%- if rootCategory and attribute(rootCategory, 'metadescription'~ app.request.locale) -%}
+        {{ attribute(rootCategory, 'metadescription'~ app.request.locale)|escape('html') }}
+    {%- else -%}
+        Помощь по работе с интернет-магазином OliKids. Наиболее часто задаваемые вопросы и ответы на них.
+    {%- endif -%}
+{%- endblock -%}
+
+{% block main_content %}
+    <ul class="info_page_path page_path_links">
+	<li class="page_path_link">
+            <a href="{{path('core_common_index')}}">OliKids</a>
+        </li>
+	<li class="page_path_link">
+            <strong>Помощь</strong>
+        </li>
+    </ul>
+    <h1>Помощь</h1>
+    {% include 'CoreFaqBundle:Faq:search_form.html.twig' with {'form' : searchForm} %}
+    <div class="help_cats">
+        {% set i = 0 %}
+        {% for cat in categories %}
+            {% if i % 2 == 0 %}
+                <div class="help_cat_group grid_container">
+            {% endif %}
+                <div {{fastEdit(cat)}} class="help_cat grid_item">
+                    {% set i = i + 1 %}
+                    <a href="{{path('core_faq_category', {'categorySlug' : cat.slug})}}" class="help_cat_link">{{ attribute(cat, 'caption' ~ app.request.locale) }}</a>
+                    <ul class="round_bullet">
+                        {% for article in cat.articles %}
+                            <li {{fastEdit(article)}}>
+                                <a href="{{path('core_faq_article', {'categorySlug': cat.slug, 'articleSlug':article.slug})}}">{{ attribute(article, 'caption' ~ app.request.locale) }}</a>
+                            </li>
+                            {% else %}
+                                <div class="info_box">
+                                    <h6>Информация отсутствует</h6>
+                                </div>
+                        {% endfor %}
+                    </li>
+                </div>
+            {% if i % 2 == 0 or ((((categories | length) % 2) != 0 and loop.last )) %}
+                </div>
+                {% set i = 0 %}
+            {% endif %}
+            {% else %}
+                <div class="info_box">
+                    <h6>Категории не найдено</h6>
+                </div>
+        {% endfor %}
+    </div>
+{% endblock %}

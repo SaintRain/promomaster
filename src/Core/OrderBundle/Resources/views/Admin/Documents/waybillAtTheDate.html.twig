@@ -1,0 +1,76 @@
+{# товарнуая накладная на дату #}
+{%block content%}
+    <style type="text/css">
+        table {font-family: Verdana, Arial; font-size: 12px; width: 100%; border: none;}
+        table.items {margin: 20px 0;}
+        table.items th {border-style: solid; border-color: #000;}
+        table.items td {border-style: solid; border-color: #000;}
+    </style>
+
+    {%if  order.costInfo is not defined %}
+        {% set costInfo=ServiceContainer.get('core_order_logic').computeOrderCostInfo(order)%}
+            {%endif%}
+                {%if order.id %}
+                            <div style="float:right; width: 52mm; height: 14mm; text-align: center;">
+                                <barcode code="002{{order.id|idFormat}}{{order.createdDateTime|date('Ymd', default_timezone)}}" type="C128C" />
+                                <div style="font-size:7pt;">002{{order.id|idFormat}}{{dateFrom|date('Ymd', default_timezone)}}</div>
+                            </div>
+                {%endif%}
+
+                <table cellspacing="0">
+                    <tr><td><b>Продавец:</b> {{order.seller.legalForm.captionRu}} {{order.seller.caption}}{%if order.seller.inn%}, ИНН: {{order.seller.inn}}{%endif%}{%if order.seller.kpp%}, КПП: {{order.seller.kpp}}{%endif%}{%if order.seller.ogrn%}, ОГРН: {{order.seller.ogrn}}{%endif%}</td></tr>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr><td><b>Покупатель</b>: {{order.contragentFio}}{%if order.deliveryCity.name is defined or order.deliveryAddress%}, {%if order.deliveryCity.name is defined%}{{order.deliveryCity.name}}, {%endif%}{{order.deliveryAddress}}{%endif%}</td></tr>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr><td><b>Основание:</b> По счету No {{order.id|idFormat}} от {{order.createdDateTime|date("d.m.Y", default_timezone)}}</td></tr>
+
+                </table>
+
+                <table class="items" cellpadding="3" cellspacing="0" style="margin-top:60px;border-collapse: collapse;">
+                    <tr><td align="center" colspan="6"><strong style="font-size:14px;">НАКЛАДНАЯ No {{order.id|idFormat}}{%if order.id%} от {{dateFrom|date("d.m.Y", default_timezone)}}{%endif%}</strong></td></tr>
+                    <tr>
+                        <th style="border-width: .5pt 0 .5pt .5pt;" width="1%" nowrap>№</th>
+                        <th style="border-width: .5pt 0 .5pt .5pt;">Наименование</th>
+                        <th style="border-width: .5pt 0 .5pt .5pt;">Ед. изм.</th>
+                        <th style="border-width: .5pt 0 .5pt .5pt;">Цена</th>
+                        <th style="border-width: .5pt 0 .5pt .5pt;">Кол-во</th>
+                        <th style="border-width: .5pt;">Сумма</th>
+                    </tr>
+                    {%for comp_index,comp in order.compositions%}
+                        <tr>
+                            <td style="border-width: 0 0 .5pt .5pt;">{{comp_index+1}}</td>
+                            <td style="border-width: 0 0 .5pt .5pt;">{{comp.product.sku}} {{comp.product.captionRu}}</td>
+                            <td style="border-width: 0 0 .5pt .5pt;">{%if comp.product.unitOfMeasure.shortCaptionRu is defined%}{{comp.product.unitOfMeasure.shortCaptionRu}}{%endif%}</td>
+                            <td style="border-width: 0 0 .5pt .5pt;" align="right">{%if comp.cost%}{{moneyFormat(comp.cost/comp.quantity)}}{%else%}0,00{%endif%} {{currencyFormat()}}</td>
+                            <td style="border-width: 0 0 .5pt .5pt;" align="right">{{comp.quantity}}</td>
+                            <td style="border-width: 0 .5pt .5pt .5pt;" align="right">{{moneyFormat(comp.cost)}} {{currencyFormat()}}</td>
+                        </tr>
+                    {%endfor%}
+                    <tr>
+                        <td style="border-width: 0 0 .5pt .5pt;" colspan="4" align="right"><strong>Итого:</strong></td>
+                        <td style="border-width: 0 0 .5pt .5pt;" align="right">{%if costInfo.history_info is defined%}{{costInfo.history_info.total_quantity}}{%else%}{{costInfo.total_quantity}}{%endif%}</td>
+                        <td style="border-width: 0 .5pt .5pt .5pt;" align="right">{%if costInfo.history_info is defined%}{{moneyFormat(costInfo.history_info.composition_total_cost)}}{%else%}{{moneyFormat(costInfo.composition_total_cost)}}{%endif%} {{currencyFormat()}}</td>
+                    </tr>
+
+                    {%if order.ndsTax%}
+                    <tr>
+                        <td style="border-width: 0 0 .5pt .5pt;" colspan="4" align="right"><strong>В том числе НДС ({{order.ndsTax}}%):</strong></td>
+                        <td style="border-width: 0 0 .5pt .5pt;" align="right">&mdash;</td>
+                        <td style="border-width: 0 .5pt .5pt .5pt;" align="right">{%if costInfo.history_info is defined%}{{moneyFormat(costInfo.history_info.nds_tax)}}{%else%}{{moneyFormat(costInfo.nds_tax)}}{%endif%} {{currencyFormat()}}</td>
+                    </tr>
+                    {%endif%}
+
+                    <tr><td colspan="6" align="left">Сумма прописью:  {%if costInfo.history_info is defined%}{{ amount2str(costInfo.history_info.composition_total_cost)}}{%else%}{{ amount2str(costInfo.composition_total_cost)}}{%endif%}. {%if order.ndsTax%}НДС {{order.ndsTax}}%{%else%}Без НДС{%endif%}.</td></tr>
+                </table>
+
+                <table cellspacing="0" style="margin-top:60px;">
+                    <tr>
+                        <td><b>Отпустил</b></td>
+                        <td><b>Получил</b></td>
+                    </tr>
+                    <tr>
+                        <td>{{order.seller.nameOfTheHead}}&nbsp;________________________</td>
+                        <td>{%if order.contragent.organization is defined%}{{order.contragentCompany}}{%else%}{{order.contragentFio}}{%endif%}&nbsp;________________________</td>
+                    </tr>
+                </table>
+                {%endblock%}

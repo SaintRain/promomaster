@@ -1,0 +1,27 @@
+
+{#**
+ * Шаблон для вывода рейтига
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+    {% if value %}
+
+        <span title="{{ value }}" style="white-space: nowrap;">
+
+            {% for i in 1..value %}
+
+                <span class="icon-star"></span>
+
+            {% endfor %}
+
+        </span>
+
+    {% endif %}
+
+{% endblock %}

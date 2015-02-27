@@ -1,0 +1,192 @@
+
+application_sonata_user_security:
+    resource: "@ApplicationSonataUserBundle/Resources/config/routing/security.xml"
+
+application_sonata_user_profile:
+    resource: "@ApplicationSonataUserBundle/Resources/config/routing/profile.xml"
+
+application_sonata_user_register:
+    resource: "@ApplicationSonataUserBundle/Resources/config/routing/registration.xml"
+
+application_sonata_user_resetting:
+    resource: "@ApplicationSonataUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+application_sonata_user_change_password:
+    resource: "@ApplicationSonataUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /change-password
+
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+
+application_sonata_user:
+    resource: '@ApplicationSonataUserBundle/Resources/config/routing/routing.yml'
+
+application_sonata_admin:
+    resource: '@ApplicationSonataAdminBundle/Resources/config/routing.yml'
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+
+
+# роуты отвечающие за авторизацию через админку и выход из нее же
+#sonata_user:
+#     resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+#     prefix: /admin
+
+# роут для выхода из админки
+sonata_user_admin_security_logout:
+  path: /logout.html
+  defaults:  { _controller: SonataUserBundle:AdminSecurity:logout }
+
+
+# Роут для logout потому как он неопредел в security
+_logout:
+    pattern: /logout.html
+
+# error-prevention
+#homepage:
+#pattern: /
+
+
+#Страницы общего бандла
+core_common:
+    resource: "@CoreCommonBundle/Resources/config/routing.yml"
+    prefix:   /
+
+#Бандл файлов (фото, документация и др.)
+core_file:
+    resource: "@CoreFileBundle/Resources/config/routing.yml"
+    prefix:   /
+
+#файловый менеджер для ckEditor
+elfinder:
+     resource: "@FMElfinderBundle/Resources/config/routing.yml"
+
+trouble_tickets:
+    resource: "@CoreTroubleTicketBundle/Resources/config/routing.yml"
+    prefix: /trouble-tickets
+
+#переключалка языков в админке
+core_language:
+    resource: "@CoreLanguageBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+
+#объединяющий бандла
+core_union:
+    resource: "@CoreUnionBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+#обработка созданий модификаций продукта
+core_product_admin:
+    resource: "@CoreProductBundle/Resources/config/adminRouting.yml"
+    prefix:   /admin
+
+#справочник цветов и их обработка
+core_color:
+    resource: "@CoreColorBundle/Resources/config/routing.yml"
+    prefix:   /
+
+# каптча
+gregwar_captcha_routing:
+    resource: "@GregwarCaptchaBundle/Resources/config/routing/routing.yml"
+
+#справочник цветов и их обработка
+core_shop_product:
+    resource: "@CoreProductBundle/Resources/config/routing.yml"
+    prefix:   /
+
+simple_things_entity_audit:
+    resource: "@SimpleThingsEntityAuditBundle/Resources/config/routing.yml"
+    prefix: /admin/audit
+
+# статистика
+core_statistics:
+    resource: "@CoreStatisticsBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+#Раздел FAQ
+core_faq:
+    resource: "@CoreFaqBundle/Resources/config/routing.yml"
+    prefix: /
+
+
+#
+core_logistics:
+    resource: "@CoreLogisticsBundle/Resources/config/routing.yml"
+    prefix: /admin
+
+#Заказы
+core_order:
+    resource: "@CoreOrderBundle/Resources/config/routing.yml"
+    prefix: /admin
+
+core_order_frontend:
+    resource: "@CoreOrderBundle/Resources/config/frontend.routing.yml"
+    prefix: /
+
+# все что связано с платежами
+core_payment:
+    resource: "@CorePaymentBundle/Resources/config/routing.yml"
+    prefix:   /
+
+core_delivery:
+    resource: "@CoreDeliveryBundle/Resources/config/routing.yml"
+    prefix: /
+
+# все что связано со справочными данными
+core_directory:
+    resource: "@CoreDirectoryBundle/Resources/config/routing.yml"
+    prefix: /
+
+# рейтинг и комментарии товаров
+core_review:
+    resource: "@CoreReviewBundle/Resources/config/routing.yml"
+    prefix:   /
+
+#роутеры для автозаполнения
+shtumi_useful:
+    resource: '@ShtumiUsefulBundle/Resources/config/routing.xml'
+
+_monitor:
+    resource: "@LiipMonitorBundle/Resources/config/routing.xml"
+    prefix: admin/monitor/health
+
+PrestaSitemapBundle:
+    resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
+    prefix:   /
+
+#core_dynamic_binding:
+#    resource: "@CoreDynamicBindingBundle/Resources/config/routing.yml"
+#    prefix:   /
+
+# Роуты бандла HistoryBundle
+core_slug_history:
+    resource: "@CoreSlugHistoryBundle/Resources/config/routing.yml"
+    prefix:   /
+
+# Роуты бандла HolidayBundle
+core_holiday:
+    resource: "@CoreHolidayBundle/Resources/config/routing.yml"
+    prefix:   /
+
+
+
+
+#НАЧИНАЕМ ОТСЮДА ПИСАТЬ НОВЫЕ РОУТЕРЫ
+
+
+
+# Роуты бандла SiteBundle
+core_site:
+    resource: "@CoreSiteBundle/Resources/config/routing.yml"
+    prefix:   /
+
+# Роуты бандла BannerBundle
+core_banner:
+    resource: "@CoreBannerBundle/Resources/config/routing.yml"
+    prefix:   /

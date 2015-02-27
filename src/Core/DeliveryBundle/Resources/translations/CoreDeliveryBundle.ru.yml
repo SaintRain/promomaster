@@ -1,0 +1,25 @@
+Service: Доставка
+ServiceWithAddress: Самовывоз
+ServiceInCity: Адресная доставка
+breadcrumb:
+  link_service_type_list: Список типов доставок
+  link_company_list: Список компаний
+  link_service_list: Список доставок
+  link_address_list: Список пунктов доставки
+form:
+  label:
+    empty: Необходимо выбрать
+    buyerType:
+      empty: Разрешено для всех
+delivery:
+    maxDays: %days% день|%days% дня|%days% дней
+    brokenConnect: Неудалось подключиться к серверу компании
+    hide: Скрыть все варианты доставки
+    show: Все варианты доставки
+    selfPickup:
+     can: 'Возможен самовывоз: '
+     today: Сегодня
+    deleryTime: "Срок доставки"
+    toDays: "до %days% дня|до %days% дней|до %days% дней"
+    fromDays: "от %days%"
+    exactlyDays: "%days% день|%days% дня|%days% дней"

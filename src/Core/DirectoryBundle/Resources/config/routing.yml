@@ -1,0 +1,5 @@
+#поиск автозаполнения для тегов
+core_directrory_product_tags:
+    path:      /product_tags
+    schemes:  [https]
+    defaults:  { _controller: CoreDirectoryBundle:AjaxProductTags:getAutocomplete }

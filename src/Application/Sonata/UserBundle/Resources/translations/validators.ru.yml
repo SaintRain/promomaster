@@ -1,0 +1,51 @@
+fos_user:
+    username:
+        already_used: Логин уже используется
+        blank: Пожалуйста, укажите логин
+        short: "[-Inf,Inf]Логин слишком короткий"
+        long: "[-Inf,Inf]Логин слишком длинный"
+    email:
+        already_used: Email уже используется
+        blank: Пожалуйста, укажите ваш Еmail
+        short: "[-Inf,Inf]Email слишком короткий"
+        long: "[-Inf,Inf]Email слишком длинный"
+        invalid: Email в неправильном формате
+        need_to_auth: 'Email уже используется. Необходимо авторизоваться или ввести другой email'
+    password:
+        blank: Пожалуйста, укажите пароль
+        short: Введите пароль не короче 6 символов
+        patternMessage: Для пароля используйте только цифры, латинские буквы, подчеркивания и тире
+        mismatch: Введенные пароли не совпадают
+    new_password:
+        blank: Пожалуйста, укажите новый пароль
+        repeat: Пожалуйста, повторите новый пароль
+        short: Введите новый пароль не короче 6 символов
+        same: Пароли не совпадают
+        patternMessage: Для пароля используйте только цифры, латинские буквы, подчеркивания и тире
+    current_password:
+        invalid: Вы неправильно ввели Ваш текущий пароль
+    group:
+        blank: Пожалуйста, укажите название группы
+        short: "[-Inf,Inf]Название группы слишком короткое"
+        long: "[-Inf,Inf]Название группы слишком длинное"
+'This value should not be blank!': Поле должно быть заполнено
+'The field should not be present!': Поле должно быть пустым или не выбрано
+Same pass: Вы ввели тот же пароль
+'The value is the same': 'Вы ввели старый пароль'
+Email '%string%' is already requested: Email '%string%' уже запрашивался вами
+
+contragent:
+  blank: Необходимо заполнить
+  numbers: Пожалуйста, используйте только цифры
+  charachters: Пожалуйста, используйте только буквы, тире и апостроф
+  passport: Пожалуйста, введите правильный номер паспорта
+  phone: Пожалуйста, введите правильный номер телефона
+  city: Пожлалуйста, используйте только буквы, тире, апостроф и круглые скобочки
+
+'The string "%string%" must be a phone number format!': Для номера '%string%' используйте международный стандарт
+'The kpp field should not be empty!': Пожалуйста, укажите номер КПП
+'The string "%string%" must be a OGRN format!': '"%string%" не существующий номер ОГРН'
+'The string "%string%" must be a KPP format!': '"%string%" не существующий номер КПП'
+'The string "%string%" must be a inn format!': '"%string%" не существующий номер ИНН'
+'Not valid bank account!': Неверно указан расчетный счет
+'The length must be %length%!': 'Длина должна быть %length% символов'

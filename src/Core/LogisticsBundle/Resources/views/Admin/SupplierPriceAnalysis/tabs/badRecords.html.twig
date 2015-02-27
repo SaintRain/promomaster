@@ -1,0 +1,38 @@
+{# Вкладка испорченные записи#}
+<div class="tab-pane " id="{{ uniqid }}_{{ ind+4 }}">
+    <fieldset>
+        <div class="sonata-ba-collapsed-fields">
+            <p>Показаны записи из прайса, которые определены как испорченные.<br/> 
+                Также сюда попадают записе для которых не указана МРЦ (если есть настройка у производителя) 
+                или если не указана закупочная цена.<br>
+                Всего {{extra.analysisBadRecords|length}} шт.</p>
+            
+            
+            {% if extra.analysisBadRecords%}
+                <table class="table table-bordered table-hover outOfStock" style="width:100%">
+                    <thead>
+                        <tr>                        
+                            <th style="width: 50px;background-color: #f5f5f5">№ <span style="font-size:10px">строки из прайса</span></th>
+                                {% for row_index, row in extra.analysisBadRecords if row_index==0 %}
+                                    {% for cell_index, cell in row %}
+                                    <th style="background-color: #f5f5f5">{{numberToLetter(cell_index)}}</th>
+                                    {%endfor%}
+                                {%endfor%}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%set index=1%}
+                        {% for row_index, row in extra.analysisBadRecords %}
+                            <tr>
+                                <td style="background-color: #f5f5f5">{{row_index+1}}</td>
+                                {% for cell_index, cell in row %}
+                                    <td>{{cell}}</td>
+                                {%endfor%}
+                            </tr>
+                        {%endfor%}                
+                    </tbody>
+                </table>
+            {%endif%}
+        </div>
+    </fieldset>
+</div>

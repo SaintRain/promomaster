@@ -1,0 +1,85 @@
+{#**
+ *  Шаблон для костомных полей у формы редактирования платежки
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{# Вывод номера #}
+{% block core_payment_admin_id_text_widget %}
+    {% set payment = sonata_admin.admin.subject %}
+    {% if payment.id %}
+
+        <h4>Платеж #{{ payment.id|idFormat }} <span style="color:gray">(от {{ payment.createdAt|date("d.m.Y H:i:s", default_timezone) }})</span></h4>
+
+    {% else %}
+
+        <h4>Новый платеж <span style="color:gray">(от {{ "now"|date("d.m.Y H:i:s", default_timezone) }})</span></h4>
+
+    {% endif %}
+{%endblock%}
+
+{# Вывод возврата #}
+{% block core_payment_admin_isRefund_checkbox_widget %}
+
+    {{ form_widget(form) }}
+
+    <script>
+        $(function(){
+            $('.isRefundRow input[type="checkbox"]').click(function(){
+                if ($(this).prop('checked')) {
+                    $('.hiddenRefundRows').slideDown('fast');
+                } else {
+                    $('.hiddenRefundRows').slideUp('fast');
+                }
+            });
+            if ($('.isRefundRow input[type="checkbox"]').prop('checked')) {
+                $('.hiddenRefundRows').show();
+            }
+        });
+    </script>
+{%endblock%}
+
+{# Изменяем вывод заказа #}
+{% block core_payment_admin_order_ajax_entity_widget %}
+    {% spaceless %}
+
+        {% set order = sonata_admin.admin.subject.order %}
+
+        {% if order %}
+
+            <h4>Платеж звязан с заказом <a href="{{ path('admin_core_order_order_edit', {id: order.id}) }}">#{{ order.id|idFormat }}</a></h4>
+
+            Статус(ы) заказа:
+
+            {% if order.isCheckedStatus %}
+                <span class="label label-default">Проверен</span>
+            {% endif %}
+
+            {% if order.isPaidStatus %}
+                <span class="label label-info">Оплачен</span>
+            {% endif %}
+
+            {% if order.isShippedStatus %}
+                <span class="label label-success">Отгружен</span>
+            {% endif %}
+
+            {% if order.isCanceledStatus %}
+                <span class="label label-important">Отменён</span>
+            {% endif %}
+
+            {% if order.extraStatus %}
+                &nbsp;<span style="color:#{{ order.extraStatus.hex }}">{{ order.extraStatus.captionRu }}</span>
+            {% endif %}
+
+            <span class="hidden">{{ block('ajax_entity_widget') }}</span>
+
+        {% else %}
+
+            {{ block('ajax_entity_widget') }}
+
+        {% endif %}
+
+    {% endspaceless %}
+{% endblock %}
+

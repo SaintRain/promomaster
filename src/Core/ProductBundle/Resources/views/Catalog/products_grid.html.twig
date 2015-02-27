@@ -1,0 +1,43 @@
+
+{#**
+ * Шаблон для отображения товара в каталоге в виде сетки
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% use 'CoreProductBundle:Catalog:product_cell.html.twig' %}
+
+{# переписываем блок вывода ссылки на категорию, убираем её #}
+{% block cell_product_category %}
+    {% if hide_category_link is not defined or hide_category_link == false %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block products_grid %}
+    {% spaceless %}
+
+    <section class="products_list products_grid">
+
+        <div class="products_grid_line grid_container">
+
+            {% for i, product in products %}
+
+                {% if (i % 4 == 0 and i != 1) %}
+
+                    </div>
+                    <div class="products_grid_line grid_container">
+
+                {% endif %}
+
+                {{ block('product') }}
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    {% endspaceless %}
+{% endblock %}

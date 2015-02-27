@@ -1,0 +1,90 @@
+services:
+
+  core_common_process:
+    class: Core\CommonBundle\Logic\ProcessLogic
+    arguments: ['@kernel']
+
+  core_common_fragments:
+    class: Core\CommonBundle\Logic\Fragments
+    arguments: ['@service_container']
+
+# Сервис нового типа формы AjaxEntity
+  core_common_ajax_entity_type:
+    class: Core\CommonBundle\Form\Type\AjaxEntityType
+    tags:
+        - { name: form.type, alias: ajax_entity }
+    arguments: ['@doctrine', '@core_common_ajax_entity_logic', '@templating', '@core_common_encoding','@service_container']
+
+# Сервис для работы со статистиками продукта
+  core_common_ajax_entity_logic:
+    class: Core\CommonBundle\Logic\AjaxEntityLogic
+    arguments: ['@doctrine', '@core_file_logic', '@core_common_encoding', '@application_knp_paginator_logic', {default_timezone: %default_timezone%}]
+
+# Переопределяем тип формы money, чтобы можно было глобально задавать валюту
+  form.type.money:
+    class: Core\CommonBundle\Form\Type\MoneyType
+    tags:
+      - { name: form.type, alias: money }
+    arguments: ['%default_currency%', '%locale%']
+
+# Расширения для Twig для работы с деньгами
+  core_common_money_twig_extension:
+    class: Core\CommonBundle\Twig\Extension\MoneyExtension
+    tags:
+      - { name: twig.extension }
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+    arguments: ['%default_currency%', '%locale%', '@core_common_decline_of_number_twig_extension']
+
+# Расширения для Twig
+  core_common_twig_extension:
+    class: Core\CommonBundle\Twig\Extension\CommonExtension
+    tags:
+      - { name: twig.extension }
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+    arguments: ['@doctrine', '@router']
+
+# Расширения для Twig для работы с числами
+  core_common_decline_of_number_twig_extension:
+    class: Core\CommonBundle\Twig\Extension\DeclineOfNumberExtension
+    tags:
+      - { name: twig.extension }
+
+# Расширения для Twig для быстрого редактирования контента
+  core_common_fast_edit_twig_extension:
+    class: Core\CommonBundle\Twig\Extension\FastEditExtension
+    arguments: ['@service_container']
+    tags:
+      - { name: twig.extension }
+
+
+# Сервис шифрования данных
+  core_common_encoding:
+    class: Core\CommonBundle\Logic\EncodingLogic
+    arguments: ['%secret%']
+
+  core_common_sitemap_listener:
+        class: Core\CommonBundle\EventListener\SitemapListener
+        arguments: [@service_container]
+        tags: [{name: "presta.sitemap.listener"}]
+
+  # Форма для древовидных списков
+  core_common_tree_select_form_type:
+    class: Core\CommonBundle\Form\Type\TreeSelectType
+    tags:
+      - { name: form.type, alias: tree_select }
+    arguments: ['@doctrine.orm.entity_manager', '@translator']
+
+
+    # Расширения для Twig
+  core_common_eval_twig_extension:
+     class: Core\CommonBundle\Twig\Extension\EvalExtension
+     arguments: ['@twig']
+     tags:
+        - { name: twig.extension }
+        
+  # Форма для древовидных списков
+  core_common_hidden_entity_form_type:
+    class: Core\CommonBundle\Form\Type\HiddenEntityType
+    tags:
+      - { name: form.type, alias: hidden_entity_form }
+    arguments: ['@doctrine.orm.entity_manager']

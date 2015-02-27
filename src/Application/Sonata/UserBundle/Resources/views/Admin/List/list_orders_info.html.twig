@@ -1,0 +1,8 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field %}
+    {% if object.orders | length %}
+        <a target="blank" href="{{path('admin_core_order_order_list', {'filter[contragent__user__email][value]': object.id})}}">{{'orderCount' | transchoice(object.orders | length)}}</a>
+        {% else %}
+            <div class="label">Заказов нет</div>
+    {% endif %}    
+{% endblock %}

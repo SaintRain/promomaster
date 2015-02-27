@@ -1,0 +1,1 @@
+(function(a){var b=[];a(function(){a(".delivery_btn").prop("disabled",true).addClass("disabled");var c=false;a(".phone_correct").inputmask({mask:"+7 (999) 999-99-99[9]",greedy:false});a(".passport").inputmask({mask:"9999 999999",greedy:true})})})(jQuery);

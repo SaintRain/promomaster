@@ -1,0 +1,47 @@
+{% extends "CoreFaqBundle::layout.html.twig" %}
+
+{%- block title -%}
+    {%- if attribute(article, 'title'~ app.request.locale) -%}
+        {{ attribute(article, 'title'~ app.request.locale)|escape('html') }}
+    {%- else -%}
+        {{ attribute(article, 'caption' ~ app.request.locale) }} - {{ attribute(article.category, 'caption' ~ app.request.locale) }} | OliKids.ru
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block meta_keywords -%}
+    {%- if attribute(article, 'metakeywords'~ app.request.locale) -%}
+        {{ attribute(article, 'metakeywords'~ app.request.locale)|escape('html') }}
+    {%- else -%}
+        помощь, вопросы, фак, FAQ, {{ attribute(article.category, 'caption' ~ app.request.locale) }}, {{ attribute(article, 'caption' ~ app.request.locale) }}
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block meta_description -%}
+    {%- if attribute(article, 'metadescription'~ app.request.locale) -%}
+        {{ attribute(article, 'metadescription'~ app.request.locale)|escape('html') }}
+    {%- else -%}
+        {{ attribute(article, 'caption' ~ app.request.locale) }} - вопрос из категории {{ attribute(article.category, 'caption' ~ app.request.locale) }} на сайте OliKids. Если Вы не смогли найти ответ на свой вопрос - пожалуйста, свяжитесь с нами.
+    {%- endif -%}
+{%- endblock -%}
+
+{% block main_content %}
+    <ul class="info_page_path page_path_links">
+	<li class="page_path_link">
+            <a href="{{path('core_common_index')}}">OliKids</a>
+        </li>
+        <li class="page_path_link">
+            <a href="{{path('core_faq_homepage')}}">Помощь</a>
+        </li>
+        <li class="page_path_link">
+            <a href="{{path('core_faq_category', {'categorySlug' : article.category.slug})}}">{{attribute(article.category, 'caption' ~ app.request.locale)}}</a>
+        </li>
+	<li class="page_path_link">
+            <strong>{{attribute(article, 'caption' ~ app.request.locale)}}</strong>
+        </li>
+    </ul>
+    <h1 {{fastEdit(article)}}>{{attribute(article, 'caption' ~ app.request.locale)}}</h1>
+    <article class="def_style" {{fastEdit(article)}}>
+        {{attribute(article, 'body' ~ app.request.locale ) | raw}}
+    </article>
+    {% include 'CoreFaqBundle:Faq:search_form.html.twig' with {'form' : searchForm} %}
+{% endblock %}

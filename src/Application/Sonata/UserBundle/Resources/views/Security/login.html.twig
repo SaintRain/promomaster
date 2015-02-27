@@ -1,0 +1,113 @@
+{% extends "CoreCommonBundle::main_layout2.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+ {% block js_head %}
+     {{ parent() }}
+     <script src="/assets/js/plugins/ulogin.js"></script>
+ {% endblock %}
+
+
+{% block content %}
+
+    <!--=== Breadcrumbs ===-->
+    <div class="breadcrumbs">
+        <div class="container">
+            <h1 class="pull-left">Авторизация</h1>
+            <ul class="pull-right breadcrumb">
+                <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                <li class="active">Авторизация</li>
+            </ul>
+        </div>
+        <!--/container-->
+    </div><!--/breadcrumbs-->
+    <!--=== End Breadcrumbs ===-->
+
+    <!--=== Content Part ===-->
+    <div class="container content">
+
+
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+                <form id="auth_form" class="reg-page" action="{{ path("fos_user_security_check") }}" method="post">
+                    <div class="reg-header">
+                        <h2>Авторизация в системе</h2>
+
+                        <section class="login_social">
+                            {% spaceless %}
+                                {#
+                                <div id="uLogin" data-ulogin="display=buttons;verify=1;lang=ru;
+                                fields=first_name,last_name,photo,photo_big,email,nickname,bdate,sex,city,country,profile;
+                                redirect_uri=http://{{ app.request.host }}/app_dev.php/register/auth.html;
+                                receiver=http://{{ app.request.host }}{{path('auth_receiver')}}">
+                                #}
+                                <div id="uLogin" data-ulogin="display=buttons;verify=1;lang=ru;
+                        fields=first_name,last_name,photo,photo_big,email,nickname,bdate,sex,city,country,profile;
+                        redirect_uri=;
+                        receiver=http://{{ app.request.host }}{{ path('auth_receiver') }};
+                        callback=ucall">
+                                    <span data-uloginbutton="facebook" class="social_btn social_facebook">&nbsp;</span>
+                                    <span data-uloginbutton="vkontakte"
+                                          class="social_btn social_vkontakte">&nbsp;</span>
+                                    <span data-uloginbutton="twitter" class="social_btn social_twitter">&nbsp;</span>
+                                    <span data-uloginbutton="yandex" class="social_btn social_yandex">&nbsp;</span>
+                                    <span data-uloginbutton="google" class="social_btn social_google">&nbsp;</span>
+                                    <span data-uloginbutton="odnoklassniki" class="social_btn social_odnoklassniki">&nbsp;</span>
+                                </div>
+                            {% endspaceless %}
+                        </section>
+
+                    </div>
+
+                    {% if error %}
+                        <div class="form_field_error_txt">
+                            {{ error|trans({}, 'FOSUserBundle') }}
+                        </div>
+                        <br/>
+                    {% endif %}
+
+                    <div class="input-group margin-bottom-20">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <input type="email" id="username" name="_username" required="required" placeholder="Email"
+                               class="form-control">
+                    </div>
+                    <div class="input-group margin-bottom-20">
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                        <input type="password" id="password" name="_password" required="required" placeholder="Пароль"
+                               class="form-control">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 checkbox">
+                            <label><input type="checkbox" id="remember_me" name="_remember_me" value="on"> Запомнить
+                                меня</label>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn-u pull-right" type="submit">Войти</button>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h4>Забыли свой пароль ?</h4>
+
+                    <p>не беспокойтесь, <a class="color-green" href="{{ path('fos_user_resetting_request') }}">нажмите
+                            здесь</a>, чтобы восстановить ваш пароль.</p>
+
+                    <hr>
+                    <h4>Вы еще не зарегистрированы?</h4>
+
+                    <p>Нажмите <a class="color-green" href="{{ path('fos_user_registration_register') }}">зарегистрироваться</a>,
+                        чтобы создать учетную запись.</p>
+
+                </form>
+            </div>
+        </div>
+        <!--/row-->
+    </div><!--/container-->
+    <!--=== End Content Part ===-->
+
+
+{% endblock %}

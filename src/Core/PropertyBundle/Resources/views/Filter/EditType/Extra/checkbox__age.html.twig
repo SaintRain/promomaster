@@ -1,0 +1,44 @@
+
+{#**
+ *  Шаблон для кастомного вывода возраста
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'CorePropertyBundle:Filter/EditType:checkbox.html.twig' %}
+
+{% block checkbox %}
+
+    {% set formElementClass = 'hidden' %}
+
+    {% if this.values %}
+
+        <div class="filter_age filter_group edit-type-checkbox">
+            <h3>&nbsp;Возраст ребенка</h3>
+
+            {% for id, value in this.values %}
+
+                {% block rowElement %}
+
+                    {% set age = value.caption %}
+
+                    {% if age|slice(-1) == 1 %}
+                        {% set ageString = ['год','года','лет'] %}
+                    {% else %}
+                        {% set ageString = ['года','года','лет'] %}
+                    {% endif %}
+
+                    <span class="filter_age_tgl filter-fake-checkbox" title="Возраст {{ value.caption }} {{ declOfNum(age|slice(-1), ageString) }}">{{ value.caption }}</span>
+
+                    {{ block('formElement') }}
+
+                {% endblock %}
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+{% endblock %}

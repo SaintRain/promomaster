@@ -1,0 +1,68 @@
+{% extends 'ApplicationSonataUserBundle::cabinet_layout.html.twig' %}
+
+{# SEO - заголовки #}
+{% block title %}Добавление и редактирование контрагентов | OliKids.ru{% endblock %}
+{% block meta_keywords %}контрагенты{% endblock %}
+{% block meta_description %}Добавление и редактирование контрагентов в интернет-магазине детских игрушек OliKids. Создайте контрагента и нажмите редактировать, чтобы добавить адрес доставки.{% endblock %}
+
+{% block js_head %}
+    {{parent()}}
+    <script>
+        settingsJS.routes['contragent_delete'] = '{{path('application_sonata_user_contragent_delete')}}';
+        settingsJS.routes['contact_delete'] = '{{path('application_sonata_user_contact_delete')}}';
+    </script>
+     {% javascripts  'bundles/applicationsonatauser/js/frontend.contact.js' output='js/compiled/user_frontend_contact.js' filter='yui_js' %}
+    <script src="{{ asset_url}}"></script>
+    {% endjavascripts %}    
+{% endblock %}
+{% block main_content %}
+    <div class="main_col_pad">
+        <section class="cabinet_addresses">
+            {% for flashMessage in app.session.flashbag.get('contragent_success_create') %}
+                    <div class="info_box success">
+                        <h6>{{ flashMessage|trans({}) }}</h6>
+                    </div>
+            {% endfor %}
+            {% if contragent %}
+                <dl class="cabinet_addresses_list">
+                    <div {{fastEdit(contragent)}} class="contact_contragents">
+                        {% if contragent.organization is defined %}
+                            {% set isIndi = 0 %}
+                            <dt class="cabinet_address_person"><h2>{{contragent.organization}}</h2></dt>
+                            {% else %}
+                                {% set isIndi = 1%}
+                                <dt class="cabinet_address_person"><h2>{{contragent.lastName}} {{contragent.firstName}} {{contragent.surName}}</h2></dt>
+                        {% endif %}
+                        <dd class="cabinet_address">
+                            {% spaceless %}
+                                <p class="cabinet_address_info">
+                                    {% if contragent.contactEmail %}
+                                        E-mail: {{contragent.contactEmail}}<br>
+                                    {% endif %}
+                                    {% if contragent.phone1 %}
+                                        Контактный телефон: {{contragent.phone1}}
+                                    {% endif %}
+                                </p>
+                            {% endspaceless %}
+                            <div class="cabinet_address_controls">
+                                    <a href="{{path('application_sonata_user_contragent_edit', {'contragentId': contragent.id, 'isIndi': isIndi})}}" class="edit with_icon text_tgl">Редактировать</a>
+                                    {% if (contragent.orders | length)  == 0 and (contragent.payments | length == 0) and (contragent.manufacturerDiscounts | length == 0) %}
+                                        <a data-route="contragent_delete" data-contragent="{{ contragent.id}}" href="javascript:void(0);" class="delete with_icon text_tgl">Удалить</a>
+                                    {% endif %}
+                            </div>
+                        </dd>
+                    </div>
+                    {% include 'ApplicationSonataUserBundle:Contragent:contact_list.html.twig' with {'contacts': contragent.contactList}%}            
+                </dl>
+                {% else %}   
+                <div class="info_box">Информация о плательщике не найдена</div>
+                <p>Вы можете добавить информацию о плательщике, а после указать адреса доставки</p>
+                <div class="cabinet_address_add">
+                    <div class="controls">
+                        <a href="{{path('application_sonata_user_contragent_create')}}" class="add with_icon text_tgl">Добавить нового плательщика</a>
+                    </div>
+                </div>
+            {% endif %}
+        </section>
+    </div>
+{% endblock %}

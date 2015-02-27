@@ -1,0 +1,71 @@
+services:
+#тип формы для редактирования категорий на фронтенде
+  core_shop_fontend_category_form_type:
+    class: Core\CategoryBundle\Form\Type\FrontendCategoryType
+    tags:
+        - { name: form.type, alias: FrontendCategory }
+    arguments: ['@core_shop_category_logic', '@doctrine.orm.entity_manager']
+
+
+
+
+
+
+
+  #категории сайтов
+  core_category_site_admin:
+    class: Core\CategoryBundle\Admin\CommonAdminCategory
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Материал, label: Категории сайтов }
+    arguments: [null, Core\CategoryBundle\Entity\SiteCategory, "CoreCategoryBundle:Admin\CommonAdminCategory"]
+
+
+
+
+
+
+  core_shop_category_admin_product:
+    class: Core\CategoryBundle\Admin\CommonAdminCategory
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Продукция, label: Категории продукции }
+    arguments: [null, Core\CategoryBundle\Entity\ProductCategory, "CoreCategoryBundle:Admin\CommonAdminCategory"]
+
+  #категории траблтикетов
+  core_shop_category_admin_trouble_ticket:
+    class: Core\CategoryBundle\Admin\CommonAdminCategory
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, label: Категории траблтикетов }
+    arguments: [null, Core\CategoryBundle\Entity\TroubleTicketCategory, "CoreCategoryBundle:Admin\CommonAdminCategory"]
+
+  #категории FAQ
+  core_shop_category_admin_faq:
+    class: Core\CategoryBundle\Admin\CommonAdminCategory
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, group: FAQ, label: Категории, show_in_dashboard: true }
+    arguments: [null, Core\CategoryBundle\Entity\FaqCategory, "CoreCategoryBundle:Admin\CommonAdminCategory"]
+
+  #сервис вирутальных категорий продукта
+  core_category_virtual_product_admin:
+    class: Core\CategoryBundle\Admin\ProductVirtualCategoryAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Продукция, label: "Виртульные категории" }
+    arguments: [null, Core\CategoryBundle\Entity\ProductVirtualCategory, null]
+
+  #Бизнес логика категорий
+  core_shop_category_logic:
+    class: Core\CategoryBundle\Logic\CategoryLogic
+    arguments: ['@doctrine.orm.entity_manager', '@router', '@service_container']
+
+
+  core_shop_category_form_type:
+    class: Core\CategoryBundle\Admin\Form\Type\CategoryType
+    tags:
+        - { name: form.type, alias: category }
+    arguments: ['@core_shop_category_logic']
+
+# подписчик
+  core_category_subscriber:
+    class: Core\CategoryBundle\EventListener\CategorySubscriber
+    tags:
+        - { name: doctrine.event_subscriber }
+    arguments: ['@service_container']

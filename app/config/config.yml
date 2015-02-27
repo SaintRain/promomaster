@@ -1,0 +1,903 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: doctrine.yml }
+    - { resource: '@ApplicationSonataUserBundle/Resources/config/services.yml'}
+    - { resource: '@ApplicationSonataAdminBundle/Resources/config/services.yml'}
+    - { resource: '@ApplicationSonataUserBundle/Resources/config/admin_orm.xml'}
+    - { resource: '@CoreProductBundle/Resources/config/services.yml'}
+    - { resource: '@CoreCategoryBundle/Resources/config/services.yml'}
+    - { resource: '@CorePropertyBundle/Resources/config/services.yml'}
+    - { resource: '@CoreDirectoryBundle/Resources/config/services.yml'}
+    - { resource: '@CoreTroubleTicketBundle/Resources/config/services.yml'}
+    - { resource: '@CoreUnionBundle/Resources/config/services.yml'}
+    - { resource: '@CoreFaqBundle/Resources/config/services.yml'}
+    - { resource: '@CoreOrderBundle/Resources/config/services.yml'}
+    - { resource: '@CoreDiscountsBundle/Resources/config/services.yml'}
+    - { resource: '@CoreLogisticsBundle/Resources/config/services.yml'}
+    - { resource: '@CoreDeliveryBundle/Resources/config/services.yml'}
+    - { resource: '@ApplicationSimpleThingsEntityAuditBundle/Resources/config/services.yml'}
+    - { resource: '@ApplicationSonataBlockBundle/Resources/config/block.xml'}
+    - { resource: '@ApplicationKnpPaginatorBundle/Resources/config/service.yml'}
+    - { resource: '@CoreConfigBundle/Resources/config/services.yml'}
+    - { resource: '@CoreSlugHistoryBundle/Resources/config/slug_history.yml'}
+    - { resource: '@ApplicationLiuggioExcelBundle/Resources/config/services.yml'}
+    - { resource: '@CoreCacheBundle/Resources/config/services.yml'}
+
+    - { resource: '@CoreBannerBundle/Resources/config/services.yml'}
+    - { resource: '@CoreSiteBundle/Resources/config/services.yml'}
+    - { resource: '@CoreAdCompanyBundle/Resources/config/services.yml'}
+
+
+
+
+
+framework:
+    #esi:             ~
+    translator:      { fallback: %locale% }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_proxies:  [127.0.0.1, 192.0.0.1, 10.0.0.0/8]
+    session:
+        #берем дефолтный механизм хранения сессия
+        handler_id: ~
+    fragments:
+        enabled:              false
+        path:                 /_fragment
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    cache:                     "%kernel.cache_dir%/twig"
+    globals:
+        #в твиг внедряем  сервисы
+        ServiceContainer: "@service_container"
+        base_url: %domain_ru%
+        default_timezone: %default_timezone%
+        default_email: %default_email%
+        domain_ru: %domain_ru%
+        root_web_path:       %kernel.root_dir%/../web
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+    form:
+        resources:
+#            - 'SonataAdminBundle:Form:silex_form_div_layout.html.twig'
+            - 'SonataFormatterBundle:Form:formatter.html.twig'
+            - 'CoreFileBundle:Admin\Form:multiupload_image_widget.html.twig'
+            - 'CoreFileBundle:Admin\Form:multiupload_document_widget.html.twig'
+            - 'CoreFileBundle:Form:multiupload_file_frontend_widget.html.twig'
+            - 'CoreColorBundle:Admin\Form:admin_form_type_color_widget.html.twig'
+            - 'CoreColorBundle:Form:colorpicker_widget.html.twig'
+            - 'CoreReviewBundle:Form:star_rating_widget.html.twig'
+            - 'CoreCommonBundle:Form:ajax_entity_widget.html.twig'
+            - 'CoreCategoryBundle:Admin\Form:caregory_widget.html.twig'
+            - 'CorePropertyBundle:Admin\Form:property_widget.html.twig'
+            - 'CorePropertyBundle:Admin\Form:property_caregory_widget.html.twig'
+            - 'ApplicationSonataAdminBundle:Admin\Form:admin_date_range.html.twig'
+            - 'CoreUnionBundle:Admin\Form:union_widget.html.twig'
+            - 'CoreProductBundle:Admin\Form\modifications_widget:product_modifications_widget.html.twig'
+            - 'CoreProductBundle:Admin\Form\category_main_widget:category_main_widget.html.twig'
+            - 'CoreProductBundle:Admin\Form\manufacturer_main_widget:manufacturer_main_widget.html.twig'
+            - 'CoreCommonBundle:Form:row.html.twig'
+            - 'CoreCommonBundle:Form:errors.html.twig'
+            - 'ApplicationSonataUserBundle:Admin\Form:kpp_type_widget.html.twig'
+            - 'ApplicationSonataUserBundle:Admin\Form:onec_type_widget.html.twig'
+            - 'ApplicationSonataUserBundle:Admin\Form:contragent_email_type_widget.html.twig'
+            - 'ApplicationSonataUserBundle:Admin\Form:balance_history_widget.html.twig'
+            - 'CoreOrderBundle:Admin\Form\Order\type:products_in_order_widget.html.twig'
+            - 'CoreOrderBundle:Admin\Form\Order\type:unit_serial_number.html.twig'
+            - 'CoreOrderBundle:Admin\Form\Order\type:boxes_and_waybills_type_widget.html.twig' # to del
+            - 'CoreOrderBundle:Admin\Form\Order\type:waybills_in_order_widget.html.twig'
+            - 'CoreOrderBundle:Admin\Form\Order\type:canceled_status_widget.html.twig'
+            - 'CoreOrderBundle:Admin\Form\ExtraStatus\type:extra_status_widget.html.twig'
+            - 'CoreLogisticsBundle:Admin\Transit\type:products_in_transit_widget.html.twig'
+            - 'CoreLogisticsBundle:Admin\UnitInStock\type:unit_in_stock_defect_widget.html.twig'
+            - 'CoreDirectoryBundle:Admin\Form\Type:filter_name_widget.html.twig'
+            - 'CoreDirectoryBundle:Admin\Form\Type:filter_capitals_widget.html.twig'
+            - 'CoreDirectoryBundle:Admin\Form\Type:remote_video_widget.html.twig'
+            #- 'CoreDirectoryBundle:Form\Type:remote_video_widget.html.twig'
+            - 'CoreConfigBundle:Admin\Form\Type:config_data_widget.html.twig'
+            - 'CoreLanguageBundle:Form\Type:text_case_widget.html.twig'
+            - 'ShtumiUsefulBundle::fields.html.twig'
+            - 'CoreCommonBundle:Form:tree_select_widget.html.twig'
+            #- 'A2lixTranslationFormBundle::form.html.twig'
+            - 'ApplicationShtumiUsefulBundle::fields.html.twig'
+            - 'CoreSlugHistoryBundle:Admin\Form:slug_history_widget.html.twig'
+
+
+
+            - 'CoreCategoryBundle:Form:FrontendCategory_widget.html.twig'
+
+
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    #если false, то не будет каждый раз перегенерироваться файлы
+    use_controller: false
+    bundles:        [CoreTroubleTicketBundle, CoreFileBundle, CoreCommonBundle, CoreProductBundle, CoreOrderBundle, ApplicationSonataUserBundle]
+    java: %java_path%
+    filters:
+        #фиксит пути
+        cssrewrite: ~
+        #сжимает css
+        yui_css:
+            jar: "%kernel.root_dir%/Resources/java/yuicompressor.jar"
+        yui_js:
+            jar: "%kernel.root_dir%/Resources/java/yuicompressor.jar"
+
+# STOF Doctrine extensions
+stof_doctrine_extensions:
+    default_locale: %locale%
+    orm:
+        default:
+            tree: true
+            blameable: true
+            loggable: true
+            sluggable: true
+            softdeleteable: true
+            sortable: true
+            timestampable: true
+            translatable: true
+    # Only used if you activated the Uploadable extension
+    uploadable:
+        # Default file path: This is one of the three ways you can configure the path for the Uploadable extension
+        default_file_path:       %kernel.root_dir%/../web/uploads
+
+# Swiftmailer Configuration
+swiftmailer:
+    encryption: %mailer_encryption%
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+    spool:     { type: memory }
+
+# FOS User
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Application\Sonata\UserBundle\Entity\User
+    from_email:
+        address:        %default_email%
+        sender_name:    %default_email_sender_name%
+    #group:
+    #     group_class: Application\Sonata\UserBundle\Entity\Group
+    registration:
+        form:
+            type: application_user_registration
+            handler: application_user.form.handler.registration
+            validation_groups: [ ApplicationRegistration, Default ]
+        confirmation:
+            enabled:    true
+    profile:
+      form:
+        type: application_user_profile
+        handler: application_user.profile.form.handler
+        validation_groups: [ ApplicationProfile, Default ]
+    change_password:
+        form:
+            validation_groups:  [ApplicationChangePassword, Default]
+            #handler: application_user.form.handler.changepassword
+    resetting:
+        token_ttl: 86400
+        form:
+            validation_groups:  [ApplicationResetPassword, Default]
+            handler: application_user.form.handler.resseting
+ivory_ck_editor:
+    default_config: default
+    plugins:
+        jqueryspellchecker:
+            path:     "bundles/applicationivoryckeditor/jquery-spellchecker-demo-master/js/lib/ckeditor/plugins/jqueryspellchecker/"
+            filename: "plugin.js"
+    configs:
+        default:
+            filebrowserBrowseRoute: %filebrowserBrowseRoute%
+            language: ru
+        trouble_ticket:
+            language: ru
+            toolbar: [[ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ], [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt', 'Print' ],[ 'Link','Unlink','Anchor' ], [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ],[ 'NumberedList','BulletedList','-','-','Blockquote','CreateDiv','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-' ], [ 'Styles','Format','Font','FontSize' ], ['Maximize', 'Smiley']]
+
+# загрузка фалов через редактор
+fm_elfinder:
+    locale: %locale% # defaults to current request locale
+    editor: ckeditor # other choices are tinymce or simple
+    #showhidden: false # defaults to false
+    fullscreen: true # defaults true, applies to simple and ckeditor editors
+    include_assets: true  # disable if you want to handle loading of the javascript and css assets yourself
+    compression: false # enable if you configured the uglifycss and uglifyjs2 assetic filters and want compression
+    connector:
+        debug: false # defaults to false
+        roots:       # at least one root must be defined
+            uploads:
+                driver: LocalFileSystem
+                path: uploads/files
+                upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'text/xml', 'text/plain', 'application/msword', 'video/mpeg', 'video/mp4', 'video/ogg', 'video/quicktime', 'video/webm', 'video/x-ms-wmv', 'video/x-flv']
+                upload_deny: ['all']
+                upload_max_size: 100M
+
+simple_things_entity_audit:
+  audited_entities:
+    - Core\ProductBundle\Entity\CommonProduct
+    - Core\ProductBundle\Entity\Product
+    - Core\ProductBundle\Entity\DigitalProduct
+    - Core\ProductBundle\Entity\ServiceProduct
+    - Core\ProductBundle\Entity\CompositeProduct
+    - Application\Sonata\UserBundle\Entity\LegalContragent
+    - Application\Sonata\UserBundle\Entity\IndiContragent
+    - Core\FileBundle\Entity\CommonFile
+    - Core\FileBundle\Entity\ImageFile
+    - Core\FileBundle\Entity\DocumentFile
+    - Core\UnionBundle\Entity\ProductSimilarsUnion
+    - Core\UnionBundle\Entity\ProductAccessoriesUnion
+    - Core\UnionBundle\Entity\ProductAlternativeUnion
+    - Core\UnionBundle\Entity\ProductServicesUnion
+    - Core\DirectoryBundle\Entity\RemoteVideo
+    - Core\LogisticsBundle\Entity\ProductAvailability
+    - Core\ProductBundle\Entity\CommonProductModification
+#    - Core\UnionBundle\Entity\UserProductFavoriteUnion
+#    - Core\UnionBundle\Entity\UserProductHistoryUnion
+
+#Sonata Block
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+
+        sonata.admin_doctrine_orm.block.audit:
+            contexts:   [admin]
+
+        sonata.block.service.text:
+        sonata.block.service.action:
+        sonata.block.service.rss:
+        sonata.block.service.statistics:
+
+        # Some specific block from the SonataMediaBundle
+        #sonata.media.block.media:
+        #sonata.media.block.gallery:
+        #sonata.media.block.feature_media:
+sonata_user:
+  admin:
+      user:
+        class: Application\Sonata\UserBundle\Admin\UserAdmin
+      group:
+        class: Application\Sonata\UserBundle\Admin\GroupAdmin
+
+#Sonata Admin
+sonata_admin:
+    title:      Olikids
+    title_logo: bundles/applicationsonataadmin/img/logo_olikids.png
+    options:
+        use_select2: true
+        confirm_exit: false
+    security:
+        handler: sonata.admin.security.handler.role
+    templates:
+        # default global templates
+        #layout:  ApplicationSonataAdminBundle::standard_layout.html.twig
+        layout:  ApplicationSonataAdminBundle::layout.html.twig
+        ajax:    SonataAdminBundle::ajax_layout.html.twig
+        dashboard: ApplicationSonataAdminBundle:Admin/Core:dashboard.html.twig
+        # default actions templates, should extend a global templates
+        list:    SonataAdminBundle:CRUD:list.html.twig
+        show:    SonataAdminBundle:CRUD:show.html.twig
+        edit:    ApplicationSonataAdminBundle:CRUD:edit.html.twig
+        user_block: ApplicationSonataAdminBundle:Core:user_block.html.twig
+    dashboard:
+        blocks:
+            # display a dashboard block
+            #- { position: left, type: sonata.admin.block.admin_list }
+            - {position: left,type: sonata.block.service.statistics, settings:{}}
+        # Если необходимо изменить порядок сортировки
+#        groups:
+#            Пользователи:
+#                items:
+#                    - application_user_contragent_admin                     # Контрагенты
+#                    - sonata.user.admin.user                                # Пользователи
+#                    - sonata.user.admin.group                               # Группы
+#                    - core_admin_trouble_ticket                             # Траблтикеты
+#                    - core_shop_category_admin_trouble_ticket               # Категории траблтикетов (Траблтикеты)
+#                    - core_admin_trouble_ticket_status                      # Статусы траблтикетов (Траблтикеты)
+#                    - core_admin_trouble_ticket_priority                    # Приоритеты траблтикетов (Траблтикеты)
+#            Продукция:
+#                items:
+#                    - core_shop_product_admin                               # Продукция
+#                    - core_manufacturer_price_analysis_admin                # Анализ прайсов
+#                    - core_shop_category_admin_product                      # Категории продукции
+#                    - core_category_virtual_product_admin                   # Виртульные категории
+#                    - core_shop_property_admin                              # Характеристики
+#                    - core_directory_unit_of_measure_admin                  # Единицы измерения (Характеристики)
+#                    - core_directory_unit_of_measure_group_admin            # Группы для единиц измерения (Характеристики)
+#                    - core_manufacturer_admin                               # Производители
+#                    - core_manufacturer_certificate_admin                   # Сертификаты производителей (Производители)
+#                    - core_manufacturer_brand_admin                         # Бренды
+#                    - core_review_admin_review                              # Отзывы о товарах
+#            Бухгалтерия:
+#                items:
+#                    - core_order_admin                                      # Заказы
+#                    - core_shop_subscribers_to_product_by_order_admin       # Предзаказы
+#                    - core_statistics_not_finished_order_admin              # Незавершенные заказы
+#                    - core_payment_admin                                    # Платежи
+#                    #- #-- разделитель --
+#                    - core_logistics_seller_admin                           # Продавцы
+#                    - core_logistics_supplier_admin                         # Поставщики
+#                    #- #-- разделитель --
+#                    - core_logistics_supply_admin                           # Поставки
+#                    - core_logistics_transit_admin                          # Транзиты
+#                    - core_logistics_unit_in_stock_admin                    # Товар со всех складов
+#                    - core_logistics_stock_admin                            # Склады
+#            FAQ:
+#                items:
+#                    - core_shop_category_admin_faq                          # Категории
+#                    - sonata.admin.faq.article                              # Статьи
+#            Системное:
+#                items:
+#                    - core_country_admin                                    # Страны
+#                    - core_region_admin                                     # Регионы
+#                    - core_city_admin                                       # Города
+#                    - core_video_hosting_admin                              # Видео-Хостинги
+#                    - core_logistics_bank_admin                             # Справочник банков
+#                    - core_currency_admin                                   # Валюты
+#                    - core_legal_form_admin                                 # Правовые формы
+#                    - core_config_admin                                     # Настройки
+#                    - core_config_group_admin                               # Группы для настроек
+#                    - core_color_admin                                      # Цвета
+#                    - core_order_extra_status_admin                         # Доп. статусы заказов
+#                    - core_pre_order_status_admin                           # Статусы Предзаказов
+#                    - core_logistics_unit_in_stock_defect_transit_admin     # Причины списания
+#                    - core_logistics_additional_costs_of_supply_type_admin  # Типы расходов поставки
+#                    - core_logistics_transit_status_admin                   # Статусы транзитов
+#                    - core_logistics_supply_status_admin                    # Статусы поставок (Заказ)
+#                    - core_order_canceled_reason_admin                      # Причины отмены заказы (Заказ)
+#                    - core_payment_admin_payment_system_common              # Платежные системы
+#                    - core_holiday_admin                                    # Праздники
+#            Скидки:
+#                items:
+#                    - core_discounts_manufacturer_admin                     # Скидки по брендам
+#                    - core_discounts_contragent_manufacturer_admin          # Индивидуальные cкидки по брендам
+#            Доставка:
+#                items:
+#                    - core_delivery_company_admin                           # Компании
+#                    - core_delivery_services_admin                          # Способы доставки
+#                    - core_delivery_adress_admin                            # Пункты выдачи
+#                    - core_delivery_services_type_admin                     # Типы доставок
+#            Статистика:
+#                items:
+#                    - core_statistics_admin                                 # Статистика по продуктам
+
+sonata_formatter:
+    formatters:
+        markdown:
+            service: sonata.formatter.text.markdown
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig #keep this commented unless you are using media bundle.
+
+
+        text:
+            service: sonata.formatter.text.text
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig
+
+
+        rawhtml:
+            service: sonata.formatter.text.raw
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig
+
+
+        richhtml:
+            service: sonata.formatter.text.raw
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig
+
+
+        twig:
+            service: sonata.formatter.text.twigengine
+            extensions: [] # Twig formatter cannot have extensions
+
+sonata_doctrine_orm_admin:
+    # default value is null, so doctrine uses the value defined in the configuration
+    entity_manager: ~
+
+    templates:
+        form:
+            - SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig
+        filter:
+            # ставим фильтру другую форму, т. к. с предыдущей возникли проблемы из-за удаления silex_form_div_layout.html.twig
+            # после следующего обновлени composer попробовать изменить 14.02.2014
+            #- SonataDoctrineORMAdminBundle:Form:filter_admin_fields.html.twig
+            - SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig
+
+        types:
+            list:
+                array:      SonataAdminBundle:CRUD:list_array.html.twig
+                boolean:    SonataAdminBundle:CRUD:list_boolean.html.twig
+                date:       SonataAdminBundle:CRUD:list_date.html.twig
+                time:       SonataAdminBundle:CRUD:list_time.html.twig
+                datetime:   SonataAdminBundle:CRUD:list_datetime.html.twig
+                text:       SonataAdminBundle:CRUD:base_list_field.html.twig
+                trans:      SonataAdminBundle:CRUD:list_trans.html.twig
+                string:     SonataAdminBundle:CRUD:base_list_field.html.twig
+                smallint:   SonataAdminBundle:CRUD:base_list_field.html.twig
+                bigint:     SonataAdminBundle:CRUD:base_list_field.html.twig
+                integer:    SonataAdminBundle:CRUD:base_list_field.html.twig
+                decimal:    SonataAdminBundle:CRUD:base_list_field.html.twig
+                identifier: SonataAdminBundle:CRUD:base_list_field.html.twig
+
+            show:
+                array:      SonataAdminBundle:CRUD:show_array.html.twig
+                boolean:    SonataAdminBundle:CRUD:show_boolean.html.twig
+                date:       SonataAdminBundle:CRUD:show_date.html.twig
+                time:       SonataAdminBundle:CRUD:show_time.html.twig
+                datetime:   SonataAdminBundle:CRUD:show_datetime.html.twig
+                text:       SonataAdminBundle:CRUD:base_show_field.html.twig
+                trans:      SonataAdminBundle:CRUD:show_trans.html.twig
+                string:     SonataAdminBundle:CRUD:base_show_field.html.twig
+                smallint:   SonataAdminBundle:CRUD:base_show_field.html.twig
+                bigint:     SonataAdminBundle:CRUD:base_show_field.html.twig
+                integer:    SonataAdminBundle:CRUD:base_show_field.html.twig
+                decimal:    SonataAdminBundle:CRUD:base_show_field.html.twig
+
+# Пагинация
+knp_paginator:
+    page_range: 5                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: knp_sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+#Бандл улучшаю безопасность
+jms_security_extra:
+    # Whether you want to secure all services (true), or only secure specific
+    # services (false); see also below
+    secure_all_services: false
+
+    # Enabling this setting will add an additional special attribute "ROLE_IDDQD".
+    # Anybody with this attribute will effectively bypass all security checks.
+    enable_iddqd_attribute: false
+
+    # Enables expression language
+    expressions: false
+
+#Автоматическое внедрение зависимостей в контроллеры
+jms_di_extra:
+    doctrine_integration: false
+    disable_grep: true
+    locations:
+        all_bundles: false
+
+#мультиязычность по домену
+jms_i18n_routing:
+    default_locale: %locale%
+#    locales: [ru, en]
+    locales: [ru]
+    strategy: custom
+    hosts:
+        ru: %domain_ru%
+#        en: %domain_en%
+    redirect_to_host: true  #перенаправлять на домен
+
+#http://rm.ekance.com/projects/olikids/wiki/FileBundle
+core_file:
+  root_dir: %kernel.root_dir%
+  temp_dir: %kernel.cache_dir%/core_file
+  web_dir: web
+  upload_dir: uploads
+  no_image_src: images/image_not_found/no-image.jpg
+  detect_dominant_color: true
+  thumbnail_crop: false
+  thumbnail_backgrond_color: '#fff'
+  image:
+    Core\BannerBundle\Entity\ImageBanner:
+      image:
+        dir: image
+        file_size: 1
+        max_count_files: 1
+        mime_types: ['image/*']
+        prefix_preview_in_admin: '150x150_'
+        options:
+          original:
+            original_:
+              size: {w: ~, h: ~}
+          preview:
+            150x150_:
+              size: {w: 150, h: 150}
+            80x80_:
+              size: {w: 80, h: 80}
+
+    Core\ProductBundle\Entity\CommonProduct:
+      images:
+        dir: product
+        file_size: 1
+        max_count_files: 30
+        mime_types: ['image/*']
+        prefix_preview_in_admin: '100x100_'
+        watermark:
+          enable: true
+          url: /images/watertmark.png
+          top: 50%
+          left: 50%
+        options:
+          original:
+            uploaded_file_:
+              size: {w: ~, h: ~}
+#          watermark:
+#            watermark_:
+#              size: {w: 2600, h: 2600}
+          preview:
+            64x64_:
+              size: {w: 64, h: 64}
+            100x100_:
+              size: {w: 100, h: 100}
+            222x222_:
+              size: {w: 222, h: 222}
+            140x140_:
+              size: {w: 140, h: 140}
+            400x400_:
+              size: {w: 400, h: 400}
+    Core\ManufacturerBundle\Entity\Brand:
+      logo:
+        dir: brand
+        file_size: 5
+        max_count_files: 1
+        prefix_preview_in_admin: '148x70_'
+        options:
+          original:
+            original_:
+              size: {w: ~, h: ~}
+          preview:
+            300x150_:
+              size: {w: 300, h: 150}
+            148x70_:
+              size: {w: 148, h: 70}
+      substrate:
+        dir: manufacturer
+        file_size: 5
+        max_count_files: 1
+        prefix_preview_in_admin: '178x60_'
+        options:
+          original:
+            original_:
+              size: {w: ~, h: ~}
+          preview:
+            178x60_:
+              size: {w: 178, h: 60}
+            712x240_:
+              size: {w: 712, h: 240}
+    Core\ManufacturerBundle\Entity\Manufacturer:
+      logo:
+        dir: manufacturer
+        file_size: 5
+        max_count_files: 1
+        prefix_preview_in_admin: '148x70_'
+        options:
+          original:
+            original_:
+              size: {w: ~, h: ~}
+          preview:
+            300x150_:
+              size: {w: 300, h: 150}
+            148x70_:
+              size: {w: 148, h: 70}
+    Core\ManufacturerBundle\Entity\Certificate:
+      logo:
+        dir: certificate
+        file_size: 5
+        max_count_files: 1
+        prefix_preview_in_admin: '300x300_'
+        options:
+          original:
+            original_:
+              size: {w: ~, h: ~}
+          preview:
+            300x300_:
+              size: {w: 300, h: 300}
+
+    Core\LogisticsBundle\Entity\Seller:
+      imageSign:
+          dir: seller
+          prefix_preview_in_admin: 'small'
+          options:
+            preview:
+              small:
+                size: {w: 80, h: 80}
+      imageSignOfAccountant:
+          dir: seller
+          prefix_preview_in_admin: 'small'
+          options:
+            preview:
+              small:
+                size: {w: 80, h: 80}
+      imageStamp:
+          dir: seller
+          prefix_preview_in_admin: 'small2'
+          options:
+            preview:
+              small2:
+                size: {w: 150, h: 150}
+      imageSignAndStamp:
+          dir: seller
+          prefix_preview_in_admin: 'small3'
+          options:
+            preview:
+              small3:
+                size: {w: 190, h: 190}
+    Core\ReviewBundle\Entity\Review:
+      photos:
+        dir: reviews
+        file_size: 5
+        max_count_files: 10
+        mime_types: ['image/*']
+        prefix_preview_in_admin: '100x100_'
+        options:
+          original:
+            uploaded_file_:
+              size: {w: ~, h: ~}
+          watermark:
+            watermark_:
+              size: {w: 1280, h: 720}
+          preview:
+            35x35_:
+              size: {w: 35, h: 35}
+            100x100_:
+              size: {w: 100, h: 100}
+    Core\HolidayBundle\Entity\Holiday:
+      logo:
+        dir: logos
+        file_size: 5
+        max_count_files: 1
+        prefix_preview_in_admin: 'holiday_'
+        options:
+          original:
+            original_:
+              size: {w: ~, h: ~}
+          preview:
+            holiday_:
+              size: {w: 240, h: 104}
+  flash:
+    Core\BannerBundle\Entity\FlashBanner:
+      file:
+        dir: flash
+        file_size: 1
+        max_count_files: 1
+        mime_types: ['application/x-shockwave-flash']
+  document:
+    Core\LogisticsBundle\Entity\SupplierPriceAnalysis:
+      priceFile:
+        dir: price_analysis
+        file_size: 10
+        max_count_files: 1
+        mime_types: ['application/vnd.ms-excel']
+    Core\OrderBundle\Entity\Order:
+      documentScans:
+        dir: document_scans
+        file_size: 2
+        max_count_files: 4
+        mime_types: ['application/pdf', 'image/jpeg', 'image/png', 'application/msword']
+    Core\ProductBundle\Entity\CommonProduct:
+      instruction:
+        dir: product
+        file_size: 5
+        max_count_files: 10
+        mime_types: ['application/*', 'text/*']
+    Core\TroubleTicketBundle\Entity\TroubleTicket:
+      file:
+        dir: trouble_ticket
+        file_size: 5
+        max_count_files: 10
+        mime_types: ['application/*', 'image/*'] #png, jpg, jpeg, gif, bmp, pdf, doc, docx, xls, xlsx, odt, ods, txt, rtf, zip, rar, gz, cfg, kmz, rif
+    Core\ManufacturerBundle\Entity\Certificate:
+      document:
+        dir: certificate
+        file_size: 50
+        max_count_files: 1
+        mime_types: ['application/*', 'image/*']
+    Core\ReviewBundle\Entity\Review:
+      videos:
+        dir: reviews
+        file_size: 50
+        max_count_files: 5
+        mime_types: ['video/*', 'image/*']
+
+#Поддерживаемые языки на формах редактирования  в админке
+core_language:
+    #конфиги для падежей
+    cases:
+        Ru:
+            genitive: {caption: 'Родительный', help: 'Кого? Чего?'}
+            dative: {caption: 'Дательный', help: 'Кому? Чему?'}
+            accusative: {caption: 'Винительный', help: 'Кого? Что?'}
+            ablative:   {caption: 'Творительный', help: 'Кем? Чем?'}
+            prepositional:  {caption: 'Предложный', help: 'О ком? О чём? В ком? В чём? Где?'}
+
+    languages:
+        Ru: {caption: "Русский"}
+    default: Ru
+    classId: translatedField  #имя CSS - класса  по которому индетифицируются переводимые поля
+
+#core_dynamic_binding:
+#    binding:
+#        DataProperty:
+#            long: Core\PropertyBundle\Entity\DataProperty
+#            property: dynamicFields
+#            grant:
+#                Article: Core\FaqBundle\Entity\Article
+
+services:
+    core_common_twig_time_ago:
+        class: Core\CommonBundle\Twig\Extension\TimeAgoExtension
+        arguments: ['@translator']
+        tags:
+        - { name: twig.extension }
+
+    # нужен для  интернационализация даты
+    twig_extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags: [{ name: "twig.extension" }]
+
+gregwar_captcha:
+  as_url: true
+  reload: true
+  width: 99
+  height: 40
+  length: 5
+  background_color: [255, 255, 255]
+  interpolation: ~
+  distortion: ~
+  quality: 70
+  gc_freq: 10
+  max_front_lines: 0
+  max_behind_lines: 0
+
+#замена var_dump
+raul_fraile_ladybug:
+    theme: modern # select the theme: base, modern or custom themes
+    expanded: true # true to expand all the variables tree by default
+    silenced: false # true to ignore all ladybug calls
+
+shtumi_useful:
+    dependent_filtered_entities:
+        series_by_brand:
+            class: CoreManufacturerBundle:Series
+            parent_property: brand
+            property: captionRu
+            role: ROLE_USER
+            no_result_msg: 'Для бренда нет серий...'
+            order_property: indexPosition
+            order_direction: ASC
+        brands_by_manufacturer:
+            class: CoreManufacturerBundle:Brand
+            parent_property: manufacturer
+            property: captionRu
+            role: ROLE_USER
+            no_result_msg: 'Для производителя нет брендов...'
+            order_property: indexPosition
+            order_direction: ASC
+        contragents_by_user:
+            class: ApplicationSonataUserBundle:CommonContragent
+            parent_property: user
+            property: listName
+            role: ROLE_USER
+            no_result_msg: 'У пользователя нет контрагентов...'
+            order_direction: ASC
+#parameters:
+#  beryllium_cache.client.servers: { "localhost": 11211 }
+#  beryllium_cache.default_ttl: 3000
+
+
+liip_monitor:
+    enable_controller:    true
+    checks:
+        php_extensions:       [apc,memcache]
+
+
+        # Pairs of a version and a comparison operator
+        php_version:          # Example: 5.4.15: >=
+            5.4.4:    ">="
+        # Process name/pid or an array of process names/pids.
+#        process_running:      [apache]
+        # Benchmark CPU performance and return failure if it is below the given ratio.
+        cpu_performance:      ~ # Example: 1.0 # This is the power of an EC2 micro instance
+        disk_usage:
+            warning:              70
+            critical:             90
+            path:                 '%kernel.cache_dir%'
+        symfony_requirements:
+            file:                 '%kernel.root_dir%/SymfonyRequirements.php'
+        apc_memory:
+            warning:              70
+            critical:             90
+        apc_fragmentation:
+            warning:              70
+            critical:             90
+
+        # Connection name or an array of connection names.
+        doctrine_dbal:       [default, force_master]
+        memcache:
+            # Prototype
+            name:
+                host:                 localhost
+                port:                 11211
+#        redis:
+#
+#            # Prototype
+#            name:
+#                host:                 localhost
+#                port:                 6379
+        http_service:
+
+            # Prototype
+            name:
+                host:                 localhost
+                port:                 80
+                path:                 /
+                status_code:          200
+                content:              null
+        custom_error_pages:
+            error_codes:          [404,504] # Required
+            path:                 '%kernel.root_dir%'
+            controller:           '%twig.exception_listener.controller%'
+        security_advisory:
+            lock_file:            '%kernel.root_dir%/../composer.lock'
+
+#бандл очистки APC-кеша
+ornicar_apc:
+    host: %domain_ru%
+    web_dir: %kernel.root_dir%/../web
+
+presta_sitemap:
+    timetolive: 3600
+    dumper_base_url: "http://%domain_ru%"
+    route_annotation_listener: true
+
+core_manufacturer:
+
+core_office_work_time:
+    uri: 'http://basicdata.ru/api/json/calend/'
+    timezone: %default_timezone%
+    options:
+        basic_data:
+            uri: 'http://basicdata.ru/api/json/calend/'
+
+
+fos_http_cache:
+
+
+#fos_http_cache:
+#    test:
+#        proxy_server:
+#            nginx:
+#              servers: 123.123.123.1:6060, 123.123.123.2
+#              base_url: yourwebsite.com
+#              purge_location: /purge
+##            varnish:
+##                config_file: /etc/varnish/your-config.vcl
+##                port: 8080
+##                binary: /usr/sbin/varnish
+#        client:
+#            varnish:
+#                enabled: true
+#            nginx:
+#                enabled: false
+

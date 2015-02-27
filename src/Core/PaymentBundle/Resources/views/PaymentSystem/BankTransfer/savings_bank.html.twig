@@ -1,0 +1,45 @@
+
+{#**
+ * Шаблон для генерации PDF платежки для сбербанка
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends "CorePaymentBundle:PaymentSystem\\BankTransfer:layout_print.html.twig" %}
+
+{% block body %}
+    
+    {% set seller = payment.order.seller %}
+    <table width="720" bordercolor="#000000" style="border:#000000 1px solid;" cellpadding="5" cellspacing="0">
+        <tr>
+            <td width="220" valign="top" height="220" align="center" style="border-bottom:#000000 1px solid; border-right:#000000 1px solid;"><strong>Извещение</strong></td>
+            <td valign="top" style="border-bottom:#000000 1px solid;">
+                <strong>Получатель:</strong> {{ seller.legalForm.captionRu }} "{{ seller.caption }}"<br /><br />
+                <strong>КПП:</strong> {{ seller.kpp }}&nbsp;&nbsp;&nbsp;&nbsp;<strong>ИНН:</strong> {{ seller.inn }}<br /><br />
+                <strong>P/сч.:</strong> {{ seller.paymentAccount }} <strong>в:</strong> {{ seller.bank.caption }}<br /><br />
+                <strong>БИК:</strong> {{ seller.bank.bic }}&nbsp;&nbsp;&nbsp;<strong>К/сч.:</strong> {{ seller.corrAccount }}<br /><br />
+                <strong>Платеж:</strong> Оплата заказа №{{ payment.order.id|idFormat }} (платеж №{{ payment.id|idFormat }}). Без НДС.<br /><br />
+                <strong>Плательщик:</strong> {% if customer.legalForm is defined %}{{ customer.organization }}{% else %}{{ customer.lastName ~ ' ' ~ customer.firstName ~ ' ' ~ customer.surName }}{% endif %}<br /><br />
+                <strong>Адрес плательщика:</strong> {% if customer.legalForm is defined %}{{ customer.addressPost }}{% else %}{% endif %}<br /><br />
+                <strong>Сумма:</strong> {{ moneyFormat(payment.amount) }} {{ currencyFormat() }}<br /><br />
+                <strong>Подпись:</strong> _______________ <strong>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;Дата:</strong> &quot;__&quot; _________ {{ payment.createdAt|date("Y", default_timezone) }} г.
+            </td>
+        </tr>
+        <tr>
+            <td width="220" valign="top" height="220" align="center" style="border-right:#000000 1px solid;"><strong>Квитанция</strong></td>
+            <td valign="top">
+                <strong>Получатель:</strong> {{ seller.legalForm.captionRu }} "{{ seller.caption }}"<br /><br />
+                <strong>КПП:</strong> {{ seller.kpp }}&nbsp;&nbsp;&nbsp;&nbsp;<strong>ИНН:</strong> {{ seller.inn }}<br /><br />
+                <strong>P/сч.:</strong> {{ seller.paymentAccount }} <strong>в:</strong> {{ seller.bank.caption }}<br /><br />
+                <strong>БИК:</strong> {{ seller.bank.bic }}&nbsp;&nbsp;&nbsp;<strong>К/сч.:</strong> {{ seller.corrAccount }}<br /><br />
+                <strong>Платеж:</strong> Оплата заказа №{{ payment.order.id|idFormat }} (платеж №{{ payment.id|idFormat }}). Без НДС.<br /><br />
+                <strong>Плательщик:</strong> {% if customer.legalForm is defined %}{{ customer.organization }}{% else %}{{ customer.lastName ~ ' ' ~ customer.firstName ~ ' ' ~ customer.surName }}{% endif %}<br /><br />
+                <strong>Адрес плательщика:</strong> {% if customer.legalForm is defined %}{{ customer.addressPost }}{% else %}{% endif %}<br /><br />
+                <strong>Сумма:</strong> {{ moneyFormat(payment.amount) }} {{ currencyFormat() }}<br /><br />
+                <strong>Подпись:</strong> _______________ <strong>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;Дата:</strong> &quot;__&quot; _________ {{ payment.createdAt|date("Y", default_timezone) }} г.
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}

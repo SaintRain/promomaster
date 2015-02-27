@@ -1,0 +1,231 @@
+{#счет на оплату#}
+{%block content%}
+    {%if  order.costInfo is not defined %}
+        {% set costInfo=ServiceContainer.get('core_order_logic').computeOrderCostInfo(order)%}
+    {%endif%}
+    {% spaceless %}
+        <center>
+            <table border="0" cellspacing="0" width="800"><tbody>
+                    <tr><td colspan="2">&nbsp;</td></tr>
+                    <tr>
+                        <td colspan="2">
+                            <table border="1" cellpadding="5" cellspacing="0" width="800"><tbody>
+                                    <tr>
+                                        <td bgcolor="white">
+                                            <table border="0" cellspacing="0" width="680"><tbody>
+                                                    <tr valign="top">
+                                                        <td nowrap="nowrap" width="20%">Продавец:</td>
+                                                        <td nowrap="nowrap" width="22%">{{order.seller.legalForm.captionRu}} {{order.seller.caption}}</td>
+                                                        <td rowspan="4" width="5%">&nbsp;</td>
+                                                        <td rowspan="4" width="21%">Адрес:</td>
+                                                        <td rowspan="4" width="32%">{{order.seller.addressUr}}</td>
+                                                    </tr>
+                                                    <tr valign="top">
+                                                        <td nowrap="nowrap">ИНН:</td>
+
+                                                        <td nowrap="nowrap">{{order.seller.inn}}</td>
+                                                    </tr>
+                                                    {%if order.seller.kpp%}
+                                                        <tr valign="top">
+                                                            <td nowrap="nowrap">КПП:</td>
+                                                            <td nowrap="nowrap">{{order.seller.kpp}}</td>
+                                                        </tr>
+                                                    {%endif%}
+                                                    <tr valign="top">
+
+                                                        <td nowrap="nowrap">Тел.:</td>
+                                                        <td nowrap="nowrap">{{order.seller.phone}}</td>
+                                                    </tr>
+                                                </tbody></table>
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                        </td>
+                    </tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>
+                    <tr>
+                        <td colspan="2">
+                            <table border="1" cellpadding="5" cellspacing="0" width="800"><tbody>
+                                    <tr>
+                                        <td bgcolor="white">
+                                            <table border="0" cellspacing="0" width="680"><tbody>
+                                                    <tr valign="top">
+                                                        <td nowrap="nowrap" width="20%">Банк:</td>
+                                                        <td width="22%">{{order.seller.bank.caption}}</td>
+                                                        <td width="5%">&nbsp;</td>
+                                                        <td width="21%">БИК:</td>
+                                                        <td width="32%">{{order.seller.bank.bic}}</td>
+
+                                                    </tr>
+                                                    <tr valign="top">
+                                                        <td>Р/с:</td>
+                                                        <td >{{order.seller.paymentAccount}}</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>К/с:</td>
+                                                        <td>{{order.seller.corrAccount}}</td>
+                                                    </tr>
+                                                </tbody></table>
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                        </td>
+                    </tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>
+                    <tr>
+                        <td colspan="2" align="center" style="font-size: xx-large; font-weight: bold;">
+                            Счет № {{order.id|idFormat}} от {{order.createdDateTime|date("d.m.Y", default_timezone)}}
+                        </td>
+                    </tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>
+                    <tr>
+                        <td colspan="2">
+                            <table border="1" cellpadding="5" cellspacing="0" width="800"><tbody>
+                                    <tr>
+                                        <td colspan="2" bgcolor="white">
+                                            <table border="0" cellspacing="0" width="680"><tbody>
+                                                    <tr valign="top">
+                                                        <td nowrap="nowrap" width="20%">Покупатель:</td>
+                                                        <td width="75%">
+                                                            {%if order.contragent.legalForm is defined%}
+                                                                {{order.contragent.legalForm.captionRu}}  &quot;{{order.contragentCompany}}&quot;
+                                                                <br />
+                                                                ИНН: {{order.contragent.inn}}{%if order.contragent.kpp%}, КПП: {{order.contragent.kpp}}{%endif%}
+                                                                <br />
+                                                                {{order.contragent.addressLegal}}
+                                                                <br />
+                                                                тел: {{order.contragent.phone1}}
+                                                            {%else%}
+                                                                {% if order.contragentFio %}{{order.contragentFio}}{% else %}{{ order.contragent.getListName }}{% endif %}
+                                                                <br />
+                                                                {% if order.deliveryPostcode %}{{order.deliveryPostcode}}, {%endif%}{%if order.deliveryCity%}{{order.deliveryCity.name}}{%endif%} {{order.deliveryAddress}}
+                                                            {%endif%}
+                                                        </td>
+                                                        <td width="5%">&nbsp;</td>
+                                                    </tr>
+                                                </tbody></table>
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                        </td>
+                    </tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>
+                    <tr>
+                        <td colspan="2" align="center">Внимание! Счет действителен в течении 3-х (трех) банковских дней</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><b>Внимание! Реквизиты изменились!</b></td>
+                    </tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>
+                    <tr>
+                        <td colspan="2">
+
+                            <table border="1" cellpadding="5" cellspacing="0" width="800"><tbody>
+                                    <tr>
+                                        <td colspan="2" bgcolor="white">
+                                            <table border="0" cellspacing="0" cellpadding="5" width="780" style="border-collapse: collapse"><tbody>
+                                                    <tr valign="top">
+                                                        <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0"><b>№</b></td>
+                                                        <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0"><b>Наименование товара</b></td>
+                                                        <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0;"><b>Кол-во (шт.)</b></td>
+                                                        <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0" nowrap><b>Цена ({{currencyFormat()}})</b></td>
+                                                        <td style="border-style: solid; border-color: #888; border-width:0 0 .5pt 0" nowrap><b>Сумма ({{currencyFormat()}})</b></td>
+                                                    </tr>
+                                                    {%set index=0%}
+                                                    {%for comp_index, comp in order.compositions%}
+                                                        <tr valign="top">
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0">{{comp_index+1}}</td>
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0">{{comp.product.sku}} {{comp.product.captionRu}}</td>
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0" align="right">{{comp.quantity}}</td>
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0" align="right">
+                                                                {% if costInfo.history_info is defined%}{{moneyFormat(costInfo.history_info.composition[comp.product.id].cost_per_one_unit)}}{%else%}{{moneyFormat(costInfo.composition[comp.product.id].cost_per_one_unit)}}{%endif%}
+                                                            </td>
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 0 .5pt 0" align="right">{{moneyFormat(comp.cost)}}</td>
+                                                        </tr>
+                                                        {%set index=comp_index+1%}
+                                                    {%endfor%}
+
+                                                    {%if order.deliveryMethod is defined and order.isDeliveryIncludedInPayment and order.deliveryCost>0%}
+                                                        <tr>
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0">{{index+1}}</td>
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0">Возмещение услуг доставки</td>
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0" align="right">1</td>
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 .5pt .5pt 0" align="right">{{moneyFormat(order.deliveryCost)}}</td>
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 0 .5pt 0" align="right">{{moneyFormat(order.deliveryCost)}}</td>
+                                                        </tr>
+                                                    {%endif%}
+
+                                                    {%if order.seller.isWorkingWithNds and order.ndsTax%}
+                                                        <tr valign="top">
+                                                            <td nowrap="nowrap">&nbsp;</td>
+                                                            <td nowrap="nowrap">&nbsp;</td>
+                                                            <td nowrap="nowrap">&nbsp;</td>
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 .5pt  .5pt 0;text-align:right;">В том числе НДС ({{order.ndsTax}}%):</td>
+                                                            <td style="border-style: solid; border-color: #888; border-width:0 0 .5pt 0" align="right" valign="bottom">{{moneyFormat(costInfo.nds_tax)}}</td>
+                                                        </tr>
+                                                    {%endif%}
+                                                    <tr valign="top">
+                                                        <td nowrap="nowrap">&nbsp;</td>
+                                                        <td nowrap="nowrap">&nbsp;</td>
+                                                        <td nowrap="nowrap">&nbsp;</td>
+                                                        <td style="border-style: solid; border-color: #888; border-width:0 .5pt 0 0;text-align:right;">Всего к оплате:</td>
+                                                        <td align="right" valign="bottom">{% if costInfo.history_info is defined%}{{ costInfo.history_info.total_cost}}{%else%}{{costInfo.total_cost}}{%endif%}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                        </td>
+                    </tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>
+                    <tr>
+                        <td colspan="2">
+                            <table border="0" width="650">
+                                <tbody>
+                                    <tr valign="top">
+                                        <td nowrap="nowrap" width="23%">Итого к оплате:</td>
+                                        <td width="77%">{%if costInfo.history_info is defined%}{{ amount2str(costInfo.history_info.total_cost)}}{%else%}{{ amount2str(costInfo.total_cost)}}{%endif%}<br></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr><td colspan="2">&nbsp;</td></tr>
+                    <tr>
+                        <td colspan="2">
+                            <table border="0" width="650">
+                                <tbody>
+                                    <tr valign="top">
+                                        <td nowrap="nowrap" width="23%">Назначение платежа:</td>
+                                        <td width="77%">Оплата товара по счету № {{order.id|idFormat}} от {{order.createdDateTime|date("d.m.Y", default_timezone)}}. {%if order.seller.isWorkingWithNds and order.ndsTax%}В том числе НДС {{order.ndsTax}}% - {{moneyFormat(costInfo.nds_tax)}} {{currencyFormat()}}{%else%}Без НДС.{%endif%}<br></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td colspan="2">
+                            <table border="0" width="200">
+                                <tbody>
+                                    <tr valign="top">
+                                        <td width="13%" style="vertical-align: top; padding-top: 55px; text-align: right;">{{order.seller.positionOfTheHead}}:</td>
+                                        <td width="28%" style="vertical-align: bottom;">{%if  haveStamps%}<img alt="stamp" src="{{order.seller.imageSignAndStamp|getFileWebPath}}" height="178" width="182">{%else%}____________________________________{%endif%}</td>
+                                        <td width="13%" style="vertical-align: top; padding-top: 55px; text-align: left;">/{{order.seller.nameOfTheHead}}/</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    {%if order.seller.isWorkingWithNds and order.ndsTax%}
+                        <tr><td colspan="2">&nbsp;</td></tr>
+                        <tr>
+                            <td colspan="2"><strong>Внимание!</strong> При выполнении платежа по данному счету правильно указывайте сумму НДС (это не всегда {{order.ndsTax}}% от суммы счета)!</td>
+                        </tr>
+                    {%endif%}
+                </tbody></table>
+        </center>
+    {% endspaceless %}
+
+{%endblock%}

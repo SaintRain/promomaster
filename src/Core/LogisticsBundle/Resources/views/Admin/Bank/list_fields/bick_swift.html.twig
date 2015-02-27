@@ -1,0 +1,8 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+<b>{{object.bic}}</b><br>
+<span class="muted">—</span>
+<br>
+<b>{{object.swift}}</b>
+{% endblock %}

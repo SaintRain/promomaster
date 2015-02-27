@@ -1,0 +1,57 @@
+
+{#**
+ *  Шаблон для кастомного вывода навыков
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'CorePropertyBundle:Filter/EditType:checkbox.html.twig' %}
+
+{% block checkbox %}
+
+    {% set formElementClass = 'hidden' %}
+
+    {% if this.values %}
+
+        <div class="filter_skills filter_group edit-type-checkbox">
+
+            <h3>{{ this.caption }}</h3>
+
+            {% set i = 0 %}
+
+            {% for id, value in this.values %}
+
+                {% if i == countShow %}
+
+                    <div class="hidden">
+
+                {% endif %}
+
+                {% block rowElement %}
+
+                    <span class="filter_skill_tgl filter-fake-checkbox skill_{{ value.name|replace(' ', '_') }}" title="{{ value.caption }}"><span class="skill_icon">&nbsp;</span></span>
+
+                    {{ block('formElement') }}
+
+                {% endblock %}
+
+                {% set i = i + 1 %}
+
+            {% endfor %}
+
+            {% if this.values|length > countShow %}
+
+                </div>
+                <div class="clear"></div>
+                <!--noindex-->
+                <span class="text_tgl filter-show-all">Показать все</span>
+                <!--/noindex-->
+
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+{% endblock %}

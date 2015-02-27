@@ -1,0 +1,258 @@
+{% set orderRoutes = [
+'core_order_cart_step2',
+'core_order_cart_step3',
+'core_order_cart_step3_5',
+'core_order_cart_step4',
+'core_order_finish',
+'core_order_finish_with_payment_id',
+'core_order_finish_with_order_id'
+] %}
+
+{% set contragent = getCurrentContragent() %}
+{% set logo = getLogoLink() %}
+
+<header role="banner" id="header" class="clearfix{% if route in orderRoutes %} order_header{% endif %}">
+    {% if route in orderRoutes %}
+
+        <div class="order_header_pad">
+                <a href="{{path('core_common_index')}}" class="header_logo{% if logo.isHoliday %} header_logo_holiday{% endif %}">
+                    <img alt="OliKids.ru &mdash; интернет-магазин детских товаров" src="{{ logo.src }}">
+                </a>
+		<h1>Оформление заказа</h1>
+		{% include 'CoreCommonBundle:Fragments:userMenu.html.twig' with {'contragent': contragent } %}
+                {% include 'CoreCommonBundle:Fragments:userCart.html.twig' %}
+        </div>
+        {% else %}
+            {% if route == 'core_common_index' %}
+                <h1 class="header_logo{% if logo.isHoliday %} header_logo_holiday{% endif %}">
+                    <img alt="OliKids.ru &mdash; интернет-магазин детских товаров" src="{{ logo.src }}">
+                </h1>
+                {% else %}
+                <h2>
+                    <a href="{{path('core_common_index')}}" class="header_logo{% if logo.isHoliday %} header_logo_holiday{% endif %}">
+                        <img alt="OliKids.ru &mdash; интернет-магазин детских товаров" src="{{ logo.src }}">
+                    </a>
+                </h2>
+            {% endif %}
+
+            <div class="header_data">
+                <div class="header_data_layer1 clearfix">
+                    <div class="header_work_time pull-left">
+                        {% if officeWorkTime %}
+                            {% if officeWorkTime.minutes is defined %}
+                                {% set officeWorkTimeMsg = officeWorkTime.msg | transchoice(officeWorkTime.minutes, {'%minute%': officeWorkTime.minutes})%}
+                                {% else %}
+                                    {% set officeWorkTimeMsg = officeWorkTime.msg | trans() %}
+                            {% endif %}
+                            <span
+                                {% if officeWorkTime.isWeekend is defined and officeWorkTime.isWeekend %} 
+                                data-weekend="1"
+                                {% else %}
+                                data-weekend="0" data-now="{{officeWorkTime.time.now}}" data-start="{{officeWorkTime.time.startTime}}" data-end="{{officeWorkTime.time.endTime}}"
+                                {% endif %}
+                                class="office-work open{% if officeWorkTime.isClosed %} close{% endif %}">{{ officeWorkTimeMsg }}</span>
+                        {% endif %}
+                        <span class="header_work_time_title">{{ 'workTime.label' | trans }}:&nbsp;</span>
+                        {{ 'workTime.body' | trans | raw }}
+
+                    </div>
+                    {{ render (controller ('CoreCommonBundle:Fragments:helpArticles', {'request': request})) }}
+                </div>
+                <div class="header_data_layer2 clearfix">
+                    {% include 'CoreCommonBundle:Fragments:userCart.html.twig' %}
+                    <div class="header_contacts_phone">
+
+                        {% set phonesCaptions = {'rostov':'в Ростове-на-Дону','msk':'в Москве','spb': 'в Санкт-Петербурге'}  %}
+
+                        <strong class="text-phone-selected">{{ phones['rostov'] }}</strong>
+                        <span class="text_tgl text-city-selected">{{ phonesCaptions['rostov'] }}</span>
+                        <div class="header_contacts_dropdown dropdown">
+                            <ul>
+                                {% for key, phone in phones %}
+                                    {% if phonesCaptions[key] is defined %}
+
+                                        <li id="{{ key }}" {% if key == 'rostov' %}class="selected"{% endif %}><strong class="text-phone">{{ phone }}</strong><span class="text-city">{{ phonesCaptions[key] }}</span></li>
+
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="header_search">
+                        {% include 'CoreCommonBundle:Fragments:searchForm.html.twig' %}
+                    </div>
+                    {% include 'CoreCommonBundle:Fragments:userMenu.html.twig' with {'contragent': contragent } %}
+                </div>
+            </div>
+    {% endif %}
+
+
+{#
+<!-- OLD DATA -->
+        {% if route in orderRoutes %}
+        <div class="order_header_pad">
+        {% endif %}
+
+        <a href="{{path('core_common_index')}}" class="header_logo">
+
+        </a>
+
+        {% if route in orderRoutes %}
+            <h1>Оформление заказа</h1>
+        {% else %}
+            <div class="header_contacts_phone">
+
+                {% set phonesCaptions = {'rostov':'в Ростове-на-Дону','msk':'в Москве','spb': 'в Санкт-Петербурге'}  %}
+
+                <strong class="text-phone-selected">{{ phones['rostov'] }}</strong>
+                <span class="text_tgl text-city-selected">{{ phonesCaptions['rostov'] }}</span>
+                <div class="header_contacts_dropdown dropdown">
+                    <ul>
+                        {% for key, phone in phones %}
+                            {% if phonesCaptions[key] is defined %}
+
+                                <li id="{{ key }}" {% if key == 'rostov' %}class="selected"{% endif %}><strong class="text-phone">{{ phone }}</strong><span class="text-city">{{ phonesCaptions[key] }}</span></li>
+
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="header_search">
+
+                {% spaceless %}
+                    <div class="header_work_time">
+
+                        <span class="header_work_time_title">{{ 'workTime.label' | trans }}:&nbsp;</span>
+                        {{ 'workTime.body' | trans | raw }}
+                    </div>
+                {% endspaceless %}
+                {% include 'CoreCommonBundle:Fragments:searchForm.html.twig' %}
+            </div>
+        {% endif %}
+
+
+        <div class="header_useraccount{% if app.user %} menu{% endif %}">
+            {% if app.user %}
+
+                {% set orderCountNotification = getOrderNotification() %}
+
+                    {% set totalCountNotification = orderCountNotification %}
+
+                    {% set ticketsNotification = getTicketsNotification() %}
+
+                        <strong class="header_useraccount_name">{% if app.user.firstname or app.user.lastname %}{{ app.user.lastname ~ ' ' ~ app.user.firstname }}{% else %}{{ app.user.username }}{% endif %}</strong>
+                        <a class="header_useraccount_dropdown_tgl text_tgl" href="">Личный кабинет</a>{% if totalCountNotification > 0 %}&nbsp;<span class="notice_indicator">{{ totalCountNotification }}</span>{% endif %}
+
+                        <div class="header_useraccount_dropdown dropdown">
+                            <div class="header_useraccount_dropdown_header">
+                                <strong class="header_useraccount_name">{% if app.user.firstname or app.user.lastname %}{{ app.user.lastname ~' '~ app.user.firstname }}{% else %}{{ app.user.username }}{% endif %}</strong>
+                                <a class="header_useraccount_dropdown_tgl text_tgl" href="{{ path('sonata_user_profile_show') }}">Личный кабинет</a>
+                            </div>
+
+                            {% if contragent %}
+
+                                <ul class="first">
+                                    <li class="pad">
+
+                                        {%- if contragent.legalForm is defined -%}
+                                            {{- contragent.organization -}}
+                                        {%- else -%}
+                                            {{- contragent.lastName }} {{ contragent.firstName }} {{ contragent.surName }}
+                                        {%- endif -%}
+
+                                    </li>
+                                    <li class="pad">Баланс: {{ moneyFormat(getBalance(contragent.id)) }} {{ currencyFormat() }}</li>
+
+                                    {%- if app.user.contragents.count > 1 -%}
+
+                                        <li><a class="btn-change-contragent with-url" {# href="{{ path('application_sonata_user_change_contragent') }}"  data-url="{{ path('application_sonata_user_get_user_contragents') }}">Сменить контрагента</a></li>
+
+                                    {%- endif -%}
+                                </ul>
+
+                            {% endif %}
+
+                            <ul{% if not contragent %} class="first"{% endif %}>
+                                <li><a href="{{ path('application_sonata_user_profile_orders_history_list_first_page') }}">Мои заказы</a>{% if orderCountNotification > 0 %}<span class="notice_indicator">{{ orderCountNotification }}</span>{% endif %}</li>
+                                <li><a href="{{ path('application_sonata_user_profile_products_favorites_first_page', {_format: 'html'}) }}">Избранные товары</a></li>
+                                <li><a href="{{ path('application_sonata_user_profile_products_history_first_page', {_format: 'html'}) }}">Просмотренные товары</a></li>
+                                <li><a href="{{ path('trouble_ticket_index_auth') }}">Мои обращения</a>{% if ticketsNotification %}<span class="notice_indicator">{{ ticketsNotification }}</span>{% endif %}</li>
+                            </ul>
+                            <ul>
+                                <li><a href="{{ path('sonata_user_profile_show') }}">Персональная информация</a></li>
+                                <li><a href="{{ path('application_sonata_user_contragent_index') }}">Адреса доставки</a></li>
+                            </ul>
+                            <ul>
+                                <li><a href="{{ path('_logout') }}">Выйти</a></li>
+                            </ul>
+                        </div>
+
+
+                        {% else %}
+
+                            <a href="{{path('fos_user_security_login')}}" class="header_useraccount_login text_tgl">Вход</a>
+                            <a href="{{path('fos_user_registration_register')}}" class="text_tgl">Регистрация</a>
+
+                            {% endif %}
+                            </div>
+
+                            {% set order = app.session.get('core_order') %}
+                            <div class="header_usercart">
+                                <div class="header_usercart_pad">
+                                    <a href="{{ path('core_order_cart') }}" class="header_usercart_link">
+                                        <span class="header_usercart_count">{% if order.total_quantity is defined %}{{ order.total_quantity }}{% else %}0{% endif %}</span>
+                                        <strong>Ваши покупки</strong>
+                                    </a>
+                                    <span class="header_usercart_info" data-currency="{{ currencyFormat() }}" data-empty-text="Корзина пуста">
+                                        {%- if order.total_quantity is defined and order.total_quantity > 0 -%}
+                                            {%- if order.total_quantity is defined -%}
+                                                {{ order.total_quantity ~ ' ' ~ declOfNum(order.total_quantity, ['товар', 'товара', 'товаров'] ) }}
+                                            {%- endif -%}
+                                            , {% if order.total_cost is defined -%}
+                                                {{ moneyFormat(order.total_cost) }}
+                                            {%- endif %} {{ currencyFormat() -}}
+                                        {% else %}
+                                            Корзина пуста
+                                        {% endif %}
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            {% if route in orderRoutes %}
+                                </div>
+                            {% endif %}
+<!-- END OLD DATA -->
+                        #}
+</header>
+
+{%- if app.user and app.user.contragents and app.user.contragents.count > 1 -%}
+
+    <div class="hidden">
+        <div title="{% if contragent %}Смена{% else %}Пожалуйста, выберите{% endif %} контрагента" id="change-contragent-container" data-auto-open="{% if contragent %}false{% else %}true{% endif %}">
+
+            <ul class="change-contragent" data-url="{{ path('application_sonata_user_ajax_change_contragent') }}">
+
+                {% for c in app.user.contragents %}
+
+                    <li>
+                        <span {% if app.session.get('current_contragent_id') != c.id %}class="text_tgl" data-id="{{ c.id }}"{% else %} class="text_tgl contragent-selected" title="Текущий контрагент"{% endif %}>
+
+                            {%- if c.legalForm is defined -%}
+                                {{- c.organization -}}
+                            {%- else -%}
+                                {{- c.lastName ~ ' ' ~ c.firstName ~ ' ' ~ c.surName  -}}
+                            {%- endif -%}
+
+                        </span>
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+    </div>
+
+{%- endif -%}

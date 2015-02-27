@@ -1,0 +1,146 @@
+
+{#**
+ * Шаблон для вывода блока товаров с пагинацией и сортировкой
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% use 'CoreProductBundle:Catalog:products_grid.html.twig' %}
+
+{% block products_container %}
+    {% spaceless %}
+
+        {% if products.getTotalItemCount > 0 %}
+
+            {% set GET = app.request.query %}
+            {% set parameters = app.request.attributes.get('_route_params')|merge(GET.all)|merge({'page': app.request.attributes.get('page')}) %}
+            {% set sort = app.request.query.get('sort') %}
+
+            {% if showLimit is not defined %}
+                {% set showLimit = 500 %}
+            {% endif %}
+            {% if showDefault is not defined %}
+                {% set showDefault = 12 %}
+            {% endif %}
+
+            {% if (app.request.attributes.get('_route') != 'core_common_search_first_page' and app.request.attributes.get('_route') != 'core_common_search') or filterBuilder %}
+
+                <!-- sort -->
+                <!--noindex-->
+                <div class="filter_sort">
+                    {{ 'sort.by'|trans({}, 'frontend') }}
+                    <ul class="filter_sort_switches">
+                        <li class="filter_sort_switch {% if sort == 'name_desc' %}active desc{% elseif sort == 'name_asc' %}active{% endif %}">
+                            <a rel="nofollow" href="{{ path(routeFirsPage, parameters|merge({'sort': sort == 'name_asc' ? 'name_desc' : 'name_asc'})) }}">{{ 'sort.name'|trans({}, 'frontend') }}</a>
+                        </li>
+                        <li class="filter_sort_switch {% if sort == 'price_desc' %}active desc{% elseif sort == 'price_asc' %}active{% endif %}">
+                            <a rel="nofollow" href="{{ path(routeFirsPage, parameters|merge({'sort': sort == 'price_asc' ? 'price_desc' : 'price_asc'})) }}">{{ 'sort.price'|trans({}, 'frontend') }}</a>
+                        </li>
+
+                        {% block products_container_filter_sort_last %}
+
+                            <li class="filter_sort_switch {% if sort == 'pop_desc' %}active desc{% elseif sort == 'pop_asc' %}active{% endif %}">
+                                <a rel="nofollow" href="{{ path(routeFirsPage, parameters|merge({'sort': sort == 'pop_asc' ? 'pop_desc' : 'pop_asc'})) }}">{{ 'sort.pop'|trans({}, 'frontend') }}</a>
+                            </li>
+
+                        {% endblock %}
+
+                    </ul>
+                </div>
+                <!--/noindex-->
+                <!-- /sort -->
+
+            {% endif %}
+
+            <!-- controls -->
+            {% block products_container_controls %}{% endblock %}
+            <!-- /controls -->
+
+            <!-- products showcase -->
+                {# подключаем шаблон с выводом товара в виде сетки #}
+                {{ block('products_grid') }}
+            <!-- /products showcase -->
+
+            <!-- pagination -->
+            <div class="pagination">
+
+                {{ knp_pagination_render(products, 'CoreProductBundle:Catalog:pagination.html.twig',{}, { routeFirsPage: routeFirsPage }) }}
+
+                {% if products.getTotalItemCount > showDefault %}
+
+                    {% set parameters = parameters|merge({page:null}) %}
+                    <!--noindex-->
+                    <div class="pagination_setings">
+                        {{ 'show.by'|trans({}, 'frontend') }}
+                        <ul class="pagination_pp_qnts">
+                            <li class="pagination_pp_qnt">
+
+                                {% if GET.get('show') == 12 or not GET.get('show') %}
+                                    <strong>12</strong>
+                                {% else %}
+                                    <a rel="nofollow" href="{{ path(routeFirsPage, parameters|merge({'show': 12})) }}">12</a>
+                                {% endif %}
+
+                            </li>
+                            <li class="pagination_pp_qnt">
+
+                                {% if GET.get('show') == 24 %}
+                                    <strong>24</strong>
+                                {% else %}
+                                    <a rel="nofollow" href="{{ path(routeFirsPage, parameters|merge({'show': 24})) }}">24</a>
+                                {% endif %}
+
+                            </li>
+                            <li class="pagination_pp_qnt">
+
+                                {% if GET.get('show') == 48 %}
+                                    <strong>48</strong>
+                                {% else %}
+                                    <a rel="nofollow" href="{{ path(routeFirsPage, parameters|merge({'show': 48})) }}">48</a>
+                                {% endif %}
+
+                            </li>
+                            {#
+                            {% if products.getTotalItemCount < showLimit %}
+                                {% if products.getTotalItemCount > 48 %}
+
+                                    <li class="pagination_pp_qnt">
+                                        {% if GET.get('show') == 'all' %}
+                                            <strong>{{ 'show.all'|trans({}, 'frontend') }}</strong>
+                                        {% else %}
+                                            <a rel="nofollow" href="{{ path(routeFirsPage, parameters|merge({'show': 'all'})) }}">{{ 'show.all'|trans({}, 'frontend') }}</a>
+                                        {% endif %}
+                                    </li>
+
+                                {% endif %}
+                            {% else %}
+
+                                <li class="pagination_pp_qnt">
+                                    {% if GET.get('show') == showLimit %}
+                                        <strong>{{ showLimit }}</strong>
+                                    {% else %}
+                                        <a rel="nofollow" href="{{ path(routeFirsPage, parameters|merge({'show': showLimit})) }}">{{ showLimit }}</a>
+                                    {% endif %}
+                                </li>
+
+                            {% endif %}
+                            #}
+                        </ul>
+                    </div>
+                    <!--/noindex-->
+                {% endif %}
+
+            </div>
+            <!-- /pagination -->
+
+        {% else %}
+
+            <div class="attention_box">
+                <h6>Товары не найдены</h6>
+            </div>
+
+        {% endif %}
+
+    {% endspaceless %}
+{% endblock %}

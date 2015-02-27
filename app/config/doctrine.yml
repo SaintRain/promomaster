@@ -1,0 +1,258 @@
+## Doctrine Configuration
+doctrine:
+  dbal:
+    default_connection: default
+    connections:
+      default:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        logging:   "%kernel.debug%"
+        profiling: "%kernel.debug%"
+        slaves:
+          slave1:
+            host:     %database_host%
+            port:     %database_port%
+            dbname:   %database_name%
+            user:     %database_user%
+            password: %database_password%
+        charset:  UTF8
+        options:
+          1002: "SET NAMES utf8"
+
+      force_master:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+        logging:   "%kernel.debug%"
+        profiling: "%kernel.debug%"
+        options:
+          1002: "SET NAMES utf8"
+          # if using pdo_sqlite as your database driver, add the path in parameters.yml
+          # e.g. database_path: %kernel.root_dir%/data/data.db3
+          # path:     %database_path%
+    types:
+      json: Sonata\Doctrine\Types\JsonType
+      #datetime: Core\CommonBundle\DoctrineExtensions\DBAL\Types\MscDateTimeType
+      datetime: Core\CommonBundle\DoctrineExtensions\DBAL\Types\UTCDateTimeType
+  orm:    
+    default_entity_manager: default
+    auto_generate_proxy_classes: %kernel.debug%
+    #auto_mapping: true
+    entity_managers:
+    # STOF Doctrine extensions part
+      default:
+        metadata_cache_driver: apc
+        query_cache_driver: apc
+        result_cache_driver:
+            type: memcache
+            host: localhost
+            port: 11211
+            instance_class: Memcache
+        connection: default
+        mappings:
+          ApplicationSonataUserBundle: ~
+          CoreDirectoryBundle: ~
+          CoreFileBundle: ~
+          CoreManufacturerBundle: ~
+          CoreCategoryBundle: ~
+          CoreOrderBundle: ~
+          CoreProductBundle: ~
+          CorePropertyBundle: ~
+          CoreTroubleTicketBundle: ~
+          CorePaymentBundle: ~
+          CoreFaqBundle: ~
+          FOSUserBundle: ~
+          CoreUnionBundle: ~
+          CoreColorBundle: ~
+          CoreLogisticsBundle: ~
+          CoreDeliveryBundle: ~
+          CoreDiscountsBundle: ~
+          CoreReviewBundle: ~
+          CoreConfigBundle: ~
+          CoreStatisticsBundle: ~
+          CoreSlugHistoryBundle: ~
+          CoreHolidayBundle: ~
+          CoreOfficeWorkTimeBundle: ~
+
+          CoreBannerBundle: ~
+          CoreSiteBundle: ~
+          CoreAdCompanyBundle: ~
+
+
+          #CoreDynamicBindingBundle: ~
+#          GedmoLoggable: ~
+#          GedmoTranslatable: ~
+#          GedmoTranslator: ~
+#          GedmoTree: ~
+          SonataCoreBundle: ~
+          SonataUserBundle: ~
+          gedmo_translatable:
+            type: annotation
+            prefix: Gedmo\Translatable\Entity
+            dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+            alias: GedmoTranslatable # this one is optional and will default to the name set for the mapping
+            is_bundle: false
+          gedmo_translator:
+            type: annotation
+            prefix: Gedmo\Translator\Entity
+            dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
+            alias: GedmoTranslator # this one is optional and will default to the name set for the mapping
+            is_bundle: false
+          gedmo_loggable:
+            type: annotation
+            prefix: Gedmo\Loggable\Entity
+            dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+            alias: GedmoLoggable # this one is optional and will default to the name set for the mapping
+            is_bundle: false
+          gedmo_tree:
+            type: annotation
+            prefix: Gedmo\Tree\Entity
+            dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+            alias: GedmoTree # this one is optional and will default to the name set for the mapping
+            is_bundle: false
+        filters:
+          softdeleteable:
+            class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+            enabled: true
+      force_master:
+        metadata_cache_driver: apc
+        query_cache_driver: apc
+        result_cache_driver:
+            type: memcache
+            host: localhost
+            port: 11211
+            instance_class: Memcache
+        connection: force_master
+        mappings:
+          ApplicationSonataUserBundle: ~
+          CoreDirectoryBundle: ~
+          CoreFileBundle: ~
+          CoreManufacturerBundle: ~
+          CoreCategoryBundle: ~
+          CoreOrderBundle: ~
+          CoreProductBundle: ~
+          CorePropertyBundle: ~
+          CoreTroubleTicketBundle: ~
+          CorePaymentBundle: ~
+          CoreFaqBundle: ~
+          FOSUserBundle: ~
+          CoreUnionBundle: ~
+          CoreColorBundle: ~
+          CoreLogisticsBundle: ~
+          CoreDeliveryBundle: ~
+          CoreDiscountsBundle: ~
+          CoreReviewBundle: ~
+          CoreConfigBundle: ~
+          CoreStatisticsBundle: ~
+          CoreSlugHistoryBundle: ~
+          CoreHolidayBundle: ~
+          CoreOfficeWorkTimeBundle: ~
+
+          CoreBannerBundle: ~
+          CoreSiteBundle: ~
+          CoreAdCompanyBundle: ~
+
+
+          #CoreDynamicBindingBundle: ~
+#          GedmoLoggable: ~
+#          GedmoTranslatable: ~
+#          GedmoTranslator: ~
+#          GedmoTree: ~
+          SonataCoreBundle: ~
+          SonataUserBundle: ~
+          gedmo_translatable:
+            type: annotation
+            prefix: Gedmo\Translatable\Entity
+            dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+            alias: GedmoTranslatable # this one is optional and will default to the name set for the mapping
+            is_bundle: false
+          gedmo_translator:
+            type: annotation
+            prefix: Gedmo\Translator\Entity
+            dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
+            alias: GedmoTranslator # this one is optional and will default to the name set for the mapping
+            is_bundle: false
+          gedmo_loggable:
+            type: annotation
+            prefix: Gedmo\Loggable\Entity
+            dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+            alias: GedmoLoggable # this one is optional and will default to the name set for the mapping
+            is_bundle: false
+          gedmo_tree:
+            type: annotation
+            prefix: Gedmo\Tree\Entity
+            dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+            alias: GedmoTree # this one is optional and will default to the name set for the mapping
+            is_bundle: false
+        filters:
+          softdeleteable:
+            class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+            enabled: true
+
+services:
+  gedmo.listener.softdeleteable:
+    class: Gedmo\SoftDeleteable\SoftDeleteableListener
+    tags:
+        - { name: doctrine.event_subscriber, connection: force_master }
+    calls:
+        - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+# Doctrine Configuration
+#doctrine:
+#    dbal:
+#        driver:   %database_driver%
+#        host:     %database_host%
+#        port:     %database_port%
+#        dbname:   %database_name%
+#        user:     %database_user%
+#        password: %database_password%
+#        charset:  UTF8
+#        options:
+#              1002: "SET NAMES utf8"
+#
+#        # if using pdo_sqlite as your database driver, add the path in parameters.yml
+#        # e.g. database_path: %kernel.root_dir%/data/data.db3
+#        # path:     %database_path%
+#        types:
+#            json: Sonata\Doctrine\Types\JsonType
+#    orm:
+#        auto_generate_proxy_classes: %kernel.debug%
+#        auto_mapping: true
+#        # STOF Doctrine extensions part
+#        mappings:
+#                gedmo_translatable:
+#                    type: annotation
+#                    prefix: Gedmo\Translatable\Entity
+#                    dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+#                    alias: GedmoTranslatable # this one is optional and will default to the name set for the mapping
+#                    is_bundle: false
+#                gedmo_translator:
+#                    type: annotation
+#                    prefix: Gedmo\Translator\Entity
+#                    dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
+#                    alias: GedmoTranslator # this one is optional and will default to the name set for the mapping
+#                    is_bundle: false
+#                gedmo_loggable:
+#                    type: annotation
+#                    prefix: Gedmo\Loggable\Entity
+#                    dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+#                    alias: GedmoLoggable # this one is optional and will default to the name set for the mapping
+#                    is_bundle: false
+#                gedmo_tree:
+#                    type: annotation
+#                    prefix: Gedmo\Tree\Entity
+#                    dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+#                    alias: GedmoTree # this one is optional and will default to the name set for the mapping
+#                    is_bundle: false
+#        filters:
+#            softdeleteable:
+#                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+#                enabled: true

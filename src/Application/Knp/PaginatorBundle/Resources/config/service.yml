@@ -1,0 +1,10 @@
+services:
+  # Сервис для работы с пагинацией
+  knp_paginator:
+    class: Application\Knp\PaginatorBundle\Logic\Paginator
+    arguments: ['@event_dispatcher']
+
+# Сервис для работы с пагинацией
+  application_knp_paginator_logic:
+    class: Application\Knp\PaginatorBundle\Logic\PaginatorLogic
+    arguments: ['@service_container']

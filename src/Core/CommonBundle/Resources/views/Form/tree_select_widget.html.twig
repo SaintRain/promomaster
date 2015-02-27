@@ -1,0 +1,91 @@
+{% block tree_select_widget %}
+    {% spaceless %}
+        <div class="rower{% if form.vars.attr['class'] is defined %} {{form.vars.attr['class']}}{% endif %}">
+            {% set formValue = (form.vars.value.id is defined) ? form.vars.value.id : form.vars.value %}
+            {{form_widget(form, {'value': formValue})}}
+        </div>
+    {% endspaceless %}
+    {{tree | raw}}
+{#<link rel="stylesheet" href="{{ asset('bundles/corecommon/css/jquery.mcdropdown.min.css') }}" type="text/css" media="all" />
+<script src="{{ asset('bundles/corecommon/js/jquery.mcdropdown.min.js') }}"></script>
+<script src="{{ asset('bundles/corecommon/js/jquery.bgiframe.js') }}"></script>
+#}
+<script>
+    (function($){
+        $(function(){
+            /*
+            $('body').on('click','.trigger-click', function(){
+                var $this = $(this);
+                $this.blur();
+                $this.siblings('a').trigger('click');
+                
+            });
+            */
+            $("#{{form.vars.id}}").mcDropdown("#category_{{form.vars.id}}",
+                {
+                    lineHeight: 26,
+                    //openFx: "slideDown",
+                    openSpeed: 25,
+                    hideSpeed: 25,
+                    select: function(e, t) {
+                        var toolTipElt = $('#{{form.vars.id}}').siblings('a'),
+                            allTreeElts = $("#category_{{form.vars.id}} li"),
+                            chosenElt = $("#category_{{form.vars.id}} li[rel='" + e + "']"),
+                            shortTextElt = $('#{{form.vars.id}}').siblings('.short-text'),
+                            shortText = t;
+                    
+                        if (shortText && e) {
+                            shortText = shortText.split(':');
+                            shortText = shortText[shortText.length - 1];
+                        } else {
+                            shortText = '{{empty_value}}';
+                        }
+                        allTreeElts.removeClass('selected').removeClass('parent-selected');
+                        chosenElt.parents('li').addClass('parent-selected');
+                        if (chosenElt.length) {
+                            chosenElt.addClass('selected');
+                        }
+                        if (shortTextElt.length) {
+                            shortTextElt.text(shortText);
+                        } else {
+                            toolTipElt.before('<span class="short-text">' + shortText + '</span>');
+                        }
+                        toolTipElt.tooltip('destroy');
+                        toolTipElt.tooltip({
+                            title: t,
+                            trigger: 'hover',
+                            placement: '{{placement}}'
+                        });
+                    },
+                    init: function(e, t) {
+                        var toolTipElt = $('#{{form.vars.id}}').siblings('a'),
+                            allTreeElts = $("#category_{{form.vars.id}} li"),
+                            chosenElt = $("#category_{{form.vars.id}} li[rel='" + t.val() + "']"),
+                            placeholder = $(e).attr('placeholder'),
+                            shortText = (!e.val() && placeholder) ? '<span class="placeholder">' + placeholder + '</span>' : e.val();
+                        if (shortText) {
+                            shortText = shortText.split(':');
+                            shortText = shortText[shortText.length - 1];
+                        } else {
+                            shortText = '{{empty_value}}';
+                        }
+                        allTreeElts.removeClass('selected').removeClass('parent-selected');
+                        toolTipElt.before('<span class="short-text">' + shortText + '</span>');
+                        chosenElt.parents('li').addClass('parent-selected');
+                        if (chosenElt.length) {
+                            chosenElt.addClass('selected');
+                        }
+                        toolTipElt.tooltip('destroy');
+                        toolTipElt.tooltip({
+                            title: e.val(),
+                            trigger: 'hover',
+                            placement: '{{placement}}'
+                        });
+                    },
+                    allowParentSelect: {% if allow_parent_select %}true{% else %}false{% endif %}
+                });
+        })
+    })(jQuery);
+</script>
+{{tree | raw}}
+{% endblock %}

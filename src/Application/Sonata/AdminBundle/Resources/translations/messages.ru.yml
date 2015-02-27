@@ -1,0 +1,16 @@
+# Переводы
+label_type_yes: да
+label_type_no: нет
+label_type_contains: содержит
+label_type_not_contains: не содержит
+label_type_equals: равен
+label_type_not_equals: не равен
+label_date_type_null: пусто
+label_date_type_not_null: не пуст
+label_date_type_between: между
+label_date_type_not_between: не между
+label_filters: Фильтры
+Delete: Удалить
+delete: Удалить
+filter:
+    label_groups: Группы

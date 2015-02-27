@@ -1,0 +1,40 @@
+
+{#**
+ * Шаблон для вывода отзывов у товара с ссылкой показать еще
+ * (шаблон добавлен для сортировки)
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% use 'CoreReviewBundle:Review:reviews_rows.html.twig' %}
+
+{% block reviews_with_link_more %}
+    {% spaceless %}
+
+        {% if reviews|length > 0 %}
+
+            <ul id="reviews-list" class="product_discussions_list">
+
+                {{ block('reviews_rows') }}
+
+            </ul>
+
+        {% endif %}
+
+        <div class="read_all">
+
+            {% if reviewsTotal> reviewsShow and reviewsTotal <= reviewsMaxCountForShowAll %}
+
+                <span id="rewiews-more" class="read_all_tgl text_tgl with_icon with_icon_right" data-type="all" data-url="{{ path('core_review_view_more_ajax') }}" data-slug="{{ currentProduct.slug is defined ? currentProduct.slug : currentProductSlug }}" data-page="1" data-show="{{ reviewsMaxCountForShowAll }}">Читать все ({{ reviewsTotal }})</span>
+
+            {% elseif reviewsTotal > reviewsMaxCountForShowAll %}
+
+                <span id="rewiews-more" class="read_all_tgl text_tgl with_icon with_icon_right" data-type="more" data-url="{{ path('core_review_view_more_ajax') }}" data-slug="{{ currentProduct.slug is defined ? currentProduct.slug : currentProductSlug }}" data-page="2" data-show="{{ reviewsShow }}">Показать еще отзывы</span>
+
+            {% endif %}
+
+        </div>
+
+    {% endspaceless %}
+{% endblock %}

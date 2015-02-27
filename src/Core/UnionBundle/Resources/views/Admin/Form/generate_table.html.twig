@@ -1,0 +1,26 @@
+{% block generate_table %}
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr class="sonata-ba-list-field-header">
+            {%if options.deleteable %}
+            <th width="80" style="text-align:left"><input type="checkbox" class="select-all-{{field_name}}-delete" title="Выбрать все">&nbsp;Удалить</th>
+            {%endif%}
+            <th width="90" nowrap style="text-align:left"><input type="checkbox" class="select-all-{{field_name}}-undock" title="Выбрать все">&nbsp;Открепить</th>                    
+                    {% for column in options.columns%}
+                    <th {%if column.width is defined  %} width="{{column.width}}" {%endif%} class="sonata-ba-list-field-header-text">{{column.label}}</th>
+                    {%endfor%}
+                                {% if sortable is defined %}
+                        <th class="sonata-ba-list-field-header-text hidden">Сортировка</th>
+                                {%endif%}
+                        </tr>
+
+                    <tbody class="sonata-ba-tbody ui-sortable union-table-body-{{field_id}}" id="{{field_id}}_productModificationTable">
+                        
+                {%for union in unions%}
+                            {% if union.targetObject.id!=subject_id%}
+                        {{ include  ('CoreUnionBundle::Admin/Form/generate_table_row.html.twig', {dInfo:dInfo,field_name:field_name, field_id:field_id, subject_id:subject_id, mappedBy:mappedBy, d:union.targetObject, union:union ,uniqid:uniqid,  sortable:sortable}) }}
+                            {%endif%}
+                {%endfor%}
+                        </tbody>
+                    </table>
+{% endblock %}

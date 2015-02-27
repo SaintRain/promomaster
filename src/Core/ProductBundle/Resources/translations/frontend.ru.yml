@@ -1,0 +1,78 @@
+sort:
+  by: 'Сортировать по:'
+  name: названию
+  price: цене
+  pop: популярности
+by date added: дате добавления
+by date viewed: дате просмотра
+
+show:
+  by: 'Показывать на странице:'
+  all: Все товары
+
+next: Следующие
+prev: Предыдущие
+
+Color: Цвет
+Size: Размер
+Table sizes: Таблица размеров
+Add in cart: Купить
+Remove from cart: Из корзины
+Article: артикул
+In stock: В наличии
+Not in stock: Нет в наличии
+Developing skills: Развивающие навыки
+Age: Возраст
+Number of components: Количество деталей
+In favorites: В избранное
+From favorites: Из избранного
+Add in favorites: Добавить в избранное
+Remove from favorites: Удалить из избранного
+Ask a question: Задать вопрос
+More: Еще
+This toy will help your child to develop skills: Развитие навыков
+Characteristics: Характеристики
+Helpful information: Полезная информация
+Size: Размер
+Net weight: Вес нетто
+Gross weight: Вес брутто
+Next's: Предыдущие
+Prev's: Следующие
+From the series: Входит в серию
+Similar toys: Рекомендуем посмотреть:
+Recently viewed: Недавно просмотренные
+Alternative product: Товары заменители
+
+Product not found: Товар не найден
+User not found: Пользователь не найден
+Product already in favorites: Товар уже добавлен в избранное
+Faved has not this product: В избранном нет этого товара
+Product added in favorites: Товар добавлен в избранное
+Product removed from favorites: Товар удален из избранного
+You subscribe to this product: 'Как только продукт появится у нас на складе, мы сообщим Вам об этом по указанному email: %email%'
+Bad email: Введен некорректный email
+
+
+History cleared: История просмотренных товаров очищена
+
+Cannot find product: Товар закончился
+Unknown action: Неизвестное действие
+Product add in cart: Товар добавлен в <a href="%URL%">корзину</a>
+product:
+    add: Товар добавлен в
+    in_cart: корзину
+Product remove from cart: Товар удален из корзины
+Quantity can not be greater than the maximum available from stock (%quantity% pcs.): Всего доступно на складе %quantity% шт.
+Quantity cannot be less or equal to 0: Количество не может быть меньше или равно 0
+
+Number of products changed: Количество продуктов изменено
+deliveryText: Доставка осуществляется по всей России от 150 рублей.
+More: Подробнее.
+MoreDelivery: Подробнее.
+
+msg:
+  not_have_size: 'В выбранном цвете "%color%" нет размера "%size%"<br>Размер "%size%" имеется только в цветах:<br> %colors%.'
+  fioError: Необходимо указать фамилию, имя, отчество
+  fioLetters: Вы используете не допустимые символы
+  oldSession: Ваша сессия устарела
+  image_not_found: Фотография временно отсутствует

@@ -1,0 +1,5 @@
+breadcrumb:
+  link_manufacturer_discount_list: Список скидок по производителям
+  link_manufacturer_discount_delete: Удалить скидку для производителя
+  link_contragent_manufacturer_discount_list: Список индивидуальных скидок по производителям
+  link_contragent_manufacturer_discount_delete: Удалить индивидуальную скидку для производителя

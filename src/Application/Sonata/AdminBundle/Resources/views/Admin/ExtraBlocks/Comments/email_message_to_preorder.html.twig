@@ -1,0 +1,41 @@
+
+{#**
+ * Шаблон для отправки комментария добавленного к предзаказу по email подписанным пользователям
+ *
+ * @author Kaluzhniy N.I.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block comments_block_email_message %}
+    {% spaceless %}
+
+        <h3>Уважаемый(ая), {{ user.username }}!</h3>
+        <p>На интернет-портале <a href="http://{{ domain }}">{{ domain }}</a> был оставлен комментарий пользователем <a href='http://{{ domain }}{{ path('admin_sonata_user_user_edit', {id: comment.user.id}) }}' target='_blank'>{{ comment.user.username }}</a> к передзаказу <a href="http://{{ domain }}{{ path('admin_core_order_subscribers_toproductbyorder_edit', {id: object.id}) }}">№{{ object.id }}</a>.</p>
+
+        <br>
+        <p>
+            Дата создания комментария: {{ comment.createdAt|date('d.m.Y H:i:s', default_timezone) }} по МСК.
+        </p>
+        <p>
+            Комментарий содержит следующий текст:
+            <br>
+            <div style="border-left:solid 5px gray; padding: 10px 20px;margin-left: 10px;">{{- comment.comment|nl2br -}}</div>
+        </p>
+        <p>
+            Просмотреть или написать комментарий Вы можете по следующей ссылке:
+            <br>
+            <a href="http://{{ domain }}{{ path('admin_core_order_subscribers_toproductbyorder_edit', {id: object.id}) }}#comment-{{ comment.id }}">http://{{ domain }}{{ path('admin_core_order_subscribers_toproductbyorder_edit', {id: object.id}) }}#comment-{{ comment.id }}</a>
+        </p>
+
+        <br>
+        <p>Просим вас не отвечать на это уведомление оно выслано автоматически.</p>
+        <p>
+            С уважением и наилучшими пожеланиями,
+            <br>
+            команда OliKids
+            <br>
+            <a href="http://{{ domain }}">{{ domain }}</a>
+        </p>
+
+    {% endspaceless %}
+{% endblock %}

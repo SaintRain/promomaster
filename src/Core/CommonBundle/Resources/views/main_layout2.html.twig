@@ -1,0 +1,25 @@
+{% extends "CoreCommonBundle::base_layout2.html.twig" %}
+
+ {% block body %}
+     {#{% spaceless %}#}
+         <div class="wrapper">
+             {% block header %}
+                 {{ render (controller ('CoreCommonBundle:Fragments:header2', {'request': app.request})) }}
+             {% endblock %}
+
+             {% block content %}
+             {% endblock %}
+
+             {% block footer %}
+                 {{ render (controller ('CoreCommonBundle:Fragments:footer2', {'request': app.request})) }}
+             {% endblock %}
+
+         </div><!--/wrapper-->
+     {#{% endspaceless %}#}
+ {% endblock %}
+
+
+
+
+
+

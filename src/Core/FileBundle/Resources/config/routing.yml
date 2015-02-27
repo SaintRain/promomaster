@@ -1,0 +1,15 @@
+core_file_ajax_upload_file:
+    pattern:  /ajax/upload_file
+    defaults: { _controller: CoreFileBundle:AjaxFile:UploadFile }
+
+core_file_ajax_replace_image:
+    pattern:  /ajax/replace_image
+    defaults: { _controller: CoreFileBundle:AjaxFile:ReplaceImage }
+
+core_file_ajax_remove_file:
+    pattern:  /ajax/remove_file
+    defaults: { _controller: CoreFileBundle:AjaxFile:AjaxRemoveFile }
+
+core_file_ajax_google_api_add:
+    pattern:  /ajax/google_api/add.json
+    defaults: { _controller: CoreFileBundle:AjaxFile:googleApiAdd }

@@ -1,0 +1,8 @@
+breadcrumb:
+  link_site_category_list: Список категорий сайтов
+  link_product_category_list: Список категорий товаров
+  link_trouble_ticket_category_list: Список категорий траблтикетов
+  link_product_category_delete: Удаление категории
+  link_trouble_ticket_category_delete: Удаление категории
+  link_faq_category_list: Список категорий FAQ
+  link_faq_category_delete: Удаление категории

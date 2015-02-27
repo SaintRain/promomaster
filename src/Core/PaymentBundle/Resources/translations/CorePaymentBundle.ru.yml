@@ -1,0 +1,15 @@
+breadcrumb:
+  link_common_list: Список платежных систем
+  link_payment_list: Список всех платежей
+  link_common_payment_system_list: Список платежных систем
+  link_payment_delete: Удаление платежа
+
+PaymentOnDelivery: Наложенный платёж
+PlasticCard: VISA / Master Card (онлайн платеж)
+PlasticCardTerminal: VISA / Master Card (терминал)
+YandexMoney: Яндекс Деньги
+BankTransfer: Банковский платёж или квитанция
+Qiwi: Qiwi
+WebMoney: WebMoney
+Robokassa: Robokassa
+PayPal: PayPal

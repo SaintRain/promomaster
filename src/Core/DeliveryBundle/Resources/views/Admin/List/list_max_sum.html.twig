@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.maxSum == NULL or  object.maxSum == 0 %}
+        <div>&HorizontalLine;</div>
+        {% else %}
+            <div class="money">{{moneyFormat(object.maxSum)}} {{currencyFormat()}}</div>
+    {% endif %}
+{% endblock %}

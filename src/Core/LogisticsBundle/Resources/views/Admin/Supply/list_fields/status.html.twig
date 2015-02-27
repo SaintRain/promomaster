@@ -1,0 +1,15 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field%}
+
+{%if object.status.name== constant('Core\\LogisticsBundle\\Entity\\Supply::onTheWayStatusName') %}
+<span class="label label-info">{{object.status.captionRu}}</span>
+{%else%}
+{%if object.status.name==constant('Core\\LogisticsBundle\\Entity\\Supply::suppliedStatusName')%}
+<span class="label label-success">{{object.status.captionRu}}</span>
+{%else%}
+<span class="label label-default">{{object.status.captionRu}}</span>
+{%endif%}
+{%endif%}
+
+{% endblock %}
+

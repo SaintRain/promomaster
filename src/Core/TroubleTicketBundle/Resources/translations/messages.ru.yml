@@ -1,0 +1,39 @@
+label_type_yes: Вкл
+label_type_no: Выкл
+parameter:
+  priority: Приоритет
+  category: Категория
+  manager: Назначена
+  title: Заголовок
+  readiness: Готовность
+  body: Описание
+  status: Статус
+  add: Добавлен
+  delete: Удален
+  file: Файл
+label:
+  daterange:
+    from: c
+    to: до
+Save changes: Сохранить изменения
+Close: Закрыть
+
+less than %seconds seconds ago: меньше чем %seconds сек. назад
+half a minute ago: меньше мин.
+less than a minute ago: меньше мин.
+1 minute ago: 1 мин. назад
+%minutes minutes ago: %minutes мин. назад
+about 1 hour ago: около 1 час. назад
+about %hours hours ago: %hours час. назад
+1 day ago: 1 дн. назад
+%days days ago: %days дн. назад
+"{1} 1 month ago |]1,Inf[ %months months ago":
+Bad code value: Неверно указан код
+ticket:
+  success:
+    create: По вашему вопросу (обращению) создано сообщение &num; %number%. Всю историю сообщений Вы можете проследить по ссылке <a href="%link%">%link%</a>
+  send:
+    create: Создано сообщение [№%number%] на olikids.ru
+    edit: Вам пришел ответ на ваше сообщение [№%number%] на сайте olikids.ru
+  create: Новое обращение
+'tickets not found': Вы еще не оставляли никаких обращений

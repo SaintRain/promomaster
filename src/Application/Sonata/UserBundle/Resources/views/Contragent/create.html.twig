@@ -1,0 +1,47 @@
+{% extends 'ApplicationSonataUserBundle::cabinet_layout.html.twig' %}
+
+{# SEO - заголовки #}
+{% block title %}Создание контрагента | OliKids.ru{% endblock %}
+{% block meta_keywords %}создать, контрагент{% endblock %}
+{% block meta_description %}Страница создания контрагента на сайте OliKids. Для добавления адресов доставки зайдите в редактирование уже созданного контрагента.{% endblock %}
+
+{% block js_head %}
+    {{parent()}}
+     {% javascripts  'bundles/applicationsonatauser/js/frontend.contact.js' output='js/compiled/user_frontend_contact.js' filter='yui_js' %}
+    <script src="{{ asset_url}}"></script>
+    {% endjavascripts %}    
+{% endblock %}
+{% block main_content %}
+    <div class="main_col_pad">
+        <section class="cabinet_addresses">
+            <h2>Создание нового плательщика</h2>
+            {% for flashMessage in app.session.flashbag.get('contactagent_success') %}
+                    <div class="info_box success">
+                        <h6>{{ flashMessage|trans({}) }}</h6>
+                    </div>
+            {% endfor %}
+            <div class="cabinet_address_add no_limit">
+                <div class="brown_gradient_box">
+                    {% form_theme indiForm 'CoreCommonBundle:Form:row.html.twig' %}
+                    {% form_theme legalForm 'CoreCommonBundle:Form:row.html.twig' %}
+                    <ul id="contragent_type" class="filter_sort_switches">
+                        <li>
+                            <label>
+                                <span>{{'form.label.indi.caption' | trans }}</span>
+                                <input type="radio" value="indi_form" name="form_selector" {% if (not indiForm.vars.valid and legalForm.vars.valid) or (indiForm.vars.valid and legalForm.vars.valid) %}  checked="checked" {% endif %}/>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <span>{{'form.label.legal.caption' | trans }}</span>
+                                <input type="radio" value="legal_form" name="form_selector" {% if not legalForm.vars.valid and indiForm.vars.valid %} checked="checked" {% endif %}/>
+                            </label>
+                        </li>
+                    </ul>
+                    {% include 'ApplicationSonataUserBundle:Contragent:Form/indi_form.html.twig'  with {'form': indiForm} %}
+                    {% include 'ApplicationSonataUserBundle:Contragent:Form/legal_form.html.twig'  with {'form': legalForm} %}
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

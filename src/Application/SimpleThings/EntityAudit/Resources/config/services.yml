@@ -1,0 +1,15 @@
+services:
+
+  # Переопределяем сервис-слушатель на генерацию аудитовских таблиц
+  simplethings_entityaudit.create_schema_listener:
+    class: Application\SimpleThings\EntityAudit\EventListener\ApplicationCreateSchemaListener
+    arguments: ['@simplethings_entityaudit.manager']
+    tags:
+        - { name: doctrine.event_subscriber, connection: default }
+
+  # Переопределяем сервис-слушатель на генерацию аудитовских таблиц
+  simplethings_entityaudit.log_revisions_listener:
+    class: Application\SimpleThings\EntityAudit\EventListener\ApplicationLogRevisionsListener
+    arguments: ['@simplethings_entityaudit.manager']
+    tags:
+        - { name: doctrine.event_subscriber, connection: default }

@@ -1,0 +1,12 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field%}
+
+    {{object.contragent.user.email}}<br/>
+    {% if object.contragent.legalForm is defined%}
+        {{object.contragent.organization}}
+    {%else%}
+        {{object.contragent.firstName}} {{object.contragent.lastName}} {{object.contragent.surName}}
+    {%endif%}
+
+
+{% endblock %}

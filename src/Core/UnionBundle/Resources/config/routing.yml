@@ -1,0 +1,10 @@
+#Прицепляем запись
+set_record_to_union:
+    path:      /set_record_to_union
+    schemes:  [https]
+    defaults:  { _controller: CoreUnionBundle:AjaxUnion:setRecordToUnion }
+#Отцепляем запись
+unset_record_from_union:
+    path:      /unset_record_from_union
+    schemes:  [https]
+    defaults:  { _controller: CoreUnionBundle:AjaxUnion:unsetRecordFromUnion }

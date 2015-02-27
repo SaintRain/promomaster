@@ -1,0 +1,13 @@
+review:  Отзыв
+user: Пользователь
+product: Продукт
+rating: Оценка товара
+
+'Review added successfully!': 'Отзыв добавлен успешно и будет доступен публично после проверки модератором!'
+'Cannot get product!': 'Продукт не найден!'
+'Cannot get review!': 'Отзыв не найден!'
+'Unknown action!': 'Неизвестное действие!'
+'You already have voted!': 'Вы уже отдали свой голос!'
+'Your vote has been counted!': 'Ваш голос засчитан!'
+'You must be authorized!': 'Вы должны быть авторизованы!'
+'Cannot find more reviews!': 'Не удается найти больше отзывов!'

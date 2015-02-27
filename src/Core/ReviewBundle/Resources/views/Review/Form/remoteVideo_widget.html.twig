@@ -1,0 +1,49 @@
+{#**
+ * Шаблон для вывода формы добавления видео на отзывах
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% form_theme form 'CoreCommonBundle:Form:choice_widget_with_data_attr.html.twig' %}
+{% block remote_video_form_frontend_widget %}
+    {% spaceless %}
+
+        <li>
+            <div class="video-control-container">
+                <div class="video-control-group">
+                    {{ form_label(attribute(form, 'caption' ~ prefix), null, {'label_attr' : {'class': ' control-label extra-label'} }) }}
+                    <div class="controls video-caption">
+                        {{ form_widget(attribute(form, 'caption' ~ prefix), {attr: {class: 'text_input'} } ) }}
+                    </div>
+                </div>
+
+                <div class="video-control-group">
+                    {{ form_label(form.code, null, {'label_attr' : {'class': ' control-label extra-label'} }) }}
+                    <div class="controls video-code">
+                        {{ form_widget(form.code, {attr: {class: 'text_input'} }) }}
+                    </div>
+                </div>
+
+                <div class="video-control-group">
+                    {{ form_label(form.videoHosting, null, {'label_attr' : {'class': ' control-label extra-label'} }) }}
+                    <div class="controls video-hosting">
+                        {{ form_widget(form.videoHosting, {attr: {class: 'text_input'} }) }}
+                    </div>
+                </div>
+            </div>
+            <div class="videoPreview">
+                {% set curCode = (form.code.vars.value) ? form.code.vars.value : '' %}
+                {% for hosting in form.vars.hostings %}
+                    <iframe class="hidden {{ hosting.name }} remote-video-container" width="270" height="155"
+                            src="{{ hosting.playerUri }}{{ curCode }}" frameborder="0"></iframe>
+                {% endfor %}
+            </div>
+
+            <span class="video-remove">X</span>
+
+            <div class="clearfix"></div>
+        </li>
+
+    {% endspaceless %}
+{% endblock %}

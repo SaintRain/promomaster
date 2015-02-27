@@ -1,0 +1,143 @@
+
+{#**
+ * Шаблон для вывода выбора цвета товара в админке
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% block admin_form_type_color_widget_attributes %}
+    {% spaceless %}
+        id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
+        {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}{% if attrname in ['class'] %} color-palette{% endif %}" {% endif %}{% endfor %}
+    {% endspaceless %}
+{% endblock admin_form_type_color_widget_attributes %}
+
+{% block admin_form_type_color_choice_widget_options %}
+    {% spaceless %}
+        {% for group_label, choice in options %}
+            {% if choice is iterable %}
+                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                    {% set options = choice %}
+                    {{ block('admin_form_type_color_choice_widget_options') }}
+                </optgroup>
+            {% else %}
+                <option value="{{ choice.value }}" {% if choice.data.hex != 'null' %}data-hex="#{{ choice.data.hex|upper }}"{% else %}{% endif %} {% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }}</option>
+            {% endif %}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block admin_form_type_color_widget %}
+
+<script src="{{ asset('bundles/corecolor/js/color.js') }}" type="text/javascript"></script>
+<link rel="stylesheet" href="{{ asset('bundles/corecolor/css/color.css') }}" media="all">
+
+<script>
+    var palette, colors = new Array();
+    {% for color in colors %}
+        {% if color.hex|upper != 'NULL' %}
+            palette = new Array();
+            palette.push('{{ color.hex|upper }}');
+            {% for palette in color.palette %}
+                palette.push('{{ palette.hex|upper }}');
+            {% endfor %}
+            colors.push({
+                color: '{{ color.hex|upper }}',
+                palette: palette
+            });
+        {% endif %}
+    {% endfor %}
+</script>
+
+    {% spaceless %}
+    <div class="image-color-detect-container" title="Определение цвета по клику">
+        <table class="table table-bordered icd-table">
+            <tr>
+                <td>
+                    <img class="icd-img">
+                </td>
+                <td width="350px">
+                    <table class="table table-bordered icd-colors-preview">
+                        <thead>
+                            <tr>
+                                <th>Цвет по кот. кликнули</th>
+                                <th>Выбранный цвет</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="icd-color-preview icd-click-color"></div></td>
+                                <td><div class="icd-color-preview icd-selected-color"></div></td>
+                            </tr>
+                            <tr>
+                                <td><input class="icd-text-hex icd-click-text-hex" type="text"/></td>
+                                <td><input class="icd-text-hex icd-selected-text-hex" type="text"/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-center border-top">
+                                    <strong class="icd-color-name">&nbsp;</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-center border-top">
+                                    <a class="btn btn-primary icd-click-ok" title="OK"><span class="icon-ok icon-white"></span> OK</a>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <a class="btn btn-danger icd-click-cancel" title="Отмена"><span class="icon-remove icon-white"></span> Отмена</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+        {% if colors|length > 0 %}
+
+            {% if compound %}
+                <ul {{ block('widget_container_attributes_choice_widget') }}>
+                {% for child in form %}
+                    <li>
+                        {% set form_widget_content %}
+                            {{ form_widget(child) }}
+                        {% endset %}
+                        {{ form_label(child, child.vars.label|default(null), { 'in_list_checkbox' : true, 'widget' : form_widget_content } ) }}
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+            <select {{ block('admin_form_type_color_widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+                {% if empty_value is not none %}
+                    <option value="">
+                        {% if not sonata_admin.admin %}
+                            {{- empty_value|trans({}, translation_domain) -}}
+                        {% else %}
+                            {{- empty_value|trans({}, sonata_admin.field_description.translationDomain) -}}
+                        {% endif%}
+                    </option>
+                {% endif %}
+                {% if preferred_choices|length > 0 %}
+                    {% set options = preferred_choices %}
+                    {{ block('admin_form_type_color_choice_widget_options') }}
+                    {% if choices|length > 0 %}
+                        <option disabled="disabled">{{ separator }}</option>
+                    {% endif %}
+                {% endif %}
+                {% set options = choices %}
+                {{ block('admin_form_type_color_choice_widget_options') }}
+            </select>
+            {% endif %}
+
+            <div class="selected-color-preview"></div>
+            <button class="btn icd-controls icd-btn-click-color">Выбрать цвет из картинки</button>
+
+       {% else %}
+
+            <div class="alert alert-error alert-dismissable" style="float:left;">
+                Необходимо заполнить <a href="{{ path('admin_core_color_color_list') }}">таблицу цветов</a>.
+            </div>
+
+       {% endif %}
+   {% endspaceless %}
+
+{% endblock %}

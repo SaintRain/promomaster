@@ -1,0 +1,212 @@
+{% extends "CoreCommonBundle::main_layout.html.twig" %}
+
+{% use 'CoreProductBundle:Catalog:product_cell.html.twig' %}
+
+{% block js_head %}
+    {{ parent() }}
+    <script>
+        var google_tag_params = {
+                ecomm_pagetype: 'home'
+           }
+         {#settingsJS.extra['pageType'] = 'home';#}
+    </script>
+{#    <script src="{{ asset('bundles/corecommon/js/slick.min.js') }}"></script>#}
+{#    <script src="{{ asset('bundles/corecommon/js/main.frontend.js') }}"></script>#}
+{#    <script src="{{ asset('bundles/coreproperty/js/frontend.filter.js') }}"></script>#}
+{% endblock %}
+{% block content %}
+   {#
+   <section id="promo">
+	<div class="promo_actions">
+		<div style="margin-left:-1200px;width:2400px;" class="promo_actions_scroll">
+			<!-- promo action -->
+			<article class="promo_action">
+				<div class="promo_action_info">
+					<h2>Супер цена!</h2>
+					<a title="LEGO Dino Raptor Chase Chase Chase" href="javascript:void(0);" class="product_name">Goblin zeppelin ambush World of Warcraft</a><br>
+					<a href="javascript:void(0);" class="product_cat">Конструкторы</a>
+					<div class="product_price_comparison">
+						<div class="product_price">1499 <span>руб.</span></div>
+						<div class="product_price old">2499 руб.</div>
+					</div>
+					<p>Акция действует до 01.01.2013</p>
+				</div>
+				<div class="promo_action_pic">
+                                    <img src="{{asset('images/todel/dummy_promo.jpg')}}">
+                                </div>
+			</article>
+			<!-- promo action -->
+			<article class="promo_action">
+				<div class="promo_action_info">
+					<h2>Супер цена!</h2>
+					<a title="LEGO Dino Raptor Chase Chase Chase" href="javascript:void(0);" class="product_name">Goblin zeppelin ambush World of Warcraft</a><br>
+					<a href="javascript:void(0);" class="product_cat">Конструкторы</a>
+					<div class="product_price_comparison">
+						<div class="product_price">1499 <span>руб.</span></div>
+						<div class="product_price old">2499 руб.</div>
+					</div>
+					<p>Акция действует до 01.01.2013</p>
+				</div>
+				<div class="promo_action_pic"><img src="{{asset('images/todel/dummy_promo.jpg')}}"></div>
+			</article>
+			<!-- promo action -->
+			<article class="promo_action">
+				<div class="promo_action_info">
+					<h2>Супер цена!</h2>
+					<a title="LEGO Dino Raptor Chase Chase Chase" href="javascript:void(0);" class="product_name">Goblin zeppelin ambush World of Warcraft</a><br>
+					<a href="javascript:void(0);" class="product_cat">Конструкторы</a>
+					<div class="product_price_comparison">
+						<div class="product_price">1499 <span>руб.</span></div>
+						<div class="product_price old">2499 руб.</div>
+					</div>
+					<p>Акция действует до 01.01.2013</p>
+				</div>
+				<div class="promo_action_pic"><img src="{{asset('images/todel/dummy_promo.jpg')}}"></div>
+			</article>
+		</div>
+		<div class="promo_fade promo_fade_left">&nbsp;</div>
+		<div class="promo_fade promo_fade_right">&nbsp;</div>
+	</div>
+
+	<span class="promo_nav prev disabled"><span class="promo_nav_arrow">Предыдущая акция</span></span>
+	<span class="promo_nav next"><span class="promo_nav_arrow">Следующая акция</span></span>
+
+	<div class="promo_navbar"><div class="promo_navbar_container">
+		<div class="promo_navbar_item">Лучший рейтинг</div>
+		<div class="promo_navbar_item">Лучшая игрушка для малыша</div>
+		<div class="promo_navbar_item active">Супер цена</div>
+		<div class="promo_navbar_item">Самый милый мишка</div>
+		<div class="promo_navbar_item">Товар месяца</div>
+		<div class="promo_navbar_slider">&nbsp;</div>
+	</div></div>
+</section>
+#}
+<div role="main" id="content">
+    <div class="main_col">
+        <div class="main_col_pad">
+        <!-- products showcase -->
+        <section class="products_showcase products_grid">
+            <div class="clear">
+                <ul class="text_tabs">
+                    {% for centCat in centerCategories %}
+                        <li class="text_tab in_cat_{{centCat.name}}{% if loop.first %} text_tab_active{% endif %}">
+                            <span>{{attribute(centCat, 'caption' ~ app.request.locale)}}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {#<a href="javascript:void(0);" class="seeall">Посмотреть все популярные товары</a>#}
+            </div>
+            <div class="clear">
+                {% for centCat in centerCategories %}
+                    {% set i = 0 %}
+                    {% set isFirst = (loop.first) ? true : false %}
+                    {% set productLen = centCat.products | length %}
+                    {% set products = (productLen > 8) ? (centCat.products | slice(0, 7)) : centCat.products %}
+                    {% for product in products %}
+                        {% if i % 4 == 0 or productLen == 0 %}
+                            <div class="products_grid_line grid_container in_cat_{{centCat.name}}{% if not isFirst %} hidden{% endif %}">
+                        {% endif %}
+
+                                {{ block('product') }}
+
+                               {# <div class="product grid_item">
+                                    <a title="{{attribute(product, 'caption' ~ app.request.locale) }}" href="{{path('core_product', {'slug': product.slug })}}" class="product_name">
+                                        {% if product.images | length %}
+                                            <img alt="{{attribute((product.images | first), 'alt' ~ app.request.locale )}}" src="{{asset((product.images | first) | getFileWebPath('preview', '222x222_')) }}" class="product_img">
+                                            {% else %}
+                                                <img alt="{{attribute(product, 'caption' ~ app.request.locale) }}" src="{{asset('images/no-image.jpg')}}">
+                                        {% endif %}
+                                        <span>{{attribute(product, 'caption' ~ app.request.locale )}}</span>
+                                    </a>
+                                    <a href="{{path('core_shop_product_catalog_first_page', {'slug': product.categoryMain.slug })}}" class="product_cat">{{attribute(product.categoryMain, 'caption' ~ app.request.locale )}}</a>
+                                    #}{#
+                                    <div class="product_rating">
+                                        <span class="product_rating_stars">
+                                            <span class="product_rating_star">&nbsp;</span>
+                                            <span class="product_rating_star">&nbsp;</span>
+                                            <span class="product_rating_star">&nbsp;</span>
+                                            <span class="product_rating_star">&nbsp;</span>
+                                        </span>
+                                        <span class="product_rating_count">15</span>
+                                    </div>
+                                    #}
+                                    {#<div class="product_price">{{product.price}} <span>руб.</span></div>
+                                </div>#}
+                        {% set i = i + 1 %}
+                        {% set productLen = productLen - 1 %}
+                        {% if i % 4 == 0 or productLen == 0 %}
+                            {% set i = 0 %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </section>
+        <!-- brands showcase -->
+        {% if brands | length %}
+        <section class="brands showcase_box">
+                <h2>
+                    <a href="javascript:void(0);">Бренды</a>
+                </h2>
+                {#
+                <a href="javascript:void(0);" class="showcase_seeall">Посмотреть все бренды</a>
+                #}
+                <div class="showcase_container">
+                    <ul class="showcase_list slider multiple-items">
+                        {% for brand in brands %}
+                            <li class="showcase_item">
+                                <a href="{{path('core_shop_product_brand_first_page', {'slug' : brand.slug})}}">
+                                    {% if brand.logo %}
+                                        {% if attribute(brand.logo | first, 'alt' ~ app.request.locale) %}
+                                            {% set imgAlt =  attribute(brand.logo | first, 'alt' ~ app.request.locale) %}
+                                            {% else %}
+                                                {% set imgAlt =  attribute(brand, 'caption' ~ app.request.locale) %}
+                                        {% endif %}
+
+                                        <img alt="{{imgAlt}}" title="{{imgAlt}}" src="{{asset((brand.logo | first) | getFileWebPath('preview', '148x70_')) }}">
+                                    {% else %}
+                                        <img title="{{ 'msg.image_not_found' | trans([],'frontend') }}" alt="{{ 'msg.image_not_found' | trans([],'frontend') }}" src="{{asset('images/image_not_found/64x64.jpg')}}">
+                                    {% endif%}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+        </section>
+        {% endif %}
+
+        {#
+        <!-- characters showcase -->
+        <section class="characters showcase_box">
+                <h2><a href="javascript:void(0);">Персонажи</a></h2>
+                <a href="javascript:void(0);" class="showcase_seeall">Посмотреть всех персонажей</a>
+                <div class="showcase_container">
+                        <span class="showcase_nav prev disabled"><span class="showcase_nav_btn">Предыдущие</span></span>
+                        <span class="showcase_nav next disabled"><span class="showcase_nav_btn">Следующие</span></span>
+                        <ul class="showcase_list">
+                                <li class="showcase_item"><a href="javascript:void(0);"><img alt="Cars" src="{{asset('images/todel/dummy_brand1.jpg')}}"></a></li>
+                                <li class="showcase_item"><a href="javascript:void(0);"><img alt="DUPLO" src="{{asset('images/todel/dummy_brand2.jpg')}}"></a></li>
+                                <li class="showcase_item"><a href="javascript:void(0);"><img alt="Cars" src="{{asset('images/todel/dummy_brand1.jpg')}}"></a></li>
+                        </ul>
+                </div>
+        </section>
+        #}
+        </div>
+    </div> <!-- /main content col -->
+
+    <!-- side content col -->
+    <aside class="side_col">
+        <div class="side_col_pad">
+            <!-- filter with owl -->
+            {% include 'CorePropertyBundle:Filter:layout.html.twig' with filterBuilder %}
+            <!-- /filter with owl -->
+        </div>
+    </aside>
+    <!-- /side content col -->
+</div>
+{% endblock %}
+
+{# SEO - заголовки #}
+{% block title %}OliKids.ru — интернет-магазин игрушек и детских товаров{% endblock %}
+{% block meta_keywords %}Детские игрушки, транспорт, куклы, машинки, детские товары{% endblock %}
+{% block meta_description %}Интернет-магазин детских товаров, где можно купить игрушки, самокаты, радионяни, бутылочки.{% endblock %}

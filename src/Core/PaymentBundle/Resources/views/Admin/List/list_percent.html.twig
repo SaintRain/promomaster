@@ -1,0 +1,15 @@
+
+{#**
+ * Шаблон для вывода форматированных процентов в админке на списке записей
+ *
+ * @author Sergeev A.M.
+ * @copyright LLC "PromoMaster"
+ *#}
+
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    
+    {{ moneyFormat(value) }} % {#{ value|number_format(2, ',', ' ') }#}
+
+{% endblock %}

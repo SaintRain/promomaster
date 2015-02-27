@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field %}
+    
+    {% if (object.contragents | length)  > 1 %}
+        <a class="label label-warning" target="blank" href="{{path('admin_sonata_user_commoncontragent_list', {'filter[user__email][value]=': object.id})}}">Показать ({{object.contragents | length}})</a>
+        {% else %}
+            <div class="label">Нет</div>
+    {% endif %}
+    
+{% endblock %}

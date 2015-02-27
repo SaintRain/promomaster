@@ -1,0 +1,52 @@
+services:
+  core_admin_trouble_ticket:
+    class: Core\TroubleTicketBundle\Admin\TroubleTicketAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Пользователи, label: Траблтикеты }
+    arguments: [null, Core\TroubleTicketBundle\Entity\TroubleTicket, CoreTroubleTicketBundle:Admin\TroubleTicketAdmin]
+
+  core_admin_trouble_ticket_status:
+    class: Core\TroubleTicketBundle\Admin\StatusAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, label: Статусы траблтикетов }
+    arguments: [null, Core\TroubleTicketBundle\Entity\Status, CoreTroubleTicketBundle:Admin\StatusAdmin]
+
+  core_admin_trouble_ticket_priority:
+    class: Core\TroubleTicketBundle\Admin\PriorityAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, label: Приоритеты траблтикетов }
+    arguments: [null, Core\TroubleTicketBundle\Entity\Priority, CoreTroubleTicketBundle:Admin\PriorityAdmin]
+
+  core_admin_trouble_ticket_message:
+    class: Core\TroubleTicketBundle\Admin\MessageAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Траблтикеты, label: Ответы, show_in_dashboard: false }
+    arguments: [null, Core\TroubleTicketBundle\Entity\Message, CoreTroubleTicketBundle:Admin\MessageAdmin]
+
+  core_admin_trouble_ticket_log:
+    class: Core\TroubleTicketBundle\Admin\LogAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Траблтикеты, label: Логи, show_in_dashboard: false }
+    arguments: [null, Core\TroubleTicketBundle\Entity\Log, CoreTroubleTicketBundle:Admin\LogAdmin]
+
+  core_admin_trouble_ticket_message_form:
+    class: Core\TroubleTicketBundle\Admin\Form\Type\MessageType
+    arguments: ['@security.context']
+    tags:
+        - { name: form.type, alias: trouble_ticket_message }
+
+  core_admin_trouble_ticket_full_text_form:
+    class: Core\TroubleTicketBundle\Admin\Form\Type\FullTextType
+    tags:
+        - { name: form.type, alias: full_text }
+
+  core_admin_trouble_ticket_file_listener:
+    class: Core\TroubleTicketBundle\EventListener\FileListener
+    arguments: ['@doctrine.orm.entity_manager','@security.context','@session']
+    tags:
+      - { name: kernel.event_listener, event: core_file_image.file_upload, method: onFileUpload, priority: 255}
+      - { name: kernel.event_listener, event: core_file_image.file_delete, method: onFileDelete, priority: 255}
+
+  core_trouble_ticket_log_mailer:
+    class: Core\TroubleTicketBundle\Mailer\LogMailer
+    arguments: ['@mailer', '@router', '@templating','@translator', '@core_config_logic', {'fromEmail': %default_email_sender_name%}]
