@@ -1,3 +1,0 @@
-services:
-    tfox.mpdfport:
-        class: TFox\MpdfPortBundle\Service\MpdfService
