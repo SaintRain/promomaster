@@ -180,17 +180,17 @@ class TroubleTicket
 
     /**
      * Связь с заказом
-     * @ORM\ManyToOne(targetEntity="Core\OrderBundle\Entity\Order", inversedBy="tickets")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * ORM\ManyToOne(targetEntity="Core\OrderBundle\Entity\Order", inversedBy="tickets")
+     * ORM\JoinColumn(referencedColumnName="id")
      */
-    private $order;
+//    private $order;
 
     /**
      * Связь с продуктом
-     * @ORM\ManyToOne(targetEntity="Core\ProductBundle\Entity\CommonProduct", inversedBy="tickets")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * ORM\ManyToOne(targetEntity="Core\ProductBundle\Entity\CommonProduct", inversedBy="tickets")
+     * ORM\JoinColumn(referencedColumnName="id")
      */
-    private $product;
+//    private $product;
 
     /**
      * Время обновления менеджером
@@ -647,27 +647,27 @@ class TroubleTicket
         );
     }
 
-    public function getOrder()
-    {
-        return $this->order;
-    }
+//    public function getOrder()
+//    {
+//        return $this->order;
+//    }
+//
+//    public function setOrder($order)
+//    {
+//        $this->order = $order;
+//        return $this;
+//    }
 
-    public function setOrder($order)
-    {
-        $this->order = $order;
-        return $this;
-    }
-
-    public function getProduct()
-    {
-        return $this->product;
-    }
-
-    public function setProduct($product)
-    {
-        $this->product = $product;
-        return $this;
-    }
+//    public function getProduct()
+//    {
+//        return $this->product;
+//    }
+//
+//    public function setProduct($product)
+//    {
+//        $this->product = $product;
+//        return $this;
+//    }
 
     public function getUpdatedDateTimeByManager()
     {

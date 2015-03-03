@@ -57,7 +57,6 @@ class CommonBannerFormMapper
     ])
 
         ->add('name', null, ['label' => 'Название баннера'])
-            ->add('url', null, ['label' => 'URL перехода'])
             ->end();
     }
 }

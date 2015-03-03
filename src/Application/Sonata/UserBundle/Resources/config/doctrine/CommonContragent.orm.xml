@@ -29,14 +29,14 @@
             target-entity="Core\PaymentBundle\Entity\Payment"
             mapped-by="customer"
         />
-        <one-to-many field="manufacturerDiscounts"
-            target-entity="Core\DiscountsBundle\Entity\ContragentManufacturerDiscount"
-            mapped-by="contragent"
-        />
-        <one-to-many field="orders"
-            target-entity="Core\OrderBundle\Entity\Order"
-            mapped-by="contragent"
-        />
+        <!--<one-to-many field="manufacturerDiscounts"-->
+            <!--target-entity="Core\DiscountsBundle\Entity\ContragentManufacturerDiscount"-->
+            <!--mapped-by="contragent"-->
+        <!--/>-->
+        <!--<one-to-many field="orders"-->
+            <!--target-entity="Core\OrderBundle\Entity\Order"-->
+            <!--mapped-by="contragent"-->
+        <!--/>-->
         
         <field name="phone1" column="phone1" type="string" length="50" />
         <field name="phone2" column="phone2" type="string" length="50" nullable="true" />

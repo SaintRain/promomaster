@@ -39,12 +39,12 @@ class DashboardStatisticsLogic
     public function getGeneralStatistics()
     {
 
-        $generalOrdersStatistics = $this->em->getRepository('CoreOrderBundle:Order')->getGeneralStatistics();
+        //$generalOrdersStatistics = $this->em->getRepository('CoreOrderBundle:Order')->getGeneralStatistics();
         $generalUserStatistics = $this->em->getRepository('ApplicationSonataUserBundle:User')->getGeneralStatistics();
         $generalTroubleTicketStatistics = $this->em->getRepository('CoreTroubleTicketBundle:TroubleTicket')->getGeneralStatistics();
         $generalPaymentStatistics = $this->em->getRepository('CorePaymentBundle:Payment')->getGeneralStatistics();
 
-        $chartOrder = $this->em->getRepository('CoreOrderBundle:Order')->getChartStatistics();
+      //  $chartOrder = $this->em->getRepository('CoreOrderBundle:Order')->getChartStatistics();
         $chartUser = $this->em->getRepository('ApplicationSonataUserBundle:User')->getChartStatistics();
 
         $seriesOptions = [
@@ -56,11 +56,11 @@ class DashboardStatisticsLogic
 
         $dates = [];
         $orders = [];
-        foreach ($chartOrder as $c) {
-            $orders[$c['date']] = $c;
-            $dates[$c['date']] = $c['date'];
-        }
-        unset($chartOrder);
+//        foreach ($chartOrder as $c) {
+//            $orders[$c['date']] = $c;
+//            $dates[$c['date']] = $c['date'];
+//        }
+//        unset($chartOrder);
 
         $users = [];
         foreach ($chartUser as $c) {
@@ -144,9 +144,9 @@ class DashboardStatisticsLogic
         }
 
         $res = [
-            'generalOrdersStatistics' => $generalOrdersStatistics,
+       //     'generalOrdersStatistics' => $generalOrdersStatistics,
             'generalUserStatistics' => $generalUserStatistics,
-            'generalTroubleTicketStatistics' => $generalTroubleTicketStatistics,
+           'generalTroubleTicketStatistics' => $generalTroubleTicketStatistics,
             'generalPaymentStatistics' => $generalPaymentStatistics,
             'seriesOptions' => $seriesOptions,
             'healthOfSystem' => $healthOfSystem

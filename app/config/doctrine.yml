@@ -61,20 +61,20 @@ doctrine:
           ApplicationSonataUserBundle: ~
           CoreDirectoryBundle: ~
           CoreFileBundle: ~
-          CoreManufacturerBundle: ~
+#          CoreManufacturerBundle: ~
           CoreCategoryBundle: ~
-          CoreOrderBundle: ~
-          CoreProductBundle: ~
-          CorePropertyBundle: ~
+#          CoreOrderBundle: ~
+#          CoreProductBundle: ~
+#          CorePropertyBundle: ~
           CoreTroubleTicketBundle: ~
           CorePaymentBundle: ~
           CoreFaqBundle: ~
           FOSUserBundle: ~
           CoreUnionBundle: ~
           CoreColorBundle: ~
-          CoreLogisticsBundle: ~
-          CoreDeliveryBundle: ~
-          CoreDiscountsBundle: ~
+#          CoreLogisticsBundle: ~
+#          CoreDeliveryBundle: ~
+#          CoreDiscountsBundle: ~
           CoreReviewBundle: ~
           CoreConfigBundle: ~
           CoreStatisticsBundle: ~
@@ -135,20 +135,20 @@ doctrine:
           ApplicationSonataUserBundle: ~
           CoreDirectoryBundle: ~
           CoreFileBundle: ~
-          CoreManufacturerBundle: ~
+#          CoreManufacturerBundle: ~
           CoreCategoryBundle: ~
-          CoreOrderBundle: ~
-          CoreProductBundle: ~
-          CorePropertyBundle: ~
+#          CoreOrderBundle: ~
+#          CoreProductBundle: ~
+#          CorePropertyBundle: ~
           CoreTroubleTicketBundle: ~
           CorePaymentBundle: ~
           CoreFaqBundle: ~
           FOSUserBundle: ~
           CoreUnionBundle: ~
           CoreColorBundle: ~
-          CoreLogisticsBundle: ~
-          CoreDeliveryBundle: ~
-          CoreDiscountsBundle: ~
+#          CoreLogisticsBundle: ~
+#          CoreDeliveryBundle: ~
+#          CoreDiscountsBundle: ~
           CoreReviewBundle: ~
           CoreConfigBundle: ~
           CoreStatisticsBundle: ~

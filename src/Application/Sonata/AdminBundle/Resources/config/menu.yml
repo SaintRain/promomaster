@@ -18,28 +18,28 @@
     Группы:                             { route: admin_sonata_user_group_list }
     Траблтикеты:                        { route: admin_core_troubleticket_troubleticket_list }
     Категории траблтикетов:             { route: admin_core_category_troubleticketcategory_list }
-Продукция:
-    Продукция:                          { route: admin_core_product_commonproduct_list }
-    Анализ прайсов:                     { route: admin_core_logistics_supplierpriceanalysis_list }
-    Категории продукции:                { route: admin_core_category_productcategory_list }
-    Виртульные категории:               { route: admin_core_category_productvirtualcategory_list }
-    Характеристики:                     { route: admin_core_property_property_list }
-    Производители:                      { route: admin_core_manufacturer_manufacturer_list }
-    Сертификаты производителей:         { route: admin_core_manufacturer_certificate_list }
-    Бренды:                             { route: admin_core_manufacturer_brand_list }
-    Отзывы о товарах:                   { route: admin_core_review_review_list }
-Бухгалтерия:
-    Заказы:                             { route: admin_core_order_order_list }
-
-    Предзаказы:                         { route: admin_core_order_preorder_preorder_list }
-    Незавершенные заказы:               { route: admin_core_statistics_notfinishedorder_list }
-    Платежи:                            { route: admin_core_payment_payment_list, delimiters: [after] }
-    Продавцы:                           { route: admin_core_logistics_seller_list }
-    Поставщики:                         { route: admin_core_logistics_supplier_list, delimiters: [after] }
-    Поставки:                           { route: admin_core_logistics_supply_list }
-    Транзиты:                           { route: admin_core_logistics_transit_list }
-    Товар со всех складов:              { route: admin_core_logistics_unitinstock_list }
-    Склады:                             { route: admin_core_logistics_stock_list }
+#Продукция:
+#    Продукция:                          { route: admin_core_product_commonproduct_list }
+#    Анализ прайсов:                     { route: admin_core_logistics_supplierpriceanalysis_list }
+#    Категории продукции:                { route: admin_core_category_productcategory_list }
+#    Виртульные категории:               { route: admin_core_category_productvirtualcategory_list }
+#    Характеристики:                     { route: admin_core_property_property_list }
+#    Производители:                      { route: admin_core_manufacturer_manufacturer_list }
+#    Сертификаты производителей:         { route: admin_core_manufacturer_certificate_list }
+#    Бренды:                             { route: admin_core_manufacturer_brand_list }
+#    Отзывы о товарах:                   { route: admin_core_review_review_list }
+#Бухгалтерия:
+#    Заказы:                             { route: admin_core_order_order_list }
+#
+#    Предзаказы:                         { route: admin_core_order_preorder_preorder_list }
+#    Незавершенные заказы:               { route: admin_core_statistics_notfinishedorder_list }
+#    Платежи:                            { route: admin_core_payment_payment_list, delimiters: [after] }
+#    Продавцы:                           { route: admin_core_logistics_seller_list }
+#    Поставщики:                         { route: admin_core_logistics_supplier_list, delimiters: [after] }
+#    Поставки:                           { route: admin_core_logistics_supply_list }
+#    Транзиты:                           { route: admin_core_logistics_transit_list }
+#    Товар со всех складов:              { route: admin_core_logistics_unitinstock_list }
+#    Склады:                             { route: admin_core_logistics_stock_list }
 FAQ:
     Категории:                          { route: admin_core_category_faqcategory_list}
     Статьи:                             { route: admin_core_faq_article_list}
@@ -49,22 +49,22 @@ FAQ:
         Регионы:                        { route: admin_core_directory_region_list }
         Города:                         { route: admin_core_directory_city_list }
     Финансовые настройки:
-        Справочник банков:              { route: admin_core_logistics_bank_list }
+#        Справочник банков:              { route: admin_core_logistics_bank_list }
         Валюты:                         { route: admin_core_directory_currency_list }
-        Правовые формы:                 { route: admin_core_directory_legalform_list }
+#        Правовые формы:                 { route: admin_core_directory_legalform_list }
         Платежные системы:              { route: admin_core_payment_paymentsystem_commonpaymentsystem_list }
     Пременные для сайта:
         Настройки:                      { route: admin_core_config_config_list }
         Группы для настроек:            { route: admin_core_config_group_list }
         Цвета:                          { route: admin_core_color_color_list }
     Статусы:
-        Доп. статусы заказов:           { route: admin_core_order_extrastatus_list }
-        Статусы Предзаказов:            { route: admin_core_order_preorder_preorderstatus_list }
-        Причины списания:               { route: admin_core_logistics_unitinstockdefectreason_list }
-        Причины отмены заказов:         { route: admin_core_order_canceledreason_list }
-        Типы расходов поставки:         { route: admin_core_logistics_additionalcoststypeofsupply_list }
-        Статусы транзитов:              { route: admin_core_logistics_transitstatus_list }
-        Статусы поставок:               { route: admin_core_logistics_supplystatus_list }
+#        Доп. статусы заказов:           { route: admin_core_order_extrastatus_list }
+#        Статусы Предзаказов:            { route: admin_core_order_preorder_preorderstatus_list }
+#        Причины списания:               { route: admin_core_logistics_unitinstockdefectreason_list }
+#        Причины отмены заказов:         { route: admin_core_order_canceledreason_list }
+#        Типы расходов поставки:         { route: admin_core_logistics_additionalcoststypeofsupply_list }
+#        Статусы транзитов:              { route: admin_core_logistics_transitstatus_list }
+#        Статусы поставок:               { route: admin_core_logistics_supplystatus_list }
         Статусы траблтикетов:           { route: admin_core_troubleticket_status_list }
         Приоритеты траблтикетов:        { route: admin_core_troubleticket_priority_list }
     Справочники:
@@ -73,13 +73,13 @@ FAQ:
     Видео-Хостинги:                     { route: admin_core_directory_videohosting_list }
     Праздники:                          { route: admin_core_holiday_holiday_list }
     Производственный календарь:         { route: : admin_core_officeworktime_schedule_list }
-Скидки:
-    Скидки по брендам:                  { route: admin_core_discounts_manufacturerdiscount_list }
-    Индивидуальные cкидки по брендам:   { route: admin_core_discounts_contragentmanufacturerdiscount_list }
-Доставка:
-    Компании:                           { route: admin_core_delivery_company_list }
-    Способы доставки:                   { route: admin_core_delivery_service_list }
-    Пункты выдачи:                      { route: admin_core_delivery_address_list }
-    Типы доставок:                      { route: admin_core_delivery_servicetype_list }
+#Скидки:
+#    Скидки по брендам:                  { route: admin_core_discounts_manufacturerdiscount_list }
+#    Индивидуальные cкидки по брендам:   { route: admin_core_discounts_contragentmanufacturerdiscount_list }
+#Доставка:
+#    Компании:                           { route: admin_core_delivery_company_list }
+#    Способы доставки:                   { route: admin_core_delivery_service_list }
+#    Пункты выдачи:                      { route: admin_core_delivery_address_list }
+#    Типы доставок:                      { route: admin_core_delivery_servicetype_list }
 Статистика:
     Статистика по продуктам:            { route: admin_core_statistics_statistics_list }

@@ -1,6 +1,0 @@
-{% if article %}
-{% set noIndex =  (request and request.attributes.get('_route') == 'core_common_index') ? false : true %}
-    <li>
-        <a {% if noIndex %}rel="nofollow" {% endif %}href="{{ path('core_faq_article', {categorySlug: article.category.slug, articleSlug: article.slug }) }}">{{ article.captionRu }}</a>
-    </li>
-{% endif %}

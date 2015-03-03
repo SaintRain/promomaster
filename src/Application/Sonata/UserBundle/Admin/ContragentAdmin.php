@@ -99,10 +99,7 @@ class ContragentAdmin extends Admin {
                     'label' => 'Баланс',
                     'template' => 'ApplicationSonataUserBundle:Admin:List/list_balance.html.twig',
                     ))
-                ->add('orders', null, array(
-                                'label' => 'Заказы',
-                                'template' => 'ApplicationSonataUserBundle:Admin:List/list_orders_info.html.twig',
-                                'sortable' => false))
+
                 ->addIdentifier('user.email', null, array('label' => 'Аккаунт'))
                 ->add('createdDateTime', null, array('label' => 'Добавлен'))
                 ->add('updatedDateTime', null, array('label' => 'Изменен'))
@@ -411,18 +408,19 @@ class ContragentAdmin extends Admin {
         $queryBuilder->leftJoin($rootAlias . '.payments', 'payments')
             ->leftJoin('payments.system', 'system')
             ->addSelect('payments','system');
-        $queryBuilder
-                ->leftJoin($rootAlias . '.orders', 'orders')
-                //->leftJoin('orders.compositions', 'compositions')
-                //->leftJoin('compositions.product', 'product')
-                //->leftJoin('compositions.units', 'units')
-                //->leftJoin('compositions.booking', 'booking')
-                //->leftJoin('product.manufacturers', 'manufacturers')
-                ->leftJoin('orders.deliveryMethod', 'deliveryMethod')
-                ->addSelect('partial orders.{id}', 'deliveryMethod'/*, 'compositions','units', 'booking', 'product', 'manufacturers', */);
-
-        $queryBuilder->leftJoin($rootAlias . '.manufacturerDiscounts', 'manufacturerDiscounts')
-            ->addSelect('manufacturerDiscounts');
+//
+//        $queryBuilder
+//                ->leftJoin($rootAlias . '.orders', 'orders')
+//                //->leftJoin('orders.compositions', 'compositions')
+//                //->leftJoin('compositions.product', 'product')
+//                //->leftJoin('compositions.units', 'units')
+//                //->leftJoin('compositions.booking', 'booking')
+//                //->leftJoin('product.manufacturers', 'manufacturers')
+//                ->leftJoin('orders.deliveryMethod', 'deliveryMethod')
+//                ->addSelect('partial orders.{id}', 'deliveryMethod'/*, 'compositions','units', 'booking', 'product', 'manufacturers', */);
+//
+//        $queryBuilder->leftJoin($rootAlias . '.manufacturerDiscounts', 'manufacturerDiscounts')
+//            ->addSelect('manufacturerDiscounts');
 
 
 

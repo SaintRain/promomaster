@@ -1,9 +1,0 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
-
-{% block field %}
-    {% if object.minSum == NULL or  object.minSum == 0 %}
-        <div>&HorizontalLine;</div>
-        {% else %}
-            <div class="money">{{moneyFormat(object.minSum)}} {{currencyFormat()}}</div>
-    {% endif %}
-{% endblock %}

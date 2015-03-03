@@ -12,7 +12,6 @@ namespace Core\FileBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Core\ProductBundle\Entity\CommonProduct;
 
 class FileController extends Controller
 {

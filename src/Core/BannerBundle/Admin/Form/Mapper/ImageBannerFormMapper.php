@@ -23,6 +23,7 @@ class ImageBannerFormMapper extends  CommonBannerFormMapper
         parent::__construct($formMapper, $options);
 
         $formMapper
+            ->add('url', null, ['label' => 'URL перехода'])
             ->add('isOpenUrlInNewWindow', null, ['label'=>'Открывать в новом окне'])
             ->add('image', 'multiupload_image',
                 array(
@@ -32,6 +33,8 @@ class ImageBannerFormMapper extends  CommonBannerFormMapper
                     'attr' => array(
                         'multiple' => false, // для одного файла
                     )))
+
+
             ->end();
     }
 }

@@ -112,11 +112,11 @@ class UserAdmin extends BaseUserAdmin
         $rootAlias = $queryBuilder->getQueryBuilder()->getRootAlias();
         // добавляем выборку всей палитры
         $queryBuilder->leftJoin($rootAlias . '.contragents', 'contragent')
-                ->leftJoin('contragent.orders', 'orders')
-                ->leftJoin('orders.deliveryMethod', 'd')
+//                ->leftJoin('contragent.orders', 'orders')
+//                ->leftJoin('orders.deliveryMethod', 'd')
                 ->leftJoin($rootAlias . '.groups', 'g')
                 ->leftJoin($rootAlias . '.logs', 'logs')
-                ->addSelect('contragent', 'orders', 'logs' ,'g', 'd')
+//                ->addSelect('contragent', 'orders', 'logs' ,'g', 'd')
                 //->addSelect('partial contragent.{id}', 'partial orders.{id}', 'partial logs.{id, loginDateTime, ip, loginBySocial}' ,'partial g.{id, name}', 'partial d.{id, name, captionRu}')
         ;
         return $queryBuilder;

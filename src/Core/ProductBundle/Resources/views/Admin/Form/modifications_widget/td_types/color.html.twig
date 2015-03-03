@@ -1,7 +1,0 @@
-{% block color_type %}
-{%if d.color is defined and d.color.hex is defined and  d.color.hex!= 'null' %}<div style="width:18px;height:18px;float:left;border:solid 1px #ddd;background-color: #{{d.color.hex}}"></div>
-{%else%}
-<div style="width:18px;height:18px;float:left;border:solid 1px #ddd;background: url(/bundles/corecolor/img/varicolored.png) 50%"></div>
-{%endif%}
-{%if d.color.hex is defined %}&nbsp;{{d.color.captionRu}}{%endif%}
-{% endblock %}

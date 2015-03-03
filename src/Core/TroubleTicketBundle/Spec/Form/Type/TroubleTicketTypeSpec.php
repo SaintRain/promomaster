@@ -8,7 +8,7 @@ use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Core\ProductBundle\Entity\CommonProduct;
+//use Core\ProductBundle\Entity\CommonProduct;
 use Core\OrderBundle\Entity\Order;
 
 class TroubleTicketTypeSpec extends ObjectBehavior

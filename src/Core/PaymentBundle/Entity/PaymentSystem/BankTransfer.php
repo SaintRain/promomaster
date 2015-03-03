@@ -22,19 +22,19 @@ class BankTransfer extends CommonPaymentSystem {
 
     /**
      * Продавец
-     * @ORM\OneToOne(targetEntity="Core\LogisticsBundle\Entity\Seller")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * ORM\OneToOne(targetEntity="Core\LogisticsBundle\Entity\Seller")
+     * ORM\JoinColumn(referencedColumnName="id")
      */
-    private $seller;
-    
-    public function getSeller() {
-        return $this->seller;
-    }
-
-    public function setSeller($seller) {
-        $this->seller = $seller;
-        return $this;
-    }
+//    private $seller;
+//
+//    public function getSeller() {
+//        return $this->seller;
+//    }
+//
+//    public function setSeller($seller) {
+//        $this->seller = $seller;
+//        return $this;
+//    }
     
 // -----------------------------------------------------------------------------
     

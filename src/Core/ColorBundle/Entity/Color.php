@@ -74,9 +74,9 @@ class Color {
 
     /**
      * Связь с таблицей продуктов
-     * @ORM\OneToMany(targetEntity="Core\ProductBundle\Entity\CommonProduct", mappedBy="color")
+     * ORM\OneToMany(targetEntity="Core\ProductBundle\Entity\CommonProduct", mappedBy="color")
      */
-    private $products;
+//    private $products;
 
     /**
      * @ORM\OneToMany(targetEntity="ColorPalette", mappedBy="main", cascade={"persist"}, orphanRemoval=true)
@@ -85,7 +85,7 @@ class Color {
     protected $palette;
 
     public function __construct() {
-        $this->products = new ArrayCollection();
+//        $this->products = new ArrayCollection();
         $this->palette = new ArrayCollection();
     }
 
@@ -143,24 +143,24 @@ class Color {
         return $this;
     }
 
-    public function getProducts() {
-        return $this->products;
-    }
-
-    public function setProducts($products) {
-        $this->products = $products;
-        return $this;
-    }
-
-    public function addProducts($products) {
-        $this->products->add($products);
-        return $this;
-    }
-
-    public function removeProducts($products) {
-        $this->products->removeElement($products);
-        return $this;
-    }
+//    public function getProducts() {
+//        return $this->products;
+//    }
+//
+//    public function setProducts($products) {
+//        $this->products = $products;
+//        return $this;
+//    }
+//
+//    public function addProducts($products) {
+//        $this->products->add($products);
+//        return $this;
+//    }
+//
+//    public function removeProducts($products) {
+//        $this->products->removeElement($products);
+//        return $this;
+//    }
 
     public function getPalette() {
         return $this->palette;

@@ -90,9 +90,9 @@ class BannerAdmin extends Admin
             ->addIdentifier('createdDateTime', null, ['label' => 'Добавлено'])
             ->addIdentifier('name', null, ['label' => 'Название баннера'])
             ->addIdentifier('user.email', null, ['label' => 'Пользователь'])
-            ->add('url', null, ['label' => 'URL перехода',
-                'template' => 'CoreBannerBundle:Admin\list_fields:url.html.twig'
-            ])
+//            ->add('url', null, ['label' => 'URL перехода',
+//                'template' => 'CoreBannerBundle:Admin\list_fields:url.html.twig'
+//            ])
             ->add('_action', 'actions', array(
                 'label' => 'Действия',
                 'actions' => array(

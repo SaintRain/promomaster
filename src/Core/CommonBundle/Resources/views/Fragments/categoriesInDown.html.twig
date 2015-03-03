@@ -1,9 +1,0 @@
-{% set noIndex =  (request and request.attributes.get('_route') == 'core_common_index') ? false : true %}
-{% for category in categories %}
-    {% if noIndex %}<!--noindex-->{% endif %}    
-    <li {{fastEdit(category)}}>
-        <a {% if noIndex %}rel="nofollow" {% endif %}href="{{ path('core_shop_product_catalog_first_page', {slug: category.slug}) }}">{{category.captionRu}}</a>
-    </li>
-    {% if noIndex %}<!--/noindex-->{% endif %}
-{% endfor %}
-

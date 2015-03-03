@@ -100,11 +100,11 @@ class Review
 
     /**
      * Продукт к которому оставлен отзыв
-     * @ORM\ManyToOne(targetEntity="Core\ProductBundle\Entity\CommonProduct", inversedBy="reviews")
-     * @ORM\JoinColumn(referencedColumnName="id")
-     * @Assert\NotBlank()
+     * ORM\ManyToOne(targetEntity="Core\ProductBundle\Entity\CommonProduct", inversedBy="reviews")
+     * ORM\JoinColumn(referencedColumnName="id")
+     * Assert\NotBlank()
      */
-    private $product;
+//    private $product;
 
     /**
      * Пользователь который оставил отзыв
@@ -285,16 +285,6 @@ class Review
         return $this;
     }
 
-    public function getProduct()
-    {
-        return $this->product;
-    }
-
-    public function setProduct($product)
-    {
-        $this->product = $product;
-        return $this;
-    }
 
     public function getUser()
     {

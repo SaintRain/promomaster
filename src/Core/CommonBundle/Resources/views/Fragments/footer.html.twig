@@ -1,96 +1,122 @@
-{#Основной футер#}
-{% set noIndex =  (app.request and app.request.attributes.get('_route') == 'core_common_index') ? false : true %}
-<footer id="footer">
-    <div class="footer_container">
-        <div class="grid_container">
-            <ul class="footer_cats grid_item">
-                {{ render (controller ('CoreCommonBundle:Fragments:categoriesInDown', {'request': app.request})) }}
-            </ul>
-            <ul class="footer_brands grid_item">
-                {{ render (controller ('CoreCommonBundle:Fragments:brandsInDown', {'request': app.request})) }}
-            </ul>
-            <div class="footer_support grid_item">
+<!--=== Footer Version 1 ===-->
+<div class="footer-v1">
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- About -->
+                <div class="col-md-3 md-margin-bottom-40">
+                    <a href="index.html"><img id="logo-footer" class="footer-logo" src="/assets/img/logo2-default.png" alt=""></a>
+                    <p>About Unify dolor sit amet, consectetur adipiscing elit. Maecenas eget nisl id libero tincidunt sodales.</p>
+                    <p>Duis eleifend fermentum ante ut aliquam. Cras mi risus, dignissim sed adipiscing ut, placerat non arcu.</p>
+                </div><!--/col-md-3-->
+                <!-- End About -->
 
-                {% set phones = ServiceContainer.get('core_config_logic').get('phones') %}
-                {% set phonesCaptions = {'rostov':'Ростов н/Д','msk':'Москва','spb': 'СПб'}  %}
+                <!-- Latest -->
+                <div class="col-md-3 md-margin-bottom-40">
+                    <div class="posts">
+                        <div class="headline"><h2>Latest Posts</h2></div>
+                        <ul class="list-unstyled latest-list">
+                            <li>
+                                <a href="#">Incredible content</a>
+                                <small>May 8, 2014</small>
+                            </li>
+                            <li>
+                                <a href="#">Best shoots</a>
+                                <small>June 23, 2014</small>
+                            </li>
+                            <li>
+                                <a href="#">New Terms and Conditions</a>
+                                <small>September 15, 2014</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!--/col-md-3-->
+                <!-- End Latest -->
 
-                <ul>
-                    {% for key, phone in phones %}
-                        {% if phonesCaptions[key] is defined %}
+                <!-- Link List -->
+                <div class="col-md-3 md-margin-bottom-40">
+                    <div class="headline"><h2>Useful Links</h2></div>
+                    <ul class="list-unstyled link-list">
+                        <li><a href="#">About us</a><i class="fa fa-angle-right"></i></li>
+                        <li><a href="#">Portfolio</a><i class="fa fa-angle-right"></i></li>
+                        <li><a href="#">Latest jobs</a><i class="fa fa-angle-right"></i></li>
+                        <li><a href="#">Community</a><i class="fa fa-angle-right"></i></li>
+                        <li><a href="#">Contact us</a><i class="fa fa-angle-right"></i></li>
+                    </ul>
+                </div><!--/col-md-3-->
+                <!-- End Link List -->
 
-                            <li>{{ phonesCaptions[key] }}: {{ phone }}</li>
-
-                        {% endif %}
-                    {% endfor %}
-                    {#
-                    <li>Skype: olikids.ru</li>
-                    #}
-                </ul>
-                {% if noIndex %}<!--noindex-->{% endif %}
-                <ul>
-                    <li>
-                        <a {% if noIndex %}rel="nofollow" {% endif %}href="{{path('core_common_about')}}">О магазине</a>
-                    </li>
-                    <li>
-                        <a {% if noIndex %}rel="nofollow" {% endif %}href="{{path('trouble_ticket_contact')}}">Контактная информация</a>
-                    </li>
-                    <li>
-                        <a {% if noIndex %}rel="nofollow" {% endif %}href="{{path('core_faq_homepage')}}">Помощь</a>
-                    </li>
-
-                    {{ render (controller ('CoreCommonBundle:Fragments:howToBecomeAPartner', {'request': app.request})) }}
-
-                </ul>
-                {% if noIndex %}<!--/noindex-->{% endif %}
-                <ul>
-                    <li>
-                        <a target="_blank" href="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=2508/*http://market.yandex.ru/shop/239839/reviews">
-                            <img src="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=2505/*http://grade.market.yandex.ru/?id=239839&amp;action=image&amp;size=0" border="0" width="88" height="31" alt="Читайте отзывы покупателей и оценивайте качество магазина на Яндекс.Маркете">
-                        </a>
-                    </li>
-                    <li>
-                        <a target="_blank" href="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=1248/*http://market.yandex.ru/shop/239839/reviews/add">
-                            <img src="http://clck.yandex.ru/redir/dtype=stred/pid=47/cid=1248/*http://img.yandex.ru/market/informer12.png" border="0" alt="Оцените качество магазина на Яндекс.Маркете.">
-                        </a>
-                    </li>
-                    {% if noIndex == false %}
-                    <li>
-                        <a target="_blank" href="http://www.kids-price.ru">
-                            <img height="31" width="88" alt="Kids-Price.Ru - цены на детские товары, коляски, автомобильные детские кресла, одежду и обувь." src="http://www.kids-price.ru/i/banner.gif" border="0">
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-            <div class="footer_info grid_item">
-
-                {{ render (controller ('CoreCommonBundle:Fragments:PaymentSystemInDown', {'request': app.request})) }}
-
-                {{ render (controller ('CoreCommonBundle:Fragments:deliveryCompaniesInDown', {'request': app.request})) }}
+                <!-- Address -->
+                <div class="col-md-3 map-img md-margin-bottom-40">
+                    <div class="headline"><h2>Contact Us</h2></div>
+                    <address class="md-margin-bottom-40">
+                        25, Lorem Lis Street, Orange <br />
+                        California, US <br />
+                        Phone: 800 123 3456 <br />
+                        Fax: 800 123 3456 <br />
+                        Email: <a href="mailto:info@anybiz.com" class="">info@anybiz.com</a>
+                    </address>
+                </div><!--/col-md-3-->
+                <!-- End Address -->
             </div>
         </div>
-        {% if app.environment == 'prod' %}
-            {% set mixMarketList = ServiceContainer.get('core_config_logic').get('mix-market') %}
-            {{ mixMarketList['main'] | raw }}
-            {% set metrics = ServiceContainer.get('core_config_logic').get('metrics') %}
-            {% for metric in metrics %}
-                {% spaceless %}
-                {{ metric | raw }}
-                {% endspaceless %}
-            {% endfor %}
+    </div><!--/footer-->
 
-            {% set otherScripts = ServiceContainer.get('core_config_logic').get('other-scripts') %}
-            {% for other in otherScripts %}
-                {% spaceless %}
-                    {{ other | raw }}
-                {% endspaceless %}
-            {% endfor %}
-        {% endif %}
-        {% if noIndex %}<!--noindex-->{% endif %}
-        <div class="footer_copyright">&copy; {{ "now"|date("Y", default_timezone) }} Olikids. <a {% if noIndex %}rel="nofollow" {% endif %}href="{{path('core_common_privacy_policies')}}">Политика конфиденциальности</a></div>
-        {% if noIndex %}<!--/noindex-->{% endif %}
-        <script>
-            console.log(google_tag_params);
-        </script>
-    </div>
-</footer>
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        2014 &copy; All Rights Reserved.
+                        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                    </p>
+                </div>
+
+                <!-- Social Links -->
+                <div class="col-md-6">
+                    <ul class="footer-socials list-inline">
+                        <li>
+                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook">
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Skype">
+                                <i class="fa fa-skype"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Google Plus">
+                                <i class="fa fa-google-plus"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Linkedin">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Pinterest">
+                                <i class="fa fa-pinterest"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Dribbble">
+                                <i class="fa fa-dribbble"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- End Social Links -->
+            </div>
+        </div>
+    </div><!--/copyright-->
+</div>
+<!--=== End Footer Version 1 ===-->
+
+

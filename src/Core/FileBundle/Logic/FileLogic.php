@@ -540,6 +540,16 @@ class FileLogic
         $field          = $data['fieldName'];
         $attach         = $data['namespace_to_attach'];
         $insert         = $data['namespace_to_insert'];
+
+//        if (isset($this->configs[$type][$attach][$field])) {
+//            $configs= $this->configs[$type][$attach][$field];
+//        }
+//        else if (isset($this->configs['image'][$attach][$field])) {
+//        $configs= $this->configs['image'][$attach][$field];
+//    }   else if (isset($this->configs['flash'][$attach][$field])) {
+//            $configs= $this->configs['flash'][$attach][$field];
+//        }
+
         $configs        = isset($this->configs[$type][$attach][$field]) ? $this->configs[$type][$attach][$field] : $this->configs['image'][$attach][$field];
         $dataToResponse = array();
         $objToAttach    = null;

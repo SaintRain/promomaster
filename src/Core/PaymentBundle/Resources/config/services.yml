@@ -5,7 +5,8 @@ services:
   # Сервис для платежек и баланса
   core_payment_logic:
     class: Core\PaymentBundle\Logic\PaymentLogic
-    arguments: ['@service_container', '@doctrine', '@session', '@translator', '@core_order_logic', '@router']
+#    arguments: ['@service_container', '@doctrine', '@session', '@translator', '@core_order_logic', '@router']
+    arguments: ['@service_container', '@doctrine', '@session', '@translator', '', '@router']
     tags:
       - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 

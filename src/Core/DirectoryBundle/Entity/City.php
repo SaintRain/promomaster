@@ -199,15 +199,15 @@ class City
 
     /**
      * Список городов
-     * @var Doctrine\Common\Collections\ArrayCollection
-     * @ORM\OneToMany(targetEntity="Core\DeliveryBundle\Entity\Address", mappedBy="city", cascade={"persist"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * var Doctrine\Common\Collections\ArrayCollection
+     * ORM\OneToMany(targetEntity="Core\DeliveryBundle\Entity\Address", mappedBy="city", cascade={"persist"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      */
-    private $selfPickupPlaces;
+//    private $selfPickupPlaces;
 
     public function __construct()
     {
         $this->geoCityList = new ArrayCollection();
-        $this->selfPickupPlaces = new ArrayCollection();
+     //   $this->selfPickupPlaces = new ArrayCollection();
     }
 
     /**
@@ -637,37 +637,37 @@ class City
         return $this;
     }
 
-    /**
-     * @param \Core\DirectoryBundle\Entity\Doctrine\Common\Collections\ArrayCollection $selfPickupPlaces
-     */
-    public function setSelfPickupPlaces($selfPickupPlaces)
-    {
-        $this->selfPickupPlaces = $selfPickupPlaces;
-    }
+//    /**
+//     * @param \Core\DirectoryBundle\Entity\Doctrine\Common\Collections\ArrayCollection $selfPickupPlaces
+//     */
+//    public function setSelfPickupPlaces($selfPickupPlaces)
+//    {
+//        $this->selfPickupPlaces = $selfPickupPlaces;
+//    }
+//
+//    /**
+//     * @return \Core\DirectoryBundle\Entity\Doctrine\Common\Collections\ArrayCollection
+//     */
+//    public function getSelfPickupPlaces()
+//    {
+//        return $this->selfPickupPlaces;
+//    }
 
-    /**
-     * @return \Core\DirectoryBundle\Entity\Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getSelfPickupPlaces()
-    {
-        return $this->selfPickupPlaces;
-    }
-
-    public function addSelfPickupPlace($selfPickupPlace)
-    {
-        if (!$this->selfPickupPlaces->contains($selfPickupPlace)) {
-            $this->selfPickupPlaces->add($selfPickupPlace);
-            $selfPickupPlace->setCity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSelfPickupPlace($selfPickupPlace)
-    {
-        $this->selfPickupPlaces->removeElement($selfPickupPlace);
-
-        return $this;
-    }
+//    public function addSelfPickupPlace($selfPickupPlace)
+//    {
+//        if (!$this->selfPickupPlaces->contains($selfPickupPlace)) {
+//            $this->selfPickupPlaces->add($selfPickupPlace);
+//            $selfPickupPlace->setCity($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeSelfPickupPlace($selfPickupPlace)
+//    {
+//        $this->selfPickupPlaces->removeElement($selfPickupPlace);
+//
+//        return $this;
+//    }
 
 }

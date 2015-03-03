@@ -198,7 +198,7 @@ class ContragentController extends Controller
         } else {
             $em = $this->getDoctrine()->getManager();
             $contragent = $em->getRepository('ApplicationSonataUserBundle:CommonContragent')->find($contragentId);
-            if (!$contragent || $contragent->getUser()->getId() != $user->getId() || count($contragent->getPayments()) || count($contragent->getOrders()) || count($contragent->getManufacturerDiscounts())) {
+            if (!$contragent || $contragent->getUser()->getId() != $user->getId() || count($contragent->getPayments())  ) {
                 $answer = array(
                     'errors' => true,
                     'msg' => 'Access Denied',

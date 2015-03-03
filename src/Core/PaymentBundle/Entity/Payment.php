@@ -115,10 +115,10 @@ class Payment
     /**
      * Заказы
      *
-     * @ORM\ManyToOne(targetEntity="Core\OrderBundle\Entity\Order", inversedBy="payments")
-     * @ORM\JoinColumn(referencedColumnName="id", onDelete="RESTRICT")
+     * ORM\ManyToOne(targetEntity="Core\OrderBundle\Entity\Order", inversedBy="payments")
+     * ORM\JoinColumn(referencedColumnName="id", onDelete="RESTRICT")
      */
-    private $order;
+//    private $order;
 
     /**
      * Возврат
@@ -276,16 +276,16 @@ class Payment
         return $this;
     }
 
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
-    public function setOrder($order)
-    {
-        $this->order = $order;
-        return $this;
-    }
+//    public function getOrder()
+//    {
+//        return $this->order;
+//    }
+//
+//    public function setOrder($order)
+//    {
+//        $this->order = $order;
+//        return $this;
+//    }
 
     function getIsRefund()
     {

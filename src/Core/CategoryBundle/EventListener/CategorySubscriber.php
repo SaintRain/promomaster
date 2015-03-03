@@ -33,7 +33,7 @@ class CategorySubscriber implements EventSubscriber
         $object = $args->getEntity();
 
         // Включение или выключенеи отображения товаров при включении или выключении категории
-        $this->container->get('core_product_logic')->checkAndUpdateIsVisibleStatus($object);
+//        $this->container->get('core_product_logic')->checkAndUpdateIsVisibleStatus($object);
     }
 
     public function postPersist(LifecycleEventArgs $args)
@@ -41,6 +41,6 @@ class CategorySubscriber implements EventSubscriber
         $object = $args->getEntity();
 
         // проверяем и выставляем флаг оторбажения товара на сайте
-        $this->container->get('core_product_logic')->checkAndUpdateIsVisibleStatus($object);
+//        $this->container->get('core_product_logic')->checkAndUpdateIsVisibleStatus($object);
     }
 }

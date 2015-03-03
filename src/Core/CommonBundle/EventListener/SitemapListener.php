@@ -65,41 +65,41 @@ class SitemapListener implements SitemapListenerInterface
             }
         }
 
-        // Категории продуктов
-        $categories = $this->container->get('core_shop_category_logic')->getCategoryTreeToShow(false);
-        foreach ($categories as $category) {
-            if (($url = $this->_goodURL($router->generate('core_shop_product_catalog_first_page', array('slug' => $category['slug']), true), $disallow))) {
-                $event->getGenerator()->addUrl(
-                        new UrlConcrete(
-                        $url, new \DateTime(), UrlConcrete::CHANGEFREQ_WEEKLY, 0.7
-                        ), 'shop.categories'
-                );
-            }
-        }
-
-        // Бренды
-        $brands = $em->getRepository('CoreManufacturerBundle:Brand')->findForPopulateSitemap();
-        foreach ($brands as $brand) {
-            if (($url = $this->_goodURL($router->generate('core_shop_product_brand_first_page', array('slug' => $brand['slug']), true), $disallow))) {
-                $event->getGenerator()->addUrl(
-                        new UrlConcrete(
-                        $url, new \DateTime(), UrlConcrete::CHANGEFREQ_WEEKLY, 0.7
-                        ), 'shop.brands'
-                );
-            }
-        }
-
-        // Продукты
-        $products = $em->getRepository('CoreProductBundle:CommonProduct')->findForPopulateSitemap();
-        foreach ($products as $product) {
-            if (($url = $this->_goodURL($router->generate('core_product', array('slug' => $product['slug']), true), $disallow))) {
-                $event->getGenerator()->addUrl(
-                        new UrlConcrete(
-                        $url, new \DateTime(), UrlConcrete::CHANGEFREQ_WEEKLY, 1
-                        ), 'shop.products'
-                );
-            }
-        }
+//        // Категории продуктов
+//        $categories = $this->container->get('core_shop_category_logic')->getCategoryTreeToShow(false);
+//        foreach ($categories as $category) {
+//            if (($url = $this->_goodURL($router->generate('core_shop_product_catalog_first_page', array('slug' => $category['slug']), true), $disallow))) {
+//                $event->getGenerator()->addUrl(
+//                        new UrlConcrete(
+//                        $url, new \DateTime(), UrlConcrete::CHANGEFREQ_WEEKLY, 0.7
+//                        ), 'shop.categories'
+//                );
+//            }
+//        }
+//
+//        // Бренды
+//        $brands = $em->getRepository('CoreManufacturerBundle:Brand')->findForPopulateSitemap();
+//        foreach ($brands as $brand) {
+//            if (($url = $this->_goodURL($router->generate('core_shop_product_brand_first_page', array('slug' => $brand['slug']), true), $disallow))) {
+//                $event->getGenerator()->addUrl(
+//                        new UrlConcrete(
+//                        $url, new \DateTime(), UrlConcrete::CHANGEFREQ_WEEKLY, 0.7
+//                        ), 'shop.brands'
+//                );
+//            }
+//        }
+//
+//        // Продукты
+//        $products = $em->getRepository('CoreProductBundle:CommonProduct')->findForPopulateSitemap();
+//        foreach ($products as $product) {
+//            if (($url = $this->_goodURL($router->generate('core_product', array('slug' => $product['slug']), true), $disallow))) {
+//                $event->getGenerator()->addUrl(
+//                        new UrlConcrete(
+//                        $url, new \DateTime(), UrlConcrete::CHANGEFREQ_WEEKLY, 1
+//                        ), 'shop.products'
+//                );
+//            }
+//        }
 
         // Категории (FAQ)
         if (($url = $this->_goodURL($router->generate('core_faq_homepage', array(), true), $disallow))) {

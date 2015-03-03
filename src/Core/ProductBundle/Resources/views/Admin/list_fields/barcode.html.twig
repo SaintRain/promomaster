@@ -1,9 +1,0 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
-
-{% block field%}
-    
-    {%for barcode in object.barcode %}
-        {%if barcode%}{{barcode}}{%if not loop.last %}<br/>{%endif%}{%endif%}
-        {%endfor%}
-
-{% endblock %}

@@ -1,8 +1,3 @@
-core_common_test:
-    pattern:  /test
-    schemes:  [http]
-    defaults: { _controller: CoreCommonBundle:Test:index }
-
 core_common_index:
     pattern:  /
     schemes:  [http]
@@ -17,17 +12,11 @@ core_common_ajax_entity_frontend:
     schemes:  [http]
     defaults: { _controller: CoreCommonBundle:AjaxEntity:getData }
 
-core_common_search_first_page:
-    pattern:  /search.html
+auth_receiver:
+    pattern:  /auth/receiver.html
     schemes:  [http]
-    defaults: { _controller: CoreCommonBundle:Pages:search }
+    defaults: { _controller: CoreCommonBundle:Pages:receiver }
 
-core_common_search:
-    pattern:  /search/page-{page}.html
-    schemes:  [http]
-    defaults: { _controller: CoreCommonBundle:Pages:search }
-    requirements:
-      page: \d+
 
 #экранируем, чтобы по прямой ссылке страницы не были доступны
 #core_common_error404:
@@ -42,26 +31,9 @@ core_common_search:
 #    pattern:  /error504.html
 #    defaults: { _controller: CoreCommonBundle:Pages:error504 }
 
-core_common_about:
-    pattern:  /about.html
-    schemes:  [http]
-    defaults: { _controller: CoreCommonBundle:Pages:about }
 
-core_common_privacy_policies:
-    pattern:  /privacy_policies.html
-    schemes:  [http]
-    defaults: { _controller: CoreCommonBundle:Pages:privacyPolicies }
-    
-auth_receiver:
-    pattern:  /auth/receiver.html
-    schemes:  [http]
-    defaults: { _controller: CoreCommonBundle:Pages:receiver }
+#trouble_ticket_contact:
+#    path:      /contacts.html
+#    schemes:  [http]
+#    defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:contact }
 
-trouble_ticket_contact:
-    path:      /contacts.html
-    schemes:  [http]
-    defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:contact }
-test_action_cron:
-    path:      /test-cron.html
-    schemes:  [http]
-    defaults:  { _controller: CoreCommonBundle:Pages:test }    

@@ -92,7 +92,7 @@ class CommonContragent
     /**
      * Все заказы контрагента
      */
-    private $orders;
+//    private $orders;
 
     public function __toString()
     {
@@ -299,16 +299,16 @@ class CommonContragent
         return $this;
     }
 
-    public function getOrders()
-    {
-        return $this->orders;
-    }
-
-    public function setOrders($orders)
-    {
-        $this->orders = $orders;
-        return $this;
-    }
+//    public function getOrders()
+//    {
+//        return $this->orders;
+//    }
+//
+//    public function setOrders($orders)
+//    {
+//        $this->orders = $orders;
+//        return $this;
+//    }
 
     /**
      * Дополнительные проверки

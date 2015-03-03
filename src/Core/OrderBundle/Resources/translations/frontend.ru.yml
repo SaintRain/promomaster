@@ -1,8 +1,0 @@
-Order not found: 'Заказ не найден или он уже устарел'
-Not enough money in the balance: 'Не хватает денег на балансе'
-Order No: 'Заказ №%No%'
-Expect a call manager:  Вы отправили заявку на заказ %date%
-Cannot find product: Товар закончился
-proper_quantity: Значение должно быть больше или равно 1.
-confines:
-    min_sum: Минимальная сумма заказа для %brands% - %sum%

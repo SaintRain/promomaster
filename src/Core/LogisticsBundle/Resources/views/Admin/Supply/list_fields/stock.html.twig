@@ -1,7 +1,0 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
-{% block field%}
-    {%if object.stock is defined%}
-        {{object.stock.captionRu}} {%if object.stock.city is defined%}<small class="muted">(г.{{object.stock.city.name}})</small>{%endif%}
-    {%endif%}
-
-{% endblock %}

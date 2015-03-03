@@ -1,9 +1,0 @@
-breadcrumb:
-  link_manufacturer_list: Список производителей
-  link_certificate_list: Список сертификатов
-  link_brand_list: Список брендов
-  link_brand_delete: Удаление бренда
-  link_manufacturer_delete: Удаление производителя
-  link_certificate_delete: Удаление сертификата
-  link_price_analysis_list: Загруженные для анализа прайсы
-  link_price_analysis_delete: Удаление прайса

@@ -10,15 +10,15 @@
             <generator strategy="AUTO" />
         </id>
 
-        <one-to-many field="favoriteProducts"
-                     target-entity="Core\UnionBundle\Entity\UserProductFavoriteUnion"
-                     mapped-by="targetObject"
-        />
+        <!--<one-to-many field="favoriteProducts"-->
+                     <!--target-entity="Core\UnionBundle\Entity\UserProductFavoriteUnion"-->
+                     <!--mapped-by="targetObject"-->
+        <!--/>-->
 
-        <one-to-many field="historyProducts"
-                     target-entity="Core\UnionBundle\Entity\UserProductHistoryUnion"
-                     mapped-by="targetObject"
-        />
+        <!--<one-to-many field="historyProducts"-->
+                     <!--target-entity="Core\UnionBundle\Entity\UserProductHistoryUnion"-->
+                     <!--mapped-by="targetObject"-->
+        <!--/>-->
 
         <one-to-many field="contragents" target-entity="Application\Sonata\UserBundle\Entity\CommonContragent" mapped-by="user" fetch="EXTRA_LAZY">
             <cascade>

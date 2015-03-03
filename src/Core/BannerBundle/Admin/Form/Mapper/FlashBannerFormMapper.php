@@ -24,7 +24,7 @@ class FlashBannerFormMapper extends  CommonBannerFormMapper
         parent::__construct($formMapper, $options);
 
         $formMapper
-            ->add('file', 'multiupload_document',
+            ->add('file', 'multiupload_flash',
                 array(
                     'parent_form' => $formMapper,
                     'label' => 'Файл баннера',

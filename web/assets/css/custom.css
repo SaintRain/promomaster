@@ -1,5 +1,5 @@
 /* Социальные кнопки для авторизации */
-.social_btn {display:inline-block;//display:inline;zoom:1;width:33px;height:32px;font-size:5px;background:url('/images/sprites/social.png') 0 0 no-repeat;vertical-align:middle}
+.social_btn {display:inline-block;//display:inline;zoom:1;width:33px;height:32px;font-size:5px;background:url('/assets/img/custom/sprites/social.png') 0 0 no-repeat;vertical-align:middle}
 .social_facebook {cursor:pointer;background-position:0 0}
 .social_facebook:hover {cursor:pointer;background-position:0 -32px}
 .social_vkontakte {cursor:pointer;background-position:-33px 0}

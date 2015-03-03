@@ -48,13 +48,13 @@ class User extends BaseUser
      *
      * @var collection $favoriteProducts;
      */
-    protected $favoriteProducts;
+//    protected $favoriteProducts;
 
     /**
      *
      * @var collection $favoriteProducts;
      */
-    protected $historyProducts;
+//    protected $historyProducts;
 
     /**
      * IP пользователя
@@ -112,8 +112,8 @@ class User extends BaseUser
     {
         parent::__construct();
 
-        $this->favoriteProducts = new ArrayCollection();
-        $this->historyProducts = new ArrayCollection();
+//        $this->favoriteProducts = new ArrayCollection();
+//        $this->historyProducts = new ArrayCollection();
         $this->contragents = new ArrayCollection();
         $this->adminComments = new ArrayCollection();
         $this->subscribersOnAdminComments = new ArrayCollection();
@@ -180,53 +180,53 @@ class User extends BaseUser
 
     }
 
-    public function getFavoriteProducts()
-    {
-        return $this->favoriteProducts;
-    }
+//    public function getFavoriteProducts()
+//    {
+//        return $this->favoriteProducts;
+//    }
+//
+//    public function setFavoriteProducts($favoriteProducts)
+//    {
+//        $this->favoriteProducts = $favoriteProducts;
+//        return $this;
+//    }
+//
+//    public function addFavoriteProducts($favoriteProducts)
+//    {
+////        $favoriteProducts->addFavoriteUsers($this);
+//        $this->favoriteProducts->add($favoriteProducts);
+//        return $this;
+//    }
+//
+//    public function removeFavoriteProducts($favoriteProducts)
+//    {
+////        $favoriteProducts->removeFavoriteUsers($this);
+//        $this->favoriteProducts->removeElement($favoriteProducts);
+//        return $this;
+//    }
 
-    public function setFavoriteProducts($favoriteProducts)
-    {
-        $this->favoriteProducts = $favoriteProducts;
-        return $this;
-    }
-
-    public function addFavoriteProducts($favoriteProducts)
-    {
-//        $favoriteProducts->addFavoriteUsers($this);
-        $this->favoriteProducts->add($favoriteProducts);
-        return $this;
-    }
-
-    public function removeFavoriteProducts($favoriteProducts)
-    {
-//        $favoriteProducts->removeFavoriteUsers($this);
-        $this->favoriteProducts->removeElement($favoriteProducts);
-        return $this;
-    }
-
-    public function getHistoryProducts()
-    {
-        return $this->historyProducts;
-    }
-
-    public function setHistoryProducts($historyProducts)
-    {
-        $this->historyProducts = $historyProducts;
-        return $this;
-    }
-
-    public function addHistoryProducts($historyProducts)
-    {
-        $this->historyProducts->add($historyProducts);
-        return $this;
-    }
-
-    public function removeHistoryProducts($historyProducts)
-    {
-        $this->historyProducts->removeElement($historyProducts);
-        return $this;
-    }
+//    public function getHistoryProducts()
+//    {
+//        return $this->historyProducts;
+//    }
+//
+//    public function setHistoryProducts($historyProducts)
+//    {
+//        $this->historyProducts = $historyProducts;
+//        return $this;
+//    }
+//
+//    public function addHistoryProducts($historyProducts)
+//    {
+//        $this->historyProducts->add($historyProducts);
+//        return $this;
+//    }
+//
+//    public function removeHistoryProducts($historyProducts)
+//    {
+//        $this->historyProducts->removeElement($historyProducts);
+//        return $this;
+//    }
 
     public function getIp()
     {

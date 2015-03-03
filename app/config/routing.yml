@@ -1,4 +1,3 @@
-
 application_sonata_user_security:
     resource: "@ApplicationSonataUserBundle/Resources/config/routing/security.xml"
 
@@ -77,14 +76,14 @@ core_language:
 
 
 #объединяющий бандла
-core_union:
-    resource: "@CoreUnionBundle/Resources/config/routing.yml"
-    prefix:   /admin
+#core_union:
+#    resource: "@CoreUnionBundle/Resources/config/routing.yml"
+#    prefix:   /admin
 
 #обработка созданий модификаций продукта
-core_product_admin:
-    resource: "@CoreProductBundle/Resources/config/adminRouting.yml"
-    prefix:   /admin
+#core_product_admin:
+#    resource: "@CoreProductBundle/Resources/config/adminRouting.yml"
+#    prefix:   /admin
 
 #справочник цветов и их обработка
 core_color:
@@ -96,9 +95,9 @@ gregwar_captcha_routing:
     resource: "@GregwarCaptchaBundle/Resources/config/routing/routing.yml"
 
 #справочник цветов и их обработка
-core_shop_product:
-    resource: "@CoreProductBundle/Resources/config/routing.yml"
-    prefix:   /
+#core_shop_product:
+#    resource: "@CoreProductBundle/Resources/config/routing.yml"
+#    prefix:   /
 
 simple_things_entity_audit:
     resource: "@SimpleThingsEntityAuditBundle/Resources/config/routing.yml"
@@ -116,27 +115,27 @@ core_faq:
 
 
 #
-core_logistics:
-    resource: "@CoreLogisticsBundle/Resources/config/routing.yml"
-    prefix: /admin
+#core_logistics:
+#    resource: "@CoreLogisticsBundle/Resources/config/routing.yml"
+#    prefix: /admin
 
 #Заказы
-core_order:
-    resource: "@CoreOrderBundle/Resources/config/routing.yml"
-    prefix: /admin
+#core_order:
+#    resource: "@CoreOrderBundle/Resources/config/routing.yml"
+#    prefix: /admin
 
-core_order_frontend:
-    resource: "@CoreOrderBundle/Resources/config/frontend.routing.yml"
-    prefix: /
+#core_order_frontend:
+#    resource: "@CoreOrderBundle/Resources/config/frontend.routing.yml"
+#    prefix: /
 
 # все что связано с платежами
 core_payment:
     resource: "@CorePaymentBundle/Resources/config/routing.yml"
     prefix:   /
 
-core_delivery:
-    resource: "@CoreDeliveryBundle/Resources/config/routing.yml"
-    prefix: /
+#core_delivery:
+#    resource: "@CoreDeliveryBundle/Resources/config/routing.yml"
+#    prefix: /
 
 # все что связано со справочными данными
 core_directory:
@@ -144,9 +143,9 @@ core_directory:
     prefix: /
 
 # рейтинг и комментарии товаров
-core_review:
-    resource: "@CoreReviewBundle/Resources/config/routing.yml"
-    prefix:   /
+#core_review:
+#    resource: "@CoreReviewBundle/Resources/config/routing.yml"
+#    prefix:   /
 
 #роутеры для автозаполнения
 shtumi_useful:

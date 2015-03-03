@@ -1,9 +1,3 @@
-{#
-
-
-
-#}
-
 {% extends sonata_block.templates.block_base %}
 
 {% block block %}
@@ -15,23 +9,10 @@
                         <td >
                             <table class="table table-bordered table-striped" >
                                 <thead>
-                                    <tr><td  colspan="2"><img src="{{asset('/bundles/applicationsonatauser/admin/img/shopping-basket.png')}}"/> ЗАКАЗЫ</td></tr>
+
                                 </thead>
                                 <tbody>
-                                    <tr><td style="width:70%">Всего:</td>
-                                        <td>{{statistics.generalOrdersStatistics.orders_total}}</td>
-                                    </tr>
-                                    <tr><td>Оплаченных:</td>
-                                        <td>{{statistics.generalOrdersStatistics.orders_total_paid}}</td>
-                                    </tr>
 
-                                    <tr><td>Оплаченных за 7 дней:</td>
-                                        <td>{{statistics.generalOrdersStatistics.orders_total_paid_by_period_7}}</td>
-                                    </tr>
-
-                                    <tr><td>Оплаченных за сутки:</td>
-                                        <td>{{statistics.generalOrdersStatistics.orders_total_paid_by_period_1}}</td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </td>

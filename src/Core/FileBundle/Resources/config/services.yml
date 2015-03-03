@@ -41,6 +41,12 @@ services:
         - { name: form.type, alias: multiupload_document }
     arguments: [%core_file%, '@core_file_logic']
 
+  core_file_form_multiupload_flash:
+    class: Core\FileBundle\Admin\Form\Type\MultiuploadFlashType
+    tags:
+        - { name: form.type, alias: multiupload_flash }
+    arguments: [%core_file%, '@core_file_logic']
+
   core_file_form_multiupload_file_fronend:
     class: Core\FileBundle\Form\Type\MultiuploadFileFrontendType
     #public: true

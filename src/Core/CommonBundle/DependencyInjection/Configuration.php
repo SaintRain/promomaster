@@ -19,11 +19,6 @@ class Configuration implements ConfigurationInterface {
 		$treeBuilder = new TreeBuilder();
 		$rootNode = $treeBuilder->root('core_common');
 
-		//$rootNode
-		//	->children()
-		//		->scalarNode('factory_class')->isRequired()->end()
-		//	->end();
-
 		return $treeBuilder;
 	}
 

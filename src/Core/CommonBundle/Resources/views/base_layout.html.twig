@@ -1,62 +1,91 @@
 {% spaceless %}
-    <!doctype html>
-    <!--[if lt IE 8]><html lang="ru" class="no-js lt-ie8"> <![endif]-->
-    <!--[if gte IE 8]><!--><html lang="ru" class="no-js"> <!--<![endif]-->
-        <head>
-            <title>{% block title %}{% endblock %}</title>
-            <meta charset="utf-8">
-            <meta name="description" content="{% block meta_description %}{% endblock %}">
-            <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
-            <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
-            {#<base href="" target="_blank">#}
+    <!DOCTYPE html>
+    <!--[if IE 8]>
+    <html lang="ru" class="ie8"> <![endif]-->
+    <!--[if IE 9]>
+    <html lang="ru" class="ie9"> <![endif]-->
+    <!--[if !IE]><!-->
+    <html lang="ru"> <!--<![endif]-->
+    <head>
+        <title>{% block title %}{% endblock %}</title>
 
-            {% stopwatch "seo" %}
-            {% block seo %}
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{% block meta_description %}{% endblock %}">
+        <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+        <meta name="author" content="">
 
-                    {% set canonicalException = [
-                        'core_order_finish',
-                        'core_order_finish_with_payment_id',
-                        'core_order_finish_with_order_id'
-                    ] %}
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="/favicon.ico">
 
-                    {% if app.request.query.all|length > 0 and app.request.attributes.get('_route') and app.request.attributes.get('_route') not in canonicalException %}
+        {% block css %}
+            {% stylesheets
+            'assets/plugins/bootstrap/css/bootstrap.min.css'
+            'assets/css/style.css'
+            'assets/plugins/line-icons/line-icons.css'
+            'assets/plugins/font-awesome/css/font-awesome.min.css'
+            'assets/plugins/flexslider/flexslider.css'
+            'assets/plugins/parallax-slider/css/parallax-slider.css'
+            'assets/css/pages/page_log_reg_v1.css'
+            'assets/css/theme-colors/default.css'
+            'assets/css/custom.css'
 
-                        <link rel="canonical" href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" />
+            output='css/compiled/main.css'
+            filter='cssrewrite,yui_css' %}
+            <link rel="stylesheet" href="{{ asset_url }}"/>
+            {% endstylesheets %}
+        {% endblock %}
 
-                    {% endif %}
+        {% block js_head %}
 
-            {% endblock %}
-            {% endstopwatch %}
+            <script type="text/javascript">
+                var
+                        settingsJS = {
+                            routes: [] // роуты
 
-            {% block css %}
-            {% endblock %}
-            
-            {% block js_head %}
-            {% endblock %}
-            {#инициализация быстрого редактирования#}
-            {{ fastEditInit() }}
+                        };
+                settingsJS.routes['social_auth'] = "{{path('application_sonata_user_auth_social')}}";
+            </script>
 
-        </head>
+            {% javascripts
+            'assets/plugins/jquery/jquery.min.js'
+            'assets/plugins/jquery/jquery-migrate.min.js'
+            'assets/plugins/bootstrap/js/bootstrap.min.js'
+            'assets/plugins/back-to-top.js'
+            'assets/plugins/flexslider/jquery.flexslider-min.js'
+            'assets/plugins/parallax-slider/js/modernizr.js'
+            'assets/plugins/parallax-slider/js/jquery.cslider.js'
+            'assets/js/custom.js'
+            'assets/js/app.js'
+            'assets/js/plugins/parallax-slider.js'
+            output='js/compiled/main.js'
+            filter='yui_js' %}
+            <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
 
-        <body>
 
-            <!-- Header -->
-        {% block header %}{% endblock %}
-        <!-- EndHeader -->
+            <script type="text/javascript">
+                jQuery(document).ready(function () {
+                    App.init();
+                });
+            </script>
 
-        <!-- Menu -->
-    {% block menu %}{% endblock %}
-    <!-- EndMenu -->
+            <!--[if lt IE 9]>
+            <script src="/assets/plugins/respond.js"></script>
+            <script src="/assets/plugins/html5shiv.js"></script>
+            <script src="/assets/js/plugins/placeholder-IE-fixes.js"></script>
+            <![endif]-->
 
-    <!-- Content -->
-{% block content %}{% endblock %}
-<!-- EndContent -->
+        {% endblock %}
 
-<!-- Footer -->
-{% block footer %}{% endblock %}
-<!-- EndFooter -->
+        {#инициализация быстрого редактирования#}
+        {{ fastEditInit() }}
+    </head>
 
-{% block js_footer %}{% endblock %}
-</body>
-</html>
+    <body>
+    {% block body %}{% endblock %}
+    </body>
+
+    </html>
 {% endspaceless %}
