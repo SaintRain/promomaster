@@ -30,3 +30,5 @@
 /web/debug/
 /src/Core/PaymentBundle/Certificate/in
 /src/Core/PaymentBundle/Certificate/out
+access.log
+error.log
