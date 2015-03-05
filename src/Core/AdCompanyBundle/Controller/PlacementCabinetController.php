@@ -11,8 +11,9 @@ namespace Core\AdCompanyBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Core\PlacementBundle\Entity\AdPlace;
 use  Core\AdCompanyBundle\Entity\Placement;
+use  Core\AdCompanyBundle\Entity\AdCompany;
+use Core\AdCompanyBundle\Form\DataTransformer\PlacementTransformer;
 
 class PlacementCabinetController extends Controller
 {
@@ -34,51 +35,38 @@ class PlacementCabinetController extends Controller
     }
 
 
-
     /**
      * Редактирование размещения
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-//    public function editAction($id)
-//    {
-//
-//        $placement = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:Placement')->find($id);
-//        $form = $this->getForm($placement);
-//
-//
-//        $categories = $this->getDoctrine()->getManager()->getRepository('CoreCategoryBundle:PlacementCategory')
-//            ->getBuildTree()[0]['__children'];
-//
-//
-//        //Сохранения изменения
-//        $request = $this->get('request');
-//        if ($request->getMethod() == 'POST') {
-//            $form->handleRequest($request);
-//
-//            if ($this->checkIsExistPlacement($placement)) {
-//                $this->setFlash('edit_errors', 'Сайт с указанным адресом был добавлен вами ранее.');
-//                $isBadName=true;
-//            }
-//            else {
-//                $isBadName=false;
-//            }
-//
-//            if (!$isBadName && $form->isValid()) {
-//
-//                $em = $this->getDoctrine()->getManager();
-////                $em->persist($placement);
-//                $em->flush();
-//
-//                $this->setFlash('edit_success', 'Данные успешно обновлены');
-//                return new RedirectResponse($this->generateUrl('core_cabinet_Placement_edit', ['id' => $id]));
-//            } else {
-//                return $this->render('CoreAdCompanyBundle:Placement\Cabinet:edit.html.twig', ['placement' => $placement, 'categories' => $categories, 'form' => $form->createView()]);
-//            }
-//        } else {
-//            return $this->render('CoreAdCompanyBundle:Placement\Cabinet:edit.html.twig', ['placement' => $placement, 'categories' => $categories, 'form' => $form->createView()]);
-//        }
-//    }
+    public function editAction($id)
+    {
+
+        $placement = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:Placement')->find($id);
+        $form = $this->getForm($placement);
+
+
+        //Сохранения изменения
+        $request = $this->get('request');
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+
+
+            if ($form->isValid()) {
+
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                $this->setFlash('edit_success', 'Данные успешно обновлены');
+                return new RedirectResponse($this->generateUrl('core_cabinet_placement_edit', ['id' => $id]));
+            } else {
+                return $this->render('CoreAdCompanyBundle:Placement\Cabinet:edit.html.twig', ['placement' => $placement, 'form' => $form->createView()]);
+            }
+        } else {
+            return $this->render('CoreAdCompanyBundle:Placement\Cabinet:edit.html.twig', ['placement' => $placement, 'form' => $form->createView()]);
+        }
+    }
 
 
     /**
@@ -90,13 +78,19 @@ class PlacementCabinetController extends Controller
 
         $placement = new Placement();
         $user = $this->container->get('security.context')->getToken()->getUser();
-        //$placement->setUser($user);
+
         $form = $this->getForm($placement);
 
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
 
             $form->handleRequest($request);
+
+            //сетапим текущее время, если оно не указано явно
+            if (!$placement->getStartDateTime()) {
+                $placement->setStartDateTime(new \DateTime());
+            }
+
             if ($form->isValid()) {
 
                 $em = $this->getDoctrine()->getManager();
@@ -104,7 +98,7 @@ class PlacementCabinetController extends Controller
                 $em->flush();
 
                 $this->setFlash('edit_success', 'Новое размещение добавлено');
-                return new RedirectResponse($this->generateUrl('core_cabinet_Placement_edit', ['id' => $placement->getId()]));
+                return new RedirectResponse($this->generateUrl('core_cabinet_placement_edit', ['id' => $placement->getId()]));
             } else {
                 return $this->render('CoreAdCompanyBundle:Placement\Cabinet:edit.html.twig', ['placement' => $placement, 'form' => $form->createView()]);
             }
@@ -112,7 +106,7 @@ class PlacementCabinetController extends Controller
             return $this->render('CoreAdCompanyBundle:Placement\Cabinet:edit.html.twig', ['placement' => $placement, 'form' => $form->createView()]);
         }
 
-        
+
     }
 
     /**
@@ -123,21 +117,23 @@ class PlacementCabinetController extends Controller
     private function getForm($placement)
     {
         $form = $this->createFormBuilder($placement)
-            ->add('adCompany', null, ['required' => true, 'property'=>'name'])
-            ->add('adPlace', null, ['required' => true, 'property'=>'name'])
-            ->add('placementBannersList', null, ['required' => true, 'property'=>'name'])
+            ->add('adCompany', null, ['required' => true, 'property' => 'name'])
+            ->add('adPlace', null, ['required' => true, 'property' => 'name'])
+            ->add('placementBannersList', null, ['required' => false, 'property' => 'banner.name'])
             ->add('startDateTime', 'text', ['required' => false])
             ->add('finishDateTime', 'text', ['required' => false])
             ->add('isEnabled', null, ['required' => false])
             ->add('defaultCountries', null, ['required' => false])
+            ->addModelTransformer(new PlacementTransformer())       //трансформер дат
             ->getForm();
+
 
         return $form;
     }
-    
+
 
     /**
-     * Удаление сайта
+     * Удаление размещения
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($id)
@@ -147,39 +143,20 @@ class PlacementCabinetController extends Controller
         $em = $this->getDoctrine()->getManager();
         $placement = $em->getRepository('CoreAdCompanyBundle:Placement')->findForDeleting(['id' => $id, 'user' => $user]);
 
-        $msg = "Сайт  «{$placement->getDomain()}» был удален.";
+        $msg = "Размещение  «{$placement->getId()}» было удалено.";
         $em->remove($placement);
         try {
             $em->flush();
             $this->setFlash('edit_success', $msg);
         } catch (\Exception $e) {
-            $msg = "Невозможно удалить сайт «{$placement->getDomain()}», т.к. он задействован в системе на данный момент.";
+            $msg = "Невозможно удалить размещение «{$placement->getDomain()}», т.к. оно задействовано в системе на данный момент.";
             $this->setFlash('edit_errors', $msg);
         }
 
 
-        return new RedirectResponse($this->generateUrl('core_cabinet_Placement_list'));
+        return new RedirectResponse($this->generateUrl('core_cabinet_placement_list'));
     }
 
-
-    /**
-     * Проверяет есть ли у пользователя сайт с таким именем
-     * @param $domain
-     * @return mixed
-     */
-    private function checkIsExistPlacement($placement) {
-
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        $em = $this->getDoctrine()->getManager();
-        $res=$em->getRepository('CoreAdCompanyBundle:Placement')->findQuantityByOptions(['id'=>$placement->getId(), 'user' => $user, 'domain' => $placement->getDomain()]);
-
-        if ($res['quantity']) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
 
     /**
      * Установка сообщений
@@ -189,7 +166,7 @@ class PlacementCabinetController extends Controller
     private function setFlash($action, $value)
     {
         $this->container->get('session')->getFlashBag()->set($action, $value);
-    }    
+    }
 
 
 }

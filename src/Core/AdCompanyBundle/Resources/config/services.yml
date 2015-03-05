@@ -27,3 +27,10 @@ services:
   core_placement_logic:
     class: Core\AdCompanyBundle\Logic\PlacementLogic
     arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic']
+
+# логика для рекламных компаний
+  core_adcompany_logic:
+    class: Core\AdCompanyBundle\Logic\AdCompanyLogic
+    arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic']
+
+
