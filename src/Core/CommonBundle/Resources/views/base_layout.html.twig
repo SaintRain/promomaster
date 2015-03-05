@@ -25,6 +25,8 @@
             'assets/css/style.css'
             'assets/plugins/line-icons/line-icons.css'
             'assets/plugins/font-awesome/css/font-awesome.min.css'
+            'assets/plugins/sky-forms/version-2.0.1/css/sky-forms.css'
+            'assets/plugins/sky-forms/version-2.0.1/css/custom-sky-forms.css'
             'assets/plugins/flexslider/flexslider.css'
             'assets/plugins/parallax-slider/css/parallax-slider.css'
             'assets/css/pages/page_log_reg_v1.css'
@@ -35,10 +37,18 @@
             filter='cssrewrite,yui_css' %}
             <link rel="stylesheet" href="{{ asset_url }}"/>
             {% endstylesheets %}
+
+            <!--[if lt IE 9]>
+            <link rel="stylesheet" href="assets/plugins/sky-forms/version-2.0.1/css/sky-forms-ie8.css">
+            <![endif]-->
+            <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+            <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+
         {% endblock %}
 
         {% block js_head %}
-
             <script type="text/javascript">
                 var
                         settingsJS = {
@@ -52,22 +62,29 @@
             'assets/plugins/jquery/jquery.min.js'
             'assets/plugins/jquery/jquery-migrate.min.js'
             'assets/plugins/bootstrap/js/bootstrap.min.js'
+            'assets/plugins/sky-forms/version-2.0.1/js/jquery.maskedinput.min.js'
+            'assets/plugins/sky-forms/version-2.0.1/js/jquery-ui.min.js'
             'assets/plugins/back-to-top.js'
             'assets/plugins/flexslider/jquery.flexslider-min.js'
             'assets/plugins/parallax-slider/js/modernizr.js'
             'assets/plugins/parallax-slider/js/jquery.cslider.js'
-            'assets/js/custom.js'
-            'assets/js/app.js'
             'assets/js/plugins/parallax-slider.js'
+            'assets/js/plugins/datepicker.js'
+            'assets/js/app.js'
+            'assets/js/custom.js'
+
+
             output='js/compiled/main.js'
             filter='yui_js' %}
             <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
 
-
             <script type="text/javascript">
                 jQuery(document).ready(function () {
                     App.init();
+                    //Masking.initMasking();
+                    Datepicker.initDatepicker();
+                    //Validation.initValidation();
                 });
             </script>
 
@@ -75,6 +92,10 @@
             <script src="/assets/plugins/respond.js"></script>
             <script src="/assets/plugins/html5shiv.js"></script>
             <script src="/assets/js/plugins/placeholder-IE-fixes.js"></script>
+            <![endif]-->
+
+            <!--[if lt IE 10]>
+            <script src="assets/plugins/sky-forms/version-2.0.1/js/jquery.placeholder.min.js"></script>
             <![endif]-->
 
         {% endblock %}

@@ -28,12 +28,12 @@
 #    Сертификаты производителей:         { route: admin_core_manufacturer_certificate_list }
 #    Бренды:                             { route: admin_core_manufacturer_brand_list }
 #    Отзывы о товарах:                   { route: admin_core_review_review_list }
-#Бухгалтерия:
+Бухгалтерия:
 #    Заказы:                             { route: admin_core_order_order_list }
 #
 #    Предзаказы:                         { route: admin_core_order_preorder_preorder_list }
 #    Незавершенные заказы:               { route: admin_core_statistics_notfinishedorder_list }
-#    Платежи:                            { route: admin_core_payment_payment_list, delimiters: [after] }
+    Платежи:                            { route: admin_core_payment_payment_list, delimiters: [after] }
 #    Продавцы:                           { route: admin_core_logistics_seller_list }
 #    Поставщики:                         { route: admin_core_logistics_supplier_list, delimiters: [after] }
 #    Поставки:                           { route: admin_core_logistics_supply_list }
@@ -81,5 +81,5 @@ FAQ:
 #    Способы доставки:                   { route: admin_core_delivery_service_list }
 #    Пункты выдачи:                      { route: admin_core_delivery_address_list }
 #    Типы доставок:                      { route: admin_core_delivery_servicetype_list }
-Статистика:
-    Статистика по продуктам:            { route: admin_core_statistics_statistics_list }
+#Статистика:
+#    Статистика по продуктам:            { route: admin_core_statistics_statistics_list }

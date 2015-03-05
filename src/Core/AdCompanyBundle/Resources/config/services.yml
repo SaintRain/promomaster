@@ -23,3 +23,7 @@ services:
     arguments: [null, Core\AdCompanyBundle\Entity\PlacementBanner, null]
 
 
+# логика для размещений
+  core_placement_logic:
+    class: Core\AdCompanyBundle\Logic\PlacementLogic
+    arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic']
