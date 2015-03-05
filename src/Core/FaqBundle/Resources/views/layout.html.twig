@@ -1,5 +1,77 @@
 {% extends "CoreCommonBundle::main_layout.html.twig" %}
 {% block content %}
+    {# BreadCrumbs #}
+    <div class="breadcrumbs">
+        <div class="container">
+            <h1 class="pull-left">{% block breadcrumbs_title %}{% endblock %}</h1>
+            <ul class="pull-right breadcrumb">{% block breadcrumbs %}{% endblock %}</ul>
+        </div>
+    </div>
+    {# END BreadCrumbs #}
+    <div class="container content">
+        <div class="row">
+            {# Main Content Block #}
+            <div class="col-md-9">
+                {% block main_content %}{% endblock %}
+            </div>
+            {# End Main Content Block #}
+            {# Right Block #}
+            <div class="col-md-3">
+                <!-- Contacts -->
+                <div class="headline"><h2>Contacts</h2></div>
+                <ul class="list-unstyled who margin-bottom-30">
+                    <li><a href="#"><i class="fa fa-home"></i>5B Streat, City 50987 New Town US</a></li>
+                    <li><a href="#"><i class="fa fa-envelope"></i>info@example.com</a></li>
+                    <li><a href="#"><i class="fa fa-phone"></i>1(222) 5x86 x97x</a></li>
+                    <li><a href="#"><i class="fa fa-globe"></i>http://www.example.com</a></li>
+                </ul>
+                <!-- End Contacts -->
+                <!-- Business Hours -->
+                <div class="headline"><h2>Business Hours</h2></div>
+                <ul class="list-unstyled margin-bottom-30">
+                    <li><strong>Monday-Friday:</strong> 10am to 8pm</li>
+                    <li><strong>Saturday:</strong> 11am to 3pm</li>
+                    <li><strong>Sunday:</strong> Closed</li>
+                </ul>
+                <!-- End Business Hours -->
+
+                <!-- Info Block -->
+                <div class="headline"><h2>Why we are?</h2></div>
+                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
+                <ul class="list-unstyled margin-bottom-30">
+                    <li><i class="fa fa-check color-green"></i> Odio dignissimos ducimus</li>
+                    <li><i class="fa fa-check color-green"></i> Blanditiis praesentium volup</li>
+                    <li><i class="fa fa-check color-green"></i> Eos et accusamus</li>
+                </ul>
+                <!-- End Info Block -->
+
+                <!-- Social -->
+                <div class="magazine-sb-social margin-bottom-20">
+                    <div class="headline headline-md"><h2>Social Icons</h2></div>
+                    <ul class="social-icons social-icons-color">
+                        <li><a class="social_rss" data-original-title="Feed" href="#"></a></li>
+                        <li><a class="social_facebook" data-original-title="Facebook" href="#"></a></li>
+                        <li><a class="social_twitter" data-original-title="Twitter" href="#"></a></li>
+                        <li><a class="social_vimeo" data-original-title="Vimeo" href="#"></a></li>
+                        <li><a class="social_googleplus" data-original-title="Goole Plus" href="#"></a></li>
+                        <li><a class="social_pintrest" data-original-title="Pinterest" href="#"></a></li>
+                        <li><a class="social_linkedin" data-original-title="Linkedin" href="#"></a></li>
+                        <li><a class="social_dropbox" data-original-title="Dropbox" href="#"></a></li>
+                        <li><a class="social_picasa" data-original-title="Picasa" href="#"></a></li>
+                        <li><a class="social_spotify" data-original-title="Spotify" href="#"></a></li>
+                        <li><a class="social_jolicloud" data-original-title="Jolicloud" href="#"></a></li>
+                        <li><a class="social_wordpress" data-original-title="Wordpress" href="#"></a></li>
+                        <li><a class="social_github" data-original-title="Github" href="#"></a></li>
+                        <li><a class="social_xing" data-original-title="Xing" href="#"></a></li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <!-- End Social -->
+            </div>
+            {# End Right Block #}
+        </div>
+    </div>
+    {#
     <div role="main" class="contacts_page info_page" id="content">
         <div class="main_col">
             <div class="main_col_pad">
@@ -7,8 +79,7 @@
             </div>
         </div>
 
-        {% block menu_left %}
-            {{ include ('CoreCommonBundle:Fragments:menuLeft.html.twig') }}
-        {% endblock %}
     </div>
+    #}
 {% endblock %}
+
