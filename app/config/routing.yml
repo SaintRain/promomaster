@@ -195,3 +195,7 @@ core_banner:
 core_placement:
     resource: "@CoreAdCompanyBundle/Resources/config/placement_routing.yml"
     prefix:   /
+
+core_adcompany:
+    resource: "@CoreAdCompanyBundle/Resources/config/adcompany_routing.yml"
+    prefix:   /
