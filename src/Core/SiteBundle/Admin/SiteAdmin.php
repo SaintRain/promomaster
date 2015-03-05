@@ -13,8 +13,8 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-
-use Core\SiteBundle\Admin\Form\Mapper\SiteFormMapper;
+use Core\SiteBundle\Admin\Form\Mapper\WebSiteFormMapper;
+use Core\SiteBundle\Entity\WebSite;
 
 
 
@@ -52,7 +52,7 @@ class SiteAdmin extends Admin
      */
     public function toString($object)
     {
-        $text = null === $object->getId() ? 'Добавление нового сайта' : 'Редактирование сайта ' . $object->getDomain();
+        $text = null === $object->getId() ? 'Добавление новой площадки' : 'Редактирование площадки ' . $object->getId();
         return $text;
     }
 
@@ -64,13 +64,13 @@ class SiteAdmin extends Admin
         //объект для формы
         $obj = $this->getSubject();
 
-        //контейнер
-        $container = $this->getConfigurationPool()->getContainer();
-        $options = array('obj' => $obj, 'container' => $container);
+        if ($obj instanceof WebSite) {
+            //контейнер
+            $container = $this->getConfigurationPool()->getContainer();
+            $options = array('obj' => $obj, 'container' => $container);
 
-        new SiteFormMapper($formMapper, $options);
-
-
+            new WebSiteFormMapper($formMapper, $options);
+        }
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -78,13 +78,13 @@ class SiteAdmin extends Admin
         $listMapper
             ->addIdentifier('id', 'string', array('label' => 'ID'))
             ->addIdentifier('createdDateTime', null, ['label' => 'Добавлено'])
-            ->add('domain', null, ['label' => 'Сайт',
-            'template' => 'CoreSiteBundle:Admin\Site\list_fields:domain.html.twig'
-            ])
-            ->add('mirrors', null, ['label' => 'Зеркала',
-                'required'=>false,
-                'template' => 'CoreSiteBundle:Admin\Site\list_fields:mirrors.html.twig'
-            ])
+//            ->add('domain', null, ['label' => 'Сайт',
+//            'template' => 'CoreSiteBundle:Admin\Site\list_fields:domain.html.twig'
+//            ])
+//            ->add('mirrors', null, ['label' => 'Зеркала',
+//                'required'=>false,
+//                'template' => 'CoreSiteBundle:Admin\Site\list_fields:mirrors.html.twig'
+//            ])
             ->add('user.email', null, ['label' => 'Пользователь',
                 'template' => 'CoreSiteBundle:Admin\Site\list_fields:user.html.twig'
             ])
@@ -107,12 +107,12 @@ class SiteAdmin extends Admin
     {
         $datagridMapper
             ->add('id', 'doctrine_orm_callback', array(
-                'label' => 'ID сайта, через запятую',
+                'label' => 'ID площадки, через запятую',
                 'callback' => array($this, 'searchById'),
                 'field_type' => 'text'
-            ), null, ['attr' => ['placeholder' => 'ID сайта, через запятую']])
-            ->add('domain', null, array('label' => 'Сайт'), null, ['attr' => ['placeholder' => 'Название']])
-            ->add('mirrors', null, array('label' => 'Зеркало'), null, ['attr' => ['placeholder' => 'Зеркало']])
+            ), null, ['attr' => ['placeholder' => 'ID площадки, через запятую']])
+//            ->add('domain', null, array('label' => 'Сайт'), null, ['attr' => ['placeholder' => 'Название']])
+//            ->add('mirrors', null, array('label' => 'Зеркало'), null, ['attr' => ['placeholder' => 'Зеркало']])
 
             ->add('user', 'doctrine_orm_callback',
                 array(

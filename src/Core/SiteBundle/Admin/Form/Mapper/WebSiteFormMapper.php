@@ -1,6 +1,6 @@
 <?php
 /**
- * Основная форма для редактирования сайта
+ * Основная форма для редактирования web-сайта
  *
  * @author Sergeev A.M.
  * @copyright LLC "PromoMaster"
@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 
 
-class SiteFormMapper
+class WebSiteFormMapper
 {
 
     public function __construct(FormMapper $formMapper, array $options)

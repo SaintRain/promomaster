@@ -56,7 +56,7 @@ class SiteLogic
             'user'=>$this->container->get('security.context')->getToken()->getUser()
         ];
 
-        $queryBuilder = $this->em->getRepository('CoreSiteBundle:Site')->generateQueryBuilderByFilter($filterRequest);
+        $queryBuilder = $this->em->getRepository('CoreSiteBundle:CommonSite')->generateQueryBuilderByFilter($filterRequest);
         $sites = $this->paginator->paginate($queryBuilder, $page, $filterRequest['maxResults']);
         return $sites;
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Сущность сайта
+ * Базовая  сущность площадки на которой будет крутиться реклама
  * @author  Sergeev A.M.
  * @copyright LLC "PromoMaster"
  */
@@ -15,12 +15,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorMap({"WebSite"="WebSite"})
  * @ORM\Table(name="core_site")
- * @ORM\Entity(repositoryClass="Core\SiteBundle\Entity\Repository\SiteRepository")
+ * @ORM\Entity(repositoryClass="Core\SiteBundle\Entity\Repository\CommonSiteRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Assert\Callback(methods={"isValidCommon"})
  */
-class Site
+class CommonSite
 {
 
     /**
@@ -32,15 +34,13 @@ class Site
      */
     protected $id;
 
-
     /**
-     * Доменное имя
-     * @var string
-     * @ORM\Column(type="string", length=250, nullable=false)
-     * @Assert\Url()
+     * Пользователь, которому принадлежит баннер
+     * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User")
+     * @ORM\JoinColumn(referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $domain;
+    private $user;
 
 
     /**
@@ -52,20 +52,12 @@ class Site
 
 
     /**
-     * Зеркала
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $mirrors;
-
-
-    /**
-     * Пользователь, которому принадлежит сайт
-     * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * Категории к которым относится площадка
+     * @ORM\ManyToMany(targetEntity="Core\CategoryBundle\Entity\SiteCategory", cascade={"persist"},   fetch="EXTRA_LAZY")
+     * @ORM\JoinTable(name="core_site_match_categories")
      * @Assert\NotBlank()
      */
-    private $user;
+    private $categories;
 
 
     /**
@@ -82,15 +74,6 @@ class Site
      * @ORM\Column(type="bigint", nullable=true)
      */
     private $indexPosition;
-
-    /**
-     * Категории в которых находится продукт
-     * @ORM\ManyToMany(targetEntity="Core\CategoryBundle\Entity\SiteCategory", cascade={"persist"},   fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(name="core_site_match_categories")
-     * @Assert\NotBlank()
-     */
-    private $categories;
-
 
     public function __construct()
     {
@@ -113,22 +96,6 @@ class Site
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
-    public function getDomain()
-    {
-        return $this->domain;
-    }
-
-    /**
-     * @param string $domain
-     */
-    public function setDomain($domain)
-    {
-        $domain = preg_replace("#/$#", '', $domain);
-        $this->domain = $domain;
-    }
 
     /**
      * @return string
@@ -146,22 +113,6 @@ class Site
         $this->keywords = $keywords;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getMirrors()
-    {
-        return $this->mirrors;
-    }
-
-    /**
-     * @param string $mirrors
-     */
-    public function setMirrors($mirrors)
-    {
-        $this->mirrors = $mirrors;
-    }
 
     /**
      * @return mixed
@@ -211,6 +162,8 @@ class Site
         $this->indexPosition = $indexPosition;
     }
 
+
+
     public function getCategories()
     {
         return $this->categories;
@@ -222,14 +175,11 @@ class Site
         return $this;
     }
 
-
     /**
-     * Дополнительные проверки .общие проверки
-     *
+     * Дополнительные проверки
      */
     public function isValidCommon(ExecutionContextInterface $context)
     {
-
         $parents = [];
         foreach ($this->getCategories() as $cat) {
             $parents[$cat->getParent()->getId()] = true;

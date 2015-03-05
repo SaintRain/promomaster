@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Репозиторий, содержащий для сущности Site
+ * Репозиторий, содержащий для сущности CommonSite
  *
  * @author Sergeev A.M.
  * @copyright LLC "PromoMaster"
@@ -11,11 +11,11 @@ namespace Core\SiteBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class SiteRepository extends EntityRepository
+class CommonSiteRepository extends EntityRepository
 {
 
     /**
-     * Построение запроса на выборку сайтов
+     * Построение запроса на выборку площадок
      * @param array $options
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -35,7 +35,7 @@ class SiteRepository extends EntityRepository
     }
 
     /**
-     * Находит сайт для удаления
+     * Находит площадку для удаления
      * @param $options
      */
     public function findForDeleting($options)
@@ -54,30 +54,6 @@ class SiteRepository extends EntityRepository
         return $res;
     }
 
-    /**
-     * Находит сайты по опциям
-     * @param $options
-     */
-    public function findQuantityByOptions($options)
-    {
-        $query = $this->createQueryBuilder('s')->select('COUNT(s) quantity');
 
-
-        if (isset($options['user'])) {
-            $query->Where('s.user=:user')->setParameter('user', $options['user']->getId());
-        };
-
-        if (isset($options['id'])) {
-            $query->andWhere('s.id!=:id')->setParameter('id', $options['id']);
-        }
-
-        if (isset($options['domain'])) {
-            $query->andWhere('s.domain=:domain')->setParameter('domain', $options['domain']);
-        }
-
-        $res = $query->getQuery()->getOneOrNullResult();
-
-        return $res;
-    }
 
 }

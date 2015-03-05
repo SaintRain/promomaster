@@ -11,7 +11,7 @@ namespace Core\SiteBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Core\SiteBundle\Entity\Site;
+use Core\SiteBundle\Entity\WebSite;
 
 class SiteCabinetController extends Controller
 {
@@ -41,7 +41,7 @@ class SiteCabinetController extends Controller
     public function editAction($id)
     {
 
-        $site = $this->getDoctrine()->getManager()->getRepository('CoreSiteBundle:Site')->find($id);
+        $site = $this->getDoctrine()->getManager()->getRepository('CoreSiteBundle:CommonSite')->find($id);
         $form = $this->getForm($site);
 
 
@@ -54,7 +54,7 @@ class SiteCabinetController extends Controller
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
 
-            if ($this->checkIsExistSite($site)) {
+            if ($this->checkIsExistWebSite($site)) {
                 $this->setFlash('edit_errors', 'Сайт с указанным адресом был добавлен вами ранее.');
                 $isBadName=true;
             }
@@ -86,7 +86,7 @@ class SiteCabinetController extends Controller
     public function createAction()
     {
 
-        $site = new Site();
+        $site = new WebSite();  //пока только веб-сайты
         $user = $this->container->get('security.context')->getToken()->getUser();
         $site->setUser($user);
         $form = $this->getForm($site);
@@ -95,7 +95,7 @@ class SiteCabinetController extends Controller
         if ($request->getMethod() == 'POST') {
 
             $form->handleRequest($request);
-            if ($this->checkIsExistSite($site)) {
+            if ($this->checkIsExistWebSite($site)) {
                 $this->setFlash('edit_errors', 'Сайт с указанным адресом был добавлен вами ранее.');
                 $isBadName=true;
             }
@@ -170,11 +170,11 @@ class SiteCabinetController extends Controller
      * @param $domain
      * @return mixed
      */
-    private function checkIsExistSite($site) {
+    private function checkIsExistWebSite($site) {
 
         $user = $this->container->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
-        $res=$em->getRepository('CoreSiteBundle:Site')->findQuantityByOptions(['id'=>$site->getId(), 'user' => $user, 'domain' => $site->getDomain()]);
+        $res=$em->getRepository('CoreSiteBundle:WebSite')->findQuantityByOptions(['id'=>$site->getId(), 'user' => $user, 'domain' => $site->getDomain()]);
 
         if ($res['quantity']) {
             return true;
