@@ -7,11 +7,19 @@
                 </div>
             </div>
             <div class="col col-lg-4">
-                <div class="form-group"><button type="button" class="btn-u">Найти</button></div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-4">
+                            <button type="submit" class="btn-u">Найти</button>
+                        </div>
+                        {% if isSearched is defined %}
+                        <div class="col col-lg-4">
+                            <a href="{{path('core_faq_homepage')}}" class="btn-u pull-right btn-u-red">Сбросить</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-            {% if isSearched is defined %}
-                <a href="{{path('core_faq_homepage')}}" class="btn_off">Сбросить</a>
-            {% endif %}
         </div>
     </form>
 </div>

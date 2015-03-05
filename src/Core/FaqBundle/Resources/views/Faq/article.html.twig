@@ -24,23 +24,29 @@
     {%- endif -%}
 {%- endblock -%}
 
-{% block breadcrumbs_title %}{{attribute(article, 'caption' ~ app.request.locale)}}{% endblock %}
+{#{% block breadcrumbs_title %}{{attribute(article, 'caption' ~ app.request.locale)}}{% endblock %}#}
 {% block breadcrumbs %}
     <li>
+        <i class="rounded-x fa fa-angle-right"></i>
         <a href="{{path('core_common_index')}}">Домой</a>
     </li>
     <li class="page_path_link">
+        <i class="rounded-x fa fa-angle-right"></i>
         <a href="{{path('core_faq_homepage')}}">Помощь</a>
     </li>
     <li class="page_path_link">
+        <i class="rounded-x fa fa-angle-right"></i>
         <a href="{{path('core_faq_category', {'categorySlug' : article.category.slug})}}">{{attribute(article.category, 'caption' ~ app.request.locale)}}</a>
     </li>
     <li class="active">
-        {{attribute(article, 'caption' ~ app.request.locale)}}
+        <i class="rounded-x fa fa-angle-right"></i>{{attribute(article, 'caption' ~ app.request.locale)}}
     </li>
 {% endblock %}
 {% block main_content %}
-    <h1 {{fastEdit(article)}}>{{attribute(article, 'caption' ~ app.request.locale)}}</h1>
+    <div class="headline">
+        <h2 {{fastEdit(article)}}>{{attribute(article, 'caption' ~ app.request.locale)}}</h2>
+    </div>
+
     <article class="def_style" {{fastEdit(article)}}>
         {{attribute(article, 'body' ~ app.request.locale ) | raw}}
     </article>

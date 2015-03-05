@@ -27,9 +27,12 @@
 {% block breadcrumbs_title %}Помощь{% endblock %}
 {% block breadcrumbs %}
     <li>
+        <i class="rounded-x fa fa-angle-right"></i>
         <a href="{{path('core_common_index')}}">Домой</a>
     </li>
-    <li class="active">FAQ</li>
+    <li class="active">
+        <i class="rounded-x fa fa-angle-right"></i>&nbsp;Помощь
+    </li>
 {% endblock %}
 {% block main_content %}
     <div class="headline"><h2>Помощь</h2></div>
@@ -39,7 +42,6 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    {#<a href="{{path('core_faq_category', {'categorySlug' : cat.slug})}}" class="help_cat_link">{{ attribute(cat, 'caption' ~ app.request.locale) }}</a>#}
                     <a {{fastEdit(cat)}} href="#collapse-{{ loop.index }}" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle">
                         {{ loop.index }}. {{ attribute(cat, 'caption' ~ app.request.locale) }}
                     </a>
@@ -53,7 +55,7 @@
                                 <a href="{{path('core_faq_article', {'categorySlug': cat.slug, 'articleSlug':article.slug})}}">{{ attribute(article, 'caption' ~ app.request.locale) }}</a>
                             </li>
                         {% else %}
-                            <div class="info_box">
+                            <div class="alert alert-warning fade in">
                                 <h6>Информация отсутствует</h6>
                             </div>
                         {% endfor %}
@@ -63,7 +65,7 @@
             </div>
         </div>
         {% else %}
-            <div class="info_box">
+            <div class="alert alert-warning fade in">
                 <h6>Категории не найдено</h6>
             </div>
     {% endfor %}
