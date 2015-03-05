@@ -1,0 +1,199 @@
+{#редактирование размещения в ЛК#}
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}{% if placement.id %}Редактирование настроек размещения {{ placement.domain }}{% else %}Добавление размещения в систему{% endif %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->`
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">размещениеы</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li><a href="{{ path('core_cabinet_placement_list_first_page') }}">Список ваших размещений</a></li>
+                    <li class="active">Редактирование настроек вашего размещения</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block sub_content %}
+
+    {% if placement.id %}
+        <h3>Редактирование настроек вашего размещения</h3>
+    {% else %}
+        <h3>Добавление нового размещения в систему</h3>
+    {% endif %}
+
+
+    {#форма редактирования профиля ЛК#}
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+
+            &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_placement_create') }}'><i
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще размещение</a>
+            &nbsp;&nbsp;&nbsp;
+            <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_placement_list_first_page') }}'><i
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку размещений</a>
+
+        </div>
+    {% endfor %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% if form.vars.errors | length %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <form style="clear: both" class="sky-form sky-form-other-style"
+          action="{% if placement.id %}{{ path('core_cabinet_placement_edit', {id:placement.id}) }}{% else %}{{ path('core_cabinet_placement_create') }}{% endif %}" {{ form_enctype(form) }}
+          method="POST">
+        <fieldset class="sky-form-other-style">
+
+
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.adCompany) %}state-error{% endif %}">
+                    <label>Рекламная компания*</label>
+                    {{ form_widget(form.adCompany,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.adCompany) }}
+                </div>
+            </div>
+            <div class="row margin-bottom-20">
+                <div class="col-lg-6  {% if form_errors(form.adPlace) %}state-error{% endif %}">
+                    <label>Место размещения*</label>
+                    {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.adPlace) }}
+                </div>
+            </div>
+
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.placementBannersList) %}state-error{% endif %}">
+                    <label>Баннеры*</label>
+                    {{ form_widget(form.placementBannersList,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.placementBannersList) }}
+                </div>
+            </div>
+
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
+                    <label>Дата начала показов</label>
+                    <label class="input">
+                        <i class="icon-append fa fa-calendar"></i>
+                        {{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date'} }) }}
+                    </label>
+
+                    {{ form_errors(form.startDateTime) }}
+                </div>
+            </div>
+
+
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
+                    <label>Дата окончания показов</label>
+
+                    <label class="input">
+                        <i class="icon-append fa fa-calendar"></i>
+                        {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date'} }) }}
+                    </label>
+
+                </div>
+            </div>
+
+            <div class="margin-bottom-20 {% if form_errors(form.defaultCountries) %}state-error{% endif %}">
+
+                <label>Страны</label>
+
+                {{ form_widget(form.defaultCountries,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.defaultCountries) }}
+            </div>
+
+            <div class="margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
+                <label class="checkbox">
+                    {{ form_widget(form.isEnabled) }}<i></i> Размещение активно</label>
+                {{ form_errors(form.isEnabled) }}
+                </label>
+
+            </div>
+
+
+            <div class="margin-bottom-20">
+            </div>
+
+            {{ form_rest(form) }}
+
+            <div class="text-right">
+                <button class="btn-u" type="submit">{% if placement.id %}Сохранить{% else %}Добавить{% endif %}</button>
+                &nbsp;&nbsp;
+                <a href="{{ path('core_cabinet_placement_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+                {% if placement.id %}
+                    &nbsp;&nbsp; или &nbsp;&nbsp;
+                    <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>
+                {% endif %}
+
+            </div>
+
+        </fieldset>
+
+    </form>
+
+
+
+    {% block js_head %}
+        {{ parent() }}
+        <script>
+            $(function () {
+                $( "#datepicker" ).datepicker();
+                // Date range
+                $('#form_startDateTime').datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    prevText: '<i class="fa fa-angle-left"></i>',
+                    nextText: '<i class="fa fa-angle-right"></i>',
+                    onSelect: function (selectedDate) {
+                        $('#form_finishDateTime').datepicker('option', 'minDate', selectedDate);
+                    }
+                });
+                $('#form_finishDateTime').datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    prevText: '<i class="fa fa-angle-left"></i>',
+                    nextText: '<i class="fa fa-angle-right"></i>',
+                    onSelect: function (selectedDate) {
+                        $('#form_startDateTime').datepicker('option', 'maxDate', selectedDate);
+                    }
+                });
+
+
+                  $(".date").mask('99-99-9999', {placeholder: '0'});
+
+
+                {% if placement.id %}
+                $('.delete').click(function () {
+                    var res = confirm('Вы действительно хотите удалить это размещение из системы?');
+                    if (res) {
+                        window.location.href = '{{ path('core_cabinet_placement_delete', {id:placement.id}) }}';
+                    }
+                });
+                {% endif %}
+            })
+        </script>
+    {% endblock %}
+
+{% endblock %}

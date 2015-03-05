@@ -1,0 +1,89 @@
+{#вывод списка рекламных компаний в ЛК#}
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}Ваши рекламные компании{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Рекламные компании</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li class="active">Список рекламных компаний</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block sub_content %}
+
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% if  placements.getTotalItemCount %}
+        <h3>Список рекламных компаний</h3>
+        <a style="margin-top: -30px" href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламную компанию</a>
+
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Рекламное место</th>
+                <th>Статус</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for adcompany in adcompanies %}
+                <tr>
+                    <td height="53px">{{ loop.index }}</td>
+                    <td><<b>{{ placement.id  }}</b></td>
+                    <td>
+                        {{ placement.adPlace.name }} {{ placement.adPlace.width }}x{{ placement.adPlace.height }}
+                        {{ placement.adPlace.site.domain }}
+                    </td>
+                    <td>
+                    <td>
+                        {% if placement.isEnabled %}<span class="label label-u">Да</span>{% else %}<span class="label label-warning">Нет</span>{% endif %}</td>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% set routeFirsPage = 'core_cabinet_adcompany_list_first_page' %}
+        {% set routePage = 'core_cabinet_adcompany_list' %}
+
+        {{ knp_pagination_render(sites, 'CoreSiteBundle:Site/Cabinet:pagination.html.twig',{},
+        { routeFirsPage: routeFirsPage, routePage:routePage}) }}
+
+    {% else %}
+        <h2>Вы еще не добавляли размещения в систему</h2>
+        <a style="margin-top: -30px" href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламную компанию</a>
+    {% endif %}
+
+{% endblock %}
