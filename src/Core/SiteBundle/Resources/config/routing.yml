@@ -2,13 +2,13 @@
 core_cabinet_site_list_first_page:
     path:      /cabinet/sites.html
     schemes:  [http]
-    defaults:  { _controller: CoreSiteBundle:Cabinet:list}
+    defaults:  { _controller: CoreSiteBundle:SiteCabinet:list}
 
 # Вывод списка сайтов в ЛК
 core_cabinet_site_list:
     path:      /cabinet/sites/{page}.html
     schemes:  [http]
-    defaults:  { _controller: CoreSiteBundle:Cabinet:list, page: 1 }
+    defaults:  { _controller: CoreSiteBundle:SiteCabinet:list, page: 1 }
     requirements:
       page: \d+
 
@@ -16,7 +16,7 @@ core_cabinet_site_list:
 core_cabinet_site_edit:
     path:      /cabinet/site_edit_{id}.html
     schemes:  [http]
-    defaults:  { _controller: CoreSiteBundle:Cabinet:edit }
+    defaults:  { _controller: CoreSiteBundle:SiteCabinet:edit }
     requirements:
       id: \d+
 
@@ -25,14 +25,14 @@ core_cabinet_site_edit:
 core_cabinet_site_create:
     path:      /cabinet/site_create.html
     schemes:  [http]
-    defaults:  { _controller: CoreSiteBundle:Cabinet:create }
+    defaults:  { _controller: CoreSiteBundle:SiteCabinet:create }
 
 
 # удаление сайта в ЛК
 core_cabinet_site_delete:
     path:      /cabinet/site_delete_{id}.html
     schemes:  [http]
-    defaults:  { _controller: CoreSiteBundle:Cabinet:delete }
+    defaults:  { _controller: CoreSiteBundle:SiteCabinet:delete }
     requirements:
       id: \d+
 

@@ -38,13 +38,31 @@
             <a href=""><i class="fa fa-bullhorn"></i> &nbsp;Рекламные компании</a>
         </li>
 
-        <li class="list-group-item">
-            <a href="profile_users.html"><i class="fa fa-crosshairs"></i> &nbsp;Размещения</a>
+
+
+        <li class="list-group-item
+ {% if app.request.attributes.get('_route') == 'core_cabinet_placement_list_first_page'
+        or app.request.attributes.get('_route') == 'core_cabinet_placement_list'
+        or app.request.attributes.get('_route') == 'core_cabinet_placement_edit'
+        or app.request.attributes.get('_route') == 'core_cabinet_placement_create'
+        %} active{% endif %}
+        ">
+            <a href="{{ path('core_cabinet_placement_list_first_page') }}"><i class="fa fa-crosshairs"></i> &nbsp;Размещения</a>
         </li>
 
 
+
+
         <li class="list-group-item">
-            <a href="profile.html"><i class="fa fa-bar-chart-o"></i> &nbsp;Статистика</a>
+            <a href="#"><i class="fa  fa-comments-o"></i> &nbsp;Сообщения</a>
+        </li>
+
+        <li class="list-group-item">
+            <a href="#"><i class="fa fa-twitch"></i> &nbsp;Техподдержка</a>
+        </li>
+
+        <li class="list-group-item">
+            <a href="#"><i class="fa fa-bar-chart-o"></i> &nbsp;Статистика</a>
         </li>
 
         <li class="list-group-item">

@@ -189,3 +189,9 @@ core_site:
 core_banner:
     resource: "@CoreBannerBundle/Resources/config/routing.yml"
     prefix:   /
+
+
+# Роуты бандла CoreAdCompanyBundle
+core_placement:
+    resource: "@CoreAdCompanyBundle/Resources/config/placement_routing.yml"
+    prefix:   /
