@@ -34,8 +34,14 @@
             <a href="{{ path('core_cabinet_banner_list_first_page') }}"><i class="fa fa-file-image-o"></i> &nbsp;Баннеры</a>
         </li>
 
-        <li class="list-group-item">
-            <a href=""><i class="fa fa-bullhorn"></i> &nbsp;Рекламные компании</a>
+        <li class="list-group-item
+ {% if app.request.attributes.get('_route') == 'core_cabinet_adcompany_list_first_page'
+        or app.request.attributes.get('_route') == 'core_cabinet_adcompany_list'
+        or app.request.attributes.get('_route') == 'core_cabinet_adcompany_edit'
+        or app.request.attributes.get('_route') == 'core_cabinet_adcompany_create'
+        %} active{% endif %}
+        ">
+            <a href="{{ path('core_cabinet_adcompany_list_first_page') }}"><i class="fa fa-bullhorn"></i> &nbsp;Рекламные компании</a>
         </li>
 
 

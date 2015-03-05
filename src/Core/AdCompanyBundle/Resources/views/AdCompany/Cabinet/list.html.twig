@@ -41,7 +41,7 @@
     {% endfor %}
 
 
-    {% if  placements.getTotalItemCount %}
+    {% if  adcompanies.getTotalItemCount %}
         <h3>Список рекламных компаний</h3>
         <a style="margin-top: -30px" href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламную компанию</a>
 
@@ -61,14 +61,15 @@
             {% for adcompany in adcompanies %}
                 <tr>
                     <td height="53px">{{ loop.index }}</td>
-                    <td><<b>{{ placement.id  }}</b></td>
+                    <td><<b>{{ adcompany.id  }}</b></td>
                     <td>
-                        {{ placement.adPlace.name }} {{ placement.adPlace.width }}x{{ placement.adPlace.height }}
-                        {{ placement.adPlace.site.domain }}
+                        <a href="{{ path('core_cabinet_adcompany_edit', {id:adcompany.id}) }}">{{ adcompany.name }}</a>
                     </td>
                     <td>
+
+                    </td>
+
                     <td>
-                        {% if placement.isEnabled %}<span class="label label-u">Да</span>{% else %}<span class="label label-warning">Нет</span>{% endif %}</td>
                     </td>
                 </tr>
             {% endfor %}
