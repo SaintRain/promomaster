@@ -33,6 +33,22 @@
     {% endif %}
 
 
+
+    {% if site.id and not site.isVerified %}
+
+        <div class="alert alert-warning fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong>Необходимо <a href="{{ path('core_cabinet_site_verified_form', {id:site.id}) }}">подтвердить права</a>.</strong>
+
+            Подтверждение прав на площадку даёт возможность размещать ваш домен в каталоге сервиса, что в свою очередь привлекает рекламодателей к вашему ресурсу.
+
+
+        </div>
+
+
+    {% endif %}
+
+
     {% for flashMessage in app.session.flashbag.get('edit_success') %}
         <br/>
         <div class="alert alert-success fade in">

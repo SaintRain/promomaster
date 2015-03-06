@@ -10,6 +10,8 @@
         or app.request.attributes.get('_route') == 'core_cabinet_site_list'
         or app.request.attributes.get('_route') == 'core_cabinet_site_edit'
         or app.request.attributes.get('_route') == 'core_cabinet_site_create'
+        or app.request.attributes.get('_route') == 'core_cabinet_site_verified_form'
+
         %} active{% endif %}
         ">
             <a href="{{ path('core_cabinet_site_list_first_page') }}"><i class="fa  fa-globe"></i> &nbsp;Площадки</a>

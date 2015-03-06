@@ -41,6 +41,8 @@ class WebSite extends CommonSite
     private $mirrors;
 
 
+
+
     /**
      * @return string
      */
@@ -74,6 +76,8 @@ class WebSite extends CommonSite
     {
         $this->mirrors = $mirrors;
     }
+
+
 
 
     /**

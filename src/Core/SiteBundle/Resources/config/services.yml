@@ -41,3 +41,10 @@ services:
   core_section_logic:
     class: Core\SiteBundle\Logic\SectionLogic
     arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic']
+
+# подписчик для площадки
+  core_site_subscriber:
+    class: Core\SiteBundle\EventListener\SiteSubscriber
+    tags:
+        - { name: doctrine.event_subscriber }
+    arguments: ['@service_container']

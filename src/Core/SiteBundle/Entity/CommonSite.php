@@ -59,6 +59,20 @@ class CommonSite
      */
     private $categories;
 
+    /**
+     * Сайт подтвержден пользователем
+     * @var string
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isVerified;
+
+
+    /**
+     * Код подтверждения
+     * @var string
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $verifiedCode;
 
     /**
      * Дата создания
@@ -172,6 +186,40 @@ class CommonSite
     public function setCategories($categories)
     {
         $this->categories = $categories;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIsVerified()
+    {
+        return $this->isVerified;
+    }
+
+    /**
+     * @param string $isVerified
+     */
+    public function setIsVerified($isVerified)
+    {
+        $this->isVerified = $isVerified;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVerifiedCode()
+    {
+        return $this->verifiedCode;
+    }
+
+    /**
+     * @param string $verifiedCode
+     */
+    public function setVerifiedCode($verifiedCode)
+    {
+        $this->verifiedCode = $verifiedCode;
         return $this;
     }
 

@@ -88,6 +88,7 @@ class SiteAdmin extends Admin
             ->add('user.email', null, ['label' => 'Пользователь',
                 'template' => 'CoreSiteBundle:Admin\Site\list_fields:user.html.twig'
             ])
+            ->addIdentifier('isVerified', null, ['label' => 'Подтверждено'])
             ->add('_action', 'actions', array(
                 'label' => 'Действия',
                 'actions' => array(
@@ -113,6 +114,7 @@ class SiteAdmin extends Admin
             ), null, ['attr' => ['placeholder' => 'ID площадки, через запятую']])
 //            ->add('domain', null, array('label' => 'Сайт'), null, ['attr' => ['placeholder' => 'Название']])
 //            ->add('mirrors', null, array('label' => 'Зеркало'), null, ['attr' => ['placeholder' => 'Зеркало']])
+            ->add('isVerified', null, array('label' => 'Подтверждено'), null, ['attr' => ['placeholder' => 'Подтверждено']])
 
             ->add('user', 'doctrine_orm_callback',
                 array(

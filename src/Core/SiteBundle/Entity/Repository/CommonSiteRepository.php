@@ -38,7 +38,7 @@ class CommonSiteRepository extends EntityRepository
      * Находит площадку для удаления
      * @param $options
      */
-    public function findForDeleting($options)
+    public function findOneByIdAndUser($options)
     {
         $res = $this->createQueryBuilder('s')
             ->where('s.user=:user')
