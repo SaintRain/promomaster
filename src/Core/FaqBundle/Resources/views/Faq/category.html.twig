@@ -26,16 +26,12 @@
 {% block breadcrumbs %}
         {% spaceless %}
         <li>
-            <i class="rounded-x fa fa-angle-right"></i>
             <a href="{{path('core_common_index')}}">Домой</a>
         </li>
         <li>
-            <i class="rounded-x fa fa-angle-right"></i>
             <a href="{{path('core_faq_homepage')}}">Помощь</a>
         </li>
-        <li class="active">
-            <i class="rounded-x fa fa-angle-right"></i>{{ attribute(category, 'caption' ~ app.request.locale) }}
-        </li>
+        <li class="active">{{ attribute(category, 'caption' ~ app.request.locale) }}</li>
         {% endspaceless %}
 {% endblock %}
 {% block main_content %}

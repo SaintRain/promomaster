@@ -4,18 +4,9 @@
 {% block meta_keywords %}Результаты поиска в разделе помощи по запросу &quot;{{searchString}}&quot;. Если Вы не смогли найти ответ на свой вопрос - пожалуйста, свяжитесь с нами.{% endblock %}
 {% block breadcrumbs_title %}Результаты поиска по запросу &quot;{{searchString}}&quot;{% endblock %}
 {% block breadcrumbs %}
-    <li>
-        <i class="rounded-x fa fa-angle-right"></i>&nbsp;
-        <a href="{{path('core_common_index')}}">Домой</a>
-    </li>
-    <li>
-        <i class="rounded-x fa fa-angle-right"></i>&nbsp;
-        <a href="{{path('core_faq_homepage')}}">Помощь</a>
-    </li>
-    <li class="active">
-        <i class="rounded-x fa fa-angle-right"></i>&nbsp;
-        Результаты поиска по запросу &quot;{{searchString}}&quot;
-    </li>
+    <li><a href="{{path('core_common_index')}}">Домой</a></li>
+    <li><a href="{{path('core_faq_homepage')}}">Помощь</a></li>
+    <li class="active">Результаты поиска по запросу &quot;{{searchString}}&quot;</li>
 {% endblock %}
 {% block main_content %}
     {% include 'CoreFaqBundle:Faq:search_form.html.twig' with {'form' : searchForm, 'isSearched': true } %}

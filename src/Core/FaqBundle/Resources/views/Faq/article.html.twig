@@ -27,20 +27,15 @@
 {#{% block breadcrumbs_title %}{{attribute(article, 'caption' ~ app.request.locale)}}{% endblock %}#}
 {% block breadcrumbs %}
     <li>
-        <i class="rounded-x fa fa-angle-right"></i>
         <a href="{{path('core_common_index')}}">Домой</a>
     </li>
     <li class="page_path_link">
-        <i class="rounded-x fa fa-angle-right"></i>
         <a href="{{path('core_faq_homepage')}}">Помощь</a>
     </li>
     <li class="page_path_link">
-        <i class="rounded-x fa fa-angle-right"></i>
         <a href="{{path('core_faq_category', {'categorySlug' : article.category.slug})}}">{{attribute(article.category, 'caption' ~ app.request.locale)}}</a>
     </li>
-    <li class="active">
-        <i class="rounded-x fa fa-angle-right"></i>{{attribute(article, 'caption' ~ app.request.locale)}}
-    </li>
+    <li class="active">{{attribute(article, 'caption' ~ app.request.locale)}}</li>
 {% endblock %}
 {% block main_content %}
     <div class="headline">
