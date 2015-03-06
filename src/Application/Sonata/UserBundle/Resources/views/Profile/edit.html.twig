@@ -41,13 +41,13 @@
             <div class="row margin-bottom-20">
                 <div class="col-sm-6  {% if form_errors(form.firstname) %}state-error{% endif %}">
                     <label>Имя</label>
-                    {{ form_widget(form.firstname,{ 'attr': {'class': 'form-control margin-bottom-20'} }) }}
+                    {{ form_widget(form.firstname,{ 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.firstname) }}
 
                 </div>
                 <div class="col-sm-6  {% if form_errors(form.lastname) %}state-error{% endif %}">
                     <label>Фамилия</label>
-                    {{ form_widget(form.lastname,{ 'attr': {'class': 'form-control margin-bottom-20'} }) }}
+                    {{ form_widget(form.lastname,{ 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.lastname) }}
                 </div>
             </div>
@@ -65,7 +65,7 @@
             {#</div>#}
 
             <div class="margin-bottom-20 {% if form_errors(form.email) %}state-error{% endif %}">
-                <label>Email </label>
+                <label>Email* </label>
                 {{ form_widget(form.email,{ 'attr': {
                     'class': 'form-control '} }) }}
                 {{ form_errors(form.email) }}

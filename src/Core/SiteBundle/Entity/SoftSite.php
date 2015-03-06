@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Сущность площадки web-сайта
+ * Сущность площадки иного ПО
  * @author  Sergeev A.M.
  * @copyright LLC "PromoMaster"
  */
@@ -15,66 +15,38 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 use Core\SiteBundle\Entity\CommonSite;
 
 /**
- * @ORM\Entity(repositoryClass="Core\SiteBundle\Entity\Repository\WebSiteRepository")
+ * @ORM\Entity(repositoryClass="Core\SiteBundle\Entity\Repository\SoftSiteRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Assert\Callback(methods={"isValid"})
  */
-class WebSite extends CommonSite
+class SoftSite extends CommonSite
 {
 
     /**
-     * Доменное имя
+     * Назване программы
      * @var string
      * @ORM\Column(type="string", length=250, nullable=false)
      * @Assert\Url()
      * @Assert\NotBlank()
      */
-    private $domain;
-
-
-    /**
-     * Зеркала
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $mirrors;
-
-
-
+    private $name;
 
     /**
      * @return string
      */
-    public function getDomain()
+    public function getName()
     {
-        return $this->domain;
+        return $this->name;
     }
 
     /**
-     * @param string $domain
+     * @param string $name
      */
-    public function setDomain($domain)
+    public function setName($name)
     {
-        $domain = preg_replace("#/$#", '', $domain);
-        $this->domain = $domain;
+        $this->name = $name;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getMirrors()
-    {
-        return $this->mirrors;
-    }
-
-    /**
-     * @param string $mirrors
-     */
-    public function setMirrors($mirrors)
-    {
-        $this->mirrors = $mirrors;
-    }
 
 
 

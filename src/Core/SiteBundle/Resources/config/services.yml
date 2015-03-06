@@ -6,7 +6,7 @@ services:
     - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Материалы, label: Площадки }
     arguments: [null, Core\SiteBundle\Entity\CommonSite, null]
     calls:
-    - [ setSubClasses, [ { "Web-сайт": Core\SiteBundle\Entity\WebSite} ] ]
+    - [ setSubClasses, [ { "Web-сайт": Core\SiteBundle\Entity\WebSite, "СОФТ": Core\SiteBundle\Entity\SoftSite } ] ]
 
 
   #админсике классы для рекламных мест
@@ -48,6 +48,8 @@ services:
     tags:
         - { name: doctrine.event_subscriber }
     arguments: ['@service_container']
+
+
   core_section_form:
       class: Core\SiteBundle\Form\Type\SectionFormType
       tags:

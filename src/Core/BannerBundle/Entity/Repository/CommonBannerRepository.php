@@ -11,6 +11,8 @@ namespace Core\BannerBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
+
+
 class CommonBannerRepository extends EntityRepository
 {
 
