@@ -1,0 +1,23 @@
+{% extends 'form_div_layout.html.twig' %}
+{%- block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        <table class="table table-striped">
+            <tbody>
+                {%- for child in form %}
+                    <tr>
+                        {% if child.parent.vars.extraData[child.vars.value] is defined  %}
+                            {% set curObj =  child.parent.vars.extraData[child.vars.value] %}
+                            <td>{{- form_widget(child) -}}</td>
+                            <td><a href="{{ curObj.id }}">{{ curObj.name }}</a></td>
+                            <td>
+                                <a class="item">
+                                    <i class="icon-trash" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor -%}
+            </tbody>
+        </table>
+    </div>
+{%- endblock choice_widget_expanded -%}
