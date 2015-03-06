@@ -1,20 +1,20 @@
 {% extends "CoreCommonBundle::main_layout.html.twig" %}
 {% block content %}
-    {# BreadCrumbs #}
+    {# BreadCrumbs
+
     <div class="breadcrumbs-v2 faq-breadcrumb margin-bottom-20">
         <div class="breadcrumbs-v2-in">
             <h1>Часто задаваемые ворросы</h1>
             <ul class="breadcrumb-v2 list-inline">{% block breadcrumbs %}{% endblock %}</ul>
         </div>
     </div>
-    {#
+    #}
     <div class="breadcrumbs">
         <div class="container">
-            <h1 class="pull-left">{% block breadcrumbs_title %}{% endblock %}</h1>
+            <h1 class="pull-left">Часто задаваемые вопросы</h1>
             <ul class="pull-right breadcrumb">{% block breadcrumbs %}{% endblock %}</ul>
         </div>
     </div>
-    #}
     {# END BreadCrumbs #}
     <div class="container content">
         <div class="row">
