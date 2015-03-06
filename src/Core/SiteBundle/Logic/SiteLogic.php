@@ -8,6 +8,7 @@
 
 namespace Core\SiteBundle\Logic;
 
+use Core\SiteBundle\Entity\CommonSite;
 
 class SiteLogic
 {
@@ -56,12 +57,64 @@ class SiteLogic
             'user'=>$this->container->get('security.context')->getToken()->getUser()
         ];
 
-        $queryBuilder = $this->em->getRepository('CoreSiteBundle:Site')->generateQueryBuilderByFilter($filterRequest);
+        $queryBuilder = $this->em->getRepository('CoreSiteBundle:CommonSite')->generateQueryBuilderByFilter($filterRequest);
         $sites = $this->paginator->paginate($queryBuilder, $page, $filterRequest['maxResults']);
         return $sites;
 
     }
 
+
+    /**
+     * Проверяет есть ли у пользователя web-сайт с таким именем
+     * @param $site
+     * @param $user
+     * @return bool
+     */
+    public function checkIsExistWebSite($site, $user) {
+
+        $res=$this->em->getRepository('CoreSiteBundle:WebSite')->findQuantityByOptions(['id'=>$site->getId(), 'user' => $user, 'domain' => $site->getDomain()]);
+
+        if ($res['quantity']) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    /**
+     * Генерирует проверочный код для подтверждения прав на площадку
+     * @param $site
+     * @return bool
+     */
+    public function generateVerifiedCode($site) {
+
+        $code=uniqid();
+
+        return $code;
+    }
+
+    /**
+     * Проверяет изменилось ли доменное имя
+     * @param $object
+     */
+    public function checkIsDomainNameChange($site)
+    {
+        if ($site instanceof CommonSite) {
+            $em = $this->container->get('doctrine')->getManager();
+            $uow = $em->getUnitOfWork();
+            $uow->computeChangeSets();
+            $res = $uow->getEntityChangeSet($site);
+            //если изменилось, тогда генерируем новый код
+            if (isset($res['domain'])) {
+
+                $site->setVerifiedCode($this->generateVerifiedCode($site));
+                $site->setIsVerified(false);
+                $this->em->flush($site);
+            }
+        }
+    }
 
 
 }

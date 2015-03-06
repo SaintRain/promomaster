@@ -1,10 +1,12 @@
 services:
-  #админсике классы для сайтов
+  #админсике классы для площадок
   core_site_admin:
     class: Core\SiteBundle\Admin\SiteAdmin
     tags:
-    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Материалы, label: Сайты }
-    arguments: [null, Core\SiteBundle\Entity\Site, null]
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Материалы, label: Площадки }
+    arguments: [null, Core\SiteBundle\Entity\CommonSite, null]
+    calls:
+    - [ setSubClasses, [ { "Web-сайт": Core\SiteBundle\Entity\WebSite} ] ]
 
 
   #админсике классы для рекламных мест
@@ -40,6 +42,12 @@ services:
     class: Core\SiteBundle\Logic\SectionLogic
     arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic']
 
+# подписчик для площадки
+  core_site_subscriber:
+    class: Core\SiteBundle\EventListener\SiteSubscriber
+    tags:
+        - { name: doctrine.event_subscriber }
+    arguments: ['@service_container']
   core_section_form:
       class: Core\SiteBundle\Form\Type\SectionFormType
       tags:

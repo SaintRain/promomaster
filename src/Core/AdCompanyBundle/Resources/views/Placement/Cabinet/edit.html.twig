@@ -2,7 +2,7 @@
 {% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
 
 {# SEO - заголовки #}
-{% block title %}{% if placement.id %}Редактирование настроек размещения {{ placement.domain }}{% else %}Добавление размещения в систему{% endif %}{% endblock %}
+{% block title %}{% if placement.id %}Редактирование настроек размещения {{ placement.id }}{% else %}Добавление размещения в систему{% endif %}{% endblock %}
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
 
@@ -87,7 +87,7 @@
 
             <div class="row margin-bottom-20">
                 <div class="col-sm-6  {% if form_errors(form.placementBannersList) %}state-error{% endif %}">
-                    <label>Баннеры*</label>
+                    <label>Баннеры</label>
                     {{ form_widget(form.placementBannersList,{ 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.placementBannersList) }}
                 </div>

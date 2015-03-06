@@ -68,7 +68,7 @@ class Placement
     /**
      * Дата окончания показов
      * @var \DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $finishDateTime;
 
@@ -221,7 +221,7 @@ class Placement
     /**
      * @param \DateTime $finishDateTime
      */
-    public function setFinishDateTime($finishDateTime)
+    public function setFinishDateTime($finishDateTime )
     {
         $this->finishDateTime = $finishDateTime;
     }

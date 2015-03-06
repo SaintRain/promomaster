@@ -59,9 +59,10 @@
             {% for placement in placements %}
                 <tr>
                     <td height="53px">{{ loop.index }}</td>
-                    <td><<b>{{ placement.id  }}</b></td>
+                    <td><a href="{{ path('core_cabinet_placement_edit', {id: placement.id }) }}"><b>{{ placement.id  }}</b></a></td>
                     <td>
                         {{ placement.adPlace.name }} {{ placement.adPlace.width }}x{{ placement.adPlace.height }}
+                        <br/>
                         {{ placement.adPlace.site.domain }}
                     </td>
                     <td>
@@ -76,7 +77,7 @@
         {% set routeFirsPage = 'core_cabinet_placement_list_first_page' %}
         {% set routePage = 'core_cabinet_placement_list' %}
 
-        {{ knp_pagination_render(sites, 'CoreSiteBundle:Site/Cabinet:pagination.html.twig',{},
+        {{ knp_pagination_render(placements, 'CoreSiteBundle:Site/Cabinet:pagination.html.twig',{},
         { routeFirsPage: routeFirsPage, routePage:routePage}) }}
 
     {% else %}

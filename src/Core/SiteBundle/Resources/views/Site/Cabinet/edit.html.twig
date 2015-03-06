@@ -1,8 +1,8 @@
-{#редактирование сайта в ЛК#}
+{#редактирование площадки в ЛК#}
 {% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
 
 {# SEO - заголовки #}
-{% block title %}{% if site.id %}Редактирование настроек сайта {{ site.domain }}{% else %}Добавление сайта в систему{% endif %}{% endblock %}
+{% block title %}{% if site.id %}Редактирование площадки {{ site.domain }}{% else %}Добавление площадки в систему{% endif %}{% endblock %}
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
 
@@ -15,8 +15,8 @@
                 <ul class="pull-right breadcrumb">
                     <li><a href="{{ path('core_common_index') }}">На главную</a></li>
                     <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
-                    <li><a href="{{ path('core_cabinet_site_list_first_page') }}">Список ваших сайтов</a></li>
-                    <li class="active">Редактирование настроек вашего сайта</li>
+                    <li><a href="{{ path('core_cabinet_site_list_first_page') }}">Список ваших площадок</a></li>
+                    <li class="active">Редактирование настроек вашей площадки</li>
                 </ul>
             </div>
         </div>
@@ -27,23 +27,38 @@
 {% block sub_content %}
 
     {% if site.id %}
-        <h3>Редактирование настроек вашего сайта</h3>
+        <h3>Редактирование настроек вашей площадки</h3>
     {% else %}
-        <h3>Добавление нового сайта в систему</h3>
+        <h3>Добавление новой площадки в систему</h3>
     {% endif %}
 
 
-    {#форма редактирования профиля ЛК#}
+
+    {% if site.id and not site.isVerified %}
+
+        <div class="alert alert-warning fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <strong>Необходимо <a href="{{ path('core_cabinet_site_verified_form', {id:site.id}) }}">подтвердить права</a>.</strong>
+
+            Подтверждение прав на площадку даёт возможность размещать ваш домен в каталоге сервиса, что в свою очередь привлекает рекламодателей к вашему ресурсу.
+
+
+        </div>
+
+
+    {% endif %}
+
+
     {% for flashMessage in app.session.flashbag.get('edit_success') %}
         <br/>
         <div class="alert alert-success fade in">
             {{ flashMessage | raw }}
 
             &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_site_create') }}'><i
-                        class='fa fa-plus-square'></i> &nbsp;Добавить еще сайт</a>
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще площадку</a>
             &nbsp;&nbsp;&nbsp;
             <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_site_list_first_page') }}'><i
-                        class='fa fa-reply'></i> &nbsp;Вернуться к списку сайтов</a>
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку площадок</a>
 
         </div>
     {% endfor %}

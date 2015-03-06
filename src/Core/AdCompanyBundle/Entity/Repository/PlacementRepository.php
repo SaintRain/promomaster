@@ -29,6 +29,7 @@ class PlacementRepository extends EntityRepository {
             $query
                 ->join('p.adCompany', 'adCompany')
                 ->join('p.adPlace', 'adPlace')
+
                 ->andWhere('adCompany.user=:user')
                 ->orderBy('p.id', 'DESC')
 
@@ -44,9 +45,10 @@ class PlacementRepository extends EntityRepository {
      */
     public function findForDeleting($options)
     {
-        $res = $this->createQueryBuilder('s')
-            ->where('s.user=:user')
-            ->andWhere('s.id=:id')
+        $res = $this->createQueryBuilder('p')
+            ->join('p.adPlace', 'adPlace')
+            ->where('adPlace.user=:user')
+            ->andWhere('p.id=:id')
             ->setParameters(
                 [':user' => $options['user']->getId(),
                     ':id' => $options['id']

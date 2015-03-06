@@ -194,7 +194,7 @@ class AdPlaceAdmin extends Admin
                                 explode(',', $value['value']));
                     }), null,
                 array(
-                    'class' => 'Core\SiteBundle\Entity\Site',
+                    'class' => 'Core\SiteBundle\Entity\CommonSite',
                     'properties' => [
                         'id' => array(
                             'search' => true,

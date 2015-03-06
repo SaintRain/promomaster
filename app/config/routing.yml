@@ -46,10 +46,6 @@ sonata_user_admin_security_logout:
 _logout:
     pattern: /logout.html
 
-# error-prevention
-#homepage:
-#pattern: /
-
 
 #Страницы общего бандла
 core_common:
@@ -76,14 +72,10 @@ core_language:
 
 
 #объединяющий бандла
-#core_union:
-#    resource: "@CoreUnionBundle/Resources/config/routing.yml"
-#    prefix:   /admin
+core_union:
+    resource: "@CoreUnionBundle/Resources/config/routing.yml"
+    prefix:   /admin
 
-#обработка созданий модификаций продукта
-#core_product_admin:
-#    resource: "@CoreProductBundle/Resources/config/adminRouting.yml"
-#    prefix:   /admin
 
 #справочник цветов и их обработка
 core_color:
@@ -94,10 +86,6 @@ core_color:
 gregwar_captcha_routing:
     resource: "@GregwarCaptchaBundle/Resources/config/routing/routing.yml"
 
-#справочник цветов и их обработка
-#core_shop_product:
-#    resource: "@CoreProductBundle/Resources/config/routing.yml"
-#    prefix:   /
 
 simple_things_entity_audit:
     resource: "@SimpleThingsEntityAuditBundle/Resources/config/routing.yml"
@@ -114,38 +102,17 @@ core_faq:
     prefix: /
 
 
-#
-#core_logistics:
-#    resource: "@CoreLogisticsBundle/Resources/config/routing.yml"
-#    prefix: /admin
-
-#Заказы
-#core_order:
-#    resource: "@CoreOrderBundle/Resources/config/routing.yml"
-#    prefix: /admin
-
-#core_order_frontend:
-#    resource: "@CoreOrderBundle/Resources/config/frontend.routing.yml"
-#    prefix: /
-
 # все что связано с платежами
 core_payment:
     resource: "@CorePaymentBundle/Resources/config/routing.yml"
     prefix:   /
 
-#core_delivery:
-#    resource: "@CoreDeliveryBundle/Resources/config/routing.yml"
-#    prefix: /
 
 # все что связано со справочными данными
 core_directory:
     resource: "@CoreDirectoryBundle/Resources/config/routing.yml"
     prefix: /
 
-# рейтинг и комментарии товаров
-#core_review:
-#    resource: "@CoreReviewBundle/Resources/config/routing.yml"
-#    prefix:   /
 
 #роутеры для автозаполнения
 shtumi_useful:
@@ -159,9 +126,6 @@ PrestaSitemapBundle:
     resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
     prefix:   /
 
-#core_dynamic_binding:
-#    resource: "@CoreDynamicBindingBundle/Resources/config/routing.yml"
-#    prefix:   /
 
 # Роуты бандла HistoryBundle
 core_slug_history:
@@ -174,11 +138,7 @@ core_holiday:
     prefix:   /
 
 
-
-
 #НАЧИНАЕМ ОТСЮДА ПИСАТЬ НОВЫЕ РОУТЕРЫ
-
-
 
 # Роуты бандла SiteBundle
 core_site:

@@ -67,7 +67,7 @@ class AdPlace
 
     /**
      * Сайт на котором находится рекламное место
-     * @ORM\ManyToOne(targetEntity="Site")
+     * @ORM\ManyToOne(targetEntity="CommonSite")
      * @ORM\JoinColumn(referencedColumnName="id")
      * @Assert\NotBlank()
      */

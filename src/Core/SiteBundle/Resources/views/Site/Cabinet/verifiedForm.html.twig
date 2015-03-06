@@ -1,0 +1,125 @@
+{#форма подтверждения площадки в ЛК#}
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}Подтверждение прав на площадку{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Подтверждение прав на площадку</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li><a href="{{ path('core_cabinet_site_list_first_page') }}">Список ваших площадок</a></li>
+                    <li class="active">Подтверждение прав на площадку</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block sub_content %}
+
+    <h3>Подтверждение прав на площадку {{ site.domain }}</h3>
+
+
+    <div id="okContent"
+         class="alert alert-success fade in"   {% if  not site.isVerified %} style="display: none" {% endif %}>
+        <strong>Права успешно подтверждены.</strong> Теперь ваша площадка доступна в каталоге сервиса
+
+        &nbsp;&nbsp;&nbsp;
+        <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_site_list_first_page') }}'><i
+                    class='fa fa-reply'></i> &nbsp;Вернуться к списку площадок</a>
+    </div>
+
+    <div id="errorContent" class="alert alert-warning fade in" style="display: none">
+        <strong>Ошибка подтверждения.</strong> Не удалсоь найти meta-тег или html-файл подтверждения
+    </div>
+
+    {% if  not site.isVerified %}
+    <div id="infoContent">
+        <p>Подтверждение прав на площадку даёт возможность размещать ваш домен в каталоге сервиса, что в свою очередь
+            привлекает рекламодателей к вашему ресурсу.</p>
+
+
+        <div class="tab-v2">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#metatag" data-toggle="tab">мета-тэг</a></li>
+                <li><a href="#htmlfile" data-toggle="tab">html-файл</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="metatag">
+                    <p>Разместить мета-тэг</p>
+
+                    <p>1. Добавьте в код главной страницы вашего сайта (в раздел head) мета-тэг</p>
+
+                    <p><b>&lt;meta name='promomaster-verification' content='{{ site.verifiedCode }}' /&gt;</b></p>
+
+                    <p>2. Зайдите на главную страницу сайта и убедитесь, что мета-тэг появился в html-коде страницы. В
+                        большинстве браузеров это можно сделать выбрав пункт "Исходный код страницы" в контекстном меню.
+                        На некоторых сайтах обновление мета-тэгов может занимать несколько минут!</p>
+
+                    <p>3. Нажмите на кнопку «Проверить»</p>
+                </div>
+                <div class="tab-pane fade in" id="htmlfile">
+                    <p>Разместить HTML-файл</p>
+
+                    <p>1. Создайте пустой html-файл с именем <b>promomaster_{{ site.verifiedCode }}.html</b> или <a
+                                href="{{ path('core_cabinet_site_get_file_for_verify', {id:site.id}) }}">скачайте
+                            его</a></p>
+
+                    <p>2. Загрузите его в корневой каталог вашего сайта</p>
+
+                    <p>3. Убедитесь, что загруженный файл открывается по адресу <a target="_blank"
+                                                                                   href="{{ site.domain }}/promomaster_{{ site.verifiedCode }}.html">{{ site.domain }}
+                            /promomaster_{{ site.verifiedCode }}.html</a></p>
+
+                    <p>4. Нажмите на кнопку «Проверить»</p>
+                </div>
+
+            </div>
+        </div>
+
+        <br/>
+
+        <div class="text-right">
+            <button class="btn-u" id="verified" hr type="button">Проверить</button>
+            &nbsp;&nbsp;
+            <a href="{{ path('core_cabinet_site_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+        $(function () {
+
+            $('#verified').click(function () {
+                $.get("{{ path('core_cabinet_site_verify', {id:site.id}) }}", function (data) {
+
+                    if (data.isVerified == true) {
+                        $('#infoContent').hide();
+                        $('#errorContent').hide();
+                        $('#okContent').show();
+                    }
+                    else {
+                        $('#errorContent').show();
+                    }
+
+                });
+            });
+
+        })
+    </script>
+
+
+{% endblock %}

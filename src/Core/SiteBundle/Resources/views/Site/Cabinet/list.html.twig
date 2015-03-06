@@ -1,4 +1,4 @@
-{#вывод списка сайтов в ЛК#}
+{#вывод списка площадок в ЛК#}
 {% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
 
 {# SEO - заголовки #}
@@ -11,11 +11,11 @@
         <!--=== Breadcrumbs ===-->
         <div class="breadcrumbs">
             <div class="container">
-                <h1 class="pull-left">Сайты</h1>
+                <h1 class="pull-left">Площадки</h1>
                 <ul class="pull-right breadcrumb">
                     <li><a href="{{ path('core_common_index') }}">На главную</a></li>
                     <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
-                    <li class="active">Список ваших сайтов</li>
+                    <li class="active">Список ваших площадок</li>
                 </ul>
             </div>
         </div>
@@ -42,8 +42,8 @@
 
 
     {% if  sites.getTotalItemCount %}
-        <h3>Список ваших сайтов</h3>
-        <a style="margin-top: -30px" href="{{ path('core_cabinet_site_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить сайт</a>
+        <h3>Список ваших площадок</h3>
+        <a style="margin-top: -30px" href="{{ path('core_cabinet_site_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить площадку</a>
 
 
         <table class="table table-striped">
@@ -54,6 +54,7 @@
                 <th>Тематика</th>
                 <th>Добавлен</th>
                 <th>Статистика</th>
+                <th>Подтверждение прав</th>
             </tr>
             </thead>
             <tbody>
@@ -68,6 +69,10 @@
                     </td>
                     <td>{{ site.createdDateTime|date("d-m-Y H:i:s", default_timezone) }}</td>
                     <td></td>
+                    <td>{% if site.isVerified %}<span class="label label-u">Подтверждено</span>{% else %}
+                            <a  href="{{ path('core_cabinet_site_verified_form', {id:site.id}) }}" class="btn-u btn-u-orange">Пройти подтверждение</a>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -80,7 +85,8 @@
         { routeFirsPage: routeFirsPage, routePage:routePage}) }}
 
     {% else %}
-        <h2>Вы еще не добавляли свои сайты в систему</h2>
+        <h2>У вас нет рекламных площадок</h2>
+        <a style="margin-top: -30px" href="{{ path('core_cabinet_site_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить площадку</a>
     {% endif %}
 
 {% endblock %}

@@ -11,7 +11,9 @@ namespace Core\SiteBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Core\SiteBundle\Entity\Site;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Core\SiteBundle\Entity\WebSite;
 
 class SiteCabinetController extends Controller
 {
@@ -41,7 +43,9 @@ class SiteCabinetController extends Controller
     public function editAction($id)
     {
 
-        $site = $this->getDoctrine()->getManager()->getRepository('CoreSiteBundle:Site')->find($id);
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        $site = $this->getDoctrine()->getManager()->getRepository('CoreSiteBundle:CommonSite')->find($id);
         $form = $this->getForm($site);
 
 
@@ -53,19 +57,16 @@ class SiteCabinetController extends Controller
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
-
-            if ($this->checkIsExistSite($site)) {
+            if ($this->container->get('core_site_logic')->checkIsExistWebSite($site, $user)) {
                 $this->setFlash('edit_errors', 'Сайт с указанным адресом был добавлен вами ранее.');
-                $isBadName=true;
-            }
-            else {
-                $isBadName=false;
+                $isBadName = true;
+            } else {
+                $isBadName = false;
             }
 
             if (!$isBadName && $form->isValid()) {
 
                 $em = $this->getDoctrine()->getManager();
-//                $em->persist($site);
                 $em->flush();
 
                 $this->setFlash('edit_success', 'Данные успешно обновлены');
@@ -86,7 +87,7 @@ class SiteCabinetController extends Controller
     public function createAction()
     {
 
-        $site = new Site();
+        $site = new WebSite();  //пока только веб-сайты
         $user = $this->container->get('security.context')->getToken()->getUser();
         $site->setUser($user);
         $form = $this->getForm($site);
@@ -95,14 +96,17 @@ class SiteCabinetController extends Controller
         if ($request->getMethod() == 'POST') {
 
             $form->handleRequest($request);
-            if ($this->checkIsExistSite($site)) {
+            if ($this->container->get('core_site_logic')->checkIsExistWebSite($site, $user)) {
                 $this->setFlash('edit_errors', 'Сайт с указанным адресом был добавлен вами ранее.');
-                $isBadName=true;
-            }
-            else {
-                $isBadName=false;
+                $isBadName = true;
+            } else {
+                $isBadName = false;
             }
             if (!$isBadName && $form->isValid()) {
+
+                //генерируем проверочный код
+                $verifiedCode = $this->get('core_site_logic')->generateVerifiedCode($site);
+                $site->setVerifiedCode($verifiedCode);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($site);
@@ -128,7 +132,7 @@ class SiteCabinetController extends Controller
         $form = $this->createFormBuilder($site)
             ->add('domain', 'text', ['required' => true])
             ->add('mirrors', 'textarea', ['required' => false])
-            ->add('keywords', 'textarea', ['required' => false, 'attr'=>['rows'=>5]])
+            ->add('keywords', 'textarea', ['required' => false, 'attr' => ['rows' => 5]])
             ->add('categories', 'FrontendCategory', ['required' => true,
                     'class' => 'Core\CategoryBundle\Entity\SiteCategory',
                     'multiple' => true
@@ -148,7 +152,7 @@ class SiteCabinetController extends Controller
 
         $user = $this->container->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
-        $site = $em->getRepository('CoreSiteBundle:Site')->findForDeleting(['id' => $id, 'user' => $user]);
+        $site = $em->getRepository('CoreSiteBundle:CommonSite')->findOneByIdAndUser(['id' => $id, 'user' => $user]);
 
         $msg = "Сайт  «{$site->getDomain()}» был удален.";
         $em->remove($site);
@@ -166,23 +170,89 @@ class SiteCabinetController extends Controller
 
 
     /**
-     * Проверяет есть ли у пользователя сайт с таким именем
-     * @param $domain
-     * @return mixed
+     * Форма подтверждения площадки
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    private function checkIsExistSite($site) {
+
+    public function verifiedFormAction($id)
+    {
 
         $user = $this->container->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
-        $res=$em->getRepository('CoreSiteBundle:Site')->findQuantityByOptions(['id'=>$site->getId(), 'user' => $user, 'domain' => $site->getDomain()]);
+        $site = $em->getRepository('CoreSiteBundle:CommonSite')->findOneByIdAndUser(['id' => $id, 'user' => $user]);
 
-        if ($res['quantity']) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return $this->render('CoreSiteBundle:Site\Cabinet:verifiedForm.html.twig', ['site' => $site]);
     }
+
+
+    /**
+     * Проверка прав пользователя на площадку
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function verifySiteAction($id)
+    {
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $site = $em->getRepository('CoreSiteBundle:CommonSite')->findOneByIdAndUser(['id' => $id, 'user' => $user]);
+
+        $pageUrl = $site->getDomain() . '/promomaster_' . $site->getVerifiedCode() . '.html';
+
+
+        $Headers = @get_headers($pageUrl);
+        if (strpos('200', $Headers[0])) {
+            $isVerified = true;
+        } else {
+            try {
+                $content = file_get_contents($site->getDomain());
+                if (strpos($content, $site->getVerifiedCode()) !== false) {
+                    $isVerified = true;
+                } else {
+                    $isVerified = false;
+                }
+            } catch (\Exception $e) {
+                $isVerified = false;
+            }
+        }
+        $site->setIsVerified($isVerified);
+        $em->flush($site);
+
+
+        $response = new JsonResponse();
+        $response->setData(
+            ['isVerified' => $isVerified]
+        );
+        return  $response;
+    }
+
+    /**
+     * Генерирует файл для проверки прав на площадку
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getFileForVerifyAction($id)
+    {
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $site = $em->getRepository('CoreSiteBundle:CommonSite')->findOneByIdAndUser(['id' => $id, 'user' => $user]);
+
+        $fileName = 'promomaster_' . $site->getVerifiedCode() . '.html';
+
+
+        //отдаем пустой файл
+        $response = new Response();
+        $response->headers->set('Cache-Control', 'private');
+        $response->headers->set('Content-type', 'text/html; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . basename($fileName) . '";');
+        $response->headers->set('Content-length', 0);
+        $response->sendHeaders();
+        $response->setContent('');
+
+        return $response;
+    }
+
 
     /**
      * Установка сообщений

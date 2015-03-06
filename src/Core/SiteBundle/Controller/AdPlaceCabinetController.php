@@ -11,7 +11,7 @@ namespace Core\SiteBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Core\SiteBundle\Entity\Site;
+use Core\SiteBundle\Entity\WebSite;
 use Core\SiteBundle\Entity\AdPlace;
 use Core\DirectoryBundle\Entity\Repository\AdPlaceSizeRepository;
 

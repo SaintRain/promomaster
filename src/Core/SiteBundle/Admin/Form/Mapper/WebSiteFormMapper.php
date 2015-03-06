@@ -1,6 +1,6 @@
 <?php
 /**
- * Основная форма для редактирования сайта
+ * Основная форма для редактирования web-сайта
  *
  * @author Sergeev A.M.
  * @copyright LLC "PromoMaster"
@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 
 
-class SiteFormMapper
+class WebSiteFormMapper
 {
 
     public function __construct(FormMapper $formMapper, array $options)
@@ -59,6 +59,8 @@ class SiteFormMapper
             ->add('domain', null, ['label' => 'Домен'])
             ->add('mirrors', null, ['attr'=>['rows'=>5], 'label' => 'Зеркала', 'help'=>'Альтернативные адреса. Если ваш сайт доступен по двум или более адресам (с www и без www не в счет), например, site.ru и site1.ru, то укажите здесь альтернативные адреса вашего сайта, в нашем примере - site1.ru. Если вы не укажите их здесь, то реклама на альтернативных адресах не будет отображаться, несмотря на установку кода. Поддомены Если ваш сайт разбит на поддомены, например, part1.site.ru, part2.site.ru, то укзывать поддомены здесь не нужно, реклама на всех них будет отображаться корректно.'])
 
+->add('isVerified', null, ['label' => 'Подтверждено', 'help'=>'Если выставлено, значит пользователь подтвердил свои права на площадку'])
+            ->add('verifiedCode', null, ['label' => 'Код подтверждения'])
             ->add('categories', 'category',
                 array(
                     'class' => 'Core\CategoryBundle\Entity\SiteCategory',

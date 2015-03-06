@@ -36,62 +36,56 @@ class AdCompanyCabinetController extends Controller
 
 
     /**
-     * Редактирование размещения
+     * Редактирование рекламной компании
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-//    public function editAction($id)
-//    {
-//
-//        $AdCompany = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:AdCompany')->find($id);
-//        $form = $this->getForm($AdCompany);
-//
-//
-//        $categories = $this->getDoctrine()->getManager()->getRepository('CoreCategoryBundle:AdCompanyCategory')
-//            ->getBuildTree()[0]['__children'];
-//
-//
-//        //Сохранения изменения
-//        $request = $this->get('request');
-//        if ($request->getMethod() == 'POST') {
-//            $form->handleRequest($request);
-//
-//            if ($this->checkIsExistAdCompany($AdCompany)) {
-//                $this->setFlash('edit_errors', 'Сайт с указанным адресом был добавлен вами ранее.');
-//                $isBadName=true;
-//            }
-//            else {
-//                $isBadName=false;
-//            }
-//
-//            if (!$isBadName && $form->isValid()) {
-//
-//                $em = $this->getDoctrine()->getManager();
-////                $em->persist($AdCompany);
-//                $em->flush();
-//
-//                $this->setFlash('edit_success', 'Данные успешно обновлены');
-//                return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $id]));
-//            } else {
-//                return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['AdCompany' => $AdCompany, 'categories' => $categories, 'form' => $form->createView()]);
-//            }
-//        } else {
-//            return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['AdCompany' => $AdCompany, 'categories' => $categories, 'form' => $form->createView()]);
-//        }
-//    }
+    public function editAction($id)
+    {
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $adcompany = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:AdCompany')->find($id);
+        $form = $this->getForm($adcompany);
+
+        //Сохранения изменения
+        $request = $this->get('request');
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+
+            if ($this->get('core_adcompany_logic')->checkIsExistAdCompany($adcompany, $user)) {
+                $this->setFlash('edit_errors', 'Рекламная компания с указанным именем была добавлена вами ранее.');
+                $isBadName=true;
+            }
+            else {
+                $isBadName=false;
+            }
+
+            if (!$isBadName && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                $this->setFlash('edit_success', 'Данные успешно обновлены');
+                return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $id]));
+            } else {
+                return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany,  'form' => $form->createView()]);
+            }
+        } else {
+            return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany, 'form' => $form->createView()]);
+        }
+    }
 
 
     /**
-     * Добавление размещения
+     * Добавление рекламной компании
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction()
     {
 
-        $AdCompany = new AdCompany();
+        $adcompany = new AdCompany();
         $user = $this->container->get('security.context')->getToken()->getUser();
-        //$AdCompany->setUser($user);
-        $form = $this->getForm($AdCompany);
+        $adcompany->setUser($user);
+        $form = $this->getForm($adcompany);
 
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
@@ -100,36 +94,32 @@ class AdCompanyCabinetController extends Controller
             if ($form->isValid()) {
 
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($AdCompany);
+                $em->persist($adcompany);
                 $em->flush();
 
-                $this->setFlash('edit_success', 'Новое размещение добавлено');
-                return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $AdCompany->getId()]));
+                $this->setFlash('edit_success', 'Новая рекламная компания добавлена');
+                return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $adcompany->getId()]));
             } else {
-                return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['AdCompany' => $AdCompany, 'form' => $form->createView()]);
+                return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany, 'form' => $form->createView()]);
             }
         } else {
-            return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['AdCompany' => $AdCompany, 'form' => $form->createView()]);
+            return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany, 'form' => $form->createView()]);
         }
 
         
     }
 
     /**
-     * Форма размещения
-     * @param $AdCompany
+     * Форма рекламной компании
+     * @param $adcompany
      * @return \Symfony\Component\Form\Form
      */
-    private function getForm($AdCompany)
+    private function getForm($adcompany)
     {
-        $form = $this->createFormBuilder($AdCompany)
-            ->add('adCompany', null, ['required' => true, 'property'=>'name'])
-            ->add('adPlace', null, ['required' => true, 'property'=>'name'])
-            ->add('AdCompanyBannersList', null, ['required' => true, 'property'=>'name'])
-            ->add('startDateTime', 'text', ['required' => false])
-            ->add('finishDateTime', 'text', ['required' => false])
+        $form = $this->createFormBuilder($adcompany)
+            ->add('name', 'text', ['required' => true])
+            ->add('placements', null, ['required' => false, 'property'=>'adPlace.name'])
             ->add('isEnabled', null, ['required' => false])
-            ->add('defaultCountries', null, ['required' => false])
             ->getForm();
 
         return $form;
@@ -137,7 +127,7 @@ class AdCompanyCabinetController extends Controller
     
 
     /**
-     * Удаление сайта
+     * Удаление рекламной компании
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($id)
@@ -145,15 +135,15 @@ class AdCompanyCabinetController extends Controller
 
         $user = $this->container->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
-        $AdCompany = $em->getRepository('CoreAdCompanyBundle:AdCompany')->findForDeleting(['id' => $id, 'user' => $user]);
+        $adcompany = $em->getRepository('CoreAdCompanyBundle:AdCompany')->findForDeleting(['id' => $id, 'user' => $user]);
 
-        $msg = "Сайт  «{$AdCompany->getDomain()}» был удален.";
-        $em->remove($AdCompany);
+        $msg = "Рекламная компания  «{$adcompany->getName()}» была удалена.";
+        $em->remove($adcompany);
         try {
             $em->flush();
             $this->setFlash('edit_success', $msg);
         } catch (\Exception $e) {
-            $msg = "Невозможно удалить сайт «{$AdCompany->getDomain()}», т.к. он задействован в системе на данный момент.";
+            $msg = "Невозможно рекламную компанию «{$adcompany->getName()}», т.к. она задействована в системе на данный момент.";
             $this->setFlash('edit_errors', $msg);
         }
 
@@ -162,24 +152,6 @@ class AdCompanyCabinetController extends Controller
     }
 
 
-    /**
-     * Проверяет есть ли у пользователя сайт с таким именем
-     * @param $domain
-     * @return mixed
-     */
-    private function checkIsExistAdCompany($AdCompany) {
-
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        $em = $this->getDoctrine()->getManager();
-        $res=$em->getRepository('CoreAdCompanyBundle:AdCompany')->findQuantityByOptions(['id'=>$AdCompany->getId(), 'user' => $user, 'domain' => $AdCompany->getDomain()]);
-
-        if ($res['quantity']) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
 
     /**
      * Установка сообщений
