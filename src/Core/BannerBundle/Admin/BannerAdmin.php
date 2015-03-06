@@ -73,7 +73,6 @@ class BannerAdmin extends Admin
         $container = $this->getConfigurationPool()->getContainer();
         $options = array('obj' => $obj, 'container' => $container);
 
-
         if ($obj instanceof ImageBanner) {
             new ImageBannerFormMapper($formMapper, $options);
         } elseif ($obj instanceof FlashBanner) {

@@ -16,12 +16,14 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorMap({"WebSite"="WebSite"})
+ * @ORM\DiscriminatorMap({"WebSite"="WebSite", "SoftSite"="SoftSite" })
  * @ORM\Table(name="core_site")
  * @ORM\Entity(repositoryClass="Core\SiteBundle\Entity\Repository\CommonSiteRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Assert\Callback(methods={"isValidCommon"})
  */
+
+
 class CommonSite
 {
 
@@ -102,13 +104,7 @@ class CommonSite
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
+
 
 
     /**

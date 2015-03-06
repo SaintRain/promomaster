@@ -10,7 +10,8 @@
 namespace Core\BannerBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Core\BannerBundle\Entity\Repository\CommonBannerRepository;
 
-class ImageBannerRepository extends EntityRepository {
+class ImageBannerRepository extends CommonBannerRepository {
 
 }
