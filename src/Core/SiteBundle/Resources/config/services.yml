@@ -48,3 +48,12 @@ services:
     tags:
         - { name: doctrine.event_subscriber }
     arguments: ['@service_container']
+  core_section_form:
+      class: Core\SiteBundle\Form\Type\SectionFormType
+      tags:
+          - { name: form.type, alias: section_form }
+
+  core_section_form_type_extension:
+      class: Core\SiteBundle\Form\Extension\EntityTypeExtension
+      tags:
+          - { name: form.type_extension, alias: entity }
