@@ -39,3 +39,13 @@ services:
   core_section_logic:
     class: Core\SiteBundle\Logic\SectionLogic
     arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic']
+
+  core_section_form:
+      class: Core\SiteBundle\Form\Type\SectionFormType
+      tags:
+          - { name: form.type, alias: section_form }
+
+  core_section_form_type_extension:
+      class: Core\SiteBundle\Form\Extension\EntityTypeExtension
+      tags:
+          - { name: form.type_extension, alias: entity }

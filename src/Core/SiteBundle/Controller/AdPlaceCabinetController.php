@@ -40,14 +40,14 @@ class AdPlaceCabinetController extends Controller
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction($id)
+    public function editAction($id, Request $request)
     {
-
-        $adplace = $this->getDoctrine()->getManager()->getRepository('CoreSiteBundle:AdPlace')->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $adplace = $em->getRepository('CoreSiteBundle:AdPlace')->find($id);
         $form = $this->getForm($adplace);
 
         //Сохранения изменения
-        $request = $this->get('request');
+        //$request = $this->get('request');
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
 
@@ -61,13 +61,12 @@ class AdPlaceCabinetController extends Controller
 
          //   if (!$isBadName && $form->isValid()) {
 
-
+            //ldd($form->getData()->getSections()->count());
 
             $this->container->get('core_adplace_logic')->setAuthoSize($adplace);
 
             if ($form->isValid()) {
-
-                $em = $this->getDoctrine()->getManager();
+                //ldd($adplace->getSections()->count());
                 $em->flush();
 
                 $this->setFlash('edit_success', 'Данные успешно обновлены');
@@ -134,7 +133,6 @@ class AdPlaceCabinetController extends Controller
      */
     private function getForm($adplace)
     {
-
         $form = $this->createFormBuilder($adplace)
             ->add('site', null, ['required' => true, 'property'=>'domain',
             ])
@@ -152,8 +150,12 @@ class AdPlaceCabinetController extends Controller
             ->add('width', 'text', ['required' => false])
             ->add('height', 'text', ['required' => false])
             ->add('isShowInCatalog', null, ['required' => false])
-            ->add('sections', null, ['required' => false, 'property'=>'name'])
-
+//            ->add('sections', null, ['property'=>'name', 'required' => false, 'class' => 'CoreSiteBundle:Section', 'multiple' => true, 'expanded' => true, 'extraConfig' => [
+//                'field' => 'sections',
+//                'editUrl' => '',
+//                'deleteUrl' => '',
+//            ]])
+            ->add('sections', null, ['property'=>'name', 'required' => false, 'multiple' => true, 'expanded' => true])
             ->getForm();
 
         return $form;
@@ -213,6 +215,4 @@ class AdPlaceCabinetController extends Controller
     {
         $this->container->get('session')->getFlashBag()->set($action, $value);
     }
-
-
 }

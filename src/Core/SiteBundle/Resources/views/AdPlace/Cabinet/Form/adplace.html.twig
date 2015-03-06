@@ -37,6 +37,7 @@
         </div>
     {% endif %}
 
+{#{% form_theme form.sections 'CoreSiteBundle:AdPlace/Cabinet/Form:fields_section.html.twig' %}#}
 <form style="clear: both" class="sky-form sky-form-other-style"
       action="{% if adplace.id %}{{ path('core_cabinet_adplace_edit', {id:adplace.id}) }}{% else %}{{ path('core_cabinet_adplace_create') }}{% endif %}" {{ form_enctype(form) }}
       method="POST">
@@ -99,7 +100,7 @@
         <div class="row margin-bottom-20">
             <div class="col-sm-6  {% if form_errors(form.sections) %}state-error{% endif %}">
                 <label>Разделы</label>
-                {{ form_widget(form.sections,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_widget(form.sections) }}
                 {{ form_errors(form.sections) }}
             </div>
         </div>
