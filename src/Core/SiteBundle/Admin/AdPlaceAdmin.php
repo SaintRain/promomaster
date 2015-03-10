@@ -138,8 +138,6 @@ class AdPlaceAdmin extends Admin
             ->add('name', null, ['label' => 'Название', 'required' => true])
             ->add('width', null, ['label' => 'Ширина'])
             ->add('height', null, ['label' => 'Высота'])
-            //->add('sections', null, ['label' => 'Секции', 'required' => false, 'property' => 'name'])
-                
             ->add('isShowInCatalog', null, ['label' => 'Выводить в общий каталог', 'required' => false]);
 
 
