@@ -68,8 +68,7 @@ class Section
 
     /**
      * Рекламные места для которых действует раздел
-     * @ORM\ManyToMany(targetEntity="AdPlace", cascade={"persist"}, inversedBy="sections",  fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(name="core_site_section_match_ad_place")
+     * @ORM\ManyToMany(targetEntity="AdPlace", cascade={"persist"}, mappedBy="sections")
      * @Assert\NotBlank()
      */
     private $adPlaces;
@@ -198,6 +197,7 @@ class Section
     {
         $this->adPlaces = $adPlaces;
     }
+
 
     /**
      * @return mixed

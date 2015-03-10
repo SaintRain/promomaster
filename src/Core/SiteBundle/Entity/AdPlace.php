@@ -106,7 +106,8 @@ class AdPlace
 
     /**
      * Рекламные места для которых действует раздел
-     * @ORM\ManyToMany(targetEntity="Section", cascade={"persist"},  mappedBy="adPlaces")
+     * @ORM\ManyToMany(targetEntity="Section", cascade={"persist"},  inversedBy="adPlaces")
+     * @ORM\JoinTable(name="core_site_section_match_ad_place")
      */
     private $sections;
 
