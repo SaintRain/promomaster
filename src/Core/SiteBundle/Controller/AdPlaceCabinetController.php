@@ -148,12 +148,12 @@ class AdPlaceCabinetController extends Controller
             ->add('width', 'text', ['required' => false])
             ->add('height', 'text', ['required' => false])
             ->add('isShowInCatalog', null, ['required' => false])
-//            ->add('sections', null, ['property'=>'name', 'required' => false, 'class' => 'CoreSiteBundle:Section', 'multiple' => true, 'expanded' => true, 'extraConfig' => [
-//                'field' => 'sections',
-//                'editUrl' => '',
-//                'deleteUrl' => '',
-//            ]])
-            ->add('sections', null, ['property' => 'name', 'required' => false, 'multiple' => true, 'expanded' => true])
+            ->add('sections', null, ['property'=>'name', 'required' => false, 'class' => 'CoreSiteBundle:Section', 'multiple' => true, 'expanded' => true, 'extraConfig' => [
+                'field' => 'sections',
+                'editUrl' => '',
+                'deleteUrl' => '',
+            ]])
+            //->add('sections', null, ['property'=>'name', 'required' => false, 'multiple' => true, 'expanded' => true])
             ->getForm();
 
         return $form;
@@ -163,6 +163,7 @@ class AdPlaceCabinetController extends Controller
      * Удаление рекламного места
      * @return \Symfony\Component\HttpFoundation\Response
      */
+
     public function deleteAction($id)
     {
 

@@ -292,8 +292,34 @@ class AdPlace
     public function setSections($sections)
     {
         $this->sections = $sections;
+
+        return $this;
     }
 
+    /**
+     * @param Section $section
+     */
+    public function addSection(Section $section)
+    {
+        if (!$this->sections->contains($section)) {
+            $this->sections->add($section);
+            $section->addAdPlace($this);
+        } else {
+            return;
+        }
+    }
+
+    /**
+     * @param Section $section
+     */
+    public function removeSection(Section $section)
+    {
+        if ($this->sections->contains($section)) {
+            $this->sections->removeElement($section);
+        } else {
+            return;
+        }
+    }
 
     /**
      * Дополнительные проверки

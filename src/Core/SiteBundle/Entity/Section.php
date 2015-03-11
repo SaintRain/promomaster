@@ -191,13 +191,30 @@ class Section
     }
 
     /**
-     * @param mixed $adPlaces
+     * @param AdPlace $adPlace
      */
-    public function setAdPlaces($adPlaces)
+    public function addAdPlace(AdPlace $adPlace)
     {
-        $this->adPlaces = $adPlaces;
+        if (!$this->adPlaces->contains($adPlace)) {
+            $this->adPlaces->add($adPlace);
+            $adPlace->addSection($this);
+        } else {
+            return;
+        }
     }
 
+    /**
+     * @param AdPlace $adPlace
+     */
+    public function removeAdPlace(AdPlace $adPlace)
+    {
+        if ($this->adPlaces->contains($adPlace)) {
+            $this->adPlaces->removeElement($adPlace);
+            $adPlace->removeSection($this);
+        } else {
+            return;
+        }
+    }
 
     /**
      * @return mixed
