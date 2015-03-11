@@ -11,57 +11,67 @@ if (!window.jQuery) {
 }
 
 
+//класс для работы с сервером
+var PromoMasterClient = {
+    connectServerUrl: "http://127.0.0.1:1337", //адрес подключения к серверу
+    isInitialized:false,
+    init: function (place_id) {
+        if (!this.isInitialized) {
+            this.getOptions(place_id);
+        }
+    },
+    //получает начальные настройки площадки для ротации баннеров
+    getOptions: function(adplace_id) {
 
+        $.post( "example.php", function() {
+            alert( "success" );
+        })
+            .done(function() {
+                alert( "second success" );
+            })
+            .fail(function() {
+                alert( "error" );
+            })
+            .always(function() {
+                alert( "finished" );
+            });
+    },
+
+    //запрашивает рекламу по данным, которые пришли
+    getAd: function(adplace_id) {
+
+        $.get(this.connectServerUrl+'/getad',
+            {adplace_id:adplace_id},
+            function() {
+            //alert( "success" );
+        })
+            .done(function() {
+             //   alert( "second success" );
+            })
+            .fail(function() {
+               // alert( "error" );
+            })
+            .always(function() {
+               // alert( "finished" );
+            });
+    }
+
+};
 
 
 $(function () {
-//класс для работы с сервером
-    var client = jQuery.Class.create({
-        init: function (place_id) {
-            if (!this.isInitialized) {
-                this.getOptions(place_id);
-            }
-        },
-        //получает начальные настройки площадки для ротации баннеров
-        getOptions: function(place_id) {
 
-            $.post( "example.php", function() {
-                alert( "success" );
-            })
-                .done(function() {
-                    alert( "second success" );
-                })
-                .fail(function() {
-                    alert( "error" );
-                })
-                .always(function() {
-                    alert( "finished" );
-                });
-        },
-
-        //запрашивает рекламу по данным, которые пришли
-        getAd: function(place_id) {
-
-        }
-
-
-
-
-    });
 
 })
 
 
 /**
  * Инициализирует рекламный баннер в том месте, где вызвали
- * @param place_id  - ID рекламного места
+ * @param adplace_id  - ID рекламного места
  * @constructor
  */
-function GET_AD(place_id) {
+function GET_AD(adplace_id) {
 
-    var client = new client(place_id);  //создаёт клиента для работы с сервером
-
-    client.getAd(place_id); //запрашивает рекламу для места, где вызвали
-
+    PromoMasterClient.getAd(adplace_id); //запрашивает рекламу для места, где вызвали
 }
 
