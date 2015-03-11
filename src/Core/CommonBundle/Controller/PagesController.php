@@ -20,6 +20,10 @@ class PagesController extends Controller
         return $this->render('CoreCommonBundle:Pages:index.html.twig');
     }
 
+    public function testAction()
+    {
+        return $this->render('CoreCommonBundle:Pages:test.html.twig');
+    }
 
 
 //    /**

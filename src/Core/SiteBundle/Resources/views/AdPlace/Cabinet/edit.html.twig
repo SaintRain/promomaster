@@ -1,5 +1,5 @@
 {#редактирование рекламного места в ЛК#}
-{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
+{% extends "CoreSiteBundle:AdPlace\\Cabinet:tabs.html.twig" %}
 {% form_theme form 'CoreCommonBundle:Form:choice_widget_with_data_attr.html.twig' %}
 {# SEO - заголовки #}
 {% block title %}{% if adplace.id %}Редактирование рекламного места{% else %}Добавление рекламного места в систему{% endif %}{% endblock %}
@@ -25,25 +25,6 @@
     {% endblock %}
 
 
-{% block sub_content %}
-
-    {% if adplace.id %}
-        <div class="tab-v2">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="{{ path('core_cabinet_adplace_list_first_page') }}" >Рекламное место</a></li>
-                <li class=""><a href="{{ path('core_cabinet_section_list_first_page') }}" >Разделы</a></li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane fade active in" id="tab1">
-                    {{ include ('CoreSiteBundle:AdPlace\\Cabinet\\Form:adplace.html.twig') }}
-                </div>
-                <div class="tab-pane fade" id="tab12">
-
-                </div>
-            </div>
-        </div>
-    {% else %}
+    {% block tab_content %}
         {{ include ('CoreSiteBundle:AdPlace\\Cabinet\\Form:adplace.html.twig') }}
-    {% endif %}
-
-{% endblock %}
+    {% endblock %}
