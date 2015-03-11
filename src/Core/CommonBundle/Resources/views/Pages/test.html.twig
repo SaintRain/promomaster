@@ -1,0 +1,25 @@
+{% extends "CoreCommonBundle::main_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}OliKids.ru — интернет-магазин игрушек и детских товаров{% endblock %}
+{% block meta_keywords %}Детские игрушки, транспорт, куклы, машинки, детские товары{% endblock %}
+{% block meta_description %}Интернет-магазин детских товаров, где можно купить игрушки, самокаты, радионяни, бутылочки.{% endblock %}
+
+{% block js_head %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.initSliders();
+            ParallaxSlider.initParallaxSlider();
+        });
+    </script>
+
+{% endblock %}
+
+{% block content %}
+    <script src="/assets/js/server_client.js.js"></script>
+
+        <script>GET_AD(place_id);</script>
+
+{% endblock %}
