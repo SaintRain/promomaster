@@ -10,46 +10,47 @@ if (!window.jQuery) {
     document.getElementsByTagName('head')[0].appendChild(jq);
 }
 
+
+
+
+
+$(function () {
 //класс для работы с сервером
-var client = jQuery.Class.create({
-    init: function (place_id) {
-        if (!this.isInitialized) {
-            this.getOptions(place_id);
+    var client = jQuery.Class.create({
+        init: function (place_id) {
+            if (!this.isInitialized) {
+                this.getOptions(place_id);
+            }
+        },
+        //получает начальные настройки площадки для ротации баннеров
+        getOptions: function(place_id) {
+
+            $.post( "example.php", function() {
+                alert( "success" );
+            })
+                .done(function() {
+                    alert( "second success" );
+                })
+                .fail(function() {
+                    alert( "error" );
+                })
+                .always(function() {
+                    alert( "finished" );
+                });
+        },
+
+        //запрашивает рекламу по данным, которые пришли
+        getAd: function(place_id) {
+
         }
-    },
-    //получает начальные настройки площадки для ротации баннеров
-    getOptions: function(place_id) {
-
-        $.post( "example.php", function() {
-            alert( "success" );
-        })
-            .done(function() {
-                alert( "second success" );
-            })
-            .fail(function() {
-                alert( "error" );
-            })
-            .always(function() {
-                alert( "finished" );
-            });
-    },
-
-    //запрашивает рекламу по данным, которые пришли
-    getAd: function(place_id) {
-
-    }
 
 
 
 
     });
 
-
-
-$(function () {
-
-
 })
+
 
 /**
  * Инициализирует рекламный баннер в том месте, где вызвали
@@ -63,3 +64,4 @@ function GET_AD(place_id) {
     client.getAd(place_id); //запрашивает рекламу для места, где вызвали
 
 }
+

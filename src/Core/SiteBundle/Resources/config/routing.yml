@@ -103,6 +103,14 @@ core_cabinet_adplace_delete:
     requirements:
       id: \d+
 
+# получение HTML-кода для встраивания рекламного места в ЛК
+core_cabinet_adplace_getcode:
+    path:      /cabinet/adplace_getcode_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlaceCabinet:getCode }
+    requirements:
+      id: \d+
+
 
 
 

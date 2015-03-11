@@ -19,7 +19,7 @@ auth_receiver:
 
 
 core_common_test:
-    pattern:  /
+    pattern:  /test
     schemes:  [http]
     defaults: { _controller: CoreCommonBundle:Pages:test }
 

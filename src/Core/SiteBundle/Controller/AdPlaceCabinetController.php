@@ -59,7 +59,7 @@ class AdPlaceCabinetController extends Controller
 //                $isBadName=false;
 //            }
 
-         //   if (!$isBadName && $form->isValid()) {
+            //   if (!$isBadName && $form->isValid()) {
 
             //ldd($form->getData()->getSections()->count());
 
@@ -75,11 +75,9 @@ class AdPlaceCabinetController extends Controller
                 return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', ['adplace' => $adplace, 'form' => $form->createView()]);
             }
         } else {
-            return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', ['adplace' => $adplace,  'form' => $form->createView()]);
+            return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', ['adplace' => $adplace, 'form' => $form->createView()]);
         }
     }
-
-
 
 
     /**
@@ -107,7 +105,7 @@ class AdPlaceCabinetController extends Controller
 //            else {
 //                $isBadName=false;
 //            }
-    //        if (!$isBadName && $form->isValid()) {
+            //        if (!$isBadName && $form->isValid()) {
 
             $this->container->get('core_adplace_logic')->setAuthoSize($adplace);
 
@@ -119,7 +117,7 @@ class AdPlaceCabinetController extends Controller
                 $this->setFlash('edit_success', 'Новое рекламное место добавлено');
                 return new RedirectResponse($this->generateUrl('core_cabinet_adplace_edit', ['id' => $adplace->getId()]));
             } else {
-                return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', ['adplace' => $adplace,  'form' => $form->createView()]);
+                return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', ['adplace' => $adplace, 'form' => $form->createView()]);
             }
         } else {
             return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', ['adplace' => $adplace, 'form' => $form->createView()]);
@@ -134,19 +132,19 @@ class AdPlaceCabinetController extends Controller
     private function getForm($adplace)
     {
         $form = $this->createFormBuilder($adplace)
-            ->add('site', null, ['required' => true, 'property'=>'domain',
+            ->add('site', null, ['required' => true, 'property' => 'domain',
             ])
             ->add('name', 'text', ['required' => true])
             ->add('size', 'entity',
                 [
-                    'class'=>'CoreDirectoryBundle:AdPlaceSize',
-                    'query_builder' => function(AdPlaceSizeRepository $er) {
+                    'class' => 'CoreDirectoryBundle:AdPlaceSize',
+                    'query_builder' => function (AdPlaceSizeRepository $er) {
                         return $er->createQueryBuilder('s')
                             ->where('s.isEnabled=1')
                             ->orderBy('s.id', 'ASC');
                     },
-                    'required' => true, 'property'=>'captionRu',
-                'attr' => array('data-extra' => ['name'])])
+                    'required' => true, 'property' => 'captionRu',
+                    'attr' => array('data-extra' => ['name'])])
             ->add('width', 'text', ['required' => false])
             ->add('height', 'text', ['required' => false])
             ->add('isShowInCatalog', null, ['required' => false])
@@ -155,7 +153,7 @@ class AdPlaceCabinetController extends Controller
 //                'editUrl' => '',
 //                'deleteUrl' => '',
 //            ]])
-            ->add('sections', null, ['property'=>'name', 'required' => false, 'multiple' => true, 'expanded' => true])
+            ->add('sections', null, ['property' => 'name', 'required' => false, 'multiple' => true, 'expanded' => true])
             ->getForm();
 
         return $form;
@@ -205,6 +203,21 @@ class AdPlaceCabinetController extends Controller
 //            return false;
 //        }
 //    }
+
+
+    /**
+     * Вывод встраиваемого HTML-кода
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getCodeAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $adplace = $em->getRepository('CoreSiteBundle:AdPlace')->find($id);
+
+        return $this->render('CoreSiteBundle:AdPlace\Cabinet:code.html.twig', ['adplace' => $adplace]);
+
+    }
 
     /**
      * Установка сообщений
