@@ -1,0 +1,100 @@
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="responsive" class="modal fade" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                {% if section.id %}
+                    <h4 id="myModalLabel" class="modal-title">Редактирование настроек раздела рекламного места</h4>
+                {% else %}
+                    <h4 id="myModalLabel" class="modal-title">Добавление нового раздела в систему</h4>
+                {% endif %}
+            </div>
+            <form style="clear: both" class="{% if section.id %}edit {% else %}create {% endif %}sky-form sky-form-other-style"
+                  action="{% if section.id %}{{ path('core_cabinet_section_edit_ajax', {id:section.id}) }}{% else %}{{ path('core_cabinet_section_create_ajax') }}{% endif %}" {{ form_enctype(form) }}
+                  method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <fieldset class="sky-form-other-style">
+
+                                <div class="row margin-bottom-20">
+                                    <div class="col-lg-6  {% if form_errors(form.name) %}state-error{% endif %}">
+                                        <label>Название*</label>
+                                        {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
+                                        {{ form_errors(form.name) }}
+                                    </div>
+                                </div>
+
+
+                                <div class="margin-bottom-20 {% if form_errors(form.isAllPage) %}state-error{% endif %}">
+                                    <label class="checkbox">
+                                        {{ form_widget(form.isAllPage) }}<i></i> Выводить на всех страницах</label>
+                                    {{ form_errors(form.isAllPage) }}
+                                    </label>
+                                </div>
+
+
+                                <div class="row margin-bottom-20 form_urlTemplate" style="display: none">
+                                    <div class="col-sm-12  {% if form_errors(form.name) %}state-error{% endif %}">
+                                        <label>Шаблон*</label>
+                                        {{ form_widget(form.urlTemplate,{ 'attr': {'class': 'form-control'} }) }}
+
+                                        {{ form_errors(form.urlTemplate) }}
+                                    </div>
+                                </div>
+
+
+                                <div class="margin-bottom-20">
+                                </div>
+
+                                {{ form_rest(form) }}
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Отмена</button>
+                    <button class="btn-u btn-u-primary" type="submit">{% if section.id %}Сохранить{% else %}Добавить{% endif %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    (function($){
+        $(function(){
+
+            // section saving via ajax
+            $('#responsive form').submit(function() {
+                var $this = $(this),
+                    elt = null,
+                    activeLink = $('.active-section');
+                $.ajax({
+                    type: "POST",
+                    data: $this.serialize(),
+                    url: $this.attr('action'),
+                    success: function(data) {
+                        if (data.result) {
+
+                            if ($this.hasClass('create')) {
+                                elt = $('<tr><td><input type="checkbox" value="'+data.data.section.id+'" name="form[sections][]" id="form_sections_'+data.data.section.id+'"></td><td><a href="/app_dev.php/cabinet/section_edit_'+data.data.section.id+'.json" class="section-edit" data-id="4">'+data.data.section.name+'</a></td><td><a href="javascript:void(0);" class="section-delete" data-id="'+data.data.section.id+'"><i aria-hidden="true" class="icon-trash"></i></a></td></tr>');
+                                $('#form_sections tbody').append(elt);
+                            } else {
+                                activeLink.text(data.data.section.name);
+                            }
+
+                            $('#responsive').modal('hide');
+                        } else {
+                            $('.col-md-12', $this).replaceWith($('.col-md-12', data.data.form));
+                        }
+                    },
+                    error: function(){
+                        console.log('error');
+                    }
+                });
+
+                return false;
+            });
+        })
+    })(jQuery)
+</script>

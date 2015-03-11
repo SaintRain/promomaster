@@ -136,6 +136,25 @@ core_cabinet_section_create:
     schemes:  [http]
     defaults:  { _controller: CoreSiteBundle:SectionCabinet:create }
 
+# добавление разделов для рекламных мест в ЛК (ajax)
+core_cabinet_section_create_ajax:
+    path:      /cabinet/section_create.json
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SectionCabinet:createAjax }
+
+# редактирование разделов для рекламных мест в ЛК
+core_cabinet_section_edit_ajax:
+    path:      /cabinet/section_edit_{id}.json
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SectionCabinet:editAjax }
+    requirements:
+          id: \d+
+
+# удаление разделов для рекламных мест в ЛК
+core_cabinet_section_delete_ajax:
+    path:      /cabinet/section_delete.json
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SectionCabinet:deleteAjax }
 
 # удаление разделов для рекламных мест в ЛК
 core_cabinet_section_delete:

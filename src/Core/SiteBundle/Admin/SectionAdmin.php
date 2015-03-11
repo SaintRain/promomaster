@@ -108,7 +108,7 @@ class SectionAdmin extends Admin
                 'placeholder' => 'Введите E-mail, фамилию, или ID пользователя',
                 'minimumInputLength' => 1),
         ])
-            ->add('adPlaces', null, ['label'=>'Рекламные места', 'property'=>'name', 'required'=>false])
+            ->add('adPlaces', null, ['label'=>'Рекламные места', 'property'=>'name', 'required'=>false, 'by_reference' => false])
             ->add('isEnabled', null, ['label'=>'Активно','required'=>false])
 
         ;

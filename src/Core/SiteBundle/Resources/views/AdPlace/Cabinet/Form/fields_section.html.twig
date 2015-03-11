@@ -8,9 +8,11 @@
                         {% if child.parent.vars.extraData[child.vars.value] is defined  %}
                             {% set curObj =  child.parent.vars.extraData[child.vars.value] %}
                             <td>{{- form_widget(child) -}}</td>
-                            <td><a href="{{ curObj.id }}">{{ curObj.name }}</a></td>
                             <td>
-                                <a class="item">
+                                <a data-id="{{ curObj.id }}" class="section-edit" href="{{ path('core_cabinet_section_edit_ajax', {'id':curObj.id }) }}">{{ curObj.name }}</a>
+                            </td>
+                            <td>
+                                <a data-id="{{ curObj.id }}" class="section-delete" href="javascript:void(0);">
                                     <i class="icon-trash" aria-hidden="true"></i>
                                 </a>
                             </td>
@@ -19,5 +21,110 @@
                 {% endfor -%}
             </tbody>
         </table>
+        <div id="modal_placement"></div>
     </div>
+    <script>
+        (function($){
+
+            $(function(){
+
+                // section deleting
+                $('.section-delete').click(function(){
+                    var $this = $(this),
+                            parentBlock = $this.closest('tr'),
+                            curId = $this.data('id');
+                    $.ajax({
+                        type: "POST",
+                        data: "id="+curId,
+                        url: "{{ path('core_cabinet_section_delete_ajax') }}",
+                        success: function(data){
+                            if (data.result) {
+                                parentBlock.fadeOut().remove();
+                            } else {
+                                parentBlock.fadeOut('fast').fadeIn('fast');
+                            }
+                        },
+                        error: function(){
+                            console.log('error');
+                        }
+                    });
+                });
+
+                // section edit get form
+                $('body').on('click', '.section-edit', function(){
+                    var $this = $(this),
+                            modalPlacement = $('#modal_placement'),
+                            parentBlock = $this.closest('tr'),
+                            curId = $this.data('id');
+
+                    $('.active-section').each(function(index, element) {
+                        var $el = $(element);
+                        if ($el.data('id') != $this.data('id')) {
+                            $el.removeClass('active-section');
+                            $el.attr('href', $el.data('href'));
+                            $el.removeAttr('data-toggle');
+                            $el.addClass('section-edit');
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        data: "id="+curId,
+                        url: $this.attr('href'),
+                        success: function(data) {
+                            if (data.result) {
+                                $this.data('href', $this.attr('href'));
+                                modalPlacement.html(data.data.form);
+                                $('#responsive').modal('show');
+                                $this.removeClass('section-edit');
+                                $this.attr('href', '#responsive');
+                                $this.attr('data-toggle', 'modal');
+                                $this.addClass('active-section');
+                            }
+                        },
+                        error: function(){
+                            console.log('error');
+                        }
+                    });
+
+                    return false;
+                });
+
+
+                $('body').on('click', '.section-create', function() {
+
+                    var $this = $(this),
+                        modalPlacement = $('#modal_placement');
+
+                    $('.active-section').each(function(index, element) {
+                        var $el = $(element);
+                        $el.removeClass('active-section');
+                        $el.attr('href', $el.data('href'));
+                        $el.removeAttr('data-toggle');
+                        $el.addClass('section-edit');
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: $this.attr('href'),
+                        success: function(data) {
+                            if (data.result) {
+                                $this.data('href', $this.attr('href'));
+                                modalPlacement.html(data.data.form);
+                                $('#responsive').modal('show');
+                            }
+                        },
+                        error: function(){
+                            console.log('error');
+                        }
+                    });
+
+                    return false;
+
+                });
+
+            });
+
+        })(jQuery)
+    </script>
 {%- endblock choice_widget_expanded -%}
