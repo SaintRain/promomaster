@@ -13,8 +13,8 @@ parameters:
     mailer_password:   ~
 
     locale:            ru
-    domain_ru:         www.olikids.ru
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    domain_ru:         www.promomaster.net
+    secret:            b4e7a4ba6de9c87f227a93857e26b0856d0f4af1
     filebrowserBrowseRoute: elfinder  #папка куда будут сохраняться файлы из elfinder-менеджера
     default_timezone: Europe/Moscow
     default_currency: RUB
@@ -23,3 +23,4 @@ parameters:
     java_path: /usr/bin/java    #папка, где хранится ява
     router.request_context.host: %domain_ru%  #дефолтный домен, нужен для консоли, чтобы ставить правильный домен на роуты
     router.request_context.base_url: app_dev.php #для прода ставим null
+    nodejs_server: 'http://%domain_ru%:1337' #строчка подключения к серверу nodejs

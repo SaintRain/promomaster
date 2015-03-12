@@ -28,7 +28,7 @@ services:
   # логика для сайтов
   core_site_logic:
     class: Core\SiteBundle\Logic\SiteLogic
-    arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic']
+    arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic', , {nodejs_server:'%nodejs_server%'}]
 
 
 # логика для рекламных мест

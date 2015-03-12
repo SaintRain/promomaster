@@ -1,6 +1,8 @@
 ////глобальные настройки
 
 CONFIG = {
+    port:1337,
+    hostname:"http://promomaster",
     mysqldb: {  //настройки подключения к БД Mysql
         host: 'localhost',
         login: 'root',

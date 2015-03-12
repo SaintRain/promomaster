@@ -118,6 +118,8 @@ class SectionCabinetController extends Controller
             ->add('name', 'text', ['required' => true])
             ->add('isAllPage', null, ['required' => false])
             ->add('urlTemplate', 'text', ['required' => false])
+            ->add('isRegExpInUrlTemplate', null, ['required' => false])
+
             ->add('isSubmited', 'hidden', ['mapped' => false, 'data' =>1])
             ->getForm();
 

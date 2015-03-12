@@ -81,7 +81,7 @@ class PlacementAdmin extends Admin
                 ))
             ->add('adPlace', 'entity', [
                 'required'=>true,
-                'label'=>'Размещение',
+                'label'=>'Рекламное место',
                 'empty_value'=>'Ничего не выбрано...',
                 'class' => 'CoreSiteBundle:AdPlace',
                 'property' => 'name'

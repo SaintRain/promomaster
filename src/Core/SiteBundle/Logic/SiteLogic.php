@@ -9,6 +9,12 @@
 namespace Core\SiteBundle\Logic;
 
 use Core\SiteBundle\Entity\CommonSite;
+use Core\SiteBundle\Entity\AdPlace;
+use Core\SiteBundle\Entity\Section;
+use  Core\BannerBundle\Entity\CommonBanner;
+use Core\AdCompanyBundle\Entity\AdCompany;
+use Core\AdCompanyBundle\Entity\Placement;
+use Core\AdCompanyBundle\Entity\PlacementBanner;
 
 class SiteLogic
 {
@@ -17,14 +23,15 @@ class SiteLogic
     private $em;
     private $container;
     private $paginator;
+    private $parameters;
 
-
-    public function __construct($router, $em, $container, $paginator)
+    public function __construct($router, $em, $container, $paginator, $parameters)
     {
         $this->router = $router;
         $this->em = $em;
         $this->container = $container;
         $this->paginator = $paginator;
+        $this->parameters = $parameters;
     }
 
 
@@ -52,9 +59,9 @@ class SiteLogic
      */
     public function getDataInCabinetForPage($page)
     {
-        $filterRequest=[
-            'maxResults'=>10,
-            'user'=>$this->container->get('security.context')->getToken()->getUser()
+        $filterRequest = [
+            'maxResults' => 10,
+            'user' => $this->container->get('security.context')->getToken()->getUser()
         ];
 
         $queryBuilder = $this->em->getRepository('CoreSiteBundle:CommonSite')->generateQueryBuilderByFilter($filterRequest);
@@ -70,14 +77,14 @@ class SiteLogic
      * @param $user
      * @return bool
      */
-    public function checkIsExistWebSite($site, $user) {
+    public function checkIsExistWebSite($site, $user)
+    {
 
-        $res=$this->em->getRepository('CoreSiteBundle:WebSite')->findQuantityByOptions(['id'=>$site->getId(), 'user' => $user, 'domain' => $site->getDomain()]);
+        $res = $this->em->getRepository('CoreSiteBundle:WebSite')->findQuantityByOptions(['id' => $site->getId(), 'user' => $user, 'domain' => $site->getDomain()]);
 
         if ($res['quantity']) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -88,9 +95,10 @@ class SiteLogic
      * @param $site
      * @return bool
      */
-    public function generateVerifiedCode($site) {
+    public function generateVerifiedCode($site)
+    {
 
-        $code=uniqid();
+        $code = uniqid();
 
         return $code;
     }
@@ -114,6 +122,44 @@ class SiteLogic
                 $this->em->flush($site);
             }
         }
+    }
+
+    /**
+     * Смотрим если обновились данные, то делаем запрос в NodeJS, чтобы тот обновил
+     * актуальность своих данных
+     * @param $object
+     */
+    public function checkRefreshDataNodJs($object)
+    {
+
+        if ($object instanceof CommonSite ||
+            $object instanceof AdPlace ||
+            $object instanceof Section ||
+            $object instanceof CommonBanner ||
+            $object instanceof Placement ||
+            $object instanceof PlacementBanner ||
+            $object instanceof AdCompany
+
+        ) {
+
+            $this->sendRefresRequestToNodJS($object);
+        }
+
+    }
+
+
+    /**
+     * Делаем запрос к nodjs на обновление данных
+     * @param $object
+     */
+    private function sendRefresRequestToNodJS($object)
+    {
+
+        $arr = explode('\\', get_class($object));
+        $entityName = $arr[count($arr) - 1];
+        $url = $this->parameters['nodejs_server'] . '/refresh?id=' . $object->getId() . '&entityName=' . $entityName;
+
+        file_get_contents($url);
     }
 
 

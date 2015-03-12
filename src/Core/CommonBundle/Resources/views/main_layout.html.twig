@@ -1,6 +1,7 @@
 {% extends "CoreCommonBundle::base_layout.html.twig" %}
 
  {% block body %}
+
      {#{% spaceless %}#}
          <div class="wrapper">
              {% block header %}
@@ -11,11 +12,32 @@
              {% endblock %}
 
              {% block footer %}
+
+
+                 <!--PromoMaster.net-->
+                 <div id="promomaster_adplace_4"></div>
+                 <script type="text/javascript"><!--
+                     if (typeof(__PromoMasterClient) === 'undefined') {
+                         var jq = document.createElement('script');
+                         jq.type = 'text/javascript';
+                         jq.src = 'http://promomaster/assets/js/server_client.js';
+                         document.getElementsByTagName('head')[0].appendChild(jq);
+                     }
+                     onload = function() {__GET_AD(4);}
+                     //--></script>
+
                  {{ render (controller ('CoreCommonBundle:Fragments:footer', {'request': app.request})) }}
              {% endblock %}
 
          </div><!--/wrapper-->
      {#{% endspaceless %}#}
+
+
+
+
+
+
+
  {% endblock %}
 
 

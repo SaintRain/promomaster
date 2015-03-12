@@ -71,6 +71,7 @@ class SectionAdmin extends Admin
             ->add('name', null, ['label'=>'Название раздела','required'=>true])
             ->add('isAllPage', null, ['label'=>'Для всех страниц','required'=>false])
             ->add('urlTemplate', 'text', ['attr'=>['rows'=>7], 'label'=>'Шаблон страниц','required'=>false, 'help'=>'Таргетинг по адресу страницы задается с помощью шаблона. Шаблон нужен, чтобы система могла отнести определенную страницу сайта к какому-либо разделу. Шаблон задается подстрокой или регулярным выражением. Для того чтоб шаблон трактовался как регулярное выражение, его нужно заключить в *, например: *регулярное выражение*.В простейшем случае, если адрес страницы содержит шаблон раздела, то такая страница будет отнесена к этому разделу.Например, есть страница http://www.test.com/news.php?id=1. Наш шаблон: news.php. В этом случае эта страница будет отнесена к разделу.'])
+            ->add('isRegExpInUrlTemplate', null, ['label'=>'Регулярное выражение','help'=>'Если отмечено, значит в шаблоне используется регулярное выражение', 'required'=>false])
 
         ->add('user', 'ajax_entity', [
             'label' => 'Пользователь',
@@ -125,9 +126,11 @@ class SectionAdmin extends Admin
                 'required'=>false,
                 'template' => 'CoreSiteBundle:Admin\list_fields\Section:urlTemplate.html.twig'
             ])
+            ->add('isRegExpInUrlTemplate', null, ['label' => 'Регулярное выражение'])
             ->add('user.email', null, ['label' => 'Пользователь',
                 'template' => 'CoreSiteBundle:Admin\list_fields\Section:user.html.twig'
             ])
+
             ->add('isEnabled', null, ['label' => 'Активно'])
 
             ->add('_action', 'actions', array(

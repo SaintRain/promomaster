@@ -47,7 +47,7 @@ class Section
      * @var boolean
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isAllPage=true;
+    private $isAllPage = true;
 
 
     /**
@@ -56,6 +56,13 @@ class Section
      * @ORM\Column(type="text", nullable=true)
      */
     private $urlTemplate;
+
+    /**
+     * Является ли текст в  $urlTemplate регулярным выражением
+     * @var text
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isRegExpInUrlTemplate;
 
 
     /**
@@ -78,7 +85,7 @@ class Section
      * Использыется место
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isEnabled=true;
+    private $isEnabled = true;
 
 
     /**
@@ -99,7 +106,7 @@ class Section
 
     public function __construct()
     {
-        $this->adPlaces= new ArrayCollection();
+        $this->adPlaces = new ArrayCollection();
     }
 
     /**
@@ -163,8 +170,31 @@ class Section
      */
     public function setUrlTemplate($urlTemplate)
     {
+        //в начале выражения должен идти слеш, если не регулярка
+        if (!$this->isRegExpInUrlTemplate && $urlTemplate[0] != '/') {
+            $urlTemplate = '/' . $urlTemplate;
+        }
+
         $this->urlTemplate = $urlTemplate;
     }
+
+    /**
+     * @return text
+     */
+    public function getIsRegExpInUrlTemplate()
+    {
+        return $this->isRegExpInUrlTemplate;
+    }
+
+    /**
+     * @param text $isRegExpInUrlTemplate
+     */
+    public function setIsRegExpInUrlTemplate($isRegExpInUrlTemplate)
+    {
+        $this->isRegExpInUrlTemplate = $isRegExpInUrlTemplate;
+        return $this;
+    }
+
 
     /**
      * @return mixed
@@ -265,18 +295,22 @@ class Section
     }
 
 
-
-
     /**
      * Дополнительные проверки
      */
     public function isValid(ExecutionContextInterface $context)
     {
-//        if ($this->number && !$this->price) {
-//            $context->buildViolation('Пожалуйста, укажите цену')
-//                        ->atPath('price')
-//                        ->addViolation();
-//        }
+
+        //проверяем регулярное выражение на валидность
+        if ($this->isRegExpInUrlTemplate) {
+            $res = @preg_match($this->urlTemplate, NULl);
+            if ($res === false) {
+                $context->buildViolation('Регулярное выражение записано с ошибкой.')
+                    ->atPath('urlTemplate')
+                    ->addViolation();
+            }
+        }
+
     }
 
 }

@@ -1,4 +1,5 @@
-<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="responsive" class="modal fade" style="display: none;">
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="responsive" class="modal fade"
+     style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,7 +10,8 @@
                     <h4 id="myModalLabel" class="modal-title">Добавление нового раздела в систему</h4>
                 {% endif %}
             </div>
-            <form style="clear: both" class="{% if section.id %}edit {% else %}create {% endif %}sky-form sky-form-other-style"
+            <form style="clear: both"
+                  class="{% if section.id %}edit {% else %}create {% endif %}sky-form sky-form-other-style"
                   action="{% if section.id %}{{ path('core_cabinet_section_edit_ajax', {id:section.id}) }}{% else %}{{ path('core_cabinet_section_create_ajax') }}{% endif %}" {{ form_enctype(form) }}
                   method="POST">
                 <div class="modal-body">
@@ -26,21 +28,27 @@
                                 </div>
 
 
-                                <div class="margin-bottom-20 {% if form_errors(form.isAllPage) %}state-error{% endif %}">
-                                    <label class="checkbox">
-                                        {{ form_widget(form.isAllPage) }}<i></i> Выводить на всех страницах</label>
-                                    {{ form_errors(form.isAllPage) }}
-                                    </label>
-                                </div>
-
-
-                                <div class="row margin-bottom-20 form_urlTemplate" style="display: none">
+                                <div class="row margin-bottom-20 form_urlTemplate" >
                                     <div class="col-sm-12  {% if form_errors(form.name) %}state-error{% endif %}">
                                         <label>Шаблон*</label>
                                         {{ form_widget(form.urlTemplate,{ 'attr': {'class': 'form-control'} }) }}
 
                                         {{ form_errors(form.urlTemplate) }}
                                     </div>
+                                </div>
+
+                                <div class="margin-bottom-20 {% if form_errors(form.isRegExpInUrlTemplate) %}state-error{% endif %}">
+                                    <label class="checkbox">
+                                        {{ form_widget(form.isRegExpInUrlTemplate) }}<i></i> Регулярное выражение</label>
+                                    {{ form_errors(form.isRegExpInUrlTemplate) }}
+                                    </label>
+                                </div>
+
+                                <div class="margin-bottom-20 {% if form_errors(form.isAllPage) %}state-error{% endif %}">
+                                    <label class="checkbox">
+                                        {{ form_widget(form.isAllPage) }}<i></i> Выводить на всех страницах</label>
+                                    {{ form_errors(form.isAllPage) }}
+                                    </label>
                                 </div>
 
 
@@ -54,30 +62,31 @@
                 </div>
                 <div class="modal-footer">
                     <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Отмена</button>
-                    <button class="btn-u btn-u-primary" type="submit">{% if section.id %}Сохранить{% else %}Добавить{% endif %}</button>
+                    <button class="btn-u btn-u-primary"
+                            type="submit">{% if section.id %}Сохранить{% else %}Добавить{% endif %}</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <script>
-    (function($){
-        $(function(){
+    (function ($) {
+        $(function () {
 
             // section saving via ajax
-            $('#responsive form').submit(function() {
+            $('#responsive form').submit(function () {
                 var $this = $(this),
-                    elt = null,
-                    activeLink = $('.active-section');
+                        elt = null,
+                        activeLink = $('.active-section');
                 $.ajax({
                     type: "POST",
                     data: $this.serialize(),
                     url: $this.attr('action'),
-                    success: function(data) {
+                    success: function (data) {
                         if (data.result) {
 
                             if ($this.hasClass('create')) {
-                                elt = $('<tr><td><input type="checkbox" value="'+data.data.section.id+'" name="form[sections][]" id="form_sections_'+data.data.section.id+'"></td><td><a href="/app_dev.php/cabinet/section_edit_'+data.data.section.id+'.json" class="section-edit" data-id="4">'+data.data.section.name+'</a></td><td><a href="javascript:void(0);" class="section-delete" data-id="'+data.data.section.id+'"><i aria-hidden="true" class="icon-trash"></i></a></td></tr>');
+                                elt = $('<tr><td><input type="checkbox" value="' + data.data.section.id + '" name="form[sections][]" id="form_sections_' + data.data.section.id + '"></td><td><a href="/app_dev.php/cabinet/section_edit_' + data.data.section.id + '.json" class="section-edit" data-id="4">' + data.data.section.name + '</a></td><td><a href="javascript:void(0);" class="section-delete" data-id="' + data.data.section.id + '"><i aria-hidden="true" class="icon-trash"></i></a></td></tr>');
                                 $('#form_sections tbody').append(elt);
                             } else {
                                 activeLink.text(data.data.section.name);
@@ -88,7 +97,7 @@
                             $('.col-md-12', $this).replaceWith($('.col-md-12', data.data.form));
                         }
                     },
-                    error: function(){
+                    error: function () {
                         console.log('error');
                     }
                 });

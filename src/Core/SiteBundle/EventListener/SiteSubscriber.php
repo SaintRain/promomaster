@@ -16,6 +16,7 @@ class SiteSubscriber implements EventSubscriber
 {
     private $container;
 
+
     public function __construct($container)
     {
         $this->container = $container;
@@ -26,13 +27,16 @@ class SiteSubscriber implements EventSubscriber
         return array(
             'postUpdate',
             'postPersist',
+            'postRemove',
         );
     }
 
     public function postUpdate(LifecycleEventArgs $args)
     {
+
         $object = $args->getEntity();
         $this->container->get('core_site_logic')->checkIsDomainNameChange($object);
+        $this->checkRefreshDataNodJs($object);
 
     }
 
@@ -40,6 +44,26 @@ class SiteSubscriber implements EventSubscriber
     {
         $object = $args->getEntity();
         $this->container->get('core_site_logic')->checkIsDomainNameChange($object);
+        $this->checkRefreshDataNodJs($object);
+
+    }
+
+    public function postRemove(LifecycleEventArgs $args)
+    {
+        $object = $args->getEntity();
+        $this->container->get('core_site_logic')->checkIsDomainNameChange($object);
+        $this->checkRefreshDataNodJs($object);
+
+    }
+
+    /**
+     * Определяет необходимо ли обновить данные в nodejs
+     * @param $object
+     */
+    public function checkRefreshDataNodJs($object)
+    {
+
+        $this->container->get('core_site_logic')->checkRefreshDataNodJs($object);
 
     }
 
