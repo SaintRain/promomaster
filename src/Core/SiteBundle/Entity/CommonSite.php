@@ -91,9 +91,20 @@ class CommonSite
      */
     private $indexPosition;
 
+
+    /**
+     * Все рекламные места сайта
+     * @ORM\OneToMany(targetEntity="AdPlace", mappedBy="site")
+     */
+    private $adPlaces;
+
+
+
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->adPlaces = new ArrayCollection();
     }
 
     /**
@@ -218,6 +229,25 @@ class CommonSite
         $this->verifiedCode = $verifiedCode;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAdPlaces()
+    {
+        return $this->adPlaces;
+    }
+
+    /**
+     * @param mixed $adPlaces
+     */
+    public function setAdPlaces($adPlaces)
+    {
+        $this->adPlaces = $adPlaces;
+        return $this;
+    }
+
+
 
     /**
      * Дополнительные проверки

@@ -125,13 +125,12 @@ class SiteLogic
     }
 
     /**
-     * Смотрим если обновились данные, то делаем запрос в NodeJS, чтобы тот обновил
-     * актуальность своих данных
+     * Проверяем нужно ли обновлять этот объект в NodeJS
      * @param $object
      */
     public function checkRefreshDataNodJs($object)
     {
-
+        //изменилось что-то в са
         if ($object instanceof CommonSite ||
             $object instanceof AdPlace ||
             $object instanceof Section ||
@@ -139,11 +138,72 @@ class SiteLogic
             $object instanceof Placement ||
             $object instanceof PlacementBanner ||
             $object instanceof AdCompany
-
         ) {
-
-            $this->sendRefresRequestToNodJS($object);
+            $res = true;
+        } else {
+            $res = false;
         }
+        return $res;
+
+    }
+
+    /**
+     * Смотрим если обновились данные, то делаем запрос в NodeJS, чтобы тот обновил
+     * актуальность своих данных
+     * @param $object
+     */
+    public function sendRefreshDataNodJs($object)
+    {
+        $this->em->refresh($object);
+
+        $arr = [];
+        $secretToken = 'elG5fNk4md3l4k4';
+
+        //изменилось что-то в са
+        if ($object instanceof CommonSite) {
+            $arr['site_ids'][] = $object->getId();
+            foreach ($object->getAdPlaces() as $adPlace) {
+                $arr['ad_place_ids'][] = $adPlace->getId();
+
+                foreach ($adPlace->getSections() as $section) {
+                    $arr['section_ids'][] = $section->getId();
+                }
+
+                foreach ($adPlace->getPlacements() as $placement) {
+                    $arr['placement_ids'][] = $placement->getId();
+                    foreach ($placement->getPlacementBannersList() as $placementBanner) {
+                        $arr['placement_banner_ids'][] = $placementBanner->getId();
+                    }
+                }
+            }
+        } else if ($object instanceof AdPlace) {
+
+            $arr['ad_place_ids'][] = $object->getId();
+
+            foreach ($object->getSections() as $section) {
+                $arr['section_ids'][] = $section->getId();
+            }
+
+            foreach ($object->getPlacements() as $placement) {
+                $arr['placement_ids'][] = $placement->getId();
+                foreach ($placement->getPlacementBannersList() as $placementBanner) {
+                    $arr['placement_banner_ids'][] = $placementBanner->getId();
+                }
+            }
+
+        }
+        if ($arr) {
+            $arr['secretToken'] = $secretToken;
+            $this->sendRefresRequestToNodJS($arr);
+        }
+
+        //            ||
+//            $object instanceof AdPlace ||
+//            $object instanceof Section ||
+//            $object instanceof CommonBanner ||
+//            $object instanceof Placement ||
+//            $object instanceof PlacementBanner ||
+//            $object instanceof AdCompany
 
     }
 
@@ -152,14 +212,21 @@ class SiteLogic
      * Делаем запрос к nodjs на обновление данных
      * @param $object
      */
-    private function sendRefresRequestToNodJS($object)
+    private function sendRefresRequestToNodJS($arr)
     {
+        $params = parse_url($this->parameters['nodejs_server']);
+        $host = $_SERVER['HTTP_HOST'];
+        $content = http_build_query($arr);
 
-        $arr = explode('\\', get_class($object));
-        $entityName = $arr[count($arr) - 1];
-        $url = $this->parameters['nodejs_server'] . '/refresh?id=' . $object->getId() . '&entityName=' . $entityName;
-
-        file_get_contents($url);
+        $fp = fsockopen($params['host'], $params['port']);
+        fwrite($fp, "POST /refresh HTTP/1.1\r\n");
+        fwrite($fp, "Host: {$params['host']}\r\n");
+        fwrite($fp, "Content-Type: application/x-www-form-urlencoded\r\n");
+        fwrite($fp, "Content-Length: " . strlen($content) . "\r\n");
+        fwrite($fp, "Connection: close\r\n");
+        fwrite($fp, "\r\n");
+        fwrite($fp, $content);      //сразу закрываем
+        //    ldd($arr);
     }
 
 

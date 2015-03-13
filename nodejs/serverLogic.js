@@ -11,7 +11,7 @@ exports.initialization = function (MYSQL) {
     mysqlConnect(MYSQL, 0);
 
     //загружаем из базы все данные
-    mysqlGetInitializationData({});
+    mysqlGetInitializationData(false);
 
 }
 

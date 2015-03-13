@@ -67,7 +67,7 @@ class AdPlace
 
     /**
      * Сайт на котором находится рекламное место
-     * @ORM\ManyToOne(targetEntity="CommonSite")
+     * @ORM\ManyToOne(targetEntity="CommonSite" , inversedBy="adPlaces")
      * @ORM\JoinColumn(referencedColumnName="id")
      * @Assert\NotBlank()
      */
@@ -111,9 +111,17 @@ class AdPlace
      */
     private $sections;
 
+    /**
+     * Размещения
+     * @ORM\OneToMany(targetEntity="Core\AdCompanyBundle\Entity\Placement", mappedBy="adPlace")
+     */
+    private $placements;
+
+
     public function __construct()
     {
         $this->sections = new ArrayCollection();
+        $this->placements = new ArrayCollection();
     }
 
     /**
@@ -320,6 +328,25 @@ class AdPlace
             return;
         }
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPlacements()
+    {
+        return $this->placements;
+    }
+
+    /**
+     * @param mixed $placements
+     */
+    public function setPlacements($placements)
+    {
+        $this->placements = $placements;
+        return $this;
+    }
+
+
 
     /**
      * Дополнительные проверки

@@ -2,6 +2,7 @@
 
 CONFIG = {
     port:1337,
+    secretToken: "elG5fNk4md3l4k4",
     hostname:"http://promomaster",
     mysqldb: {  //настройки подключения к БД Mysql
         host: 'localhost',
