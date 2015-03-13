@@ -41,7 +41,7 @@ class TroubleTicketAdminController extends Controller {
         $form->setData($object);
 
         if ($this->getRestMethod()== 'POST') {
-            $form->bind($this->get('request'));
+            $form->handleRequest($this->get('request'));
 
             $isFormValid = $form->isValid();
 
@@ -114,7 +114,7 @@ class TroubleTicketAdminController extends Controller {
         $form->setData($object);
 
         if ($this->getRestMethod() == 'POST') {
-            $form->bind($this->get('request'));
+            $form->handleRequest($this->get('request'));
 
             $isFormValid = $form->isValid();
 
@@ -195,7 +195,7 @@ class TroubleTicketAdminController extends Controller {
         $form->setData($object);
 
         if ($this->getRestMethod() == 'POST') {
-            $form->bind($this->get('request'));
+            $form->handleRequest($this->get('request'));
 
             $isFormValid = $form->isValid();
             //var_dump($this->get('request')->get('s530c9bd32d3a2'));
@@ -253,17 +253,6 @@ class TroubleTicketAdminController extends Controller {
                 $this->admin->getShow();
             }
         }
-        $orders = 0;
-        $contragentsId = array();
-        if ($user) {
-            foreach($user->getContragents() as $contragent) {
-                if (count($contragent->getOrders())) {
-                    $orders += count($contragent->getOrders());
-                    $contragentsId[$contragent->getId()] = $contragent->getId();
-                }
-            }
-        }
-        
         
         $view = $form->createView();
 
@@ -281,8 +270,6 @@ class TroubleTicketAdminController extends Controller {
             'watched'   => $watched,
             'user'      => $user,
             'deleteToken' => $this->getCsrfToken('sonata.delete'),
-            'contragentsId' => implode(',', $contragentsId),
-            'orders' => $orders
         ));
     }
 

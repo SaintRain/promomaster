@@ -1,4 +1,4 @@
-    {% extends 'ApplicationSonataAdminBundle:CRUD:base_edit.html.twig' %}
+{% extends 'ApplicationSonataAdminBundle:CRUD:base_edit.html.twig' %}
 {% block right_side %}
 {% block preview %}
     {% if admin.id(object) is not null and object.id is not null %}
@@ -56,31 +56,6 @@
                                 <td><b>Контактый email:</b></td>
                                 <td>{{object.authorEmail}}</td>
                             </tr>
-                            <tr>
-                                <td><b>Заказ:</b></td>
-                                <td>
-                                    {% if object.order %}
-                                        <a href="{{path('admin_core_order_order_edit', {'id' : object.order.id })}}">#{{ object.order.id|idFormat }}</a>,
-                                    {% endif %}
-                                    {{ author }}
-                                    {% if orders %}
-                                        (<a href="{{path('admin_core_order_order_list', {'filter[contragent__user__email][value]': contragentsId, })}}">все заказы пользователя</a>)
-                                        {% else %}
-                                            (<a href="javascript:void(0);">У пользователя нет ни одного заказа</a>)
-                                    {% endif %}
-                                </td>
-                            </tr>
-
-                            {% if object.product %}
-
-                                <tr>
-                                    <td><b>Продукт:</b></td>
-                                    <td>
-                                        <a href="{{path('admin_core_product_commonproduct_edit', {'id' : object.product.id })}}">{{ object.product.captionRu }}</a>,
-                                    </td>
-                                </tr>
-
-                            {% endif %}
 
                             <tr>
                                 <td><b>Статус:</b></td>

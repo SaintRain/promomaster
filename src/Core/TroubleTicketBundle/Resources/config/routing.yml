@@ -11,20 +11,10 @@ trouble_ticket_log:
     schemes:  [http]
     defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:log }
 
-# Связь заказа с новым тикетом (Страница контактов)
-trouble_ticket_contact_with_order_id:
-    path:      /contacts/order/{order_id}.html
+trouble_ticket_contact:
+    path:      /contacts.html
     schemes:  [http]
     defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:contact }
-    requirements:
-        order_id: \d+
-
-trouble_ticket_contact_with_product_id:
-    path:      /contacts/product/{product_id}.html
-    schemes:  [http]
-    defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:contact }
-    requirements:
-        product_id: \d+
 
 trouble_ticket_edit:
     path:      /edit-{hash}.html

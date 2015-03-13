@@ -50,15 +50,6 @@
             </div>
         </div>
 
-
-        <div class="margin-bottom-20 {% if form_errors(form.isAllPage) %}state-error{% endif %}">
-            <label class="checkbox">
-                {{ form_widget(form.isAllPage) }}<i></i> Выводить на всех страницах</label>
-            {{ form_errors(form.isAllPage) }}
-            </label>
-        </div>
-
-
         <div class="row margin-bottom-20 form_urlTemplate" style="display: none">
             <div class="col-sm-12  {% if form_errors(form.name) %}state-error{% endif %}">
                 <label>Шаблон*</label>

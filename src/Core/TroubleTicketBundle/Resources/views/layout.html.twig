@@ -1,8 +1,29 @@
-{% extends "CoreCommonBundle::main_layout.html.twig" %}
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
 
-{% use 'ApplicationSonataUserBundle:Profile:left_menu.html.twig' %}
+{# SEO - заголовки #}
+{% block title %}{% if placement.id %}Редактирование настроек размещения {{ placement.id }}{% else %}Добавление размещения в систему{% endif %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
 
-{% block content %}
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->`
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">размещение</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li><a href="{{ path('core_cabinet_placement_list_first_page') }}">Список ваших размещений</a></li>
+                    <li class="active">Редактирование настроек вашего размещения</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block sub_content %}
     <div role="main" class="cabinet_page{% if app.user == null %} guest{% endif %}" id="content">
         {% block content_header %}
         {% if app.user %}

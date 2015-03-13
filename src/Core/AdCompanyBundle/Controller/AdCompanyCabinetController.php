@@ -12,7 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Core\AdCompanyBundle\Entity\AdPlace;
-use  Core\AdCompanyBundle\Entity\AdCompany;
+use Core\AdCompanyBundle\Entity\AdCompany;
+use Core\AdCompanyBundle\Form\Type\AdCompanyType;
 
 class AdCompanyCabinetController extends Controller
 {
@@ -45,8 +46,8 @@ class AdCompanyCabinetController extends Controller
 
         $user = $this->container->get('security.context')->getToken()->getUser();
         $adcompany = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:AdCompany')->find($id);
-        $form = $this->getForm($adcompany);
-
+        //$form = $this->getForm($adcompany);
+        $form = $this->createForm(new AdCompanyType(), $adcompany);
         //Сохранения изменения
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
@@ -85,7 +86,8 @@ class AdCompanyCabinetController extends Controller
         $adcompany = new AdCompany();
         $user = $this->container->get('security.context')->getToken()->getUser();
         $adcompany->setUser($user);
-        $form = $this->getForm($adcompany);
+        //$form = $this->getForm($adcompany);
+        $form = $this->createForm(new AdCompanyType(), $adcompany);
 
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {

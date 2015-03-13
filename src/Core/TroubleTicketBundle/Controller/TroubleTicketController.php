@@ -66,25 +66,9 @@ class TroubleTicketController extends Controller {
     public function contactAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $pickupPoints = $em->getRepository('CoreDeliveryBundle:Address')->findWithCity();
         $status = $em->getRepository('CoreTroubleTicketBundle:Status')->findOneBy(['sysName'=> 'novaia']);
         $priority = $em->getRepository('CoreTroubleTicketBundle:Priority')->findOneBy(['sysName'=> 'normalnyi']);
         $user = $this->getUser();
-
-        // Если был передан id заказа для связи с тикетом,
-        // ищем заказ у конкретного текущего пользователя, если у него заказа с полученым id нет, то выдаем 404
-        if ($request->attributes->get('_route') === 'trouble_ticket_contact_with_order_id') {
-            $order = $em->getRepository('CoreOrderBundle:Order')->findUserOrders(['user' => $user, 'orderId' => $request->attributes->get('order_id')]);
-        } else {
-            $order = null;
-        }
-
-        // Если был передан id продукта для связи с тикетом,
-        if ($request->attributes->get('_route') === 'trouble_ticket_contact_with_product_id') {
-            $product = $em->getRepository('CoreProductBundle:CommonProduct')->find($request->attributes->get('product_id'));
-        } else {
-            $product = null;
-        }
 
         $printPdf  = $request->query->get('print');
         if ($printPdf == true) {
@@ -94,10 +78,10 @@ class TroubleTicketController extends Controller {
         }
 
         $troubleTicket = new TroubleTicket();
-        $form = $this->createForm(new TroubleTicketType(), $troubleTicket, array('user' => $user, 'status' => $status, 'priority' => $priority, 'order' => $order, 'product' => $product));
+        $form = $this->createForm(new TroubleTicketType(), $troubleTicket, array('user' => $user, 'status' => $status, 'priority' => $priority));
         if ($request->getMethod() == 'POST') {
 
-            $form->bind($request);
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
 
@@ -113,9 +97,6 @@ class TroubleTicketController extends Controller {
 
         return $this->render('CoreTroubleTicketBundle:TroubleTicket:contact.html.twig', array(
             'form' => $form->createView(),
-            'order' => $order,
-            'product' => $product,
-            'pickupPoints' => $pickupPoints
         ));
     }
 
@@ -130,7 +111,7 @@ class TroubleTicketController extends Controller {
         $form = $this->createForm(new MessageType(), $message, array('troubleTicket' => $troubleTicket));
         if ($request->getMethod() == 'POST') {
 
-            $form->bind($request);
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
                 $em->persist($message);
