@@ -1,46 +1,61 @@
-{% extends 'CoreTroubleTicketBundle::layout.html.twig' %}
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
 
 {# SEO - заголовки #}
-{% block title %}Обращения и жалобы | OliKids.ru{% endblock %}
+{# SEO - заголовки #}
+{% block title %}Обращения и жалобы{% endblock %}
 {% block meta_keywords %}обращения, жалобы{% endblock %}
-{% block meta_description %}Список Ваших обращений и жалоб интернет-магазину OliKids.{% endblock %}
+{% block meta_description %}Список Ваших обращений и жалоб.{% endblock %}
 
-{% block trouble_ticket_content %}
-    <section class="cabinet_discussions">
-        <div>
-            <h3 class="pull_right marg_off">
-                <a href="{{path('trouble_ticket_contact')}}#ask-a-question">{{'ticket.create' | trans()}}</a>
-            </h3>
-        {% if app.user %}
-            <h2>Мои обращения</h2>
-            {% else %}
-            <h1>Мои обращения</h1>
-        {% endif %}
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Техподдержка</h1>
+                <ul class="pull-right breadcrumb">
+                    <li>
+                        <a href="{{ path('core_common_index') }}">На главную</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('sonata_user_profile_show') }}">Кабинет</a>
+                    </li>
+                    <li class="active">Техподдержка</li>
+                </ul>
+            </div>
         </div>
-        {% for ticket in tickets %}
-            <dl class="cabinet_discussions_list">
-                <dt class="cabinet_discussion_item">
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block sub_content %}
+    <div class="profile-body">
+        <div class="headline">
+            <h2>Мои обращения</h2>
+            <a class="pull-right" style="display: inline-block; margin-top: 10px;" href="{{path('trouble_ticket_contact')}}#ask-a-question">{{'ticket.create' | trans()}}</a>
+        </div>
+        <ul class="timeline-v2">
+            {% for ticket in tickets %}
+            <li>
+                <time datetime="" class="cbp_tmtime">
+                    <span>{{ticket.createdDateTime | date('d/m/Y H:i', default_timezone)}}</span>
                     {% if ticket.adminAnswers %}
-                    <span class="cabinet_discussion_item_status cabinet_discussion_status updated">
-                        <span class="notice_indicator">{{ticket.adminAnswers}}</span> Обновлен
-                    </span>
-                    {% else %}
-                        <span class="cabinet_discussion_item_status cabinet_discussion_status {{ticket.status.sysname}}">
-                            {{ticket.status.captionRu}}
+                        <span>Обновлен</span>
+                        {% else %}
+                        <span>
+                            {{ ticket.status.captionRu}}
                         </span>
                     {% endif %}
-                    <a href="{{path('trouble_ticket_edit',{'hash':ticket.hash})}}" class="cabinet_discussion_item_theme">{{ticket.title}}</a>
-                    <span class="cabinet_discussion_item_info">{{ticket.createdDateTime | date('d.m.Y, H:i', default_timezone)}}</span>
-                    <span class="cabinet_item_discussion_info">&numero;{{ticket.id}}</span>
-                </dt>
-                {% if ticket.body %}
-                    <dd class="cabinet_discussion_item_preview">{{ ticket.body  | nl2br }}</dd>
-                {% endif %}
-            </dl>
-            {% else %}
-                <div class="attention_box">
-                    <h6>{{'tickets not found' | trans}}</h6>
+                </time>
+                <i class="cbp_tmicon rounded-x hidden-xs"></i>
+                <div class="cbp_tmlabel" style="background: none repeat scroll 0 0 #f3f3f3;">
+                    <h2>
+                        <a href="{{path('trouble_ticket_edit',{'hash':ticket.hash})}}" class="cabinet_discussion_item_theme">{{ticket.title}}</a>
+                    </h2>
+                    {% if ticket.body %}
+                        <p>{{ ticket.body  | nl2br }}</p>
+                    {% endif %}
                 </div>
-        {% endfor %}
-    </section>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

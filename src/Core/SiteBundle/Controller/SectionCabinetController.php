@@ -116,7 +116,6 @@ class SectionCabinetController extends Controller
         $form = $this->createFormBuilder($section)
 
             ->add('name', 'text', ['required' => true])
-            ->add('isAllPage', null, ['required' => false])
             ->add('urlTemplate', 'text', ['required' => false])
             ->add('isRegExpInUrlTemplate', null, ['required' => false])
 

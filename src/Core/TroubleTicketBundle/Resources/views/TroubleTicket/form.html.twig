@@ -1,48 +1,63 @@
-{% form_theme form 'CoreCommonBundle:Form:row.html.twig' %}
-<div class="contacts_form brown_gradient_box auto_size">
     <form action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" {{ form_enctype(form) }} method="POST">
-
-        {% if order %}
-
-            <h3>Вопрос сзвязанный с <a href="{{ path('application_sonata_user_profile_order', {id: order.id }) }}">заказом №{{ order.id|idFormat }}</a></h3>
-            {{ form_widget(form.order, {'value': order.id }) }}
-            <br>
-
-        {% endif %}
-
-        {% if product %}
-
-            <h3>Вопрос сзвязанный с товаром: "<a href="{{ path('core_product', {slug: product.slug }) }}">{{ attribute(product, 'caption' ~ app.request.locale) }}</a>"</h3>
-            {{ form_widget(form.product, {'value': product.id }) }}
-            <br>
-
-        {% endif %}
-
-        <fieldset class="form_fieldset">
-            {{form_row(form.authorName)}}
-            {{form_row(form.authorEmail)}}
-        </fieldset>
-        <fieldset class="form_fieldset">
-            {{form_row(form.category)}}
-            {{form_row(form.title)}}
-            {{form_row(form.body)}}
-        </fieldset>
-        {% if form.captcha is defined %}
-            <fieldset class="form_fieldset">
-                {{form_row(form.captcha)}}
-            </fieldset>
-        {% endif %}
-        {#
-        <fieldset class="form_fieldset">
-            {{form_row(form.order)}}
-            {{form_row(form.file)}}
-        </fieldset>
-        #}
-        {{form_rest(form)}}
-        <div class="form_padding_group">
-            <button type="submit" class="common_button big">
-                <span>Отправить</span>
-            </button>
+        {{form_label(form.authorName)}}
+        <div class="row margin-bottom-20">
+            <div class="col-md-7 col-md-offset-0">
+                {{form_widget(form.authorName, { 'attr': { 'class': 'form-control'} })}}
+            </div>
         </div>
+
+        {{form_label(form.authorEmail)}}
+        <div class="row margin-bottom-20">
+            <div class="col-md-7 col-md-offset-0">
+                {{form_widget(form.authorEmail, { 'attr': { 'class': 'form-control'} })}}
+            </div>
+        </div>
+
+        {{form_label(form.authorName)}}
+        <div class="row margin-bottom-20">
+            <div class="col-md-7 col-md-offset-0">
+                {{form_widget(form.authorName, { 'attr': { 'class': 'form-control'} })}}
+            </div>
+        </div>
+
+        {{form_label(form.category)}}
+        <div class="row margin-bottom-20">
+            <div class="col-md-7 col-md-offset-0">
+                {{form_widget(form.category, { 'attr': { 'class': 'form-control'} })}}
+            </div>
+        </div>
+
+        {{form_label(form.title)}}
+        <div class="row margin-bottom-20">
+            <div class="col-md-7 col-md-offset-0">
+                {{form_widget(form.title, { 'attr': { 'class': 'form-control'} })}}
+            </div>
+        </div>
+
+        {{form_label(form.body)}}
+        <div class="row margin-bottom-20">
+            <div class="col-md-7 col-md-offset-0">
+                {{form_widget(form.body, { 'attr': { 'class': 'form-control'} })}}
+            </div>
+        </div>
+
+        {{form_label(form.file)}}
+        <div class="row margin-bottom-20">
+            <div class="col-md-7 col-md-offset-0">
+                {{form_widget(form.file, { 'attr': { 'class': 'btn-u'} })}}
+            </div>
+        </div>
+
+        {% if form.captcha is defined %}
+        {{form_label(form.captcha)}}
+        <div class="row margin-bottom-20">
+            <div class="col-md-7 col-md-offset-0">
+                {{form_widget(form.captcha, { 'attr': { 'class': 'form-control'} })}}
+            </div>
+        </div>
+        {% endif %}
+        {{form_rest(form)}}
+        <p>
+            <button class="btn-u" type="submit">Отправить</button>
+        </p>
     </form>
-</div>

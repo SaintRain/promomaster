@@ -26,7 +26,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Expr\Join;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Knp\Menu\ItemInterface as MenuItemInterface;
-use Core\OrderBundle\Entity\Order;
 use Doctrine\ORM\EntityRepository;
 
 class TroubleTicketAdmin extends Admin {
@@ -82,31 +81,6 @@ class TroubleTicketAdmin extends Admin {
                                 'cascade_validation' => true,
                                 'empty_value'=>'form.label.empty',
                                 'attr' => array('class'=>'span11')))
-                /*
-                ->add('manager', 'ajax_entity', [
-                        'label' => 'Назначена',
-                        'attr' => ['class'=>'span11'],
-                        'required' => true,
-                        'properties' => [
-                            'id' => array(
-                                'search' => true,
-                                'return' => true,
-                                'entry' => 'full',
-                            ),
-                            'email' => array(
-                                'search' => true,
-                                'return' => true,
-                                'entry' => 'left',
-                            ),
-                          ],
-                        'select2_constructor' => array(
-                            //'width' => '350px',
-                            'placeholder' => 'Введите email или id пользователя',
-                            'minimumInputLength' => 1),
-                    ])
-                 *
-                 */
-                
                 ->add('manager','entity', array(
 				'label' => 'Назначена',
                                 'class' => 'ApplicationSonataUserBundle:User',
@@ -136,16 +110,7 @@ class TroubleTicketAdmin extends Admin {
                         'required' => true,
                         'attr' => array('class'=>'span11'),
                         'label'=>'Категория'
-                ))/*
-                ->add('category','sonata_type_model', array(
-				'label' => 'Категория',
-                                'property' => 'indentedCaption',
-                                'btn_add' => false,
-                                'required' => true,
-                                'empty_value'=>'form.label.empty',
-                                'attr' => array('class'=>'span11')))
-                 * 
-                 */
+                ))
                 ->add('file', 'multiupload_document', array(
                             'hide_field' => array('all'),
                             'label' => 'Файлы',
@@ -166,8 +131,7 @@ class TroubleTicketAdmin extends Admin {
                 $user = $container->get('security.context')->getToken()->getUser();
                 $requestStack = $container->get('request_stack');
                 $queryStr = $requestStack->getCurrentRequest()->query->all();
-                $orderId = (isset($queryStr['orderId']) && $queryStr['orderId']) ? $queryStr['orderId'] : null;
-                
+
                 if (isset($queryStr['userId']) && $queryStr['userId']) {
                     $em = $container->get('doctrine.orm.entity_manager');
                     $user = $em->getRepository('ApplicationSonataUserBundle:User')->find((int)$queryStr['userId']);
@@ -220,9 +184,6 @@ class TroubleTicketAdmin extends Admin {
                             'placeholder' => 'Введите email или id пользователя',
                             'minimumInputLength' => 1),
                     ])
-                    ->add('order','hidden', array(
-                        'data' => $orderId
-                    ))
                     ;
                 }
                 /*else {
@@ -234,20 +195,7 @@ class TroubleTicketAdmin extends Admin {
        $formMapper->getFormBuilder()
             ->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($log, $object) {
                 $data = $event->getData();
-                $form = $event->getForm();
                 if (!$data->getId()) {
-                    // пересобираем поле hidden в сущность
-                    if (is_string($data->getOrder()))  {
-                        $order = $this->getModelManager()->find('CoreOrderBundle:Order', $data->getOrder() * 1);
-                        $data->setOrder($order);
-                    }
-                    /*
-                    $user = $this->getConfigurationPool()->getContainer()->get('security.context')->getToken()->getUser();
-                    $data->setAuthorEmail($user->getEmail());
-                    $data->setAuthorName($user->getUserName());
-                    $data->setUser($user);
-                     * 
-                     */
                     $data->setAuthorEmail($data->getUser()->getEmail());
                     $data->setAuthorName($data->getUser()->getUserName());
                     $data->setHash();
@@ -281,26 +229,6 @@ class TroubleTicketAdmin extends Admin {
                         $log->setTroubleTicket($data);
                         $data->addLog($log);
                     }
-                    //var_dump($data);die();
-                    /*
-                    if ($form->isValid()) {
-                        $logMailer = $this->getConfigurationPool()->getContainer()->get('core_trouble_ticket_log_mailer');
-
-                        $message = count($data->getMessages()) ? $data->getMessages()->first() : null;
-
-                        if (count($data->getWatchers())) {
-                            $logMailer->sendNotificationEmailMessage($data, $this->getSubject(), $message);
-                        }
-
-                        if ($message || $fileChages) {
-                            //$logMailer->sendEditMessage($data);
-                            $data->setAdminAnswers(1);
-                            $data->setIsAdminAnswer(0);
-                        }
-
-                    }
-                     *
-                     */
                 }
        });
     }
@@ -319,7 +247,6 @@ class TroubleTicketAdmin extends Admin {
 				'label' => 'Приоритет',
 				'sortable' => true))
             ->addIdentifier('title', null,array('label'=>'Тема'))
-
             ->add('authorEmail', null, array(
                                 'label' => 'Автор',
                                 'template' => 'CoreTroubleTicketBundle:Admin:List/list_author_info.html.twig',
@@ -448,14 +375,6 @@ class TroubleTicketAdmin extends Admin {
                     'is_filter'=> true,
                     'placement' => 'top'
                 ))
-            /*
-            ->add('category', null, array(
-                'label' => 'Категория',
-                'required'=> true,
-                'property' => 'indentedCaption'),null,
-                array('attr'=>array('placeholder'=>'Категория')))
-             * 
-             */
             ->add('isAdminAnswer', null, array(
                 'label' => 'Требует ответа Администратора'),null,
                 array('attr'=>array('placeholder'=>'Требует ответа Администратора')))
@@ -528,7 +447,6 @@ class TroubleTicketAdmin extends Admin {
             $changes['category'] = $categoriesDb;
         }
         if (isset($changes['manager']) && $changes['manager'] > 0) {
-            //ldd($changes['manager']);
             $em = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getManager();
             $managers = $em->getRepository('ApplicationSonataUserBundle:User')->findForTicketLog($changes['manager']);
             $managersFromDb = [];
@@ -536,48 +454,8 @@ class TroubleTicketAdmin extends Admin {
                 $managersFromDb[$manager->getId()] = $manager->getEmail();
             }
             $changes['manager'] = $managersFromDb;
-            /*
-            foreach($changes['manager'] as $key => $val) {
-                if ($val) {
-                    $changes['manager'][$key] = $managersFromDb[$val];
-                }
-            }*/
         }
         return $changes;
-        /*
-        $em = $this->getConfigurationPool()->getContainer()->get('Doctrine')->getManager();
-
-        $original = clone $data; // Create a copy of your object
-        $em->detach($object); // Prevent your object from being refreshed
-        $original = $em->merge($original); // Attach the copy to the EntityManager
-
-        $uow = $em->getUnitOfWork();
-        $uow->computeChangeSets();
-        $changeset = $uow->getEntityChangeSet($original);
-        //$changeset = array();
-
-        $em->detach($original); // Detach the copy from the EntityManager
-        $object = $em->merge($data);
-        //var_dump($object);die();
-        $changes = array();
-        if (count($changeset)) {
-            foreach($changeset as $field => $val) {
-                if ($field != 'isAdminAnswer' && $field != 'createdDateTime'  && $field != 'updatedDateTime'){
-                    foreach($val as $key => $content) {
-                        if (is_object($content)) {
-                            $changes[$field][$key] = $content->getId();
-                        } else {
-                            $changes[$field][$key] = $content;
-                        }
-                    }
-                }
-            }
-            var_dump($changes);die();
-            return $changes;
-        } else {
-            //var_dump($changes);die();
-            return null;
-        }*/
     }
 
     public function searchByEmailAndName($queryBuilder, $alias, $field, $value)
@@ -686,58 +564,4 @@ class TroubleTicketAdmin extends Admin {
         return parent::getFilterParameters();
     }
 
-    /**
-     * Редактор бокового меню
-     */
-//    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null) {
-//        $container = $this->getConfigurationPool()->getContainer();
-//        $this::configureSubMenu($menu, $action, $childAdmin, $container);
-//    }
-
-    /**
-     * Переделываем боковое меню в табы на списке записей
-     *
-     * @param \Knp\Menu\ItemInterface $menu
-     * @param string $action
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $childAdmin
-     * @param object $routeGenerator
-     */
-//    static public function configureSubMenu($menu, $action, $childAdmin, $container) {
-//        $route = $container->get('request')->get('_route');
-//
-//        if (false === strpos($route, '_batch') && $action === 'list') {
-//            // Присваеиваем класс nav-tabs вместо nav-list, чтобы меню вывелось табами, а не списком
-//            $attrClass = str_replace('nav-list', 'nav-tabs', $menu->getChildrenAttribute('class'));
-//            $menu->setChildrenAttribute('class', $attrClass);
-//        }
-//
-//        $menu->addChild(
-//            'Траблтикеты', array(
-//            'route' => 'admin_core_troubleticket_troubleticket_list',
-//            'attributes' => array(
-//                'class' => (false !== strpos($route, 'admin_core_troubleticket_troubleticket') ? 'active' : '')
-//            )
-//        ));
-//        $menu->addChild(
-//            'Статусы', array(
-//            'route' => 'admin_core_troubleticket_status_list',
-//            'attributes' => array(
-//                'class' => (false !== strpos($route, 'admin_core_troubleticket_status') ? 'active' : '')
-//            )
-//        ));
-//        $menu->addChild(
-//            'Приоритеты', array(
-//            'route' => 'admin_core_troubleticket_priority_list',
-//            'attributes' => array(
-//                'class' => (false !== strpos($route, 'admin_core_troubleticket_priority') ? 'active' : '')
-//            )
-//        ));
-//        $menu->addChild(
-//            'Категории траблтикетов', array(
-//            'route' => 'admin_core_category_troubleticketcategory_list',
-//            'attributes' => array(
-//                'class' => (false !== strpos($route, 'admin_core_category_troubleticketcategory') ? 'active' : '')
-//            )
-//        ));
-//    }
 }

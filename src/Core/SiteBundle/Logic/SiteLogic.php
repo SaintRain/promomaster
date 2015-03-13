@@ -154,7 +154,6 @@ class SiteLogic
      */
     private function sendRefresRequestToNodJS($object)
     {
-
         $arr = explode('\\', get_class($object));
         $entityName = $arr[count($arr) - 1];
         $url = $this->parameters['nodejs_server'] . '/refresh?id=' . $object->getId() . '&entityName=' . $entityName;

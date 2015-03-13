@@ -60,9 +60,7 @@ class UserRepository extends EntityRepository
     public function findForTroubleTicket($id)
     {
         $qb = $this->createQueryBuilder('u');
-        $qb->select('u, o, c')
-            ->leftJoin('u.contragents', 'c')
-            ->leftJoin('c.orders', 'o')
+        $qb->select('u')
             ->where('u.id = :id');
         $qb->setParameter(':id', $id);
 

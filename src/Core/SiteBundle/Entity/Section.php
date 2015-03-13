@@ -41,15 +41,6 @@ class Section
      */
     private $name;
 
-
-    /**
-     * Выводить баннеры на всех страницах сайта
-     * @var boolean
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isAllPage = true;
-
-
     /**
      * Шаблон по которому определяются страницы, где выводить баннеры
      * @var text
@@ -139,22 +130,6 @@ class Section
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isIsAllPage()
-    {
-        return $this->isAllPage;
-    }
-
-    /**
-     * @param boolean $isAllPage
-     */
-    public function setIsAllPage($isAllPage)
-    {
-        $this->isAllPage = $isAllPage;
     }
 
     /**
