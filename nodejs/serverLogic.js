@@ -1,9 +1,6 @@
 /**
  * Бизнес логика серверной части
  */
-
-
-
 //инициализация приложения
 exports.initialization = function (MYSQL) {
 
@@ -11,8 +8,15 @@ exports.initialization = function (MYSQL) {
     mysqlConnect(MYSQL, 0);
 
     //загружаем из базы все данные
-    mysqlGetInitializationData(false);
-
+    mysqlGetSites(false);
+    mysqlGetSections(false);
+    mysqlGetPlacements(false);
+    mysqlGetBanners(false);
+    mysqlGetPlacementBanners(false);
+    mysqlGetPlacementsMatchSections(false);
+    mysqlGetAdPlaces(false);
+    mysqlGetAdCompanies(false);
+    mysqlGetUsers(false);
 }
 
 /**
@@ -40,19 +44,18 @@ exports.getAd = function (req, res, adplace_id) {
         domain = refererInfo.protocol + '//' + refererInfo.hostname;
 
     //проверяем, чтоб домен рефера совпадал с тем, что у нас прописан в базе. Иначе возможна накрутка показов с других площадок
-    if (typeof(SERVICE_DATA.adplaces['_'+adplace_id]['isSiteByDomain'][domain]) !== 'undefined') {
+    if (typeof(SD.adplaces['_' + adplace_id]) !== 'undefined' && SD.sites['_' + SD.adplaces['_' + adplace_id].site_id].domain == domain) {
 
-
-        if (SERVICE_DATA.adplaces['_'+adplace_id]['placements']) {  //если есть размещения
-
+        if (SD.placementsByAdPlace['_' + adplace_id]) {  //если есть размещения
 
             //если заданы разделы проверяем, чтоб раздел совпадал
-            if (SERVICE_DATA.adplaces['_'+adplace_id]['sections']) {
+            if (SD.placementsMatchSections['_' + adplace_id]) {
                 //  console.log(refererInfo);
                 var isAllowed = false;    //если задан хоть один раздел
 
                 //перебираем все разделы
-                SERVICE_DATA.adplaces['_'+adplace_id]['sections'].forEach(function (section) {
+                SD.placementsMatchSections['_' + adplace_id].forEach(function (placementsMatchSection) {
+                    var section = SD.sections[placementsMatchSection.section_id];
 
                     //проверка по регулярному выражению, регулярка на этапе сохранения должна быть проверена и без ошибок,
                     //иначе сервер станет
@@ -84,42 +87,27 @@ exports.getAd = function (req, res, adplace_id) {
                  Пока берем просто первое размещение. Но нужно сделать:
                  1. Определяем по параметрам размещения, какое нужно использовать
                  */
-                var placement = SERVICE_DATA.adplaces['_'+adplace_id]['placements'][0];
+                var placement;
+                for (key in SD.placementsByAdPlace['_' + adplace_id]) {
+                    placement = SD.placementsByAdPlace['_' + adplace_id][key];
+                }
 
                 /**
                  Пока берем просто первый баннер. Но нужно сделать:
                  1. Определяем по параметрам баннера, какой баннер нужно отобразить
                  */
-                var placementBanner = placement.placementBanners[0];
-                var banner = placementBanner.banner;
-
-                //  console.log(banner);
-
-                //берем полный путь для баннера
-                if (banner.dtype == 'ImageBanner') {
-                    var source = banner.image_src,
-                        width = banner.image_width,
-                        height = banner.image_height;
-                }
-                else if (banner.dtype == 'FlashBanner') {
-                    var source = banner.file_src,
-                        width = banner.file_width,
-                        height = banner.file_height;
-                }
-                else if (banner.dtype == 'CodeBanner') {
-                    var source = banner.code;
+                var placementBanner;
+                for (key in SD.placementbannersByPlacement['_' + placement.id]) {
+                    placementBanner = SD.placementbannersByPlacement['_' + placement.id][key];
                 }
 
-                var body = {
-                    type: banner.dtype,
-                    width: width,
-                    height: height,
-                    source: source,
-                    isOpenUrlInNewWindow: banner.isOpenUrlInNewWindow,
-                    url: banner.url
-                }
-                //отдаём ссылку на баннер
-                this.sendResponse(res, {statusCode: 200, body: body});
+                var banner = SD.banners['_' + placementBanner.banner_id];
+
+                // отдаём баннер
+                this.sendBanner(res,banner);
+
+                //обновляем статистику
+                this.updateStatistics(req);
             }
             else {
                 //проверяем есть ли заглушка для рекламного места
@@ -138,8 +126,8 @@ exports.getAd = function (req, res, adplace_id) {
     }
     else {
 
-        if (typeof(SERVICE_DATA.adplaces[adplace_id]) !== 'undefined') {
-            var msgError = "Wrong refer hostname. Need " + SERVICE_DATA.adplaces[adplace_id]['site']['domain'] + ", but get " + domain;
+        if (typeof(SD.adplaces[adplace_id]) !== 'undefined') {
+            var msgError = "Wrong refer hostname. Need " + SD.adplaces[adplace_id]['site']['domain'] + ", but get " + domain;
         }
         else {
             var msgError = "Wrong parameter adplace_id.";
@@ -149,6 +137,46 @@ exports.getAd = function (req, res, adplace_id) {
     }
 }
 
+//отдает баннер
+exports.sendBanner = function (res, banner) {
+    //берем полный путь для баннера
+    if (banner.dtype == 'ImageBanner') {
+        var source = banner.image_src,
+            width = banner.image_width,
+            height = banner.image_height;
+    }
+    else if (banner.dtype == 'FlashBanner') {
+        var source = banner.file_src,
+            width = banner.file_width,
+            height = banner.file_height;
+    }
+    else if (banner.dtype == 'CodeBanner') {
+        var source = banner.code;
+    }
+
+    var body = {
+        type: banner.dtype,
+        width: width,
+        height: height,
+        source: source,
+        isOpenUrlInNewWindow: banner.isOpenUrlInNewWindow,
+        url: banner.url
+    }
+    //отдаём ссылку на баннер
+    this.sendResponse(res, {statusCode: 200, body: body});
+}
+
+//обновляет статистику
+exports.updateStatistics =function (req) {
+    var ip=this.getIpFromReq(req);
+    var geo = GEOIP.lookup(ip);
+    console.log(geo);
+}
+
+//получает IP из запроса
+exports.getIpFromReq = function (req) {
+    return  req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+}
 
 /**
  * Принудительно обновляет данные из базы в память
@@ -157,26 +185,81 @@ exports.getAd = function (req, res, adplace_id) {
  * @param id    - id
  * @param entityName  - имя сущности
  */
-exports.refresh = function (req, res, id, entityName) {
-    if (entityName == 'WebSite' || entityName == 'SoftSite') {
-        mysqlGetInitializationData({site_id: id});
+exports.refresh = function (req, res) {
+
+    if (req.body.tableName == 'core_site') {
+        if (req.body.type == 'delete') {
+            mysqlDeleteSites(req.body.id);
+        }
+        else {
+            mysqlGetSites(req.body.id);
+        }
     }
-    else if (entityName == 'Section') {
-        mysqlGetInitializationData({section_id: id});
+    else if (req.body.tableName == 'core_site_section') {
+        if (req.body.type == 'delete') {
+            mysqlDeleteSections(req.body.id);
+        }
+        else {
+            mysqlGetSections(req.body.id);
+        }
     }
-    else if (entityName == 'Placement') {
-        mysqlGetInitializationData({placement_id: id});
+    else if (req.body.tableName == 'core_site_section_match_ad_place') {
+        if (req.body.type == 'delete') {
+            mysqlDeletePlacementsMatchSections(req.body.id);    //!!!здесь должно быть 2 параметра
+        }
+        else {
+            mysqlGetPlacementsMatchSections(req.body.id);
+        }
     }
-    else if (entityName == 'FlashBanner' || entityName == 'ImageBanner' || entityName == 'CodeBanner') {
-        mysqlGetInitializationData({banner_id: id});
+    else if (req.body.tableName == 'core_adcompany_placement') {
+        if (req.body.type == 'delete') {
+            mysqlDeletePlacements(req.body.id);
+        }
+        else {
+            mysqlGetPlacements(req.body.id);
+        }
     }
-    else if (entityName == 'PlacementBanner') {
-        mysqlGetInitializationData({placement_banner_id: id});
+    else if (req.body.tableName == 'core_banner_common') {
+        if (req.body.type == 'delete') {
+            mysqlDeleteBanners(req.body.id);
+        }
+        else {
+            mysqlGetBanners(req.body.id);
+        }
     }
-    else if (entityName == 'AdPlace') {
-        mysqlGetInitializationData({ad_place_id: id});
+    else if (req.body.tableName == 'core_adcompany_placement_banner') {
+        if (req.body.type == 'delete') {
+            mysqlDeletePlacementBanners(req.body.id);
+        }
+        else {
+            mysqlGetPlacementBanners(req.body.id);
+        }
+    }
+    else if (req.body.tableName == 'core_site_ad_place') {
+        if (req.body.type == 'delete') {
+            mysqlDeleteAdPlaces(req.body.id);
+        }
+        else {
+            mysqlGetAdPlaces(req.body.id);
+        }
+    }
+    else if (req.body.tableName == 'core_adcompany') {
+        if (req.body.type == 'delete') {
+            mysqlDeleteAdCompanies(req.body.id);
+        }
+        else {
+            mysqlGetAdCompanies(req.body.id);
+        }
     }
 
+    else if (req.body.tableName == 'fos_user_user') {
+        if (req.body.type == 'delete') {
+            mysqlDeleteUsers(req.body.id);
+        }
+        else {
+            mysqlGetUsers(req.body.id);
+        }
+    }
 
     this.sendResponse(res, {statusCode: 200, body: 'ok'});
 

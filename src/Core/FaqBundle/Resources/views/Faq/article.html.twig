@@ -27,7 +27,7 @@
 {#{% block breadcrumbs_title %}{{attribute(article, 'caption' ~ app.request.locale)}}{% endblock %}#}
 {% block breadcrumbs %}
     <li>
-        <a href="{{path('core_common_index')}}">Домой</a>
+        <a href="{{path('core_common_index')}}">Главная</a>
     </li>
     <li class="page_path_link">
         <a href="{{path('core_faq_homepage')}}">Помощь</a>
@@ -45,5 +45,6 @@
     <article class="def_style" {{fastEdit(article)}}>
         {{attribute(article, 'body' ~ app.request.locale ) | raw}}
     </article>
+    <hr/>
     {% include 'CoreFaqBundle:Faq:search_form.html.twig' with {'form' : searchForm} %}
 {% endblock %}

@@ -50,6 +50,20 @@ class AdCompany
      */
     private $user;
 
+    /**
+     * Дата начала показов
+     * @var \DateTime
+     * @ORM\Column(type="datetime")
+     */
+    private $startDateTime;
+
+
+    /**
+     * Дата окончания показов
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $finishDateTime;
 
     /**
      * Дата создания
@@ -132,6 +146,39 @@ class AdCompany
     {
         $this->user = $user;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getStartDateTime()
+    {
+        return $this->startDateTime;
+    }
+
+    /**
+     * @param \DateTime $startDateTime
+     */
+    public function setStartDateTime($startDateTime)
+    {
+        $this->startDateTime = $startDateTime;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getFinishDateTime()
+    {
+        return $this->finishDateTime;
+    }
+
+    /**
+     * @param \DateTime $finishDateTime
+     */
+    public function setFinishDateTime($finishDateTime)
+    {
+        $this->finishDateTime = $finishDateTime;
+    }
+
 
     /**
      * @return \DateTime

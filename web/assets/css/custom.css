@@ -34,9 +34,10 @@ div.state-error >input {
     margin-bottom: 20px !important;
 }
 
-span.help {
-    font-size: 11px;
+.color-green {
+    color: #72c02c !important;
 }
+
 
 /* обшие стили для формы multiupload_image */
 /*.count-of-uploaded-files{display:none;}*/

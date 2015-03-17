@@ -18,6 +18,31 @@
             </div>
         </div>
 
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
+                <label>Дата начала показов</label>
+                <label class="input">
+                    <i class="icon-append fa fa-calendar"></i>
+                    {{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date'} }) }}
+                </label>
+
+                {{ form_errors(form.startDateTime) }}
+            </div>
+        </div>
+
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
+                <label>Дата окончания показов</label>
+
+                <label class="input">
+                    <i class="icon-append fa fa-calendar"></i>
+                    {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date'} }) }}
+                </label>
+
+            </div>
+        </div>
+
         <div class="margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
             <label class="checkbox">
                 {{ form_widget(form.isEnabled) }}<i></i> {{ form.isEnabled.vars.label }}</label>

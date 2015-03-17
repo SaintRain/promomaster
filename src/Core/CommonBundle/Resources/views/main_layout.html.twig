@@ -3,7 +3,7 @@
  {% block body %}
 
      {#{% spaceless %}#}
-         <div class="wrapper">
+         <div class="wrapper" >
              {% block header %}
                  {{ render (controller ('CoreCommonBundle:Fragments:header', {'request': app.request})) }}
              {% endblock %}
@@ -12,7 +12,6 @@
              {% endblock %}
 
              {% block footer %}
-
 
                  <!--PromoMaster.net-->
                  <div id="promomaster_adplace_4"></div>

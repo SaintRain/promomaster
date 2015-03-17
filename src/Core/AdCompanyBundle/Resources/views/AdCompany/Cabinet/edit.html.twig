@@ -15,7 +15,8 @@
                 <ul class="pull-right breadcrumb">
                     <li><a href="{{ path('core_common_index') }}">На главную</a></li>
                     <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
-                    <li><a href="{{ path('core_cabinet_adcompany_list_first_page') }}">Список ваших рекламных компаний</a></li>
+                    <li><a href="{{ path('core_cabinet_adcompany_list_first_page') }}">Список ваших рекламных
+                            компаний</a></li>
                     <li class="active">Редактирование рекламной компании</li>
                 </ul>
             </div>
@@ -67,11 +68,32 @@
     {% include 'CoreAdCompanyBundle:AdCompany/Cabinet:form.html.twig' %}
 
 
-
     {% block js_head %}
         {{ parent() }}
         <script>
             $(function () {
+
+                $("#datepicker").datepicker();
+                // Date range
+                $('#ad_company_type_startDateTime').datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    prevText: '<i class="fa fa-angle-left"></i>',
+                    nextText: '<i class="fa fa-angle-right"></i>',
+                    onSelect: function (selectedDate) {
+                        $('#ad_company_type_finishDateTime').datepicker('option', 'minDate', selectedDate);
+                    }
+                });
+                $('#ad_company_type_finishDateTime').datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    prevText: '<i class="fa fa-angle-left"></i>',
+                    nextText: '<i class="fa fa-angle-right"></i>',
+                    onSelect: function (selectedDate) {
+                        $('#ad_company_type_startDateTime').datepicker('option', 'maxDate', selectedDate);
+                    }
+                });
+
+
+                $(".date").mask('99-99-9999', {placeholder: '0'});
 
                 {% if adcompany.id %}
                 $('.delete').click(function () {

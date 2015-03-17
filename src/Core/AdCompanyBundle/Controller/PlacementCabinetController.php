@@ -123,6 +123,7 @@ class PlacementCabinetController extends Controller
             ->add('startDateTime', 'text', ['required' => false])
             ->add('finishDateTime', 'text', ['required' => false])
             ->add('isEnabled', null, ['required' => false])
+            ->add('quantity', null, ['required' => true])
             ->add('defaultCountries', null, ['required' => false])
             ->addModelTransformer(new PlacementTransformer())       //трансформер дат
             ->getForm();

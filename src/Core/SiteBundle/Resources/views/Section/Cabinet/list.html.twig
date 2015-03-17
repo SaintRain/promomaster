@@ -64,7 +64,7 @@
                             <th>#</th>
                             <th>Название</th>
                             <th>Шаблон</th>
-                            <th>Весь сайт</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -77,11 +77,7 @@
                                 <td>
                                     {{ section.urlTemplate }}
                                 </td>
-                                <td>
-                                    {% if section.isAllPage %}<span class="label label-u">Да</span>{% else %}<span
-                                            class="label label-warning">Нет</span>{% endif %}
 
-                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
