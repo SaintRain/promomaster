@@ -7,14 +7,13 @@ global.GEOIP = require('geoip-lite');   //модуль для работы с ma
 global.URL = require("url");
 require(__dirname + '/config.js');//подключаем настройки
 var BODY_PARSER = require('body-parser');
-//var MULTER = require('multer');
 var MYSQL = require('mysql');
 var MYSQL_CONNECTION;
 global.SD = {
     adplaces: {},
+    adPlaceMatchCountries: {},
     sections: {},
     sites: {},
-  //  sitesByDomain: {},
     placementbanners: {},
     placementbannersByPlacement: {},
     placements: {},
@@ -22,7 +21,10 @@ global.SD = {
     placementsMatchSections: {},
     banners: {},
     adcompanies:{},
-    users:{}
+    users:{},
+    countries:{},
+    countriesByAlpha2: {},
+    adCompanyMatchCountries:{},
     //adplace:[],
     //adplace:[],
     //adplace:[],

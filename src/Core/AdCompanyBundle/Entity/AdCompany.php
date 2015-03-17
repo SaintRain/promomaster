@@ -81,13 +81,12 @@ class AdCompany
     private $indexPosition;
 
 
-
     /**
      * Включить компанию
      * @var int
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isEnabled=false;
+    private $isEnabled = false;
 
     /**
      * Размещения
@@ -95,10 +94,19 @@ class AdCompany
      */
     private $placements;
 
+    /**
+     * Дефолтные страны по которым ограничить вывод
+     * @ORM\ManyToMany(targetEntity="Core\DirectoryBundle\Entity\Country", cascade={"persist"},   fetch="EXTRA_LAZY")
+     * @ORM\JoinTable(name="core_ad_company_match_country")
+     */
+    private $defaultCountries;
 
-    public  function __construct() {
+    public function __construct()
+    {
         $this->placements = new ArrayCollection();
+        $this->defaultCountries = new ArrayCollection();
     }
+
     /**
      * @return int
      */
@@ -257,6 +265,37 @@ class AdCompany
         return $this;
     }
 
+    /*
+    * @return mixed
+    */
+    public function getDefaultCountries()
+    {
+        return $this->defaultCountries;
+    }
+
+    /**
+     * @param mixed $defaultCountries
+     */
+    public function setDefaultCountries($defaultCountries)
+    {
+        $this->defaultCountries = $defaultCountries;
+    }
+
+    public function addDefaultCountries($defaultCountry)
+    {
+        if (!$this->defaultCountries->contains($defaultCountry)) {
+            $this->defaultCountries->add($defaultCountry);
+        }
+
+        return $this;
+    }
+
+    public function removeDefaultCountries($defaultCountry)
+    {
+        $this->defaultCountries->removeElement($defaultCountry);
+
+        return $this;
+    }
 
     /**
      * Дополнительные проверки

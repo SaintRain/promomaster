@@ -23,6 +23,7 @@ class AdCompanyType  extends AbstractType
         $builder
             ->add('name', 'text', ['label' => 'Название*'])
             ->add('placements', null, ['label' => 'Размещения', 'property'=>'adPlace.name'])
+            ->add('defaultCountries', null, ['required' => false])
             ->add('startDateTime', 'text', ['required' => false])
             ->add('finishDateTime', 'text', ['required' => false])
             ->add('isEnabled', null, ['label' => 'Рекламная компания активна'])

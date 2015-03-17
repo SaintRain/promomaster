@@ -121,6 +121,7 @@ class AdCompanyCabinetController extends Controller
         $form = $this->createFormBuilder($adcompany)
             ->add('name', 'text', ['required' => true])
             ->add('placements', null, ['required' => false, 'property'=>'adPlace.name'])
+            ->add('defaultCountries', null, ['required' => false])
             ->add('startDateTime', 'text', ['required' => false])
             ->add('finishDateTime', 'text', ['required' => false])
             ->add('isEnabled', null, ['required' => false])

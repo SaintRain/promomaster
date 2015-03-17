@@ -278,6 +278,13 @@ mysqlConnect = function (MYSQL, connectionTryCount) {
 //
 //}
 
+//преобразует строковую чату в INT
+strDateToInt=function(dateStr)
+{
+    var date = new Date(dateStr);
+    return  date.getUTCSeconds();
+}
+
 //выборка сайтов
 mysqlGetSites = function (id) {
     if (id) {
@@ -292,7 +299,6 @@ mysqlGetSites = function (id) {
         if (err) throw err;
         rows.forEach(function (item) {
             SD.sites['_' + item.id] = item;
-            //SD.sitesByDomain[item.domain] = SD.sites['_' + item.id];
         })
     });
 
@@ -374,7 +380,8 @@ mysqlGetPlacements = function (id) {
         var where = "";
     }
 
-    var q = "SELECT * FROM core_adcompany_placement" + where;
+    var q = "SELECT id, adPlace_id, isEnabled, adCompany_id, UNIX_TIMESTAMP(startDateTime) AS startDateTime, UNIX_TIMESTAMP(finishDateTime) AS finishDateTime " +
+        "FROM core_adcompany_placement" + where;
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {
@@ -447,7 +454,8 @@ mysqlGetPlacementBanners = function (id) {
         var where = "";
     }
 
-    var q = "SELECT * FROM core_adcompany_placement_banner" + where;
+    var q = "SELECT id, preoritet, banner_id, placement_id " +
+        "FROM core_adcompany_placement_banner" + where;
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {
@@ -509,10 +517,12 @@ mysqlGetAdCompanies = function (id) {
         var where = "";
     }
 
-    var q = "SELECT * FROM core_adcompany " +where;
+    var q = "SELECT id, UNIX_TIMESTAMP(startDateTime) AS startDateTime, UNIX_TIMESTAMP(finishDateTime) AS finishDateTime  FROM core_adcompany " +where;
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {
+
+            //прибавляем сутки
             SD.adcompanies['_' + item.id] = item;
 
         })
@@ -556,528 +566,98 @@ mysqlDeleteUsers = function (id) {
 }
 
 
-//mysqlGetInitializationData = function (options) {
-//    console.log(options);
-//    if (!options || options.site_ids) {
-//        //берем все площадки
-//        if (options.site_ids) {
-//            var siteWhere = " WHERE id IN (" + joinObject(options.site_ids) + ")";
-//            deleteFromObj(SD.sites, options.site_ids); //удаляем элемент
-//        }
-//        else {
-//            var siteWhere = "";
-//        }
-//        var q = "SELECT id, domain, user_id FROM core_site " + siteWhere;
-//        console.log(q)
-//        MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//            if (err) throw err;
-//            rows.forEach(function (item) {
-//                SD.sites['_' + item.id] = item;
-//            })
-//        })
-//    }
-//
-//
-//
-//    //берем все разделы для рекламных мест
-//    if (!options || options.section_ids) {
-//        if (options.section_ids) {
-//            var sectionWhere = " WHERE ss.id IN (" + joinObject(options.section_ids) + ")";
-//        }
-//        else {
-//            var sectionWhere = "";
-//        }
-//        var q = "SELECT  ss.id, ss.isRegExpInUrlTemplate, ss.urlTemplate, ss.user_id, m.adplace_id FROM core_site_section AS ss " +
-//            "LEFT JOIN core_site_section_match_ad_place AS m ON (ss.id=m.section_id)"+sectionWhere;
-//
-//        MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//            if (err) throw err;
-//            rows.forEach(function (item) {
-//                if (item.adplace_id) {
-//                    if (!SD.sections['_' + item.adplace_id] || (sectionWhere && SD.sections['_' + item.adplace_id] )) {
-//                        SD.sections['_' + item.adplace_id] = [];
-//                    }
-//
-//                    SD.sections['_' + item.adplace_id].push(item);
-//                }
-//            })
-//
-//        })
-//    }
-//
-//
-//    //берем все размещения
-//    if (!options || options.placement_ids) {
-//        if (options.placement_ids) {
-//            var placementWhere = " WHERE id IN (" + joinObject(options.placement_ids) + ")";
-//        }
-//        else {
-//            var placementWhere = "";
-//        }
-//
-//        var q = "SELECT * FROM core_adcompany_placement" + placementWhere;
-//        MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//            if (err) throw err;
-//            rows.forEach(function (item) {
-//                if (!SD.placements['_' + item.adPlace_id] || placementWhere) {
-//                    SD.placements['_' + item.adPlace_id] = [];
-//                    //delete (SD.placements[item.adPlace_id]; //удаляем элемент
-//                    placementWhere="";
-//                }
-//                SD.placements['_' + item.adPlace_id].push(item);
-//            })
-//        })
-//    }
-//
-//
-//    //берем все баннеры
-//    if (!options || options.banner_ids) {
-//        if (options.banner_ids) {
-//            var bannerWhere = " WHERE b.id='" + joinObject(options.banner_ids) + "'";
-//            deleteFromObj(SD.banners, options.banner_ids); //удаляем элемент
-//        }
-//        else {
-//            var bannerWhere = "";
-//        }
-//
-//        var q = "SELECT b.*, file.name AS file_name, file.height AS file_height,  file.width  AS file_width," +
-//            "image.height AS image_height,  image.width  AS image_width," +
-//            "image.name AS image_name  FROM core_banner_common AS b " +
-//            "LEFT JOIN core_file_common AS file ON (b.file_id=file.id) " +
-//            "LEFT JOIN core_file_common AS image ON (b.image_id=image.id)" + bannerWhere;
-//        MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//            if (err) throw err;
-//            rows.forEach(function (item) {
-//
-//                //формируем правильные пути
-//                item.image_name = exports.getNameWithId(item.image_name, item.image_id);
-//                item.file_name = exports.getNameWithId(item.file_name, item.file_id);
-//                item.image_src = CONFIG.hostname + "/uploads/image/" + item.id + "/image/original/original_" + item.image_name;
-//                item.file_src = CONFIG.hostname + "/uploads/flash/" + item.id + "/file/" + item.file_name;
-//
-//                SD.banners['_' + item.id] = item;
-//            })
-//        })
-//    }
-//
-//    //берем все настройки  баннеров для размещений
-//    if (!options || options.placement_banner_ids) {
-//        if (options.placement_banner_ids) {
-//            var placementBannerWhere = " WHERE id IN (" + joinObject(options.placement_banner_ids) + ")";
-//            deleteFromObj(SD.placementbanners, options.placement_banner_id); //удаляем элемент
-//        }
-//        else {
-//            var placementBannerWhere = "";
-//        }
-//
-//        var q = "SELECT * FROM core_adcompany_placement_banner" + placementBannerWhere;
-//        MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//            if (err) throw err;
-//            rows.forEach(function (item) {
-//
-//                if (!SD.placementbanners['_' + item.placement_id]) {
-//                    SD.placementbanners['_' + item.placement_id] = [];
-//                }
-//
-//                //разначаем реальный баннер
-//                if (SD.banners['_' + item.banner_id]) {
-//                    item['banner'] = SD.banners['_' + item.banner_id];
-//                }
-//
-//                SD.placementbanners['_' + item.placement_id].push(item);
-//
-//            })
-//
-//            //сетапим в размещения баннеры
-//            //SD.placements.forEach(function (placements, adPlace_id) {
-//            for (var adPlace_id in SD.placements) {
-//
-//                //placements.forEach(function (placement, key) {
-//                for (var key in SD.placements[adPlace_id]) {
-//                    var placement = SD.placements[adPlace_id][key];
-//                    if (SD.placementbanners['_' + placement.id]) {
-//                        SD.placements[adPlace_id][key]['placementBanners'] = SD.placementbanners['_' + placement.id];
-//                    }
-//                }
-//
-//            }
-//
-//
-//        })
-//    }
-//
-//
-//    //берем все рекламные места
-//    if (!options || options.ad_place_ids) {
-//        if (options.ad_place_ids) {
-//            var adplaceWhere = " WHERE id IN (" + joinObject(options.ad_place_ids) + ")";
-//            deleteFromObj(SD.adplaces, options.ad_place_ids); //удаляем элемент
-//            deleteFromObj(SD.sections, options.ad_place_ids); //удаляем элемент
-//            deleteFromObj(SD.placements, options.ad_place_ids); //удаляем элемент
-//        }
-//        else {
-//            var adplaceWhere = "";
-//        }
-//
-//        var q = "SELECT * FROM core_site_ad_place";
-//        MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//            if (err) throw err;
-//            rows.forEach(function (item) {
-//
-//                SD.adplaces['_' + item.id] = {adplace: item};
-//                if (SD.sections['_' + item.id]) {
-//                    SD.adplaces['_' + item.id]['sections'] = SD.sections['_' + item.id];
-//                }
-//                if (SD.sites['_' + item.site_id]) {
-//                    SD.adplaces['_' + item.id]['site'] = SD.sites['_' + item.site_id];
-//                    SD.adplaces['_' + item.id]['isSiteByDomain'] = {};
-//                    SD.adplaces['_' + item.id]['isSiteByDomain'][SD.sites['_' + item.site_id].domain] = true;
-//                }
-//                //размещения
-//                if (SD.placements['_' + item.id]) {
-//                    SD.adplaces['_' + item.id]['placements'] = SD.placements['_' + item.id];
-//                }
-//            })
-//
-//        })
-//    }
-//
-//    //
-//    ////берем все рекламные компании
-//    //var q = "SELECT * FROM core_adcompany";
-//    //MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//    //    if (err) throw err;
-//    //    rows.forEach(function (item) {
-//    //        SD.adcompanies[item.id]=item;
-//    //    })
-//    //})
-//    //
-//
-//    //
-//    ////берем всеx пользователей
-//    //var q = "SELECT * FROM fos_user_user";
-//    //MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//    //    if (err) throw err;
-//    //    rows.forEach(function (item) {
-//    //        SD.users[item.id]=item;
-//    //    })
-//    //})
-//    //
-//
-//}
 
-//mysqlGetInitializationData = function (options) {
-//
-//    //берем все площадки
-//    if (options.site_id) {
-//        var siteWhere=" WHERE id='"+options.site_id+"'";
-//        delete SD.sites['_'+options.site_id]; //удаляем элемент
-//    }
-//    else {
-//        var siteWhere="";
-//    }
-//    var q = "SELECT id, domain, user_id FROM core_site "+siteWhere;
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//            SD.sites['_'+item.id] = item;
-//        })
-//    })
-//
-//
-//    //берем все разделы для рекламных мест
-//    if (options.section_id) {
-//        var sectionWhere=" WHERE ss.id='"+options.section_id+"'";
-//       delete SD.sections[options.section_id];    //удаляем элемент
-//    }
-//    else {
-//        var sectionWhere="";
-//    }
-//    var q = "SELECT  ss.id, ss.isRegExpInUrlTemplate, ss.urlTemplate, ss.user_id, m.adplace_id FROM core_site_section AS ss " +
-//        "JOIN core_site_section_match_ad_place AS m ON (ss.id=m.section_id)";
-//
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//            if (!SD.sections['_'+item.adplace_id]) {
-//                SD.sections['_'+item.adplace_id] = [];
-//            }
-//            SD.sections['_'+item.adplace_id].push(item);
-//        })
-//    })
-//
-//
-//
-//    //берем все размещения
-//    if (options.placement_id) {
-//        var placementWhere=" WHERE id='"+options.placement_id+"'";
-//        delete SD.placements['_'+options.placement_id]; //удаляем элемент
-//    }
-//    else {
-//        var placementWhere="";
-//    }
-//
-//    var q = "SELECT * FROM core_adcompany_placement"+placementWhere;
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//            if (!SD.placements['_'+item.adPlace_id]) {
-//                SD.placements['_'+item.adPlace_id] = [];
-//            }
-//            SD.placements['_'+item.adPlace_id].push(item);
-//        })
-//    })
-//
-//
-//    //берем все баннеры
-//    if (options.banner_id) {
-//        var bannerWhere=" WHERE b.id='"+options.placement_id+"'";
-//        delete SD.banners[item.id]; //удаляем элемент
-//
-//    }
-//    else {
-//        var bannerWhere="";
-//    }
-//
-//    var q = "SELECT b.*, file.name AS file_name, file.height AS file_height,  file.width  AS file_width," +
-//        "image.height AS image_height,  image.width  AS image_width," +
-//        "image.name AS image_name  FROM core_banner_common AS b " +
-//        "LEFT JOIN core_file_common AS file ON (b.file_id=file.id) " +
-//        "LEFT JOIN core_file_common AS image ON (b.image_id=image.id)"+bannerWhere;
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//
-//            //формируем правильные пути
-//            item.image_name = exports.getNameWithId(item.image_name, item.image_id);
-//            item.file_name = exports.getNameWithId(item.file_name, item.file_id);
-//            item.image_src = CONFIG.hostname + "/uploads/image/" + item.id + "/image/original/original_" + item.image_name;
-//            item.file_src = CONFIG.hostname + "/uploads/flash/" + item.id + "/file/" + item.file_name;
-//
-//            SD.banners['_'+item.id] = item;
-//        })
-//    })
-//
-//
-//    //берем все настройки  баннеров для размещений
-//    if (options.placement_banner_id) {
-//        var placementBannerWhere=" WHERE id='"+options.placement_banner_id+"'";
-//        delete SD.placementbanners['_'+options.placement_banner_id]; //удаляем элемент
-//    }
-//    else {
-//        var placementBannerWhere="";
-//    }
-//
-//    var q = "SELECT * FROM core_adcompany_placement_banner"+placementBannerWhere;
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//
-//            if (!SD.placementbanners['_'+item.placement_id]) {
-//                SD.placementbanners['_'+item.placement_id] = [];
-//            }
-//
-//            //разначаем реальный баннер
-//            if (SD.banners['_'+item.banner_id]) {
-//                item['banner'] = SD.banners['_'+item.banner_id];
-//            }
-//
-//            SD.placementbanners['_'+item.placement_id].push(item);
-//
-//        })
-//
-//        //сетапим в размещения баннеры
-//        //SD.placements.forEach(function (placements, adPlace_id) {
-//            for(var adPlace_id in SD.placements) {
-//
-//                //placements.forEach(function (placement, key) {
-//                for(var key in SD.placements[adPlace_id]) {
-//                    var placement=SD.placements[adPlace_id][key];
-//                if (SD.placementbanners['_'+placement.id]) {
-//                    SD.placements[adPlace_id][key]['placementBanners'] = SD.placementbanners['_'+placement.id];
-//                }
-//            };
-//        };
-//
-//    })
-//
-//
-//    //берем все рекламные места
-//    if (options.placement_banner_id) {
-//        var adplaceWhere=" WHERE id='"+options.ad_place_id+"'";
-//        delete SD.adplaces['_'+options.ad_place_id]; //удаляем элемент
-//    }
-//    else {
-//        var adplaceWhere="";
-//    }
-//
-//    var q = "SELECT * FROM core_site_ad_place";
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//
-//                SD.adplaces['_'+item.id] = {adplace: item};
-//                if (SD.sections['_'+item.id]) {
-//                    SD.adplaces['_'+item.id]['sections'] = SD.sections['_'+item.id];
-//                }
-//                if (SD.sites['_'+item.site_id]) {
-//                    SD.adplaces['_'+item.id]['site'] = SD.sites['_'+item.site_id];
-//                    SD.adplaces['_'+item.id]['isSiteByDomain'] = {};
-//                    SD.adplaces['_'+item.id]['isSiteByDomain'][SD.sites['_'+item.site_id].domain] = true;
-//                }
-//                //размещения
-//                if (SD.placements['_'+item.id]) {
-//                    SD.adplaces['_'+item.id]['placements'] = SD.placements['_'+item.id];
-//                }
-//        })
-//
-//    })
-//
-//
-//    //
-//    ////берем все рекламные компании
-//    //var q = "SELECT * FROM core_adcompany";
-//    //MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//    //    if (err) throw err;
-//    //    rows.forEach(function (item) {
-//    //        SD.adcompanies[item.id]=item;
-//    //    })
-//    //})
-//    //
-//
-//    //
-//    ////берем всеx пользователей
-//    //var q = "SELECT * FROM fos_user_user";
-//    //MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//    //    if (err) throw err;
-//    //    rows.forEach(function (item) {
-//    //        SD.users[item.id]=item;
-//    //    })
-//    //})
-//    //
-//
-//}
+//выборка стран
+mysqlGetCountries = function (id) {
+    if (id) {
+        var where = "WHERE id ='" + id + "'";
+    }
+    else {
+        var where = "";
+    }
 
-//mysqlGetInitializationData = function () {
-//
-//    //берем все площадки
-//    var q = "SELECT * FROM core_site";
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//            SD.sites[item.id] = item;
-//        })
-//    })
-//
-//
-//    //берем все разделы для рекламных мест
-//    var q = "SELECT ss.*, m.adplace_id FROM core_site_section AS ss " +
-//        "JOIN core_site_section_match_ad_place AS m ON (ss.id=m.section_id)";
-//
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//            if (!SD.sections[item.adplace_id]) {
-//                SD.sections[item.adplace_id] = [];
-//            }
-//            SD.sections[item.adplace_id].push(item);
-//        })
-//    })
-//
-//
-//    //берем все размещения
-//    var q = "SELECT * FROM core_adcompany_placement";
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//            if (!SD.placements[item.adPlace_id]) {
-//                SD.placements[item.adPlace_id] = [];
-//            }
-//            SD.placements[item.adPlace_id].push(item);
-//        })
-//    })
-//
-//
-//    //берем все баннеры
-//    var q = "SELECT b.*, file.name AS file_name, file.height AS file_height,  file.width  AS file_width," +
-//        "image.height AS image_height,  image.width  AS image_width," +
-//        "image.name AS image_name  FROM core_banner_common AS b " +
-//        "LEFT JOIN core_file_common AS file ON (b.file_id=file.id) " +
-//        "LEFT JOIN core_file_common AS image ON (b.image_id=image.id)";
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//
-//            //формируем правильные пути
-//            item.image_name = exports.getNameWithId(item.image_name, item.image_id);
-//            item.file_name = exports.getNameWithId(item.file_name, item.file_id);
-//            item.image_src = CONFIG.hostname + "/uploads/image/" + item.id + "/image/original/original_" + item.image_name;
-//            item.file_src = CONFIG.hostname + "/uploads/flash/" + item.id + "/file/" + item.file_name;
-//
-//            SD.banners[item.id] = item;
-//        })
-//    })
-//
-//
-//    //берем все настройки  баннеров для размещений
-//    var q = "SELECT * FROM core_adcompany_placement_banner";
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//
-//            if (!SD.placementbanners[item.placement_id]) {
-//                SD.placementbanners[item.placement_id] = [];
-//            }
-//
-//            //разначаем реальный баннер
-//            if (SD.banners[item.banner_id]) {
-//                item['banner'] = SD.banners[item.banner_id];
-//            }
-//
-//            SD.placementbanners[item.placement_id].push(item);
-//
-//        })
-//
-//        //сетапим в размещения баннеры
-//        SD.placements.forEach(function (placements, adPlace_id) {
-//            placements.forEach(function (placement, key) {
-//                // var placement= SD.placements[adPlace_id][key];
-//                if (SD.placementbanners[placement.id]) {
-//                    SD.placements[adPlace_id][key]['placementBanners'] = SD.placementbanners[placement.id];
-//                }
-//            });
-//        });
-//
-//    })
-//
-//
-//    //берем все рекламные места
-//    var q = "SELECT * FROM core_site_ad_place";
-//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
-//        if (err) throw err;
-//        rows.forEach(function (item) {
-//
-//            SD.adplaces[item.id] = {adplace: item};
-//            if (SD.sections[item.id]) {
-//                SD.adplaces[item.id]['sections'] = SD.sections[item.id];
-//            }
-//            if (SD.sites[item.site_id]) {
-//                SD.adplaces[item.id]['site'] = SD.sites[item.site_id];
-//                SD.adplaces[item.id]['isSiteByDomain'] = {};
-//                SD.adplaces[item.id]['isSiteByDomain'][SD.sites[item.site_id].domain] = true;
-//            }
-//            //размещения
-//            if (SD.placements[item.id]) {
-//                SD.adplaces[item.id]['placements'] = SD.placements[item.id];
-//            }
-//
-//
-//        })
-//
-//    })
-//
-//
-//}
+    var q = "SELECT id, alpha2 FROM core_directory_country " + where;
+    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
+        if (err) throw err;
+        rows.forEach(function (item) {
+            SD.countries['_' + item.id] = item;
+            SD.countriesByAlpha2[item.alpha2] = item;
+
+        })
+    });
+
+}
+
+//удаление пользователя
+mysqlDeleteCountries = function (id) {
+    if (SD.countries['_' + id]) {
+        delete SD.countriesByAlpha2[SD.countries['_' + id].alpha2];
+        delete SD.countries['_' + id];
+    }
+}
+
+
+
+//выборка связи рекламных компаний и стран
+mysqlGetAdCompanyMatchCountries = function (id) {
+    if (id) {
+        var where = "WHERE id ='" + id + "'";
+    }
+    else {
+        var where = "";
+    }
+
+    var q = "SELECT * FROM core_ad_company_match_country " + where;
+    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
+        if (err) throw err;
+        rows.forEach(function (item) {
+            if (!SD.adCompanyMatchCountries['_' + item.adcompany_id]) {
+                SD.adCompanyMatchCountries['_' + item.adcompany_id]={}
+            }
+
+            SD.adCompanyMatchCountries['_' + item.adcompany_id]['_'+item.country_id] = item;
+        })
+    });
+}
+
+//удаление связи рекламных компаний и стран
+mysqlAdCompanyMatchCountries = function (adcompany_id, country_id) {
+    if (SD.adCompanyMatchCountries['_' + adcompany_id]['_'+country_id]) {
+        delete SD.adCompanyMatchCountries['_' + adcompany_id]['_'+country_id];
+    }
+}
+
+
+
+//выборка связи размещений и стран
+mysqlGetAdPlaceMatchCountries = function (id) {
+    if (id) {
+        var where = "WHERE id ='" + id + "'";
+    }
+    else {
+        var where = "";
+    }
+
+    var q = "SELECT * FROM core_ad_company_placement_match_country " + where;
+    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
+        if (err) throw err;
+        rows.forEach(function (item) {
+            if (!SD.adPlaceMatchCountries['_' + item.placement_id]) {
+                SD.adPlaceMatchCountries['_' + item.placement_id]={}
+            }
+
+            SD.adPlaceMatchCountries['_' + item.placement_id]['_'+item.country_id] = item;
+        })
+
+    });
+}
+
+//удаление размещений и стран
+mysqlAdPlaceMatchCountries = function (placement_id, country_id) {
+    if (SD.adPlaceMatchCountries['_' + placement_id]['_'+country_id]) {
+        delete SD.adPlaceMatchCountries['_' + placement_id]['_'+country_id];
+    }
+}
 
 
 /**

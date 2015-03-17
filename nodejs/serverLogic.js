@@ -17,6 +17,9 @@ exports.initialization = function (MYSQL) {
     mysqlGetAdPlaces(false);
     mysqlGetAdCompanies(false);
     mysqlGetUsers(false);
+    mysqlGetCountries(false);
+    mysqlGetAdCompanyMatchCountries(false);
+    mysqlGetAdPlaceMatchCountries(false);
 }
 
 /**
@@ -82,32 +85,60 @@ exports.getAd = function (req, res, adplace_id) {
                 var isAllowed = true;
             }
 
+
             if (isAllowed) {
-                /**
-                 Пока берем просто первое размещение. Но нужно сделать:
-                 1. Определяем по параметрам размещения, какое нужно использовать
-                 */
-                var placement;
+                //var ip = this.getIpFromReq(req);
+                var ip = '176.114.35.119';
+
+
+                //перебираем все размещения и проверяем их по дате
                 for (key in SD.placementsByAdPlace['_' + adplace_id]) {
-                    placement = SD.placementsByAdPlace['_' + adplace_id][key];
+                    var placement = SD.placementsByAdPlace['_' + adplace_id][key];
+
+                    //проверяем рекламную компанию по дате
+                    var checkByDateRes = this.checkByDate(SD.adcompanies['_' + placement.adCompany_id].startDateTime,
+                            SD.adcompanies['_' + placement.adCompany_id].finishDateTime),
+                    //проверяет по странам/регионам
+                        checkByGeoRes = this.checkByGeo(ip, SD.adCompanyMatchCountries, '_' + SD.adcompanies['_' + placement.adCompany_id].id);
+                    if (checkByDateRes && checkByGeoRes) {  //если для компании все ок, идем дальше
+                        checkByDateRes = this.checkByDate(placement.startDateTime, placement.finishDateTime),
+                            checkByGeoRes = this.checkByGeo(ip, SD.adPlaceMatchCountries, '_' + placement.id);
+
+                        if (checkByDateRes && checkByGeoRes) {  //подходит и размещение
+                            break;
+                        }
+                        else {
+                            placement = false;
+                        }
+                    }
+                    else {
+                        placement = false;
+                    }
                 }
 
-                /**
-                 Пока берем просто первый баннер. Но нужно сделать:
-                 1. Определяем по параметрам баннера, какой баннер нужно отобразить
-                 */
-                var placementBanner;
-                for (key in SD.placementbannersByPlacement['_' + placement.id]) {
-                    placementBanner = SD.placementbannersByPlacement['_' + placement.id][key];
+
+                if (placement) {
+                    /**
+                     Пока берем просто первый баннер. Но нужно сделать:
+                     1. Определяем по параметрам баннера, какой баннер нужно отобразить
+                     */
+                    var placementBanner;
+                    for (key in SD.placementbannersByPlacement['_' + placement.id]) {
+                        placementBanner = SD.placementbannersByPlacement['_' + placement.id][key];
+                    }
+                    var banner = SD.banners['_' + placementBanner.banner_id];
+
+                    // отдаём баннер
+                    this.sendBanner(res, banner);
+
+                    //обновляем статистику
+                    this.updateStatistics(req);
                 }
+                else {
+                    //проверяем есть ли заглушка для рекламного места
+                    //....
 
-                var banner = SD.banners['_' + placementBanner.banner_id];
-
-                // отдаём баннер
-                this.sendBanner(res,banner);
-
-                //обновляем статистику
-                this.updateStatistics(req);
+                }
             }
             else {
                 //проверяем есть ли заглушка для рекламного места
@@ -136,6 +167,65 @@ exports.getAd = function (req, res, adplace_id) {
         this.sendResponse(res, {statusCode: 400, body: msgError})
     }
 }
+
+
+//проверяет по странам
+exports.checkByGeo = function (ip, countryMatch, key) {
+
+    if (typeof(countryMatch[key]) !== 'undefined') {
+        var geo = GEOIP.lookup(ip),
+            country_id = SD.countriesByAlpha2[geo.country].id;
+        //если есть страна в связях
+        if (countryMatch[key]['_'+country_id]) {
+
+            var isAllowed = true;
+        }
+        else {
+            var isAllowed = false;
+        }
+    }
+    else {
+        var isAllowed = true;
+    }
+
+    return isAllowed;
+}
+
+
+//проверяет по датам начала и окончания
+exports.checkByDate = function (startDateTime, finishDateTime) {
+    var currentSeconds = new Date().getTime() / 1000;   //ntкущее время начиная с эпохи Unix time
+
+    //если для баннера размещения заданы одна из дат, значит берем его
+    if (startDateTime || finishDateTime) {
+        var startDate = false,
+            endDate = false;
+
+        if (!startDateTime ||
+            currentSeconds > startDateTime) {
+            var startDate = true;
+        }
+
+        if (!finishDateTime ||
+            currentSeconds < finishDateTime) {
+            var endDate = true;
+        }
+
+        //если найден подходящий баннер по дате
+        if (startDate && endDate) {
+            var isAllowed = 1;
+        }
+        else {
+            var isAllowed = 0;
+        }
+
+    }
+    else {
+        var isAllowed = 2;  //нужно проверить вышестоящие условия таргетинга
+    }
+    return isAllowed;
+}
+
 
 //отдает баннер
 exports.sendBanner = function (res, banner) {
@@ -167,15 +257,15 @@ exports.sendBanner = function (res, banner) {
 }
 
 //обновляет статистику
-exports.updateStatistics =function (req) {
-    var ip=this.getIpFromReq(req);
+exports.updateStatistics = function (req) {
+    var ip = this.getIpFromReq(req);
     var geo = GEOIP.lookup(ip);
     console.log(geo);
 }
 
 //получает IP из запроса
 exports.getIpFromReq = function (req) {
-    return  req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 }
 
 /**
