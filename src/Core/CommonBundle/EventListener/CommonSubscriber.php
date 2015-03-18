@@ -2,6 +2,7 @@
 
 namespace Core\CommonBundle\EventListener;
 
+use Core\SiteBundle\Logic\SiteLogic;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 // for Doctrine < 2.4 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -12,7 +13,6 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
-
 class CommonSubscriber implements EventSubscriber
 {
     /**
@@ -21,6 +21,8 @@ class CommonSubscriber implements EventSubscriber
      */
     protected $operations = [];
 
+    protected $siteLogic;
+
     public function getSubscribedEvents()
     {
         return array(
@@ -28,6 +30,13 @@ class CommonSubscriber implements EventSubscriber
             'postFlush',
         );
     }
+
+    /*
+    public function __construct($container)
+    {
+        $this->siteLogic = $container->get('core_section_logic');
+    }
+    */
 
     public function onFlush(OnFlushEventArgs $args)
     {
@@ -101,8 +110,11 @@ class CommonSubscriber implements EventSubscriber
                     $item = $item->getId();
                 }
             });
+
+            //$this->siteLogic->sendRefreshDataNodJs($this->operations);
         }
         return;
+
     }
 
     /**
