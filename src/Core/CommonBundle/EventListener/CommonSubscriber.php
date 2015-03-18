@@ -102,17 +102,25 @@ class CommonSubscriber implements EventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args)
     {
+        foreach($this->operations as $cur =>$operation) {
+            foreach($operation as $key => $table) {
+                if (!in_array($key, $this->container->get('core_config_logic')->get('subcriber-tables'))) {
+                    unset($this->operations[$cur][$key]);
+                }
+            }
+
+        }
+
         if (count($this->operations)) {
             array_walk_recursive($this->operations, function (&$item, $key) {
                 if (is_object($item)) {
                     $item = $item->getId();
                 }
             });
-
             $this->container->get('core_site_logic')->sendRefreshDataNodJs($this->operations);
         }
-        return;
 
+        return;
     }
 
     /**
