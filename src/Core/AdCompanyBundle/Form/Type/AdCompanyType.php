@@ -24,8 +24,8 @@ class AdCompanyType  extends AbstractType
             ->add('name', 'text', ['label' => 'Название*'])
             ->add('placements', null, ['label' => 'Размещения', 'property'=>'adPlace.name'])
             ->add('defaultCountries', null, ['required' => false])
-            ->add('startDateTime', 'text', ['required' => false])
-            ->add('finishDateTime', 'text', ['required' => false])
+            ->add('startDateTime', 'text', ['required' => false , 'read_only'=>true])
+            ->add('finishDateTime', 'text', ['required' => false, 'read_only'=>true])
             ->add('isEnabled', null, ['label' => 'Рекламная компания активна'])
             ->addModelTransformer(new AdCompanyTransformer())       //трансформер дат
         ;

@@ -60,7 +60,7 @@ class Placement
     /**
      * Дата начала показов
      * @var \DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $startDateTime;
 

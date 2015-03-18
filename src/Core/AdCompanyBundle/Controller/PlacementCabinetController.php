@@ -124,8 +124,8 @@ class PlacementCabinetController extends Controller
 //                'expanded'  => true,
                 'multiple'  => true,
                 'required' => false,'property'=>'banner.name'])
-            ->add('startDateTime', 'text', ['required' => false])
-            ->add('finishDateTime', 'text', ['required' => false])
+            ->add('startDateTime', 'text', ['required' => false , 'read_only'=>true])
+            ->add('finishDateTime', 'text', ['required' => false, 'read_only'=>true])
             ->add('isEnabled', null, ['required' => false])
             ->add('quantity', null, ['required' => true])
             ->add('defaultCountries', null, ['required' => false])

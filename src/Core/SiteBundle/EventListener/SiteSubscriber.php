@@ -29,81 +29,16 @@ class SiteSubscriber implements EventSubscriber
 
             'postUpdate',
             'postPersist',
-            'postRemove',
-            // 'postFlush',
-            'postFlush'
+            'postRemove'
         );
     }
-
-
-    public function postFlush($event)
-    {
-//        $this->bills = [];
-//        /* @var $em \Doctrine\ORM\EntityManager */
-//        $em = $event->getEntityManager();
-//        /* @var $uow \Doctrine\ORM\UnitOfWork */
-//        $uow = $em->getUnitOfWork();
-//
-//
-//
-//
-//
-//        foreach ($uow->getScheduledCollectionUpdates() as $entity) {
-//            ldd($entity);
-//        }
-
-
-//        ld($uow->getScheduledCollectionUpdates());
-//        ld($uow->getScheduledCollectionDeletions());
-//        ld($uow->getScheduledEntityDeletions());
-
-//        $uow->computeChangeSets();
-//        foreach ($uow->getScheduledEntityInsertions() as $entity) {
-//
-//            if ($entity instanceof Bill) {
-//
-//                $this->bills[] = $entity;
-//            }
-//        }
-
-    }
-
-//    public function postFlush(PostFlushEventArgs $event)
-//    {
-//        if (!empty($this->bills)) {
-//
-//            /* @var $em \Doctrine\ORM\EntityManager */
-//            $em = $event->getEntityManager();
-//
-//            foreach ($this->bills as $bill) {
-//
-//                /* @var $bill \MyCompany\CompanyBundle\Entity\Bill */
-//                $this->pdfs->generateFor($bill);
-//                $em->persist($bill);
-//            }
-//
-//            $em->flush();
-//        }
-//    }
-
-
-//    public function postFlush(PostFlushEventArgs $args)
-//    {
-//        foreach ($this->nodeJsRefresObjects as $object) {
-//
-//            $this->container->get('core_site_logic')->sendRefreshDataNodJs($object);
-//        }
-//        $this->nodeJsRefresObjects = [];
-//    }
 
 
     public function postUpdate(LifecycleEventArgs $args)
     {
 
         $object = $args->getEntity();
-
         $this->container->get('core_site_logic')->checkIsDomainNameChange($object);
-        $this->checkRefreshDataNodJs($object);
 
     }
 
@@ -112,7 +47,6 @@ class SiteSubscriber implements EventSubscriber
 
         $object = $args->getEntity();
         $this->container->get('core_site_logic')->checkIsDomainNameChange($object);
-        $this->checkRefreshDataNodJs($object);
 
     }
 
@@ -120,22 +54,6 @@ class SiteSubscriber implements EventSubscriber
     {
         $object = $args->getEntity();
         $this->container->get('core_site_logic')->checkIsDomainNameChange($object);
-        $this->checkRefreshDataNodJs($object);
-
-    }
-
-    /**
-     * Определяет необходимо ли обновить данные в nodejs
-     * @param $object
-     */
-    public function checkRefreshDataNodJs($object)
-    {
-
-        if ($this->container->get('core_site_logic')->checkRefreshDataNodJs($object)) {
-            $this->nodeJsRefresObjects[] = $object;
-
-        }
-
     }
 
 

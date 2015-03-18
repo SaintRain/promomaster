@@ -20,6 +20,7 @@ exports.initialization = function (MYSQL) {
     mysqlGetCountries(false);
     mysqlGetAdCompanyMatchCountries(false);
     mysqlGetPlaceMatchCountries(false);
+
 }
 
 /**
@@ -54,7 +55,7 @@ exports.getAd = function (req, res, adplace_id) {
 
                 //если заданы разделы проверяем, чтоб раздел совпадал
                 if (SD.placementsMatchSections['_' + adplace_id]) {
-                    //  console.log(refererInfo);
+
                     var isAllowed = false;    //если задан хоть один раздел
 
                     //перебираем все разделы
@@ -202,6 +203,9 @@ exports.checkByGeo = function (ip, countryMatch, key) {
 //проверяет по датам начала и окончания
 exports.checkByDate = function (startDateTime, finishDateTime) {
     var currentSeconds = new Date().getTime() / 1000;   //ntкущее время начиная с эпохи Unix time
+    //console.log('currentSeconds='+currentSeconds)
+    //console.log(startDateTime)
+    //console.log(finishDateTime)
 
     //если для баннера размещения заданы одна из дат, значит берем его
     if (startDateTime || finishDateTime) {
@@ -230,6 +234,7 @@ exports.checkByDate = function (startDateTime, finishDateTime) {
     else {
         var isAllowed = 2;  //нужно проверить вышестоящие условия таргетинга
     }
+    //console.log(isAllowed)
     return isAllowed;
 }
 

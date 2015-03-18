@@ -50,10 +50,9 @@ mysqlConnect = function (MYSQL, connectionTryCount) {
 }
 
 //преобразует строковую чату в INT
-strDateToInt=function(dateStr)
-{
+strDateToInt = function (dateStr) {
     var date = new Date(dateStr);
-    return  date.getUTCSeconds();
+    return date.getUTCSeconds();
 }
 
 //выборка сайтов
@@ -114,7 +113,7 @@ mysqlDeleteSections = function (id) {
 //выборка связей между рекламными местами и разделами
 mysqlGetPlacementsMatchSections = function (adplace_id, section_id) {
     if (adplace_id && section_id) {
-        var where = "WHERE adplace_id ='" + adplace_id + "' AND section_id='"+section_id+"'";
+        var where = "WHERE adplace_id ='" + adplace_id + "' AND section_id='" + section_id + "'";
     }
     else {
         var where = "";
@@ -125,9 +124,9 @@ mysqlGetPlacementsMatchSections = function (adplace_id, section_id) {
         if (err) throw err;
         rows.forEach(function (item) {
             if (!SD.placementsMatchSections['_' + item.adplace_id]) {
-                SD.placementsMatchSections['_' + item.adplace_id]={};
+                SD.placementsMatchSections['_' + item.adplace_id] = {};
             }
-            SD.placementsMatchSections['_' + item.adplace_id]['_'+item.section_id] = item;
+            SD.placementsMatchSections['_' + item.adplace_id]['_' + item.section_id] = item;
         })
     });
 
@@ -136,10 +135,9 @@ mysqlGetPlacementsMatchSections = function (adplace_id, section_id) {
 //удаление раздела
 mysqlDeletePlacementsMatchSections = function (adplace_id, section_id) {
     if (SD.placementsMatchSections['_' + id]) {
-        delete SD.placementsMatchSections['_' + adplace_id]['_'+section_id];
+        delete SD.placementsMatchSections['_' + adplace_id]['_' + section_id];
     }
 }
-
 
 
 //выборка размещений
@@ -151,7 +149,7 @@ mysqlGetPlacements = function (id) {
         var where = "";
     }
 
-    var q = "SELECT id, adPlace_id, isEnabled, adCompany_id, UNIX_TIMESTAMP(startDateTime) AS startDateTime, UNIX_TIMESTAMP(finishDateTime) AS finishDateTime " +
+    var q = "SELECT *, UNIX_TIMESTAMP(startDateTime) AS startDateTime , UNIX_TIMESTAMP(finishDateTime) AS finishDateTime " +
         "FROM core_adcompany_placement " + where;
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
@@ -160,7 +158,7 @@ mysqlGetPlacements = function (id) {
             if (!SD.placementsByAdPlace['_' + item.adPlace_id]) {
                 SD.placementsByAdPlace['_' + item.adPlace_id] = {};
             }
-            SD.placementsByAdPlace['_' + item.adPlace_id]["_"+item.id]=SD.placements['_' + item.id];
+            SD.placementsByAdPlace['_' + item.adPlace_id]["_" + item.id] = SD.placements['_' + item.id];
         })
     });
 
@@ -168,10 +166,10 @@ mysqlGetPlacements = function (id) {
 
 
 //удаление размещения
-mysqlDeletePlacements= function (id) {
+mysqlDeletePlacements = function (id) {
     if (SD.placements['_' + id]) {
-        var adPlace_id=SD.placements['_' + id].adPlace_id;
-        delete SD.placementsByAdPlace['_'+adPlace_id]['_' + id];
+        var adPlace_id = SD.placements['_' + id].adPlace_id;
+        delete SD.placementsByAdPlace['_' + adPlace_id]['_' + id];
         delete SD.placements['_' + id];
     }
 }
@@ -231,10 +229,10 @@ mysqlGetPlacementBanners = function (id) {
         if (err) throw err;
         rows.forEach(function (item) {
             SD.placementbanners['_' + item.id] = item;
-            if (!SD.placementbannersByPlacement['_'+ item.placement_id]) {
-                SD.placementbannersByPlacement['_'+ item.placement_id]={};
+            if (!SD.placementbannersByPlacement['_' + item.placement_id]) {
+                SD.placementbannersByPlacement['_' + item.placement_id] = {};
             }
-            SD.placementbannersByPlacement['_'+ item.placement_id]['_'+item.id]=SD.placementbanners['_' + item.id];
+            SD.placementbannersByPlacement['_' + item.placement_id]['_' + item.id] = SD.placementbanners['_' + item.id];
         });
     });
 
@@ -244,8 +242,8 @@ mysqlGetPlacementBanners = function (id) {
 //удаление настройки баннера
 mysqlDeletePlacementBanners = function (id) {
     if (SD.placementbanners['_' + id]) {
-        var placement_id=SD.placementbanners['_' + id].placement_id;
-        delete SD.placementbannersByPlacement['_'+placement_id]['_' + id];
+        var placement_id = SD.placementbanners['_' + id].placement_id;
+        delete SD.placementbannersByPlacement['_' + placement_id]['_' + id];
         delete SD.placementbanners['_' + id];
     }
 }
@@ -260,7 +258,7 @@ mysqlGetAdPlaces = function (id) {
         var where = "";
     }
 
-    var q = "SELECT * FROM core_site_ad_place "+where;
+    var q = "SELECT * FROM core_site_ad_place " + where;
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {
@@ -288,7 +286,7 @@ mysqlGetAdCompanies = function (id) {
         var where = "";
     }
 
-    var q = "SELECT id, isEnabled, UNIX_TIMESTAMP(startDateTime) AS startDateTime, UNIX_TIMESTAMP(finishDateTime) AS finishDateTime  FROM core_adcompany " +where;
+    var q = "SELECT id, isEnabled, UNIX_TIMESTAMP(startDateTime) AS startDateTime, UNIX_TIMESTAMP(finishDateTime) AS finishDateTime  FROM core_adcompany " + where;
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {
@@ -337,7 +335,6 @@ mysqlDeleteUsers = function (id) {
 }
 
 
-
 //выборка стран
 mysqlGetCountries = function (id) {
     if (id) {
@@ -368,11 +365,10 @@ mysqlDeleteCountries = function (id) {
 }
 
 
-
 //выборка связи рекламных компаний и стран
 mysqlGetAdCompanyMatchCountries = function (adcompany_id, country_id) {
     if (adcompany_id, country_id) {
-        var where = "WHERE adcompany_id ='" + adcompany_id + "' AND country_id='"+country_id+"'";
+        var where = "WHERE adcompany_id ='" + adcompany_id + "' AND country_id='" + country_id + "'";
     }
     else {
         var where = "";
@@ -383,27 +379,26 @@ mysqlGetAdCompanyMatchCountries = function (adcompany_id, country_id) {
         if (err) throw err;
         rows.forEach(function (item) {
             if (!SD.adCompanyMatchCountries['_' + item.adcompany_id]) {
-                SD.adCompanyMatchCountries['_' + item.adcompany_id]={}
+                SD.adCompanyMatchCountries['_' + item.adcompany_id] = {}
             }
 
-            SD.adCompanyMatchCountries['_' + item.adcompany_id]['_'+item.country_id] = item;
+            SD.adCompanyMatchCountries['_' + item.adcompany_id]['_' + item.country_id] = item;
         })
     });
 }
 
 //удаление связи рекламных компаний и стран
 mysqlAdCompanyMatchCountries = function (adcompany_id, country_id) {
-    if (SD.adCompanyMatchCountries['_' + adcompany_id]['_'+country_id]) {
-        delete SD.adCompanyMatchCountries['_' + adcompany_id]['_'+country_id];
+    if (SD.adCompanyMatchCountries['_' + adcompany_id]['_' + country_id]) {
+        delete SD.adCompanyMatchCountries['_' + adcompany_id]['_' + country_id];
     }
 }
-
 
 
 //выборка связи размещений и стран
 mysqlGetPlaceMatchCountries = function (placement_id, country_id) {
     if (placement_id, country_id) {
-        var where = "WHERE placement_id ='" + placement_id + "' AND country_id='"+country_id+"'";
+        var where = "WHERE placement_id ='" + placement_id + "' AND country_id='" + country_id + "'";
     }
     else {
         var where = "";
@@ -414,10 +409,10 @@ mysqlGetPlaceMatchCountries = function (placement_id, country_id) {
         if (err) throw err;
         rows.forEach(function (item) {
             if (!SD.adPlaceMatchCountries['_' + item.placement_id]) {
-                SD.adPlaceMatchCountries['_' + item.placement_id]={}
+                SD.adPlaceMatchCountries['_' + item.placement_id] = {}
             }
 
-            SD.adPlaceMatchCountries['_' + item.placement_id]['_'+item.country_id] = item;
+            SD.adPlaceMatchCountries['_' + item.placement_id]['_' + item.country_id] = item;
         })
 
     });
@@ -425,8 +420,8 @@ mysqlGetPlaceMatchCountries = function (placement_id, country_id) {
 
 //удаление размещений и стран
 mysqlDeletePlaceMatchCountries = function (placement_id, country_id) {
-    if (SD.adPlaceMatchCountries['_' + placement_id]['_'+country_id]) {
-        delete SD.adPlaceMatchCountries['_' + placement_id]['_'+country_id];
+    if (SD.adPlaceMatchCountries['_' + placement_id]['_' + country_id]) {
+        delete SD.adPlaceMatchCountries['_' + placement_id]['_' + country_id];
     }
 }
 
