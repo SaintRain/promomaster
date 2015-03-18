@@ -80,13 +80,13 @@ class CommonSubscriber implements EventSubscriber
                 }
             }
         }
-
+        /*
         if (count($this->operations)) {
             ldd($this->operations);
         }
 
         die('fdfd');
-        
+        */
     }
 
     /**
