@@ -79,7 +79,7 @@ class AdPlace
      * @ORM\JoinColumn(referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $user;
+        private $user;
 
     /**
      * Выводить в каталог

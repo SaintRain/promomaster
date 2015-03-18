@@ -40,9 +40,13 @@
                     {% if ticket.adminAnswers %}
                         <span>Обновлен</span>
                         {% else %}
+                        {# Какой то глюк но рус заголовок статутса получить не удается #}
+                        {% set statuses = {'novaia': 'Новая', 'zakryto': 'Закрыто', 'utochniaietsia': 'Уточняется', 'rieshieno': 'Решено', 'closed': 'Закрыт', 'vypolnien': 'Выполнен', }  %}
+                        {% if statuses[ticket.status.sysname] is defined %}
                         <span>
-                            {{ ticket.status.captionRu}}
+                            {{ statuses[ticket.status.sysname]}}
                         </span>
+                        {% endif %}
                     {% endif %}
                 </time>
                 <i class="cbp_tmicon rounded-x hidden-xs"></i>
