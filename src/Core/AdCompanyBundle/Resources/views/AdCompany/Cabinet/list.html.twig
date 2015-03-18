@@ -43,7 +43,8 @@
 
     {% if  adcompanies.getTotalItemCount %}
         <h3>Список рекламных компаний</h3>
-        <a style="margin-top: -30px" href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламную компанию</a>
+        <a style="margin-top: -30px" href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u pull-right"><i
+                    class="fa fa-plus-square"></i> &nbsp;Добавить рекламную компанию</a>
 
 
         <table class="table table-striped">
@@ -52,7 +53,7 @@
                 <th>#</th>
                 <th>ID</th>
                 <th>Название</th>
-                <th>Рекламное место</th>
+                <th>Размещения</th>
                 <th>Статус</th>
                 <th></th>
             </tr>
@@ -61,15 +62,28 @@
             {% for adcompany in adcompanies %}
                 <tr>
                     <td height="53px">{{ loop.index }}</td>
-                    <td><b>{{ adcompany.id  }}</b></td>
+                    <td><b>{{ adcompany.id }}</b></td>
                     <td>
                         <a href="{{ path('core_cabinet_adcompany_edit', {id:adcompany.id}) }}">{{ adcompany.name }}</a>
                     </td>
                     <td>
+                        {% if adcompany.placements.count==1 %}
+                            {% set placement=adcompany.placements.first %}
 
+                            {{ placement.adPlace.name }} {{ placement.adPlace.width }}x{{ placement.adPlace.height }}
+                            <br/>
+                            {{ placement.adPlace.site.domain }}
+                        {% else %}
+                            {% if adcompany.placements.count %}
+                            {{ adcompany.placements.count }} {{ declOfNum(adcompany.placements.count, ['размещение','размещения', 'размещений']) }}
+                                {% else %}
+                                нет размещений
+                                {% endif %}
+                        {% endif %}
                     </td>
-
                     <td>
+
+                        {#{% if adcompany.isEnabled %}<span class="label label-u">Да</span>{% else %}<span class="label label-warning">Нет</span>{% endif %}</td>#}
                     </td>
                 </tr>
             {% endfor %}
@@ -84,7 +98,8 @@
 
     {% else %}
         <h2>У вас нет рекламных компаний</h2>
-        <a style="margin-top: -30px" href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламную компанию</a>
+        <a style="margin-top: -30px" href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u pull-right"><i
+                    class="fa fa-plus-square"></i> &nbsp;Добавить рекламную компанию</a>
     {% endif %}
 
 {% endblock %}

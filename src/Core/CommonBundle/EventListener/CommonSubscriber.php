@@ -20,23 +20,22 @@ class CommonSubscriber implements EventSubscriber
      * @var array
      */
     protected $operations = [];
-
-    protected $siteLogic;
+    protected $container;
 
     public function getSubscribedEvents()
     {
         return array(
             'onFlush',
-            'postFlush',
+            'postFlush'
         );
     }
 
-    /*
+
     public function __construct($container)
     {
-        $this->siteLogic = $container->get('core_section_logic');
+        $this->container = $container;
     }
-    */
+
 
     public function onFlush(OnFlushEventArgs $args)
     {
@@ -58,11 +57,10 @@ class CommonSubscriber implements EventSubscriber
 
         }
 
-        foreach($data as $entityType)
-        {
+        foreach ($data as $entityType) {
             foreach ($entityType as $entity) {
                 $meta = $em->getClassMetadata(get_class($entity['old']));
-                foreach($meta->getAssociationMappings() as $map) {
+                foreach ($meta->getAssociationMappings() as $map) {
                     $method = 'get' . ucfirst($map['fieldName']);
                     if (!method_exists($entity['old'], $method)) {
                         continue;
@@ -105,13 +103,13 @@ class CommonSubscriber implements EventSubscriber
     public function postFlush(PostFlushEventArgs $args)
     {
         if (count($this->operations)) {
-            array_walk_recursive($this->operations, function(&$item, $key) {
+            array_walk_recursive($this->operations, function (&$item, $key) {
                 if (is_object($item)) {
                     $item = $item->getId();
                 }
             });
 
-            //$this->siteLogic->sendRefreshDataNodJs($this->operations);
+            $this->container->get('core_site_logic')->sendRefreshDataNodJs($this->operations);
         }
         return;
 
@@ -130,11 +128,11 @@ class CommonSubscriber implements EventSubscriber
             'new' => [],
         ];
         $operations = [];
-        foreach($entity['old']->$method() as $val) {
+        foreach ($entity['old']->$method() as $val) {
             $diff['old'][$val->getId()] = $val->getId();
         }
 
-        foreach($entity['new']->$method() as $val) {
+        foreach ($entity['new']->$method() as $val) {
             $diff['new'][$val->getId()] = $val->getId();
         }
 
@@ -142,7 +140,7 @@ class CommonSubscriber implements EventSubscriber
         $operations['delete'][$map['joinTable']['name']] = array_diff($diff['old'], $diff['new']);
 
         if (count($operations['insert'][$map['joinTable']['name']])) {
-            foreach($operations['insert'][$map['joinTable']['name']] as $key => $val) {
+            foreach ($operations['insert'][$map['joinTable']['name']] as $key => $val) {
                 $operations['insert'][$map['joinTable']['name']][$key] =
                     array(
                         $map['joinTable']['inverseJoinColumns'][0]['name'] => $val,
@@ -154,7 +152,7 @@ class CommonSubscriber implements EventSubscriber
         }
 
         if (count($operations['delete'][$map['joinTable']['name']])) {
-            foreach($operations['delete'][$map['joinTable']['name']] as $key => $val) {
+            foreach ($operations['delete'][$map['joinTable']['name']] as $key => $val) {
                 $operations['delete'][$map['joinTable']['name']][$key] =
                     array(
                         $map['joinTable']['inverseJoinColumns'][0]['name'] => $val,
@@ -171,13 +169,13 @@ class CommonSubscriber implements EventSubscriber
     {
         foreach ($entities as $entity) {
             $meta = $em->getClassMetadata(get_class($entity));
-            foreach($meta->getAssociationMappings() as $map) {
+            foreach ($meta->getAssociationMappings() as $map) {
                 $method = 'get' . ucfirst($map['fieldName']);
                 if (!method_exists($entity, $method)) {
                     continue;
                 }
                 if (ClassMetadata::MANY_TO_MANY == $map['type']) {
-                    foreach($entity->$method() as $val) {
+                    foreach ($entity->$method() as $val) {
                         $this->operations[$operation][$map['joinTable']['name']][] =
                             array(
                                 $map['joinTable']['inverseJoinColumns'][0]['name'] => $val->getId(),
@@ -205,7 +203,7 @@ class CommonSubscriber implements EventSubscriber
         }
 
         if (!$entity['old']->$method() || $entity['new']->$method()->getId() != $entity['old']->$method()->getId()) {
-            $operations['update'][$meta->table['name']][$entity['new']->$method()->getId()] =  $entity['new']->$method()->getId();
+            $operations['update'][$meta->table['name']][$entity['new']->$method()->getId()] = $entity['new']->$method()->getId();
         }
 
         return $operations;

@@ -24,12 +24,17 @@ global.SD = {
     users:{},
     countries:{},
     countriesByAlpha2: {},
-    adCompanyMatchCountries:{},
+    adCompanyMatchCountries:{}
     //adplace:[],
     //adplace:[],
     //adplace:[],
     //adplace:[],
 
+}
+//статистические данные
+global.ST= {
+    placements:{
+    }
 }
 
 var EXPRESS = require('express');

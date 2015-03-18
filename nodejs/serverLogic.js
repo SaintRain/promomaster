@@ -19,7 +19,7 @@ exports.initialization = function (MYSQL) {
     mysqlGetUsers(false);
     mysqlGetCountries(false);
     mysqlGetAdCompanyMatchCountries(false);
-    mysqlGetAdPlaceMatchCountries(false);
+    mysqlGetPlaceMatchCountries(false);
 }
 
 /**
@@ -100,11 +100,11 @@ exports.getAd = function (req, res, adplace_id) {
                             SD.adcompanies['_' + placement.adCompany_id].finishDateTime),
                     //проверяет по странам/регионам
                         checkByGeoRes = this.checkByGeo(ip, SD.adCompanyMatchCountries, '_' + SD.adcompanies['_' + placement.adCompany_id].id);
-                    if (checkByDateRes && checkByGeoRes) {  //если для компании все ок, идем дальше
+                    if (checkByDateRes && checkByGeoRes && SD.adcompanies['_' + placement.adCompany_id].isEnabled) {  //если для компании все ок, идем дальше
                         checkByDateRes = this.checkByDate(placement.startDateTime, placement.finishDateTime),
                             checkByGeoRes = this.checkByGeo(ip, SD.adPlaceMatchCountries, '_' + placement.id);
 
-                        if (checkByDateRes && checkByGeoRes) {  //подходит и размещение
+                        if (checkByDateRes && checkByGeoRes && placement.isEnabled) {  //подходит и размещение
                             break;
                         }
                         else {
@@ -132,7 +132,7 @@ exports.getAd = function (req, res, adplace_id) {
                     this.sendBanner(res, banner);
 
                     //обновляем статистику
-                    this.updateStatistics(req);
+                    this.updateStatistics(req, placement);
                 }
                 else {
                     //проверяем есть ли заглушка для рекламного места
@@ -176,7 +176,7 @@ exports.checkByGeo = function (ip, countryMatch, key) {
         var geo = GEOIP.lookup(ip),
             country_id = SD.countriesByAlpha2[geo.country].id;
         //если есть страна в связях
-        if (countryMatch[key]['_'+country_id]) {
+        if (countryMatch[key]['_' + country_id]) {
 
             var isAllowed = true;
         }
@@ -257,10 +257,19 @@ exports.sendBanner = function (res, banner) {
 }
 
 //обновляет статистику
-exports.updateStatistics = function (req) {
-    var ip = this.getIpFromReq(req);
-    var geo = GEOIP.lookup(ip);
-    console.log(geo);
+exports.updateStatistics = function (req, placement) {
+
+    if (!ST.placements['_' + placement.id]) {
+        ST.placements['_' + placement.id] = {
+            showsQuantity: 0
+        };
+    }
+
+    ST.placements['_' + placement.id].showsQuantity++; //общее количество показов для размещения
+
+    //var ip = this.getIpFromReq(req);
+    //var geo = GEOIP.lookup(ip);
+    console.log(ST.placements);
 }
 
 //получает IP из запроса
@@ -295,10 +304,26 @@ exports.refresh = function (req, res) {
     }
     else if (req.body.tableName == 'core_site_section_match_ad_place') {
         if (req.body.type == 'delete') {
-            mysqlDeletePlacementsMatchSections(req.body.id);    //!!!здесь должно быть 2 параметра
+            mysqlDeletePlacementsMatchSections(req.body.extraFields.adplace_id, req.body.extraFields.section_id);
         }
         else {
-            mysqlGetPlacementsMatchSections(req.body.id);
+            mysqlGetPlacementsMatchSections(req.body.extraFields.adplace_id, req.body.extraFields.section_id);
+        }
+    }
+    else if (req.body.tableName == 'core_ad_company_match_country') {
+        if (req.body.type == 'delete') {
+            mysqlAdCompanyMatchCountries(req.body.extraFields.adcompany_id, req.body.extraFields.country_id);
+        }
+        else {
+            mysqlGetAdCompanyMatchCountries(req.body.extraFields.adcompany_id, req.body.extraFields.country_id);
+        }
+    }
+    else if (req.body.tableName == 'core_ad_company_placement_match_country') {
+        if (req.body.type == 'delete') {
+            mysqlDeletePlaceMatchCountries(req.body.extraFields.placement_id, req.body.extraFields.country_id);
+        }
+        else {
+            mysqlGetPlaceMatchCountries(req.body.extraFields.placement_id, req.body.extraFields.country_id);
         }
     }
     else if (req.body.tableName == 'core_adcompany_placement') {
@@ -353,6 +378,7 @@ exports.refresh = function (req, res) {
 
     this.sendResponse(res, {statusCode: 200, body: 'ok'});
 
-    console.log("Данные " + entityName + "=" + id + " обновлены.");
+    console.log("Данные  обновлены:");
+    console.log(req.body);
 
 }
