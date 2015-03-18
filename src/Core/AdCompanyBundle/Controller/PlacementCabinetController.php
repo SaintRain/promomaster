@@ -119,7 +119,11 @@ class PlacementCabinetController extends Controller
         $form = $this->createFormBuilder($placement)
             ->add('adCompany', null, ['required' => true, 'property' => 'name'])
             ->add('adPlace', null, ['required' => true, 'property' => 'name'])
-            ->add('placementBannersList', null, ['required' => false, 'property' => 'banner.name'])
+            ->add('placementBannersList', 'entity', [
+                'class'     => 'Core\AdCompanyBundle\Entity\PlacementBanner',
+                'expanded'  => true,
+                'multiple'  => true,
+                'required' => false])
             ->add('startDateTime', 'text', ['required' => false])
             ->add('finishDateTime', 'text', ['required' => false])
             ->add('isEnabled', null, ['required' => false])

@@ -154,47 +154,26 @@ class SiteLogic
      */
     public function sendRefreshDataNodJs($arr=[])
     {
-      //  $this->em->refresh($object);
-
-        //$arr = [];
         $secretToken = 'elG5fNk4md3l4k4';
-
-//        //изменилось что-то в са
-//        if ($object instanceof CommonSite) {
-//            $arr['site_ids'][] = $object->getId();
-//            foreach ($object->getAdPlaces() as $adPlace) {
-//                $arr['ad_place_ids'][] = $adPlace->getId();
-//
-//                foreach ($adPlace->getSections() as $section) {
-//                    $arr['section_ids'][] = $section->getId();
-//                }
-//
-//                foreach ($adPlace->getPlacements() as $placement) {
-//                    $arr['placement_ids'][] = $placement->getId();
-//                    foreach ($placement->getPlacementBannersList() as $placementBanner) {
-//                        $arr['placement_banner_ids'][] = $placementBanner->getId();
-//                    }
-//                }
-//            }
-//        } else if ($object instanceof AdPlace) {
-//
-//            $arr['ad_place_ids'][] = $object->getId();
-//
-//            foreach ($object->getSections() as $section) {
-//                $arr['section_ids'][] = $section->getId();
-//            }
-//
-//            foreach ($object->getPlacements() as $placement) {
-//                $arr['placement_ids'][] = $placement->getId();
-//                foreach ($placement->getPlacementBannersList() as $placementBanner) {
-//                    $arr['placement_banner_ids'][] = $placementBanner->getId();
-//                }
-//            }
-//
-//        }
         if ($arr) {
-            $arr['secretToken'] = $secretToken;
-            $this->sendRefresRequestToNodJS($arr);
+            foreach ($arr as $type=> $tables) {
+                foreach ($tables as $tableName => $data) {
+                    foreach ($data as $id=>$v) {
+                        $options=[
+                            'secretToken'=>$secretToken,
+                            'tableName'=>$tableName,
+                            'type'=>$type,
+                            'id'=>$id
+                        ];
+
+                        if (is_array($v)) { //manyToMany
+                            $options['extraFields']=$v;
+                        }
+
+                        $this->sendRefresRequestToNodJS($options);  //делаем запрос
+                    }
+                }
+            }
         }
 
         //            ||

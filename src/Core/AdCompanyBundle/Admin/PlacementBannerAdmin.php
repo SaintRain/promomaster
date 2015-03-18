@@ -71,7 +71,7 @@ class PlacementBannerAdmin extends Admin
             ->add('banner', null, ['label'=>'Баннер', 'empty_value'=>'Ничего не выбрано', 'property'=>'name'])
             ->add('preoritet', null, ['label'=>'Преоритет'])
             ->with('Дефолтные настройки показа')
-            ->add('defaultCountries', null, ['label'=>'Страны']);
+           // ->add('defaultCountries', null, ['label'=>'Страны', 'property'=>'id']);
         ;
 
 

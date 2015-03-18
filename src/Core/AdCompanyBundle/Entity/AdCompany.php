@@ -255,7 +255,9 @@ class AdCompany
     public function addPlacement($placement)
     {
         $placement->setAdCompany($this);
-        $this->placements->add($placement);
+        if (!$this->placements->contains($placement)) {
+            $this->placements->add($placement);
+        }
         return $this;
     }
 

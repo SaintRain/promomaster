@@ -91,6 +91,6 @@ services:
 
   core_common_subscriber:
           class: Core\CommonBundle\EventListener\CommonSubscriber
-          #arguments: ['@service_container']
+          arguments: ['@service_container']
           tags:
               - { name: doctrine.event_subscriber }

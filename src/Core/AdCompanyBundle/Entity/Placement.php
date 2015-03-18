@@ -36,7 +36,7 @@ class Placement
     /**
      * Рекламная компания в рамках которой идет размещение
      * @ORM\ManyToOne(targetEntity="AdCompany", inversedBy="placements")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $adCompany;
 
