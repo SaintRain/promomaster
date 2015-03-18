@@ -90,7 +90,7 @@ class AdCompany
 
     /**
      * Размещения
-     * @ORM\OneToMany(targetEntity="Placement", mappedBy="adCompany")
+     * @ORM\OneToMany(targetEntity="Placement", mappedBy="adCompany", cascade={"persist"})
      */
     private $placements;
 

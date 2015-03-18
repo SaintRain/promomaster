@@ -148,7 +148,7 @@ class AdPlaceCabinetController extends Controller
             ->add('width', 'text', ['required' => false])
             ->add('height', 'text', ['required' => false])
             ->add('isShowInCatalog', null, ['required' => false])
-            ->add('sections', null, ['property'=>'name', 'required' => false, 'by_reference'=>false, 'class' => 'CoreSiteBundle:Section', 'multiple' => true, 'expanded' => true, 'extraConfig' => [
+            ->add('sections', null, ['property'=>'name', 'required' => false,'class' => 'CoreSiteBundle:Section', 'multiple' => true, 'expanded' => true, 'extraConfig' => [
                 'field' => 'sections',
                 'editUrl' => '',
                 'deleteUrl' => '',

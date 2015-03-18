@@ -2245,3 +2245,18 @@ img.img-mouse {
 .team-v1 li > h3 {
 	color: #555;
 }
+
+/* New Styles */
+#contact-form .fake-input-file {
+    background: none repeat scroll 0 0 #79d5b3;
+    border: 0 none;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 6px 13px;
+    position: relative;
+    text-decoration: none;
+    white-space: nowrap;
+}

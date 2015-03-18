@@ -88,3 +88,8 @@ services:
     tags:
       - { name: form.type, alias: hidden_entity_form }
     arguments: ['@doctrine.orm.entity_manager']
+
+  core_common_subscriber:
+          class: Core\CommonBundle\EventListener\CommonSubscriber
+          tags:
+              - { name: doctrine.event_subscriber, connection: default }
