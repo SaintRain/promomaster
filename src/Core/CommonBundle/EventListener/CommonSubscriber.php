@@ -22,6 +22,22 @@ class CommonSubscriber implements EventSubscriber
     protected $operations = [];
     protected $container;
 
+    //список таблиц для которых нужно отлавливать изменения
+    private $subcriberTables = [
+        'core_site',
+        'core_site_section',
+        'core_site_section_match_ad_place',
+        'core_site_ad_place',
+        'core_adcompany',
+        'core_ad_company_match_country',
+        'core_ad_company_placement_match_country',
+        'core_adcompany_placement',
+        'core_adcompany_placement_banner',
+        'core_banner_common' ,
+        'fos_user_user',
+        'core_directory_country'
+    ];
+
     public function getSubscribedEvents()
     {
         return array(
@@ -102,9 +118,9 @@ class CommonSubscriber implements EventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        foreach($this->operations as $cur =>$operation) {
-            foreach($operation as $key => $table) {
-                if (!in_array($key, $this->container->get('core_config_logic')->get('subcriber-tables'))) {
+        foreach ($this->operations as $cur => $operation) {
+            foreach ($operation as $key => $table) {
+                if (!in_array($key, $this->subcriberTables)) {
                     unset($this->operations[$cur][$key]);
                 }
             }

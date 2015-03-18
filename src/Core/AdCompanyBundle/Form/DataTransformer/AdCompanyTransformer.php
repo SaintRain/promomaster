@@ -23,7 +23,7 @@ class AdCompanyTransformer implements DataTransformerInterface
             list($day, $month, $year) = explode('-', $value->getStartDateTime());
 
 
-            $d = new \DateTime ($year . '-' . $month . '-' . $day . ' ' . $this->getTime($year, $month, $day), $UTC);
+            $d = new \DateTime ($year . '-' . $month . '-' . $day . '00:00:00' , $UTC);
             $value->setStartDateTime($d);
         }
 
