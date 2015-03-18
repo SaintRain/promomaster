@@ -73,6 +73,7 @@ FAQ:
     Видео-Хостинги:                     { route: admin_core_directory_videohosting_list }
     Праздники:                          { route: admin_core_holiday_holiday_list }
     Производственный календарь:         { route: : admin_core_officeworktime_schedule_list }
+    Типы размещений:                     { route: : admin_core_directory_pricemodel_list }
 #Скидки:
 #    Скидки по брендам:                  { route: admin_core_discounts_manufacturerdiscount_list }
 #    Индивидуальные cкидки по брендам:   { route: admin_core_discounts_contragentmanufacturerdiscount_list }
