@@ -102,8 +102,10 @@ class PlacementAdmin extends Admin
                 'widget' => 'single_text',
                 //'view_timezone' => $options['container']->getParameter('default_timezone'),
                 'format' => 'dd.MM.yyyy'))
-
+            ->add('quantity', null, ['label' => 'Количество'])
             ->add('isEnabled', null, ['label' => 'Активно'])
+
+
         ->with('Дефолтные настройки показа')
         ->add('defaultCountries', null, ['label'=>'Страны']);
 
@@ -121,6 +123,7 @@ class PlacementAdmin extends Admin
             ])
             ->add('startDateTime', null, ['label' => 'Дата начало'])
             ->add('finishDateTime', null, ['label' => 'Дата окончания'])
+            ->add('quantity', null, ['label' => 'Количество', 'required'=>true])
             ->add('isEnabled', null, ['label' => 'Активно'])
             ->add('_action', 'actions', array(
                 'label' => 'Действия',

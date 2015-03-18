@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-
+use Core\AdCompanyBundle\Form\DataTransformer\AdCompanyTransformer;
 
 class AdCompanyType  extends AbstractType
 {
@@ -23,7 +23,11 @@ class AdCompanyType  extends AbstractType
         $builder
             ->add('name', 'text', ['label' => 'Название*'])
             ->add('placements', null, ['label' => 'Размещения', 'property'=>'adPlace.name'])
+            ->add('defaultCountries', null, ['required' => false])
+            ->add('startDateTime', 'text', ['required' => false])
+            ->add('finishDateTime', 'text', ['required' => false])
             ->add('isEnabled', null, ['label' => 'Рекламная компания активна'])
+            ->addModelTransformer(new AdCompanyTransformer())       //трансформер дат
         ;
     }
 

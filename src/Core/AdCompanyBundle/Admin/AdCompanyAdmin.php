@@ -109,7 +109,8 @@ class AdCompanyAdmin extends Admin
             ), null, ['attr' => ['placeholder' => 'ID сайта, через запятую']])
             ->add('name', null, array('label' => 'Название'), null, ['attr' => ['placeholder' => 'Название']])
             ->add('isEnabled', null, array('label' => 'Включено'), null, ['attr' => ['placeholder' => 'Включено']])
-
+            ->add('startDateTime', null, ['label' => 'Дата начало'])
+            ->add('finishDateTime', null, ['label' => 'Дата окончания'])
             ->add('user', 'doctrine_orm_callback',
                 array(
                     'label' => 'Введите E-mail, фамилию, ID клиента',

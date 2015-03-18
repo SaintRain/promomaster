@@ -93,6 +93,15 @@
                 </div>
             </div>
 
+
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.quantity) %}state-error{% endif %}">
+                    <label>Количество*</label>
+                    {{ form_widget(form.quantity,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.quantity) }}
+                </div>
+            </div>
+
             <div class="row margin-bottom-20">
                 <div class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
                     <label>Дата начала показов</label>

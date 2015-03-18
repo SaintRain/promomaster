@@ -2,19 +2,29 @@
  * Контроллел для обработки серверных запросов
  *
  */
+
+global.GEOIP = require('geoip-lite');   //модуль для работы с maxmind
 global.URL = require("url");
 require(__dirname + '/config.js');//подключаем настройки
 var BODY_PARSER = require('body-parser');
-//var MULTER = require('multer');
 var MYSQL = require('mysql');
 var MYSQL_CONNECTION;
-global.SERVICE_DATA = {
+global.SD = {
     adplaces: {},
+    adPlaceMatchCountries: {},
     sections: {},
     sites: {},
     placementbanners: {},
+    placementbannersByPlacement: {},
     placements: {},
-    banners: {}
+    placementsByAdPlace: {},
+    placementsMatchSections: {},
+    banners: {},
+    adcompanies:{},
+    users:{},
+    countries:{},
+    countriesByAlpha2: {},
+    adCompanyMatchCountries:{},
     //adplace:[],
     //adplace:[],
     //adplace:[],
@@ -59,7 +69,7 @@ APP.get('/get', function (req, res) {
 APP.post('/refresh', function (req, res) {
 
     if (req.body.secretToken == CONFIG.secretToken) {
-        mysqlGetInitializationData(req.body);
+        LOGIC.refresh(req, res);
     }
     else {
         //отдаём ошибку
@@ -70,7 +80,7 @@ APP.post('/refresh', function (req, res) {
 
 ///ПОТОМ НУЖНО УДАЛИТЬ !!!!!!
 APP.get('/getAllData', function (req, res) {
-    LOGIC.sendResponse(res, {statusCode: 200, body: SERVICE_DATA})
+    LOGIC.sendResponse(res, {statusCode: 200, body: SD})
 })
 
 

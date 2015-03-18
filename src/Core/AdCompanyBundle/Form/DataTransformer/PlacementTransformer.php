@@ -17,21 +17,19 @@ class PlacementTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
+        $UTC = new \DateTimeZone('UTC');
 
         if ($value->getStartDateTime()) {
             list($day, $month, $year) = explode('-', $value->getStartDateTime());
-            $day++;
-            $d = new \DateTime ($year . '-' . $month . '-' . $day);
+            $d = new \DateTime ($year . '-' . $month . '-' . $day .' 23:59:59', $UTC);
             $value->setStartDateTime($d);
         }
 
         if ($value->getFinishDateTime()) {
             list($day, $month, $year) = explode('-', $value->getFinishDateTime());
-            $day++;
-            $d = new \DateTime ($year . '-' . $month . '-' . $day);
+            $d = new \DateTime ($year . '-' . $month . '-' . $day.' 23:59:59', $UTC);
             $value->setFinishDateTime($d);
         }
-
 
         return $value;
 

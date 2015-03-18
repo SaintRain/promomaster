@@ -88,7 +88,7 @@
                 <div class="col-sm-6  {% if form_errors(form.domain) %}state-error{% endif %}">
                     <label>Адрес сайта*</label>
                     {{ form_widget(form.domain,{ 'attr': {'class': 'form-control'} }) }}
-                    <span class="help">Введите полный адрес вашего сайта начиная с http://</span>
+                    <span class="note">Введите полный адрес вашего сайта начиная с http://</span>
                     {{ form_errors(form.domain) }}
                 </div>
             </div>
@@ -105,7 +105,7 @@
                     <label>Зеркала</label>
                     {{ form_widget(form.mirrors,{ 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.mirrors) }}
-                    <span class="help">Альтернативные адреса вашего сайта.</span>
+                    <span class="note">Альтернативные адреса вашего сайта.</span>
                 </div>
             </div>
 
@@ -113,7 +113,7 @@
                 <div class="col-sm-6  {% if form_errors(form.keywords) %}state-error{% endif %}">
                     <label>Ключевые слова (каждое с новой строки)</label>
                     {{ form_widget(form.keywords,{ 'attr': {'class': 'form-control'} }) }}
-                    <span class="help">Ключевые слова используются для повышения релевантности поиска в каталоге системы.</span>
+                    <span class="note">Ключевые слова используются для повышения релевантности поиска в каталоге системы.</span>
                     {{ form_errors(form.keywords) }}
                 </div>
             </div>

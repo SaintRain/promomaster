@@ -52,14 +52,6 @@ class PlacementBanner
 
 
     /**
-     * Дата создания
-     * @var \DateTime
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
-     */
-    private $createdDateTime;
-
-    /**
      * Преоритет показа
      * @var int
      * @ORM\Column(type="bigint", nullable=true)
@@ -76,15 +68,15 @@ class PlacementBanner
 
     /**
      * Дефолтные страны по которым ограничить вывод
-     * @ORM\ManyToMany(targetEntity="Core\DirectoryBundle\Entity\Country", cascade={"persist"},   fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(name="core_ad_company_placement_banner_match_country")
+     * ORM\ManyToMany(targetEntity="Core\DirectoryBundle\Entity\Country", cascade={"persist"},   fetch="EXTRA_LAZY")
+     * ORM\JoinTable(name="core_ad_company_placement_banner_match_country")
      */
-    private $defaultCountries;
+    //private $defaultCountries;
 
 
     public function __construct()
     {
-        $this->defaultCountries = new ArrayCollection();
+      //  $this->defaultCountries = new ArrayCollection();
     }
 
     /**
@@ -135,6 +127,8 @@ class PlacementBanner
         $this->placement = $placement;
     }
 
+
+
     /**
      * @return mixed
      */
@@ -183,37 +177,37 @@ class PlacementBanner
         $this->indexPosition = $indexPosition;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDefaultCountries()
-    {
-        return $this->defaultCountries;
-    }
-
-    /**
-     * @param mixed $defaultCountries
-     */
-    public function setDefaultCountries($defaultCountries)
-    {
-        $this->defaultCountries = $defaultCountries;
-    }
-
-    public function addDefaultCountries($defaultCountry)
-    {
-        if (!$this->defaultCountries->contains($defaultCountry)) {
-            $this->defaultCountries->add($defaultCountry);
-        }
-
-        return $this;
-    }
-
-    public function removeDefaultCountries($defaultCountry)
-    {
-        $this->defaultCountries->removeElement($defaultCountry);
-
-        return $this;
-    }
+//    /**
+//     * @return mixed
+//     */
+//    public function getDefaultCountries()
+//    {
+//        return $this->defaultCountries;
+//    }
+//
+//    /**
+//     * @param mixed $defaultCountries
+//     */
+//    public function setDefaultCountries($defaultCountries)
+//    {
+//        $this->defaultCountries = $defaultCountries;
+//    }
+//
+//    public function addDefaultCountries($defaultCountry)
+//    {
+//        if (!$this->defaultCountries->contains($defaultCountry)) {
+//            $this->defaultCountries->add($defaultCountry);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeDefaultCountries($defaultCountry)
+//    {
+//        $this->defaultCountries->removeElement($defaultCountry);
+//
+//        return $this;
+//    }
 
 
     /**

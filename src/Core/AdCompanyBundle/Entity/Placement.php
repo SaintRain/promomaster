@@ -105,6 +105,15 @@ class Placement
     private $defaultCountries;
 
 
+    /**
+     * Количество показов/кликов/дней
+     * @var int
+     * @ORM\Column(type="bigint", nullable=false)
+     * @Assert\NotBlank()
+     */
+    private $quantity;
+
+
     public function __construct()
     {
         $this->placementBannersList = new ArrayCollection();
@@ -304,6 +313,22 @@ class Placement
         $this->defaultCountries->removeElement($defaultCountry);
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param int $quantity
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
     }
 
     /**

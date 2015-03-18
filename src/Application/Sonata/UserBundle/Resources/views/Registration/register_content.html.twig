@@ -24,15 +24,15 @@
     <div class="container content">
         <div class="row">
             <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-                <form id="regForm" class="reg-page"
-                      action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST">
-                    <div class="reg-header">
-                        <h2>Регистрация в системе</h2>
+                <div class="reg-header">
+                    <h2>Регистрация в системе</h2>
 
-                        <p>Вы уже зарегистрированы? Нажмите <a href="{{ path('fos_user_security_login') }}"
-                                                               class="color-green">авторизоваться</a>, чтобы войти в
-                            личный кабинет.</p>
-                    </div>
+                    <p>Вы уже зарегистрированы? Нажмите <a href="{{ path('fos_user_security_login') }}"
+                                                           class="color-green">авторизоваться</a>, чтобы войти в
+                        личный кабинет.</p>
+                </div>
+                <form id="regForm" class="sky-form sky-form-other-style"
+                      action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST">
 
                     <label>Имя</label>
                     {#<input type="text" class="form-control margin-bottom-20">#}
@@ -44,7 +44,7 @@
                     {{ form_errors(form.lastname) }}
 
                     <div class="margin-bottom-20 {% if form_errors(form.email) %}state-error{% endif %}">
-                        <label>Email <span class="color-red">*</span></label>
+                        <label>Email*</label>
                         {{ form_widget(form.email,{ 'attr': {
                             'class': 'form-control '} }) }}
                         {{ form_errors(form.email) }}
@@ -52,26 +52,36 @@
 
                     <div class="row margin-bottom-20">
                         <div class="col-sm-6  {% if form_errors(form.plainPassword.first) %}state-error{% endif %}">
-                            <label>Пароль <span class="color-red">*</span></label>
+                            <label>Пароль*</label>
                             {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control'} }) }}
                             {{ form_errors(form.plainPassword.first) }}
 
                         </div>
                         <div class="col-sm-6  {% if form_errors(form.plainPassword.second) %}state-error{% endif %}">
-                            <label>Повторите пароль <span class="color-red">*</span></label>
+                            <label>Повторите пароль*</label>
                             {{ form_widget(form.plainPassword.second, { 'attr': { 'class': 'form-control'} }) }}
                             {{ form_errors(form.plainPassword.second) }}
 
                         </div>
                     </div>
 
+
+                    {#<div class="margin-bottom-20 {% if form_errors(form.isRssNews) %}state-error{% endif %}">#}
+                        {#<label class="checkbox">#}
+                            {#{{ form_widget(form.isRssNews) }}<i></i> Получать рассылку</label>#}
+                        {#{{ form_errors(form.isRssNews) }}#}
+                        {#</label>#}
+                    {#</div>#}
+
+
                     <hr>
                     <div class="row">
-                        <div class="col-lg-6 checkbox">
-                            <label>
+                        <div class="col-lg-6 ">
+                            <label class="checkbox">
                                 <input id="isAgreeWithRules"
+                                       class="text_input"
                                        name="isAgreeWithRules" {% if app.request.get('isAgreeWithRules') %} checked {% endif %}
-                                       type="checkbox">
+                                       type="checkbox"><i></i>
                                 Я прочитал и согласен с <a href="page_terms.html" class="color-green">условиями
                                     пользования</a>
                             </label>
