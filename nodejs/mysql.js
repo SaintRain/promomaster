@@ -288,7 +288,7 @@ mysqlGetAdCompanies = function (id) {
         var where = "";
     }
 
-    var q = "SELECT id, UNIX_TIMESTAMP(startDateTime) AS startDateTime, UNIX_TIMESTAMP(finishDateTime) AS finishDateTime  FROM core_adcompany " +where;
+    var q = "SELECT id, isEnabled, UNIX_TIMESTAMP(startDateTime) AS startDateTime, UNIX_TIMESTAMP(finishDateTime) AS finishDateTime  FROM core_adcompany " +where;
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {
