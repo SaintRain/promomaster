@@ -152,46 +152,46 @@ class SiteLogic
      * актуальность своих данных
      * @param $object
      */
-    public function sendRefreshDataNodJs($object)
+    public function sendRefreshDataNodJs($arr=[])
     {
-        $this->em->refresh($object);
+      //  $this->em->refresh($object);
 
-        $arr = [];
+        //$arr = [];
         $secretToken = 'elG5fNk4md3l4k4';
 
-        //изменилось что-то в са
-        if ($object instanceof CommonSite) {
-            $arr['site_ids'][] = $object->getId();
-            foreach ($object->getAdPlaces() as $adPlace) {
-                $arr['ad_place_ids'][] = $adPlace->getId();
-
-                foreach ($adPlace->getSections() as $section) {
-                    $arr['section_ids'][] = $section->getId();
-                }
-
-                foreach ($adPlace->getPlacements() as $placement) {
-                    $arr['placement_ids'][] = $placement->getId();
-                    foreach ($placement->getPlacementBannersList() as $placementBanner) {
-                        $arr['placement_banner_ids'][] = $placementBanner->getId();
-                    }
-                }
-            }
-        } else if ($object instanceof AdPlace) {
-
-            $arr['ad_place_ids'][] = $object->getId();
-
-            foreach ($object->getSections() as $section) {
-                $arr['section_ids'][] = $section->getId();
-            }
-
-            foreach ($object->getPlacements() as $placement) {
-                $arr['placement_ids'][] = $placement->getId();
-                foreach ($placement->getPlacementBannersList() as $placementBanner) {
-                    $arr['placement_banner_ids'][] = $placementBanner->getId();
-                }
-            }
-
-        }
+//        //изменилось что-то в са
+//        if ($object instanceof CommonSite) {
+//            $arr['site_ids'][] = $object->getId();
+//            foreach ($object->getAdPlaces() as $adPlace) {
+//                $arr['ad_place_ids'][] = $adPlace->getId();
+//
+//                foreach ($adPlace->getSections() as $section) {
+//                    $arr['section_ids'][] = $section->getId();
+//                }
+//
+//                foreach ($adPlace->getPlacements() as $placement) {
+//                    $arr['placement_ids'][] = $placement->getId();
+//                    foreach ($placement->getPlacementBannersList() as $placementBanner) {
+//                        $arr['placement_banner_ids'][] = $placementBanner->getId();
+//                    }
+//                }
+//            }
+//        } else if ($object instanceof AdPlace) {
+//
+//            $arr['ad_place_ids'][] = $object->getId();
+//
+//            foreach ($object->getSections() as $section) {
+//                $arr['section_ids'][] = $section->getId();
+//            }
+//
+//            foreach ($object->getPlacements() as $placement) {
+//                $arr['placement_ids'][] = $placement->getId();
+//                foreach ($placement->getPlacementBannersList() as $placementBanner) {
+//                    $arr['placement_banner_ids'][] = $placementBanner->getId();
+//                }
+//            }
+//
+//        }
         if ($arr) {
             $arr['secretToken'] = $secretToken;
             $this->sendRefresRequestToNodJS($arr);
@@ -226,7 +226,7 @@ class SiteLogic
         fwrite($fp, "Content-Length: " . strlen($content) . "\r\n");
         fwrite($fp, "Connection: close\r\n");
         fwrite($fp, "\r\n");
-        fwrite($fp, $content);      //сразу закрываем
+        fwrite($fp, $content);      //сразу закрываем не дождавшись ответа
     }
 
 
