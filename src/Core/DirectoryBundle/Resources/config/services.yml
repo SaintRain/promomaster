@@ -126,3 +126,10 @@ services:
     tags:
     - { name: sonata.admin, manager_type: orm, audit: true, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Системное, label: "Группы для единиц измерения" }
     arguments: [null, Core\DirectoryBundle\Entity\UnitOfMeasureGroup, null]
+
+  #сервис для редактирования типа размещения
+  core_directory_price_model_admin:
+    class: Core\DirectoryBundle\Admin\PriceModelAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Системное, label: "Тип размещения" }
+    arguments: [null, Core\DirectoryBundle\Entity\PriceModel, null]
