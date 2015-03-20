@@ -20,6 +20,7 @@ exports.initialization = function (MYSQL) {
     mysqlGetCountries(false);
     mysqlGetAdCompanyMatchCountries(false);
     mysqlGetPlaceMatchCountries(false);
+
 }
 
 /**
@@ -43,126 +44,133 @@ exports.sendResponse = function (res, options) {
  */
 exports.getAd = function (req, res, adplace_id) {
 
-    var refererInfo = URL.parse(req.header('Referer')),
-        domain = refererInfo.protocol + '//' + refererInfo.hostname;
+    if (typeof(req.header('Referer')) !== 'undefined') {
+        var refererInfo = URL.parse(req.header('Referer')),
+            domain = refererInfo.protocol + '//' + refererInfo.hostname;
 
-    //проверяем, чтоб домен рефера совпадал с тем, что у нас прописан в базе. Иначе возможна накрутка показов с других площадок
-    if (typeof(SD.adplaces['_' + adplace_id]) !== 'undefined' && SD.sites['_' + SD.adplaces['_' + adplace_id].site_id].domain == domain) {
+        //проверяем, чтоб домен рефера совпадал с тем, что у нас прописан в базе. Иначе возможна накрутка показов с других площадок
+        if (typeof(SD.adplaces['_' + adplace_id]) !== 'undefined' && SD.sites['_' + SD.adplaces['_' + adplace_id].site_id].domain == domain) {
 
-        if (SD.placementsByAdPlace['_' + adplace_id]) {  //если есть размещения
+            if (SD.placementsByAdPlace['_' + adplace_id]) {  //если есть размещения
 
-            //если заданы разделы проверяем, чтоб раздел совпадал
-            if (SD.placementsMatchSections['_' + adplace_id]) {
-                //  console.log(refererInfo);
-                var isAllowed = false;    //если задан хоть один раздел
+                //если заданы разделы проверяем, чтоб раздел совпадал
+                if (SD.placementsMatchSections['_' + adplace_id]) {
 
-                //перебираем все разделы
-                SD.placementsMatchSections['_' + adplace_id].forEach(function (placementsMatchSection) {
-                    var section = SD.sections[placementsMatchSection.section_id];
+                    var isAllowed = false;    //если задан хоть один раздел
 
-                    //проверка по регулярному выражению, регулярка на этапе сохранения должна быть проверена и без ошибок,
-                    //иначе сервер станет
-                    if (section.isRegExpInUrlTemplate) {
-                        var regex = new RegExp(section.urlTemplate);
-                        regexResult = regex.test(refererInfo.path);
-                        if (regexResult) {
-                            isAllowed = true;
-                            return true;
+                    //перебираем все разделы
+                    SD.placementsMatchSections['_' + adplace_id].forEach(function (placementsMatchSection) {
+                        var section = SD.sections[placementsMatchSection.section_id];
+
+                        //проверка по регулярному выражению, регулярка на этапе сохранения должна быть проверена и без ошибок,
+                        //иначе сервер станет
+                        if (section.isRegExpInUrlTemplate) {
+                            var regex = new RegExp(section.urlTemplate);
+                            regexResult = regex.test(refererInfo.path);
+                            if (regexResult) {
+                                isAllowed = true;
+                                return true;
+                            }
+
                         }
-
-                    }
-                    //проверка по простому совпадению
-                    else {
-                        var result = refererInfo.path.indexOf(section.urlTemplate);
-                        if (result === 0) {    //совпадать должно с первого символа
-                            isAllowed = true;
-                            return true;
+                        //проверка по простому совпадению
+                        else {
+                            var result = refererInfo.path.indexOf(section.urlTemplate);
+                            if (result === 0) {    //совпадать должно с первого символа
+                                isAllowed = true;
+                                return true;
+                            }
                         }
-                    }
-                })
-            }
-            else {
-                var isAllowed = true;
-            }
+                    })
+                }
+                else {
+                    var isAllowed = true;
+                }
 
 
-            if (isAllowed) {
-                //var ip = this.getIpFromReq(req);
-                var ip = '176.114.35.119';
+                if (isAllowed) {
+                    //var ip = this.getIpFromReq(req);
+                    var ip = '176.114.35.119';
 
 
-                //перебираем все размещения и проверяем их по дате
-                for (key in SD.placementsByAdPlace['_' + adplace_id]) {
-                    var placement = SD.placementsByAdPlace['_' + adplace_id][key];
+                    //перебираем все размещения и проверяем их по дате
+                    for (key in SD.placementsByAdPlace['_' + adplace_id]) {
+                        var placement = SD.placementsByAdPlace['_' + adplace_id][key];
 
-                    //проверяем рекламную компанию по дате
-                    var checkByDateRes = this.checkByDate(SD.adcompanies['_' + placement.adCompany_id].startDateTime,
-                            SD.adcompanies['_' + placement.adCompany_id].finishDateTime),
-                    //проверяет по странам/регионам
-                        checkByGeoRes = this.checkByGeo(ip, SD.adCompanyMatchCountries, '_' + SD.adcompanies['_' + placement.adCompany_id].id);
-                    if (checkByDateRes && checkByGeoRes && SD.adcompanies['_' + placement.adCompany_id].isEnabled) {  //если для компании все ок, идем дальше
-                        checkByDateRes = this.checkByDate(placement.startDateTime, placement.finishDateTime),
-                            checkByGeoRes = this.checkByGeo(ip, SD.adPlaceMatchCountries, '_' + placement.id);
+                        //проверяем рекламную компанию по дате
+                        var checkByDateRes = this.checkByDate(SD.adcompanies['_' + placement.adCompany_id].startDateTime,
+                                SD.adcompanies['_' + placement.adCompany_id].finishDateTime),
+                        //проверяет по странам/регионам
+                            checkByGeoRes = this.checkByGeo(ip, SD.adCompanyMatchCountries, '_' + SD.adcompanies['_' + placement.adCompany_id].id);
+                        if (checkByDateRes && checkByGeoRes && SD.adcompanies['_' + placement.adCompany_id].isEnabled) {  //если для компании все ок, идем дальше
+                            checkByDateRes = this.checkByDate(placement.startDateTime, placement.finishDateTime),
+                                checkByGeoRes = this.checkByGeo(ip, SD.adPlaceMatchCountries, '_' + placement.id);
 
-                        if (checkByDateRes && checkByGeoRes && placement.isEnabled) {  //подходит и размещение
-                            break;
+                            if (checkByDateRes && checkByGeoRes && placement.isEnabled) {  //подходит и размещение
+                                break;
+                            }
+                            else {
+                                placement = false;
+                            }
                         }
                         else {
                             placement = false;
                         }
                     }
+
+
+                    if (placement) {
+                        /**
+                         Пока берем просто первый баннер. Но нужно сделать:
+                         1. Определяем по параметрам баннера, какой баннер нужно отобразить
+                         */
+                        var placementBanner;
+                        for (key in SD.placementbannersByPlacement['_' + placement.id]) {
+                            placementBanner = SD.placementbannersByPlacement['_' + placement.id][key];
+                        }
+                        var banner = SD.banners['_' + placementBanner.banner_id];
+
+                        // отдаём баннер
+                        this.sendBanner(res, banner);
+
+                        //обновляем статистику
+                        this.updateStatistics(req, placement);
+                    }
                     else {
-                        placement = false;
+                        //проверяем есть ли заглушка для рекламного места
+                        //....
+
                     }
-                }
-
-
-                if (placement) {
-                    /**
-                     Пока берем просто первый баннер. Но нужно сделать:
-                     1. Определяем по параметрам баннера, какой баннер нужно отобразить
-                     */
-                    var placementBanner;
-                    for (key in SD.placementbannersByPlacement['_' + placement.id]) {
-                        placementBanner = SD.placementbannersByPlacement['_' + placement.id][key];
-                    }
-                    var banner = SD.banners['_' + placementBanner.banner_id];
-
-                    // отдаём баннер
-                    this.sendBanner(res, banner);
-
-                    //обновляем статистику
-                    this.updateStatistics(req, placement);
                 }
                 else {
                     //проверяем есть ли заглушка для рекламного места
                     //....
 
                 }
+
+
             }
             else {
-                //проверяем есть ли заглушка для рекламного места
-                //....
-
+                var msgError = "Placement is not finded.";
+                //отдаём ошибку
+                this.sendResponse(res, {statusCode: 400, body: msgError})
             }
-
 
         }
         else {
-            var msgError = "Placement is not finded.";
+
+            if (typeof(SD.adplaces[adplace_id]) !== 'undefined') {
+                var msgError = "Wrong refer hostname. Need " + SD.adplaces[adplace_id]['site']['domain'] + ", but get " + domain;
+            }
+            else {
+                var msgError = "Wrong parameter adplace_id.";
+            }
             //отдаём ошибку
             this.sendResponse(res, {statusCode: 400, body: msgError})
         }
-
     }
     else {
-
-        if (typeof(SD.adplaces[adplace_id]) !== 'undefined') {
-            var msgError = "Wrong refer hostname. Need " + SD.adplaces[adplace_id]['site']['domain'] + ", but get " + domain;
-        }
-        else {
-            var msgError = "Wrong parameter adplace_id.";
-        }
+        var msgError = "Referer is undefined";
         //отдаём ошибку
         this.sendResponse(res, {statusCode: 400, body: msgError})
     }
@@ -195,6 +203,9 @@ exports.checkByGeo = function (ip, countryMatch, key) {
 //проверяет по датам начала и окончания
 exports.checkByDate = function (startDateTime, finishDateTime) {
     var currentSeconds = new Date().getTime() / 1000;   //ntкущее время начиная с эпохи Unix time
+    //console.log('currentSeconds='+currentSeconds)
+    //console.log(startDateTime)
+    //console.log(finishDateTime)
 
     //если для баннера размещения заданы одна из дат, значит берем его
     if (startDateTime || finishDateTime) {
@@ -223,6 +234,7 @@ exports.checkByDate = function (startDateTime, finishDateTime) {
     else {
         var isAllowed = 2;  //нужно проверить вышестоящие условия таргетинга
     }
+    //console.log(isAllowed)
     return isAllowed;
 }
 

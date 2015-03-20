@@ -103,7 +103,7 @@
             </div>
 
             <div class="row margin-bottom-20">
-                <div class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
+                <div {% if not form.startDateTime.vars.value %}  style="display: none"  {% endif %}  class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
                     <label>Дата начала показов</label>
                     <label class="input">
                         <i class="icon-append fa fa-calendar"></i>
@@ -112,11 +112,22 @@
 
                     {{ form_errors(form.startDateTime) }}
                 </div>
+
+
+                <div class="col-sm-6">
+                    <label class="dateSettingsStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>
+                    <div class="inline-group">
+                        <label class="radio"><input {% if form.startDateTime.vars.value %}  checked=""  {% endif %}  class="dateSettingsStart" value="1" type="radio" name="dateSettingsStart"><i class="rounded-x"></i>По
+                            дате</label>
+                        <label class="radio"><input {% if not form.startDateTime.vars.value %}  checked=""  {% endif %} class="dateSettingsStart"  value="0" type="radio" name="dateSettingsStart"><i class="rounded-x"></i>Начать
+                            показ сразу</label>
+                    </div>
+                </div>
             </div>
 
 
             <div class="row margin-bottom-20">
-                <div class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
+                <div  {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}   class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
                     <label>Дата окончания показов</label>
 
                     <label class="input">
@@ -124,6 +135,15 @@
                         {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date'} }) }}
                     </label>
 
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="dateSettingsFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>
+                    <div class="inline-group">
+                        <label class="radio"><input {% if form.finishDateTime.vars.value %}  checked=""  {% endif %}  class="dateSettingsFinish" value="1" type="radio" name="dateSettingsFinish"><i class="rounded-x"></i>По
+                            дате</label>
+                        <label class="radio"><input {% if not form.finishDateTime.vars.value %}  checked=""  {% endif %} class="dateSettingsFinish"  value="0" type="radio" name="dateSettingsFinish"><i class="rounded-x"></i>Показывать бесконечно</label>
+                    </div>
                 </div>
             </div>
 
@@ -166,8 +186,8 @@
 
 
 
-    {% block js_head %}
-        {{ parent() }}
+    {% block js %}
+
         <script>
             $(function () {
                 $( "#datepicker" ).datepicker();
@@ -190,7 +210,7 @@
                 });
 
 
-                  $(".date").mask('99-99-9999', {placeholder: '0'});
+            //      $(".date").mask('99-99-9999', {placeholder: '0'});
 
 
                 {% if placement.id %}
@@ -201,6 +221,40 @@
                     }
                 });
                 {% endif %}
+
+
+                $('.dateSettingsStart').change(function () {
+                    var value = $('.dateSettingsStart:checked').val();
+                    if (value == 1) {
+                        $('#form_startDateTime').parents('div.col-sm-6').show();
+                        $('#form_startDateTime').val('').focus();
+                        $('#form_startDateTime').attr('required', 'required');
+                        $('.dateSettingsStartLabel').html('');
+                    }
+                    else {
+                        $('#form_startDateTime').parents('div.col-sm-6').hide();
+                        $('#form_startDateTime').val('');
+                        $('#form_startDateTime').removeAttr('required');
+                        $('.dateSettingsStartLabel').html('Дата начала показов');
+                    }
+                });
+
+
+                $('.dateSettingsFinish').change(function () {
+                    var value = $('.dateSettingsFinish:checked').val();
+                    if (value == 1) {
+                        $('#form_finishDateTime').parents('div.col-sm-6').show();
+                        $('#form_finishDateTime').val('').focus();
+                        $('#form_finishDateTime').attr('required', 'required');
+                        $('.dateSettingsFinishLabel').html('');
+                    }
+                    else {
+                        $('#form_finishDateTime').parents('div.col-sm-6').hide();
+                        $('#form_finishDateTime').val('');
+                        $('#form_finishDateTime').removeAttr('required');
+                        $('.dateSettingsFinishLabel').html('Дата окончания показов');
+                    }
+                });
             })
         </script>
     {% endblock %}

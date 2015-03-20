@@ -111,25 +111,7 @@ class AdCompanyCabinetController extends Controller
         
     }
 
-    /**
-     * Форма рекламной компании
-     * @param $adcompany
-     * @return \Symfony\Component\Form\Form
-     */
-    private function getForm($adcompany)
-    {
-        $form = $this->createFormBuilder($adcompany)
-            ->add('name', 'text', ['required' => true])
-            ->add('placements', null, ['required' => false, 'property'=>'adPlace.name'])
-            ->add('defaultCountries', null, ['required' => false])
-            ->add('startDateTime', 'text', ['required' => false])
-            ->add('finishDateTime', 'text', ['required' => false])
-            ->add('isEnabled', null, ['required' => false])
-            ->getForm();
 
-        return $form;
-    }
-    
 
     /**
      * Удаление рекламной компании

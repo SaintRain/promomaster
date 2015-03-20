@@ -68,8 +68,8 @@
     {% include 'CoreAdCompanyBundle:AdCompany/Cabinet:form.html.twig' %}
 
 
-    {% block js_head %}
-        {{ parent() }}
+    {% block js %}
+
         <script>
             $(function () {
 
@@ -93,7 +93,7 @@
                 });
 
 
-                $(".date").mask('99-99-9999', {placeholder: '0'});
+                  //$(".date").mask('99-99-9999', {placeholder: '0'});
 
                 {% if adcompany.id %}
                 $('.delete').click(function () {
@@ -103,6 +103,42 @@
                     }
                 });
                 {% endif %}
+
+
+                $('.dateSettingsStart').change(function () {
+                    var value = $('.dateSettingsStart:checked').val();
+                    if (value == 1) {
+                        $('#ad_company_type_startDateTime').parents('div.col-sm-6').show();
+                        $('#ad_company_type_startDateTime').val('').focus();
+                        $('#ad_company_type_startDateTime').attr('required', 'required');
+                        $('.dateSettingsStartLabel').html('');
+                    }
+                    else {
+                        $('#ad_company_type_startDateTime').parents('div.col-sm-6').hide();
+                        $('#ad_company_type_startDateTime').val('');
+                        $('#ad_company_type_startDateTime').removeAttr('required');
+                        $('.dateSettingsStartLabel').html('Дата начала показов');
+                    }
+                });
+
+
+                $('.dateSettingsFinish').change(function () {
+                    var value = $('.dateSettingsFinish:checked').val();
+                    if (value == 1) {
+                        $('#ad_company_type_finishDateTime').parents('div.col-sm-6').show();
+                        $('#ad_company_type_finishDateTime').val('').focus();
+                        $('#ad_company_type_finishDateTime').attr('required', 'required');
+                        $('.dateSettingsFinishLabel').html('');
+                    }
+                    else {
+                        $('#ad_company_type_finishDateTime').parents('div.col-sm-6').hide();
+                        $('#ad_company_type_finishDateTime').val('');
+                        $('#ad_company_type_finishDateTime').removeAttr('required');
+                        $('.dateSettingsFinishLabel').html('Дата окончания показов');
+                    }
+                });
+
+
             })
         </script>
     {% endblock %}

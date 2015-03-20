@@ -121,11 +121,11 @@ class PlacementCabinetController extends Controller
             ->add('adPlace', null, ['required' => true, 'property' => 'name'])
             ->add('placementBannersList', 'entity', [
                 'class'     => 'Core\AdCompanyBundle\Entity\PlacementBanner',
-                'expanded'  => true,
+//                'expanded'  => true,
                 'multiple'  => true,
-                'required' => false])
-            ->add('startDateTime', 'text', ['required' => false])
-            ->add('finishDateTime', 'text', ['required' => false])
+                'required' => false,'property'=>'banner.name'])
+            ->add('startDateTime', 'text', ['required' => false , 'read_only'=>true])
+            ->add('finishDateTime', 'text', ['required' => false, 'read_only'=>true])
             ->add('isEnabled', null, ['required' => false])
             ->add('quantity', null, ['required' => true])
             ->add('defaultCountries', null, ['required' => false])

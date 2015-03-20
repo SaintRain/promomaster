@@ -19,7 +19,7 @@
         </div>
 
         <div class="row margin-bottom-20">
-            <div class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
+            <div {% if not form.startDateTime.vars.value %}  style="display: none"  {% endif %}  class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
                 <label>Дата начала показов</label>
                 <label class="input">
                     <i class="icon-append fa fa-calendar"></i>
@@ -28,11 +28,22 @@
 
                 {{ form_errors(form.startDateTime) }}
             </div>
+
+
+            <div class="col-sm-6">
+                <label class="dateSettingsStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>
+                <div class="inline-group">
+                    <label class="radio"><input {% if form.startDateTime.vars.value %}  checked=""  {% endif %}  class="dateSettingsStart" value="1" type="radio" name="dateSettingsStart"><i class="rounded-x"></i>По
+                        дате</label>
+                    <label class="radio"><input {% if not form.startDateTime.vars.value %}  checked=""  {% endif %} class="dateSettingsStart"  value="0" type="radio" name="dateSettingsStart"><i class="rounded-x"></i>Начать
+                        показ сразу</label>
+                </div>
+            </div>
         </div>
 
 
         <div class="row margin-bottom-20">
-            <div class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
+            <div  {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}   class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
                 <label>Дата окончания показов</label>
 
                 <label class="input">
@@ -40,6 +51,15 @@
                     {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date'} }) }}
                 </label>
 
+            </div>
+
+            <div class="col-sm-6">
+                <label class="dateSettingsFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>
+                <div class="inline-group">
+                    <label class="radio"><input {% if form.finishDateTime.vars.value %}  checked=""  {% endif %}  class="dateSettingsFinish" value="1" type="radio" name="dateSettingsFinish"><i class="rounded-x"></i>По
+                        дате</label>
+                    <label class="radio"><input {% if not form.finishDateTime.vars.value %}  checked=""  {% endif %} class="dateSettingsFinish"  value="0" type="radio" name="dateSettingsFinish"><i class="rounded-x"></i>Показывать бесконечно</label>
+                </div>
             </div>
         </div>
 

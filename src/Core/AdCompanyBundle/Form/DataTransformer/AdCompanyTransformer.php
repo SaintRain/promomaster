@@ -18,12 +18,9 @@ class AdCompanyTransformer implements DataTransformerInterface
     public function reverseTransform($value)
     {
         $UTC = new \DateTimeZone('UTC');
-
         if ($value->getStartDateTime()) {
             list($day, $month, $year) = explode('-', $value->getStartDateTime());
-
-
-            $d = new \DateTime ($year . '-' . $month . '-' . $day . ' ' . $this->getTime($year, $month, $day), $UTC);
+            $d = new \DateTime ($year . '-' . $month . '-' . $day . '00:00:00', $UTC);
             $value->setStartDateTime($d);
         }
 
@@ -32,14 +29,13 @@ class AdCompanyTransformer implements DataTransformerInterface
             $d = new \DateTime ($year . '-' . $month . '-' . $day . ' ' . $this->getTime($year, $month, $day), $UTC);
             $value->setFinishDateTime($d);
         }
-
         return $value;
-
     }
 
     public function transform($value)
     {
         $d = $value->getStartDateTime();
+
         if ($d) {
             $value->setStartDateTime($d->format('d-m-Y'));
         }
