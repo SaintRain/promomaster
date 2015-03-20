@@ -198,14 +198,19 @@ class SiteLogic
         $host = $_SERVER['HTTP_HOST'];
         $content = http_build_query($arr);
 
-        $fp = fsockopen($params['host'], $params['port']);
-        fwrite($fp, "POST /refresh HTTP/1.1\r\n");
-        fwrite($fp, "Host: {$params['host']}\r\n");
-        fwrite($fp, "Content-Type: application/x-www-form-urlencoded\r\n");
-        fwrite($fp, "Content-Length: " . strlen($content) . "\r\n");
-        fwrite($fp, "Connection: close\r\n");
-        fwrite($fp, "\r\n");
-        fwrite($fp, $content);      //сразу закрываем не дождавшись ответа
+        $fp = @fsockopen($params['host'], $params['port']);
+        if ($fp) {
+            fwrite($fp, "POST /refresh HTTP/1.1\r\n");
+            fwrite($fp, "Host: {$params['host']}\r\n");
+            fwrite($fp, "Content-Type: application/x-www-form-urlencoded\r\n");
+            fwrite($fp, "Content-Length: " . strlen($content) . "\r\n");
+            fwrite($fp, "Connection: close\r\n");
+            fwrite($fp, "\r\n");
+            fwrite($fp, $content);      //сразу закрываем не дождавшись ответа
+        }
+        else {
+            //сервер nodejs лежит
+        }
     }
 
 
