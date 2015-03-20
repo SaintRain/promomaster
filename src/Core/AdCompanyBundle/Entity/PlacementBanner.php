@@ -75,7 +75,7 @@ class PlacementBanner
 
     /**
      * Статистика
-     * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="placement")
+     * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="placementBanner")
      */
     private $statistics;
 

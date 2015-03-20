@@ -23,36 +23,31 @@ global.SD = {
     placementsByAdPlace: {},
     placementsMatchSections: {},
     banners: {},
-    adcompanies:{},
-    users:{},
-    countries:{},
+    adcompanies: {},
+    users: {},
+    countries: {},
     countriesByAlpha2: {},
-    adCompanyMatchCountries:{}
+    adCompanyMatchCountries: {}
     //adplace:[],
     //adplace:[],
     //adplace:[],
     //adplace:[],
 
 }
-//статистические данные
-global.ST= {
-}
+
+global.ST = {}; //статистические данные
 
 var EXPRESS = require('express');
 var APP = EXPRESS();
 
-
-
 //собственные библиотеки
-
 require(__dirname + '/mysql.js'); //подключаем настройки
 var LOGIC = require(__dirname + '/serverLogic.js'); //подключаем настройки
 
 
 //запускаем сервер
 APP.use(BODY_PARSER.json()); // for parsing application/json
-APP.use(BODY_PARSER.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-//APP.use(MULTER()); // for parsing multipart/form-data
+APP.use(BODY_PARSER.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
 
 
 //берем данные из базы
@@ -61,20 +56,25 @@ LOGIC.initialization(MYSQL);
 //обработка запроса на получение баннера
 APP.get('/get', function (req, res) {
 
+
     if (req.query.id) {
-        LOGIC.getAd(req, res, req.query.id);
+        LOGIC.getAd(req, res, parseInt(req.query.id));
     }
     else {
         //отдаём ошибку
-        LOGIC.sendResponse(res, {statusCode: 400, body: 'Missing parameter adplace_id'})
+        LOGIC.sendResponse(res, {statusCode: 400, body: 'Missing parameter id'})
     }
 })
 
 //обработка клика по баннеру
 APP.get('/click', function (req, res) {
 
-    if (req.query.adplace_id  && req.query.placementbanner_id && req.query.placement_id && req.query.banner_id) {
-        LOGIC.click(req, res, req.query.adplace_id, req.query.placement_id, req.query.placementbanner_id, req.query.banner_id);
+    if (req.query.adplace_id &&
+        req.query.placementbanner_id &&
+        req.query.placement_id &&
+        req.query.banner_id
+    ) {
+        LOGIC.click(req, res, parseInt(req.query.adplace_id), parseInt(req.query.placement_id), parseInt(req.query.placementbanner_id), parseInt(req.query.banner_id));
     }
     else {
         //отдаём ошибку
@@ -100,8 +100,6 @@ APP.post('/refresh', function (req, res) {
 APP.get('/getAllData', function (req, res) {
     LOGIC.sendResponse(res, {statusCode: 200, body: SD})
 })
-
-
 
 
 var server = APP.listen(CONFIG.port, function () {

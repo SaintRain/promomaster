@@ -21,6 +21,12 @@ class AdCompanyRepository extends EntityRepository
     public function generateQueryBuilderByFilter(array $options)
     {
         $query = $this->createQueryBuilder('ac')
+            ->select('ac,p,s,pb,adPlace,site')
+            ->leftJoin('ac.placements', 'p')
+            ->leftJoin('p.placementBannersList', 'pb')
+            ->leftJoin('p.adPlace', 'adPlace')
+            ->leftJoin('adPlace.site', 'site')
+            ->leftJoin('p.statistics', 's')
             ->setMaxResults($options['maxResults']);
 
         if (isset($options['user'])) {

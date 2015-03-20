@@ -54,6 +54,10 @@
                 <th>ID</th>
                 <th>Название</th>
                 <th>Размещения</th>
+
+                <th>Показов</th>
+                <th>Кликов</th>
+                <th>CTR</th>
                 <th>Статус</th>
                 <th></th>
             </tr>
@@ -75,12 +79,31 @@
                             {{ placement.adPlace.site.domain }}
                         {% else %}
                             {% if adcompany.placements.count %}
-                            {{ adcompany.placements.count }} {{ declOfNum(adcompany.placements.count, ['размещение','размещения', 'размещений']) }}
-                                {% else %}
+                                {{ adcompany.placements.count }} {{ declOfNum(adcompany.placements.count, ['размещение','размещения', 'размещений']) }}
+                            {% else %}
                                 нет размещений
-                                {% endif %}
+                            {% endif %}
                         {% endif %}
                     </td>
+                    <td>
+                        {% set showsQuantitySum=0 %}
+                        {% set clicksQuantitySum=0 %}
+                        {% for placements in adcompany.placements %}
+                            {% for s in placements.statistics %}
+                                {% set showsQuantitySum=showsQuantitySum+s.showsQuantity %}
+                                {% set clicksQuantitySum=clicksQuantitySum+s.clicksQuantity %}
+                            {% endfor %}
+                        {% endfor %}
+                        {{ showsQuantitySum }}
+                    </td>
+                    <td>{{ clicksQuantitySum }}</td>
+                    <td>
+                        {% if clicksQuantitySum %}
+                        {{ (clicksQuantitySum/(showsQuantitySum/100))|round(2) }}
+                            {% else %}
+                            0.00
+                            {% endif %}%
+                            </td>
                     <td>
 
                         {#{% if adcompany.isEnabled %}<span class="label label-u">Да</span>{% else %}<span class="label label-warning">Нет</span>{% endif %}</td>#}
