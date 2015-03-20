@@ -59,3 +59,18 @@ services:
       class: Core\SiteBundle\Form\Extension\EntityTypeExtension
       tags:
           - { name: form.type_extension, alias: entity }
+
+
+#админсике классы для стоимости размещения
+  core_ad_place_price_admin:
+    class: Core\SiteBundle\Admin\AdPlacePriceAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Материалы, label: Разделы рекламных мест }
+    arguments: [null, Core\SiteBundle\Entity\AdPlacePrice, null]
+
+#админсике классы скидки за размещение
+  core_ad_place_price_discount_admin:
+    class: Core\SiteBundle\Admin\AdPlacePriceDiscountAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Материалы, label: Разделы рекламных мест }
+    arguments: [null, Core\SiteBundle\Entity\AdPlacePriceDiscount, null]

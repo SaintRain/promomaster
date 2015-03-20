@@ -61,12 +61,12 @@ class CommonSubscriber implements EventSubscriber
 
 
         $this->makeEntityInsertDelete($uow->getScheduledEntityInsertions(), $em);
-        $this->makeEntityInsertDelete($uow->getScheduledEntityInsertions(), $em, 'delete');
+        $this->makeEntityInsertDelete($uow->getScheduledEntityDeletions(), $em, 'delete');
 
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
             $meta = $em->getClassMetadata(get_class($entity));
-            $this->operations['update'][$meta->table['name']][$entity->getId()] = $entity;
+            $this->operations['update'][$meta->table['name']][$entity->getId()] = $entity->getId();
             $data[get_class($entity)][$entity->getId()]['new'] = clone $entity;
             $em->refresh($entity);
             $data[get_class($entity)][$entity->getId()]['old'] = $entity;
@@ -103,13 +103,13 @@ class CommonSubscriber implements EventSubscriber
                 }
             }
         }
-        /*
+/*
         if (count($this->operations)) {
             ldd($this->operations);
         }
 
         die('fdfd');
-        */
+*/
     }
 
     /**
@@ -126,7 +126,6 @@ class CommonSubscriber implements EventSubscriber
             }
 
         }
-
         if (count($this->operations)) {
             array_walk_recursive($this->operations, function (&$item, $key) {
                 if (is_object($item)) {
@@ -152,6 +151,9 @@ class CommonSubscriber implements EventSubscriber
             'new' => [],
         ];
         $operations = [];
+        if (!count($map['joinTable'])) {
+            return [];
+        }
         foreach ($entity['old']->$method() as $val) {
             $diff['old'][$val->getId()] = $val->getId();
         }

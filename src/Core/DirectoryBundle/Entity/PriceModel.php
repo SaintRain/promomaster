@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cущность типов размещения
+ * Cущность ценовая модель
  *
  * @author  Kaluzhniy. N.
  * @copyright LLC "PromoMaster"

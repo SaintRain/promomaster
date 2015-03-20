@@ -19,8 +19,8 @@ breadcrumb:
   link_video_hosting_delete: Удаление видео-хостинга
   link_remote_video_list: Список видео
   link_remote_video_delete: Удаление видео
-  link_price_model_delete: Удаление типа размещения
-  link_price_model_list: Список типов размещений
+  link_price_model_delete: Удаление ценовой модели
+  link_price_model_list: Список ценовых моделей
   create:
     Currency: Добавление нового продукта
     Country: Добавление новой страны

@@ -2,4 +2,8 @@ breadcrumb:
   link_common_site_list: Список рекламных площадок
   link_ad_place_list: Список рекламных мест
   link_section_list: Список рекламных мест
+  link_ad_place_price_list: Список цен за размещение рекламы
+  link_ad_place_price_delete: Удаление цены за размещение рекламы
+  link_ad_place_price_discount_list: Список скидок цен за размещение рекламы
+  link_ad_place_price_discount_delete: Удаление скидки для цены за размещение рекламы
 

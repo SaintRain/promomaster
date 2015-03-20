@@ -122,13 +122,26 @@ class AdPlace
      * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="adPlace")
      */
     private $statistics;
+    /**
+     * Стоимости размещений
+     * @ORM\OneToMany(targetEntity="AdPlacePrice", mappedBy="adPlace", cascade={"persist"})
+     */
+    private $prices;
+
+
 
     public function __construct()
     {
         $this->sections = new ArrayCollection();
         $this->placements = new ArrayCollection();
+        $this->prices = new ArrayCollection();
     }
-
+/*
+    public function __toString()
+    {
+        return $this->getName();
+    }
+*/
     /**
      * @return int
      */
@@ -354,6 +367,7 @@ class AdPlace
     /**
      * @return mixed
      */
+
     public function getStatistics()
     {
         return $this->statistics;
@@ -367,6 +381,49 @@ class AdPlace
         $this->statistics = $statistics;
     }
 
+
+    public function getPrices()
+    {
+        return $this->prices;
+    }
+
+    /**
+     * @param $prices
+     * @return mixed
+     */
+    public function setPrices($prices)
+    {
+        $this->prices = $prices;
+
+        return $this;
+    }
+
+    /**
+     * @param AdPlacePrice $price
+     * @return $this
+     */
+    public function addPrice(AdPlacePrice $price)
+    {
+        if (!$this->prices->contains($price)) {
+            $this->prices->add($price);
+            $price->addAdPlace($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param AdPlacePrice $price
+     * @return $this
+     */
+    public function removePrice(AdPlacePrice $price)
+    {
+        if ($this->prices->contains($price)) {
+            $this->prices->removeElement($price);
+        }
+
+        return $this;
+    }
 
 
     /**
