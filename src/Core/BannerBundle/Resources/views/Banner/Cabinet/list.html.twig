@@ -71,7 +71,7 @@
                     <td style="   word-break: break-all;">
                         {% if banner.url is defined %}
                             <a target="_blank" href="{{ banner.url }}">{{ banner.url }}</a>
-                            {% if banner.isOpenUrlInNewWindow %}<br/><span>переход в новое окно</span>{% endif %}
+                            {% if banner.isOpenUrlInNewWindow is defined and banner.isOpenUrlInNewWindow %}<br/><span>переход в новое окно</span>{% endif %}
                         {% endif %}
                     </td>
                     <td>

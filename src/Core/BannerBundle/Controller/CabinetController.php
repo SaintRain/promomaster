@@ -275,7 +275,7 @@ class CabinetController extends Controller
     {
         $form = $this->createFormBuilder($banner)
             ->add('name', 'text', ['required' => true])
-//            ->add('url', 'text', ['required' => true])
+            ->add('url', 'text', ['required' => true])
 //            ->add('isOpenUrlInNewWindow', null, ['required' => false])
             ->add('file', 'multiupload_file_frontend', array(
                 'required' => true,

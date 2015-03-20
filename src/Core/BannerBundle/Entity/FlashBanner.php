@@ -23,6 +23,17 @@ use Core\FileBundle\Entity\FlashFile;
 class FlashBanner extends CommonBanner
 {
 
+
+    /**
+     * URL куда должен ссылаться рекламный баннер
+     * @var string
+     * @ORM\Column(type="string", length=250, nullable=false)
+     * @Assert\Url()
+     * @Assert\NotBlank()
+     */
+    private $url;
+
+
     /**
      * Файл
      * @ORM\OneToOne(targetEntity="Core\FileBundle\Entity\FlashFile", cascade={"persist"})
@@ -54,6 +65,24 @@ class FlashBanner extends CommonBanner
      * @ORM\Column(type="integer", nullable=true)
      */
     private $width;
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+
 
     /**
      * @return mixed

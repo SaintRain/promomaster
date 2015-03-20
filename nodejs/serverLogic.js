@@ -2,6 +2,9 @@
  * Бизнес логика серверной части
  */
 //инициализация приложения
+var TIMER_ID,
+    START_DATE_TIME
+
 exports.initialization = function (MYSQL) {
 
     //устанавливаем соединение
@@ -20,6 +23,12 @@ exports.initialization = function (MYSQL) {
     mysqlGetCountries(false);
     mysqlGetAdCompanyMatchCountries(false);
     mysqlGetPlaceMatchCountries(false);
+
+    //берем текущее время
+    var now = new Date();
+        START_DATE_TIME = DATE_FORMAT(now,  "yyyy-mm-dd HH:MM:ss");
+
+    TIMER_ID=setInterval(this.saveStatistics, 60000);   // раз в минуту
 
 }
 
@@ -131,10 +140,10 @@ exports.getAd = function (req, res, adplace_id) {
                         var banner = SD.banners['_' + placementBanner.banner_id];
 
                         // отдаём баннер
-                        this.sendBanner(res, banner);
+                        this.sendBanner(res, banner, placement, placementBanner);
 
                         //обновляем статистику
-                        this.updateStatistics(req, placement);
+                        this.updateShowsStatistics(req, SD.adplaces['_' + adplace_id], placement, placementBanner, banner);
                     }
                     else {
                         //проверяем есть ли заглушка для рекламного места
@@ -177,9 +186,28 @@ exports.getAd = function (req, res, adplace_id) {
 }
 
 
+/**
+ * Обработка клика по баннеру
+ * @param req
+ * @param res
+ * @param adplace_id
+ * @param placement_id
+ * @param banner_id
+ */
+exports.click = function (req, res, adplace_id, placement_id, placementbanner_id,  banner_id) {
+
+
+
+    this.updateClicksStatistics(req, SD.adplaces['_' + adplace_id], SD.placements['_' + placement_id],  SD.placementbanners['_' + placementbanner_id],  SD.banners['_' + banner_id]);
+
+    //this.updateClicksStatistics(req, SD.placements['_' + placement_id]);
+    var banner = SD.banners['_' + banner_id];
+    res.redirect(banner.url);   //перенаправляем пользователя на ресурс рекламодателя
+
+}
+
 //проверяет по странам
 exports.checkByGeo = function (ip, countryMatch, key) {
-
     if (typeof(countryMatch[key]) !== 'undefined') {
         var geo = GEOIP.lookup(ip),
             country_id = SD.countriesByAlpha2[geo.country].id;
@@ -202,10 +230,7 @@ exports.checkByGeo = function (ip, countryMatch, key) {
 
 //проверяет по датам начала и окончания
 exports.checkByDate = function (startDateTime, finishDateTime) {
-    var currentSeconds = new Date().getTime() / 1000;   //ntкущее время начиная с эпохи Unix time
-    //console.log('currentSeconds='+currentSeconds)
-    //console.log(startDateTime)
-    //console.log(finishDateTime)
+    var currentSeconds = new Date().getTime() / 1000;   //текущее время начиная с эпохи Unix time
 
     //если для баннера размещения заданы одна из дат, значит берем его
     if (startDateTime || finishDateTime) {
@@ -240,7 +265,7 @@ exports.checkByDate = function (startDateTime, finishDateTime) {
 
 
 //отдает баннер
-exports.sendBanner = function (res, banner) {
+exports.sendBanner = function (res, banner, placement, placementBanner) {
     //берем полный путь для баннера
     if (banner.dtype == 'ImageBanner') {
         var source = banner.image_src,
@@ -257,32 +282,100 @@ exports.sendBanner = function (res, banner) {
     }
 
     var body = {
+        placement_id: placement.id,
+        banner_id: banner.id,
+        placementbanner_id:placementBanner.id,
         type: banner.dtype,
         width: width,
         height: height,
         source: source,
-        isOpenUrlInNewWindow: banner.isOpenUrlInNewWindow,
-        url: banner.url
+        isOpenUrlInNewWindow: banner.isOpenUrlInNewWindow
+        // url: banner.url
     }
     //отдаём ссылку на баннер
     this.sendResponse(res, {statusCode: 200, body: body});
 }
 
-//обновляет статистику
-exports.updateStatistics = function (req, placement) {
 
-    if (!ST.placements['_' + placement.id]) {
-        ST.placements['_' + placement.id] = {
-            showsQuantity: 0
-        };
+//обновляет статистику кликов
+exports.updateClicksStatistics = function (req, adPlace, placement, placementBanner, banner) {
+
+    this.checkST(adPlace, placement, placementBanner, banner);
+
+    ST['_' + adPlace.id]['_' + placement.id]['_' + placementBanner.id]['_' + banner.id].clicksQuantity++; //общее количество показов для размещения
+
+}
+
+//обновляет статистику показов
+exports.updateShowsStatistics = function (req, adPlace, placement, placementBanner, banner) {
+    this.checkST(adPlace, placement, placementBanner, banner);
+    ST['_' + adPlace.id]['_' + placement.id]['_' + placementBanner.id]['_' + banner.id].showsQuantity++; //общее количество показов для размещения
+    console.log(ST['_' + adPlace.id]['_' + placement.id]['_' + placementBanner.id]['_' + banner.id].showsQuantity)
+
+}
+
+//проверяет инициализацию статистических объектов
+exports.checkST= function (adPlace, placement, placementBanner, banner) {
+    if (!ST['_' + adPlace.id]) {
+        ST['_' + adPlace.id] = {};
     }
 
-    ST.placements['_' + placement.id].showsQuantity++; //общее количество показов для размещения
+    if (!ST['_' + adPlace.id]['_' + placement.id]) {
+        ST['_' + adPlace.id]['_' + placement.id] = {};
+    }
 
-    //var ip = this.getIpFromReq(req);
-    //var geo = GEOIP.lookup(ip);
-    console.log(ST.placements);
+    if (!ST['_' + adPlace.id]['_' + placement.id]['_' + placementBanner.id]) {
+        ST['_' + adPlace.id]['_' + placement.id]['_' + placementBanner.id] = {};
+    }
+
+    if (!ST['_' + adPlace.id]['_' + placement.id]['_' + placementBanner.id]['_' + banner.id]) {
+        ST['_' + adPlace.id]['_' + placement.id]['_' + placementBanner.id]['_' + banner.id] = {
+            showsQuantity: 0,
+            clicksQuantity: 0
+        };
+    }
 }
+
+/**
+ * Сохраняет всю статистику
+ */
+exports.saveStatistics = function () {
+
+    var stats = [],
+        STclone  = CLONE(ST),
+        now = new Date(),
+        finishDateTime = DATE_FORMAT(now, "yyyy-mm-dd HH:MM:ss");
+
+    ST = {};//очищаем сразу статистику, чтобы можно было писать опять
+
+    for (var adplace_id in STclone) {
+        for (var placement_id in STclone[adplace_id]) {
+            for (var placement_banner_id in STclone[adplace_id][placement_id]) {
+                for (var banner_id in STclone[adplace_id][placement_id][placement_banner_id]) {
+                    stats.push ( {
+                        showsQuantity: STclone[adplace_id][placement_id][placement_banner_id][banner_id].showsQuantity,
+                        clicksQuantity: STclone[adplace_id][placement_id][placement_banner_id][banner_id].clicksQuantity,
+                        adplace_id: SD.adplaces[adplace_id].id,
+                        placement_id:  SD.placements[placement_id].id,
+                        placement_banner_id: SD.placementbanners[placement_banner_id].id,
+                        banner_id: SD.banners[banner_id].id,
+                        finishDateTime: finishDateTime,
+                        startDateTime: START_DATE_TIME
+                    });
+                }
+            }
+        }
+    }
+    console.log(stats)
+    START_DATE_TIME=finishDateTime;
+    mysqlInsertStatistics(stats);  //пишем в базу
+
+//  clearTimeout(TIMER_ID)
+}
+
+
+//
+//}
 
 //получает IP из запроса
 exports.getIpFromReq = function (req) {

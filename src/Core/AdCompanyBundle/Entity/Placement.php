@@ -114,6 +114,14 @@ class Placement
     private $quantity;
 
 
+
+    /**
+     * Статистика
+     * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="placement")
+     */
+    private $statistics;
+
+
     public function __construct()
     {
         $this->placementBannersList = new ArrayCollection();
@@ -330,6 +338,23 @@ class Placement
     {
         $this->quantity = $quantity;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStatistics()
+    {
+        return $this->statistics;
+    }
+
+    /**
+     * @param mixed $statistics
+     */
+    public function setStatistics($statistics)
+    {
+        $this->statistics = $statistics;
+    }
+
 
     /**
      * Дополнительные проверки

@@ -73,6 +73,12 @@ class PlacementBanner
      */
     //private $defaultCountries;
 
+    /**
+     * Статистика
+     * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="placement")
+     */
+    private $statistics;
+
 
     public function __construct()
     {
@@ -176,6 +182,24 @@ class PlacementBanner
     {
         $this->indexPosition = $indexPosition;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStatistics()
+    {
+        return $this->statistics;
+    }
+
+    /**
+     * @param mixed $statistics
+     */
+    public function setStatistics($statistics)
+    {
+        $this->statistics = $statistics;
+    }
+
+
 
 //    /**
 //     * @return mixed

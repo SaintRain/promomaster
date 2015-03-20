@@ -8,6 +8,9 @@ global.URL = require("url");
 require(__dirname + '/config.js');//подключаем настройки
 var BODY_PARSER = require('body-parser');
 var MYSQL = require('mysql');
+global.EXTEND = require('util')._extend;
+global.CLONE = require('clone');
+global.DATE_FORMAT = require('dateformat');
 var MYSQL_CONNECTION;
 global.SD = {
     adplaces: {},
@@ -33,8 +36,6 @@ global.SD = {
 }
 //статистические данные
 global.ST= {
-    placements:{
-    }
 }
 
 var EXPRESS = require('express');
@@ -66,6 +67,18 @@ APP.get('/get', function (req, res) {
     else {
         //отдаём ошибку
         LOGIC.sendResponse(res, {statusCode: 400, body: 'Missing parameter adplace_id'})
+    }
+})
+
+//обработка клика по баннеру
+APP.get('/click', function (req, res) {
+
+    if (req.query.adplace_id  && req.query.placementbanner_id && req.query.placement_id && req.query.banner_id) {
+        LOGIC.click(req, res, req.query.adplace_id, req.query.placement_id, req.query.placementbanner_id, req.query.banner_id);
+    }
+    else {
+        //отдаём ошибку
+        LOGIC.sendResponse(res, {statusCode: 400, body: 'Missing some parameter(s)'})
     }
 })
 

@@ -425,6 +425,37 @@ mysqlDeletePlaceMatchCountries = function (placement_id, country_id) {
     }
 }
 
+/**
+ * Добавляет запись о статистике
+ * @param startDateTime
+ * @param finishDateTime
+ * @param showsQuantity
+ * @param clicksQuantity
+ * @param adplace_id
+ * @param placement_id
+ * @param placement_banner_id
+ * @param banner_id
+ */
+mysqlInsertStatistics = function (options) {
+
+    if (options.length) {
+        var q = "INSERT INTO core_statistics (id,startDateTime,finishDateTime, showsQuantity, clicksQuantity, adPlace_id, placementBanner_id, placement_id, banner_id) VALUES ",
+            values = [];
+
+        for (var key in options) {
+            var d = options[key];
+
+            values.push("(NULL,'" + d.startDateTime + "', '" + d.finishDateTime + "', '" + d.showsQuantity + "', '" + d.clicksQuantity + "', '" + d.adplace_id + "','" + d.placement_banner_id + "','" + d.placement_id + "','" + d.banner_id + "')");
+
+        }
+        q =q+ values.join(',');
+        MYSQL_CONNECTION.query(q);
+        console.log(q);
+        console.log("Статистика записана в базу");
+    }
+}
+
+
 
 /**
  * Формирует правильный путь для файлов

@@ -68,6 +68,14 @@ class CommonBanner
      */
     private $indexPosition;
 
+
+    /**
+     * Статистика
+     * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="banner")
+     */
+    private $statistics;
+
+
     /**
      * @return int
      */
@@ -147,6 +155,22 @@ class CommonBanner
     public function setIndexPosition($indexPosition)
     {
         $this->indexPosition = $indexPosition;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatistics()
+    {
+        return $this->statistics;
+    }
+
+    /**
+     * @param mixed $statistics
+     */
+    public function setStatistics($statistics)
+    {
+        $this->statistics = $statistics;
     }
 
 
