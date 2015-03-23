@@ -31,6 +31,6 @@ services:
 # логика для рекламных компаний
   core_adcompany_logic:
     class: Core\AdCompanyBundle\Logic\AdCompanyLogic
-    arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic']
+    arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic', '@core_placement_logic']
 
 

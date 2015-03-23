@@ -143,22 +143,36 @@ mysqlDeletePlacementsMatchSections = function (adplace_id, section_id) {
 //выборка размещений
 mysqlGetPlacements = function (id) {
     if (id) {
-        var where = "WHERE id ='" + id + "'";
+        var where = "WHERE p.id ='" + id + "'";
     }
     else {
         var where = "";
     }
 
-    var q = "SELECT *, UNIX_TIMESTAMP(startDateTime) AS startDateTime , UNIX_TIMESTAMP(finishDateTime) AS finishDateTime " +
-        "FROM core_adcompany_placement " + where;
+    var q = "SELECT p.*, UNIX_TIMESTAMP(p.startDateTime) AS startDateTime , UNIX_TIMESTAMP(p.finishDateTime) AS finishDateTime, pm.name AS priceModelName " +
+        "FROM core_adcompany_placement AS p " +
+        "LEFT JOIN ad_price_model AS pm ON (p.quantityModel_id=pm.id) " + where;
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {
+
+            //определяем код количества клики/показы/дни
+            if (item.priceModelName == 'showsquantity') {
+                item.quantityModelName = "showsQuantity";
+            }
+            else if (item.priceModelName == 'clicksquantity') {
+                item.quantityModelName = "clicksQuantity";
+            }
+
+
             SD.placements['_' + item.id] = item;
             if (!SD.placementsByAdPlace['_' + item.adPlace_id]) {
                 SD.placementsByAdPlace['_' + item.adPlace_id] = {};
             }
             SD.placementsByAdPlace['_' + item.adPlace_id]["_" + item.id] = SD.placements['_' + item.id];
+
+
+
         })
     });
 
@@ -448,13 +462,88 @@ mysqlInsertStatistics = function (options) {
             values.push("(NULL,'" + d.startDateTime + "', '" + d.finishDateTime + "', '" + d.showsQuantity + "', '" + d.clicksQuantity + "', '" + d.adplace_id + "','" + d.placement_banner_id + "','" + d.placement_id + "','" + d.banner_id + "')");
 
         }
-        q =q+ values.join(',');
+        q = q + values.join(',');
         MYSQL_CONNECTION.query(q);
         console.log(q);
         console.log("Статистика записана в базу");
     }
 }
 
+
+/**
+ * Загружает статистические данные
+ */
+mysqlGetStatistics = function () {
+    var q = "SELECT adPlace_id, placement_id,placementBanner_id, banner_id,sum(showsQuantity) AS showsQuantity,sum(clicksQuantity) AS clicksQuantity FROM core_statistics GROUP BY placement_id";
+    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
+        if (err) throw err;
+        rows.forEach(function (item) {
+
+            if (!STplacements['_' + item.placement_id]) {
+                STplacements['_' + item.placement_id] = {
+                    showsQuantity: 0,
+                    clicksQuantity: 0
+                }
+            }
+
+            if (!SD.statistics['_' + item.adPlace_id]) {
+                SD.statistics['_' + item.adPlace_id] = {};
+            }
+
+            if (!SD.statistics['_' + item.adPlace_id]['_' + item.placement_id]) {
+                SD.statistics['_' + item.adPlace_id]['_' + item.placement_id] = {
+                    showsQuantity: item.showsQuantity,
+                    clicksQuantity: item.clicksQuantity
+                };
+            }
+            else {
+                SD.statistics['_' + item.adPlace_id]['_' + item.placement_id].showsQuantity += item.showsQuantity; //общее количество показов для размещения
+                SD.statistics['_' + item.adPlace_id]['_' + item.placement_id].clicksQuantity += item.clicksQuantity; //общее количество показов для размещен
+            }
+
+            STplacements['_' + item.placement_id].showsQuantity += item.showsQuantity;
+            STplacements['_' + item.placement_id].clicksQuantity += item.clicksQuantity;
+
+        });
+    });
+}
+
+//берем названия ценовых моделей
+mysqlGetPriceModel = function () {
+    var q = "SELECT * FROM ad_price_model";
+    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
+        if (err) throw err;
+        rows.forEach(function (item) {
+            if (!SD.priceModel['_' + item.id]) {
+                SD.priceModel['_' + item.id]={};
+            }
+            SD.priceModel['_' + item.id]=item;
+        });
+    });
+}
+
+
+//выборка связи рекламных компаний и стран
+//mysqlGetAdCompanyMatchCountries = function (adcompany_id, country_id) {
+//    if (adcompany_id, country_id) {
+//        var where = "WHERE adcompany_id ='" + adcompany_id + "' AND country_id='" + country_id + "'";
+//    }
+//    else {
+//        var where = "";
+//    }
+//
+//    var q = "SELECT * FROM core_ad_company_match_country " + where;
+//    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
+//        if (err) throw err;
+//        rows.forEach(function (item) {
+//            if (!SD.adCompanyMatchCountries['_' + item.adcompany_id]) {
+//                SD.adCompanyMatchCountries['_' + item.adcompany_id] = {}
+//            }
+//
+//            SD.adCompanyMatchCountries['_' + item.adcompany_id]['_' + item.country_id] = item;
+//        })
+//    });
+//}
 
 
 /**

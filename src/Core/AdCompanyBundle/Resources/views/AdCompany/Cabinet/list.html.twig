@@ -54,12 +54,10 @@
                 <th>ID</th>
                 <th>Название</th>
                 <th>Размещения</th>
-
                 <th>Показов</th>
                 <th>Кликов</th>
                 <th>CTR</th>
-                <th>Статус</th>
-                <th></th>
+                <th>Идут показы</th>
             </tr>
             </thead>
             <tbody>
@@ -106,7 +104,7 @@
                             </td>
                     <td>
 
-                        {#{% if adcompany.isEnabled %}<span class="label label-u">Да</span>{% else %}<span class="label label-warning">Нет</span>{% endif %}</td>#}
+                        {% if adcompany.isActive %}<span class="label label-u">Да</span>{% else %}<span class="label label-warning">Нет</span>{% endif %}</td>
                     </td>
                 </tr>
             {% endfor %}

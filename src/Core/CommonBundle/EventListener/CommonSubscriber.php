@@ -35,7 +35,9 @@ class CommonSubscriber implements EventSubscriber
         'core_adcompany_placement_banner',
         'core_banner_common' ,
         'fos_user_user',
-        'core_directory_country'
+        'core_directory_country',
+        'ad_price_model'
+
     ];
 
     public function getSubscribedEvents()

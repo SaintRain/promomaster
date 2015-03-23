@@ -108,11 +108,18 @@ class Placement
     /**
      * Количество показов/кликов/дней
      * @var int
-     * @ORM\Column(type="bigint", nullable=false)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="bigint", nullable=true)
+     *
      */
     private $quantity;
 
+
+    /**
+     * Ценовая модель для указанного количества
+     * @ORM\ManyToOne(targetEntity="Core\DirectoryBundle\Entity\PriceModel")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $quantityModel;
 
 
     /**
@@ -121,6 +128,7 @@ class Placement
      */
     private $statistics;
 
+    private $isActive;   //хранит временное значение активности компаниии
 
     public function __construct()
     {
@@ -238,7 +246,7 @@ class Placement
     /**
      * @param \DateTime $finishDateTime
      */
-    public function setFinishDateTime($finishDateTime )
+    public function setFinishDateTime($finishDateTime)
     {
         $this->finishDateTime = $finishDateTime;
     }
@@ -355,16 +363,75 @@ class Placement
         $this->statistics = $statistics;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getQuantityModel()
+    {
+        return $this->quantityModel;
+    }
+
+    /**
+     * @param mixed $quantityModel
+     */
+    public function setQuantityModel($quantityModel)
+    {
+        $this->quantityModel = $quantityModel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
 
     /**
      * Дополнительные проверки
      */
     public function isValid(ExecutionContextInterface $context)
     {
+
+        if (!is_null($this->quantity) && $this->quantity < 1) {
+            $context->buildViolation('Неверно указано количество.')
+                ->atPath('quantity')
+                ->addViolation();
+        } else {
+
+            if (!$this->quantity) {
+
+                if (!$this->startDateTime) {
+                    $context->buildViolation('Неверно задана начальная дата.')
+                        ->atPath('startDateTime')
+                        ->addViolation();
+                }
+                if (!$this->finishDateTime) {
+                    $context->buildViolation('Неверно задана конечная дата.')
+                        ->atPath('finishDateTime')
+                        ->addViolation();
+                }
+
+            } else if (!$this->quantityModel) {
+                $context->buildViolation('Необходимо выбрать в чем указано количество.')
+                    ->atPath('quantityModel')
+                    ->addViolation();
+            }
+
+        }
+
+
 //        if ($this->number && !$this->price) {
-//            $context->buildViolation('Пожалуйста, укажите цену')
-//                        ->atPath('price')
-//                        ->addViolation();
+//
 //        }
     }
 

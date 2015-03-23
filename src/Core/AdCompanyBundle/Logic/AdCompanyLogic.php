@@ -16,14 +16,17 @@ class AdCompanyLogic
     private $em;
     private $container;
     private $paginator;
+    private $placement_logic;
 
 
-    public function __construct($router, $em, $container, $paginator)
+    public function __construct($router, $em, $container, $paginator, $placement_logic)
     {
         $this->router = $router;
         $this->em = $em;
         $this->container = $container;
         $this->paginator = $paginator;
+        $this->placement_logic = $placement_logic;
+
     }
 
 
@@ -57,10 +60,32 @@ class AdCompanyLogic
         ];
 
         $queryBuilder = $this->em->getRepository('CoreAdCompanyBundle:AdCompany')->generateQueryBuilderByFilter($filterRequest);
-        $sites = $this->paginator->paginate($queryBuilder, $page, $filterRequest['maxResults']);
-        return $sites;
+        $adCompanies = $this->paginator->paginate($queryBuilder, $page, $filterRequest['maxResults']);
 
+        //для каждой рекламной компании определяем активна она или нет
+        foreach ($adCompanies as $adComp) {
+            $isActive = true;
+
+            if (!$adComp->getIsEnabled()) {
+                $isActive = false;
+            } else {
+
+                //проверяем все размещения на активность
+                $isHaseActivePlacement = false;
+                foreach ($adComp->getPlacements() as $placement) {
+                    $isHaseActivePlacement = $this->placement_logic->checkIsPlacementActive($placement);
+                    $isActive = $isHaseActivePlacement;
+                    if ($isActive) {
+                        break;
+                    }
+                }
+
+                $adComp->setIsActive($isActive);
+            }
+        }
+        return $adCompanies;
     }
+
 
 
     /**

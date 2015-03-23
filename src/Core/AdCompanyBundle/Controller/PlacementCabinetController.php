@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use  Core\AdCompanyBundle\Entity\Placement;
 use  Core\AdCompanyBundle\Entity\AdCompany;
 use Core\AdCompanyBundle\Form\DataTransformer\PlacementTransformer;
+use Core\DirectoryBundle\Entity\Repository\PriceModelRepository;
 
 class PlacementCabinetController extends Controller
 {
@@ -51,7 +52,6 @@ class PlacementCabinetController extends Controller
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
-
 
             if ($form->isValid()) {
 
@@ -127,7 +127,13 @@ class PlacementCabinetController extends Controller
             ->add('startDateTime', 'text', ['required' => false , 'read_only'=>true])
             ->add('finishDateTime', 'text', ['required' => false, 'read_only'=>true])
             ->add('isEnabled', null, ['required' => false])
-            ->add('quantity', null, ['required' => true])
+            ->add('quantity', null, ['required' => false])
+            ->add('quantityModel', 'entity', [
+                'class' => 'Core\DirectoryBundle\Entity\PriceModel',
+                'query_builder' => function(PriceModelRepository $er ) {
+                    return $er->createQueryBuilder('pm')->where('pm.name != :name')->setParameter('name','daysquantity');
+                },
+                'required' => false, 'property'=>'captionRu'])
             ->add('defaultCountries', null, ['required' => false])
             ->addModelTransformer(new PlacementTransformer())       //трансформер дат
             ->getForm();

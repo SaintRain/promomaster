@@ -51,17 +51,80 @@ class PlacementLogic
      */
     public function getDataInCabinetForPage($page)
     {
-        $filterRequest=[
-            'maxResults'=>10,
-            'user'=>$this->container->get('security.context')->getToken()->getUser()
+        $filterRequest = [
+            'maxResults' => 10,
+            'user' => $this->container->get('security.context')->getToken()->getUser()
         ];
 
         $queryBuilder = $this->em->getRepository('CoreAdCompanyBundle:Placement')->generateQueryBuilderByFilter($filterRequest);
-        $sites = $this->paginator->paginate($queryBuilder, $page, $filterRequest['maxResults']);
-        return $sites;
+        $placements = $this->paginator->paginate($queryBuilder, $page, $filterRequest['maxResults']);
+
+        foreach ($placements as $placment) {
+            $res = $this->checkIsPlacementActive($placment);
+            $placment->setIsActive($res);
+        }
+
+        return $placements;
 
     }
 
 
+    /**
+     * Проверяет идут ли показы для данного размещения
+     * @param $placement
+     */
+    public function checkIsPlacementActive($placement)
+    {
+        $UTC = new \DateTimeZone('UTC');
+        $now = new \DateTime();
+        $now->setTimezone($UTC);
+        $now = $now->getTimestamp();
+
+        if ($placement->getIsEnabled()) {
+            //проверяем по дате
+            if ($placement->getStartDateTime() || $placement->getFinishDateTime()) {
+                $startDate = false;
+                $endDate = false;
+                if (!$placement->getStartDateTime() || $now > $placement->getStartDateTime()->getTimestamp()) {
+                    $startDate = true;
+                }
+
+                if (!$placement->getFinishDateTime() || $now < $placement->getFinishDateTime()->getTimestamp()) {
+                    $endDate = true;
+                }
+
+                //если найден подходящий баннер по дате
+                if ($startDate && $endDate) {
+                    $isActiveByDate = true;
+                } else {
+                    $isActiveByDate = false;
+                }
+            } else {
+                $isActiveByDate = true;
+            }
+
+            //дальше проверяем по показам
+            if ($isActiveByDate) {
+                //считаем сумму всех показов, однако проблема будет в том, что статистика пишется по периодам и в промежутках остается статистика,
+                $clicksQuantity = 0;
+                $showsQuantity = 0;
+                foreach ($placement->getStatistics() as $s) {
+                    $showsQuantity += $s->getShowsQuantity();
+                    $clicksQuantity += $s->getClicksQuantity();
+                }
+
+                if ($placement->getQuantityModel()->getName() == 'showsquantity' && $showsQuantity < $placement->getQuantity()) {
+                    $isActive = true;
+                } else if ($placement->getQuantityModel()->getName() == 'clicksquantity' && $clicksQuantity < $placement->getQuantity()) {
+                    $isActive = true;
+                }
+            } else {
+                $isActive = false;
+            }
+        } else {
+            $isActive = false;
+        }
+        return $isActive;
+    }
 
 }

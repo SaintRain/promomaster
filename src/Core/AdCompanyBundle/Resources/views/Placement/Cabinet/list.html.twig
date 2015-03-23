@@ -52,7 +52,7 @@
                 <th>#</th>
                 <th>ID</th>
                 <th>Место размещения</th>
-                <th>Статус</th>
+                <th>Идут показы</th>
             </tr>
             </thead>
             <tbody>
@@ -65,9 +65,9 @@
                         <br/>
                         {{ placement.adPlace.site.domain }}
                     </td>
+
                     <td>
-                    <td>
-                        {% if placement.isEnabled %}<span class="label label-u">Да</span>{% else %}<span class="label label-warning">Нет</span>{% endif %}</td>
+                        {% if placement.isActive %}<span class="label label-u">Да</span>{% else %}<span class="label label-warning">Нет</span>{% endif %}</td>
                     </td>
                 </tr>
             {% endfor %}

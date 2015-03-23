@@ -101,6 +101,8 @@ class AdCompany
      */
     private $defaultCountries;
 
+    private  $isActive;   //хранит временное значение активности компаниии
+
     public function __construct()
     {
         $this->placements = new ArrayCollection();
@@ -298,6 +300,24 @@ class AdCompany
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
+
 
     /**
      * Дополнительные проверки

@@ -27,14 +27,14 @@ global.SD = {
     users: {},
     countries: {},
     countriesByAlpha2: {},
-    adCompanyMatchCountries: {}
+    adCompanyMatchCountries: {},
+    statistics:{},
+    priceModel:{},
     //adplace:[],
     //adplace:[],
-    //adplace:[],
-    //adplace:[],
-
 }
 
+global.STplacements= {} //вся статистика кликов и показов
 global.ST = {}; //статистические данные
 
 var EXPRESS = require('express');
