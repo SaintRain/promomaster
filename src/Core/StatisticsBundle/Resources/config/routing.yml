@@ -1,14 +1,39 @@
-core_statistics_ajax_get_chart_price_history:
-    pattern:  /ajax/get_chart_price_history
-    schemes:  [https]
-    defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:getChartPriceHistory }
-
-core_statistics_generate_inventory:
-    pattern:  /ajax/generate_inventory
-    schemes:  [https]
-    defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:generateInventoryStatistics }
+#core_statistics_ajax_get_chart_price_history:
+#    pattern:  /ajax/get_chart_price_history
+#    schemes:  [https]
+#    defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:getChartPriceHistory }
+#
+#core_statistics_generate_inventory:
+#    pattern:  /ajax/generate_inventory
+#    schemes:  [https]
+#    defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:generateInventoryStatistics }
 
 core_statistics_get_audit_information:
     pattern:  /ajax/get_audit_information
     schemes:  [https]
     defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:getAuditInformation }
+
+
+
+#core_statistics_get_audit_information:
+#    pattern:  /ajax/get_audit_information
+#    schemes:  [http]
+#    defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:getAuditInformation }
+
+
+
+# Выводит статистику графиками по рекламной компании
+core_statistics_ad_company_chart_statistics:
+    path:      /cabinet/adcompany_chart_stat_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreStatisticsBundle:StatisticsCabinet:adCompanyChartStatistics }
+    requirements:
+      id: \d+
+
+#запрашивает сводную информацию по рекламной компании
+core_statistics_get_ad_company_chart_stats_general:
+    pattern:  /ajax/get_company_chart_stats_general
+    schemes:  [http]
+    defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:getAdCompanyChartStatsGeneralHistory }
+    requirements:
+          adcompany_id: \d+

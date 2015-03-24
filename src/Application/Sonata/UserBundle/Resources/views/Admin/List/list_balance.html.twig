@@ -6,10 +6,11 @@
  * @copyright LLC "PromoMaster"
  *#}
 
-{% set balance = getBalance(object, true) %}
+{#{% set balance = getBalance(object, true) %}#}
 
-<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}{% if balance < 0 %} error{% elseif balance > 0 %} success{% endif %}" objectId="{{ admin.id(object) }}">
-    <span class="text-nowrap">{{ moneyFormat(balance) }} {{ currencyFormat() }}</span>
-</td>
-
+{#<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}{% if balance < 0 %} error{% elseif balance > 0 %} success{% endif %}" objectId="{{ admin.id(object) }}">#}
+    {#&#123;&#35;<span class="text-nowrap">{{ moneyFormat(balance) }} {{ currencyFormat() }}</span>&#35;&#125;#}
+{#</td>#}
+<td>
+    </td>
 

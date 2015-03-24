@@ -49,8 +49,8 @@ class NotificationExtension extends \Twig_Extension
             $contragent = $this->session->get('current_contragent_id');
         }
 
-        $count = $this->doctrine->getManager()->getRepository('CoreOrderBundle:Order')->notification($contragent);
-
+       // $count = $this->doctrine->getManager()->getRepository('CoreOrderBundle:Order')->notification($contragent);
+        $count=0;
         return $count;
     }
 

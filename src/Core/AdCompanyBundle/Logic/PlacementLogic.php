@@ -118,6 +118,9 @@ class PlacementLogic
                 } else if ($placement->getQuantityModel()->getName() == 'clicksquantity' && $clicksQuantity < $placement->getQuantity()) {
                     $isActive = true;
                 }
+                else {
+                    $isActive = false;
+                }
             } else {
                 $isActive = false;
             }

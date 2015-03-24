@@ -1,0 +1,172 @@
+{#Вывод статистики графиками для РК в ЛК#}
+{% extends "CoreAdCompanyBundle:AdCompany\\Cabinet:tabs.html.twig" %}
+ {#SEO - заголовки #}
+{% block title %}{% if adcompany.id %}Редактирование рекламной компании {{ adcompany.name }}{% else %}Добавление рекламной компании в систему{% endif %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->`
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Рекламная компания</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li><a href="{{ path('core_cabinet_adcompany_list_first_page') }}">Список ваших рекламных
+                            компаний</a></li>
+                    <li class="active">Редактирование рекламной компании</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+    {% block tab_content4 %}
+
+        <!-- Load jQuery from Google's CDN if needed -->
+
+
+        {#<script src="//code.highcharts.com/4.0.1/highcharts.js"></script>#}
+        {#<script src="//code.highcharts.com/4.0.1/modules/exporting.js"></script>#}
+        <script src="http://code.highcharts.com/stock/highstock.js"></script>
+        <script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+        <script src="{{ asset('bundles/corestatistics/highcharts/js/themes/customise.default.ru.js') }}"></script>
+        {#<script src="http://www.highcharts.com/js/themes/dark-unica.js"></script>#}
+        {#<script src="http://www.highcharts.com/js/themes/sand-signika.js"></script>#}
+
+
+        <script type="text/javascript">
+            $(function () {
+
+                var seriesOptions = [];
+                {%for so_key,so in statistics.general%}
+                seriesOptions[{{so_key}}] = {
+                    animation: false,
+                    name: "{{so.caption|e('js')}}",
+                    data: [{%for d_key,d in so.data%}[{{d[0]}}, {{d[1]}}], {%endfor%}]
+                };
+                {%endfor%}
+
+                var titleText = 'Статистика по рекламной компании #{{ adcompany.id }}. Всего показов <b>{{  statistics. generalShows}}</b>, кликов  <b>{{  statistics. generalClicks}}</b>, ctr <b>{{  statistics.generalCTR}}%</b>';
+                createChart(seriesOptions, titleText, "chart");
+
+
+                {% for key,placement in statistics.placements %}
+                var seriesOptions = [];
+                {%for so_key,so in placement%}
+                seriesOptions[{{so_key}}] = {
+                    animation: false,
+                    name: "{{so.caption|e('js')}}",
+                    data: [{%for d_key,d in so.data%}[{{d[0]}}, {{d[1]}}], {%endfor%}]
+                };
+                {%endfor%}
+
+                  var titleText = 'Статистика по размещению #{{ placement[0].object.id }}. Всего показов <b>{{  statistics.placementsShows[key]}}</b>, кликов  <b>{{  statistics.placementsClicks[key]}}</b>, ctr <b>{{  statistics.placementsCTR[key]}}%</b>';
+
+
+                createChart(seriesOptions, titleText, "chart{{ key+1 }}");
+                {% endfor %}
+
+                function createChart(seriesOptions, titleText, chartId) {
+
+                    $('#' + chartId).highcharts('StockChart', {
+                        type: 'line', // spline, line, area
+
+                        rangeSelector: {
+                            enabled: true,
+                            inputEnabled: false,
+                            selected: 2,
+                            buttons: [
+                                {type: 'week', count: 1, text: '1н'},
+                                {type: 'week', count: 2, text: '2н'},
+                                {type: 'month', count: 1, text: '1м'},
+                                {type: 'month', count: 2, text: '2м'},
+                                {type: 'month', count: 6, text: '6м'},
+                                {type: 'ytd', text: 'СНГ'},
+                                {type: 'year', count: 1, text: '1г'},
+                                {type: 'all', text: 'Все'}
+                            ],
+                            inputPosition: {
+                                align: 'right'
+                            }
+                        },
+                        navigator: {
+                            height: 50,
+                            series: {
+                                type: 'area'
+                            }
+                        },
+                        colors: [
+                            'rgb(114, 192, 44)',
+                            'rgb(102, 153, 204)'
+                        ],
+                        title: {
+                            text: titleText,
+                            align: 'left'
+                        },
+
+                        xAxis: {
+//                                    minRange: 7 * 24 * 3600 * 1000,
+//                                    minTickInterval: 24 * 3600 * 1000,
+                            type: 'datetime',
+                            labels: {
+                                rotation: -45,
+                                align: 'right',
+                                style: {
+                                    fontSize: '12px'
+                                }
+                            },
+                            dateTimeLabelFormats: {
+                                millisecond: '%H:%M:%S.%L',
+                                second: '%H:%M:%S',
+                                minute: '%H:%M',
+                                hour: '%H:%M',
+                                day: '%e %b',
+                                week: '%e %b',
+                                month: '%b %Y',
+                                year: '%Y'
+                            }
+                        },
+                        yAxis: {
+//                                    tickInterval: 10,
+                            min: 0
+                        },
+
+                        tooltip: {
+                            formatter: function () {
+                                var xyArr = [];
+                                var t = Highcharts.dateFormat('%A. %H:%I:%S,  %e %b.  %Y', this.x);
+                                xyArr.push('<span style="font-size: 10px">' + t + '</span>');
+                                xyArr.push('<span style="fill:rgb(114, 192, 44)" x="8" dy="15">●</span> Показы: <b>' + this.points[0].y + '</b>');
+                                xyArr.push('<span style="fill:rgb(102, 153, 204)" x="8" dy="15">●</span> Клики: <b>' + this.points[1].y + '</b>');
+                                if (this.points[0].y) {
+                                    var ctr = Math.round(this.points[1].y / (this.points[0].y / 100));
+                                }
+                                else {
+                                    var ctr = 0.00;
+                                }
+                                xyArr.push('<span  style="fill:rgb(255, 255, 255)"  x="8" dy="15">●</span> CTR: <b>' + ctr.toFixed(2) + '%</b>');
+                                return xyArr.join('<br/>');
+
+                            }
+                        },
+                        series: seriesOptions
+                    });
+                };
+            });
+        </script>
+
+
+
+
+        <div id="chart" style="min-width: 400px; height: 500px; margin: 0 auto"></div>
+
+        {% for key,placement in statistics.placements %}
+            <hr/>
+            <div id="chart{{ key+1 }}"  style=" min-width: 400px; height: 500px; margin: 0 auto"></div>
+        {% endfor %}
+
+    {% endblock %}
+

@@ -130,7 +130,8 @@
         $(document).ready(function() {
 
         var seriesOptions = [],
-                colors = Highcharts.getOptions().colors;{%for so_key,so in statistics.seriesOptions%}
+                colors = Highcharts.getOptions().colors;
+            {%for so_key,so in statistics.seriesOptions%}
                 seriesOptions[{{so_key}}] = {
         animation: false,
                 name: "{{so.caption|e('js')}}",
