@@ -5,13 +5,21 @@
 
     <div class="tab-v2">
         <ul class="nav nav-tabs">
-            <li {% if app.request.attributes.get('_route')=='core_cabinet_adcompany_edit' %} class="active"  {% endif %}><a href="{{ path('core_cabinet_adcompany_edit', {id:adcompany.id}) }}" >Настройки рекламной компании</a></li>
+            <li {% if app.request.attributes.get('_route')=='core_cabinet_adcompany_edit'
+            or
+            app.request.attributes.get('_route')=='core_cabinet_adcompany_create'
+             %} class="active"  {% endif %}><a href="   {% if adcompany.id %}{{ path('core_cabinet_adcompany_edit', {id:adcompany.id}) }}{% else %}#{% endif %}" >Настройки рекламной компании</a></li>
             <li><a href="#profile-1" data-toggle="tab2">Размещения</a></li>
             <li><a href="#messages-1" >Таргетинг</a></li>
+            {% if adcompany.id %}
             <li {% if app.request.attributes.get('_route')=='core_statistics_ad_company_chart_statistics' %} class="active"  {% endif %}><a href="{{ path('core_statistics_ad_company_chart_statistics', {id:adcompany.id}) }}" >Статистика</a></li>
+            {% endif %}
         </ul>
         <div class="tab-content">
-            <div class="tab-pane fade in {% if app.request.attributes.get('_route')=='core_cabinet_adcompany_edit' %} active {% endif %}" id="tab1">
+            <div class="tab-pane fade in {% if app.request.attributes.get('_route')=='core_cabinet_adcompany_edit' or
+            app.request.attributes.get('_route')=='core_cabinet_adcompany_create'
+
+            %} active {% endif %}" id="tab1">
                 {% block tab_content1 %}
                 {% endblock %}
             </div>
@@ -23,34 +31,15 @@
                 {% block tab_content3 %}
                 {% endblock %}
             </div>
+
+            {% if adcompany.id %}
             <div class="tab-pane fade in  {% if app.request.attributes.get('_route')=='core_statistics_ad_company_chart_statistics' %} active {% endif %}" id="tab4">
                 {% block tab_content4 %}
                 {% endblock %}
             </div>
+            {% endif %}
         </div>
     </div>
 
-        {#<div class="tab-v2">#}
-            {#<ul class="nav nav-tabs">#}
-                {#<li  {%  if app.request.attributes.get('_route') == 'core_cabinet_adplace_edit' %}  class="active" {% endif %}>#}
-                    {#<a href="{% if adplace.id %}{{ path('core_cabinet_adplace_edit', {id:adplace.id}) }}{% else %}{{ path('core_cabinet_adplace_list_first_page') }}{% endif %}" >Рекламное место</a></li>#}
-                {#<li><a href="{{ path('core_cabinet_section_list_first_page') }}" >Разделы</a></li>#}
-                {#<li><a href="{{ path('core_cabinet_section_list_first_page') }}" >Стоимость размещения</a></li>#}
-                {#{% if adplace.id %}#}
-                {#<li {%  if app.request.attributes.get('_route') == 'core_cabinet_adplace_getcode' %}  class="active" {% endif %}>#}
-                    {#<a href="{{ path('core_cabinet_adplace_getcode', {id:adplace.id}) }}" >HTML-код для встраивания</a></li>{% endif %}#}
-            {#</ul>#}
-            {#<div class="tab-content">#}
-                {#<div class="tab-pane fade active in" id="tab1">#}
-                    {#{% block tab_content %}#}
-                    {#{% endblock %}#}
-                {#</div>#}
-                {#<div class="tab-pane fade" id="tab2">#}
-                {#</div>#}
-                {#<div class="tab-pane fade" id="tab3">#}
-                {#</div>#}
-                {#{% if adplace.id %}<div class="tab-pane fade" id="tab4"></div>{% endif %}#}
-            {#</div>#}
-        {#</div>#}
 
 {% endblock %}

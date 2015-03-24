@@ -1,0 +1,16 @@
+# Выводит статистику графиками по рекламной компании
+core_statistics_ad_company_chart_statistics:
+    path:      /cabinet/adcompany_chart_stat_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreStatisticsBundle:StatisticsCabinet:adCompanyChartStatistics }
+    requirements:
+      id: \d+
+
+#запрашивает сводную информацию по рекламной компании по токену
+core_statistics_ad_company_chart_statistics_by_token:
+    pattern:  /ad_company_stats_{token}.html
+    schemes:  [http]
+    defaults: { _controller: CoreStatisticsBundle:StatisticsCabinet:adCompanyChartStatisticsByToken }
+    requirements:
+          token: \w+
+

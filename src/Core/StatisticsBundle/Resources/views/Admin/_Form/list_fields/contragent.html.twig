@@ -1,9 +1,0 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
-
-{% block field %}
-    {% if object.contragent %}
-        <a href="{{path('admin_sonata_user_commoncontragent_edit',{'id':object.contragent.id})}}">{{object.contragent.listName}}</a>
-    {% else %}
-        <span class="label label-important">нет</span>
-    {% endif %}
-{% endblock %}
