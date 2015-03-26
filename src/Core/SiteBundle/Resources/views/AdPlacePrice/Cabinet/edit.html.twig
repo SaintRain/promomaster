@@ -1,0 +1,31 @@
+{#Редактирование цены для рекламного места в ЛК#}
+{% extends "CoreSiteBundle:AdPlace\\Cabinet:tabs.html.twig" %}
+{% form_theme form 'CoreCommonBundle:Form:choice_widget_with_data_attr.html.twig' %}
+{# SEO - заголовки #}
+{% block title %}{% if subject.id %}Редактирование цены для рекламного места{% else %}Добавление цены для рекламного места в систему{% endif %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Стоимость размешения для рекламного места «{{ adplace.id }}»</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li>
+                        <a href="{{ path('core_cabinet_adplace_edit', {id : adplace.id}) }}">Редактирование настроек рекламного места «{{ adplace.name }}»</a>
+                    </li>
+                    <li class="active">Редактирование цен рекламного места «{{ adplace.name }}»</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block tab_content %}
+    {{ include ('CoreSiteBundle:AdPlacePrice\\Cabinet\\Form:form.html.twig') }}
+{% endblock %}

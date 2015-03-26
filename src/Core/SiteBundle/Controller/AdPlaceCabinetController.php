@@ -153,7 +153,15 @@ class AdPlaceCabinetController extends Controller
                 'editUrl' => '',
                 'deleteUrl' => '',
             ]])
-            //->add('sections', null, ['property'=>'name', 'required' => false, 'multiple' => true, 'expanded' => true])
+            /*
+            ->add('prices', 'collection', [
+                //'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'cascade_validation' => true,
+                'type'   => 'ad_place_price_form',
+            ])
+            */
             ->getForm();
 
         return $form;

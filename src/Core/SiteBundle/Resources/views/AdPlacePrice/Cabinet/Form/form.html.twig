@@ -1,0 +1,155 @@
+{#форма редактирования раздела рекламного места ЛК#}
+
+{% if subject.id %}
+    <h3>Редактирование цены для  рекламного места «{{ adplace.name }}»</h3>
+{% else %}
+    <h3>Добавление цены для  рекламного места «{{ adplace.name }}»</h3>
+{% endif %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+
+            &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_ad_place_price_create', {id : adplace.id}) }}'><i
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще цену</a>
+            &nbsp;&nbsp;&nbsp;
+            <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_ad_place_price_first_page', {id : adplace.id}) }}'><i
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку цен</a>
+
+        </div>
+    {% endfor %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% if form.vars.errors | length %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+<form style="clear: both" class="sky-form sky-form-other-style"
+      action="{% if subject.id %}{{ path('core_cabinet_ad_place_price_edit', {id:subject.id}) }}{% else %}{{ path('core_cabinet_ad_place_price_create', {id: adplace.id}) }}{% endif %}" {{ form_enctype(form) }}
+      method="POST">
+    {% if form.adPlace is defined %}
+    <div class="row margin-bottom-20 form_urlTemplate">
+        <div class="col-sm-12  {% if form_errors(form.adPlace) %}state-error{% endif %}">
+            <label>{{ form.adPlace.vars.label }}*</label>
+            {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.adPlace) }}
+        </div>
+    </div>
+    {% endif %}
+    <div class="row margin-bottom-20 form_urlTemplate">
+        <div class="col-sm-12  {% if form_errors(form.priceModel) %}state-error{% endif %}">
+            <label>{{ form.priceModel.vars.label }}*</label>
+            {{ form_widget(form.priceModel,{ 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.priceModel) }}
+        </div>
+    </div>
+
+    <div class="row margin-bottom-20 form_urlTemplate">
+        <div class="col-sm-12  {% if form_errors(form.cost) %}state-error{% endif %}">
+            <label>{{ form.cost.vars.label }}*</label>
+            {{ form_widget(form.cost,{ 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.cost) }}
+        </div>
+    </div>
+
+    <div class="row margin-bottom-20">
+        <div class="discounts collection-wrapper col-sm-12{% if form_errors(form.discounts) %} state-error{% endif %}">
+            <label>{{ form.discounts.vars.label }}</label>
+            <div class="pull-right">
+                <a href="javascript:void(0);" class="btn-u btn-u-xs collection-add" data-prototype="{% filter escape %}{{ include('CoreSiteBundle:AdPlacePrice/Cabinet/Form:discount.html.twig', { 'form': form.discounts.vars.prototype }) }}{% endfilter %}">
+                    <i class="fa fa-plus-square"></i>
+                    <span>&nbsp;Добавить скидку</span>
+                </a>
+            </div>
+            {% for discount in form.discounts %}
+                <div class="collection-row row margin-bottom-20">
+                    <div class="col-sm-5  {% if form_errors(discount.amount) %}state-error{% endif %}">
+                        <label>{{ discount.amount.vars.label }}</label>
+                        {{ form_widget(discount.amount,{ 'attr': {'class': 'form-control'} }) }}
+                        {{ form_errors(discount.amount) }}
+                    </div>
+                    <div class="col-sm-5  {% if form_errors(discount.rate) %}state-error{% endif %}">
+                        <label>{{ discount.rate.vars.label }}</label>
+                        {{ form_widget(discount.rate,{ 'attr': {'class': 'form-control'} }) }}
+                        {{ form_errors(discount.rate) }}
+                    </div>
+                    <div class="col-sm-2">
+                        <div style="margin-top: 32px;">
+                            <a class="btn-u-xs btn-u btn-u-red collection-row-remove" href="javascript:void(0)"><i class="icon-close"></i>&nbsp;Удалить</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor  %}
+            {% do form.discounts.setRendered %}
+        </div>
+    </div>
+
+    <div class="margin-bottom-20">
+    </div>
+
+    {{ form_rest(form) }}
+
+    <div class="text-right">
+        <button class="btn-u" type="submit">{% if subject.id %}Сохранить{% else %}Добавить{% endif %}</button>
+        &nbsp;&nbsp;
+        <a href="{{ path('core_cabinet_site_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+        {% if subject.id %}
+            &nbsp;&nbsp; или &nbsp;&nbsp;
+            <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>
+        {% endif %}
+    </div>
+
+</form>
+
+<script>
+    var collectionCount = '{{ form.discounts | length }}';
+    $(function () {
+
+        manipulateCollection(collectionCount);
+
+        {% if subject.id %}
+        $('.delete').click(function () {
+            var res = confirm('Вы действительно хотите удалить цену из системы?');
+            if (res) {
+                window.location.href = '{{ path('core_cabinet_ad_place_price_delete', {id:subject.id}) }}';
+            }
+        });
+        {% endif %}
+    })
+
+    function manipulateCollection(collectionCount) {
+        // добавление коллекции
+        $('.collection-add').click(function(e) {
+            e.preventDefault();
+            var $this = $(this),
+                    parentWrapper = $this.parents('.collection-wrapper'),
+                    newWidget = $this.attr('data-prototype');
+            newWidget = newWidget.replace(/__name__/g, collectionCount);
+            parentWrapper.append(newWidget)
+
+            return false;
+        });
+        // удаление коллекции
+        $('body').on('click' ,'.collection-row-remove', function(e){
+
+            var $this = $(this),
+                curRow = $this.parents('.collection-row');
+
+            curRow.remove();
+
+            return false;
+        });
+    }
+</script>

@@ -222,6 +222,8 @@ class CommonSubscriber implements EventSubscriber
      * @param string $method
      * @param array $meta
      * @return array
+     *
+     * @todo Что если nullable???
      */
     private function makeManyToONe($entity, $method, $meta)
     {
@@ -229,8 +231,10 @@ class CommonSubscriber implements EventSubscriber
         if (!$entity['old']->$method() && !$entity['new']->$method()) {
             return $operations;
         }
-
-        if (!$entity['old']->$method() || $entity['new']->$method()->getId() != $entity['old']->$method()->getId()) {
+        elseif ($entity['old']->$method() && !$entity['new']->$method()) {
+            return $operations;
+        }
+        elseif (!$entity['old']->$method() || $entity['new']->$method()->getId() != $entity['old']->$method()->getId()) {
             $operations['update'][$meta->table['name']][$entity['new']->$method()->getId()] = $entity['new']->$method()->getId();
         }
 

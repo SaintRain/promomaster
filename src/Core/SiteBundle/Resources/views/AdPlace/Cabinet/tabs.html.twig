@@ -7,7 +7,15 @@
                 <li  {%  if app.request.attributes.get('_route') == 'core_cabinet_adplace_edit' %}  class="active" {% endif %}>
                     <a href="{% if adplace.id %}{{ path('core_cabinet_adplace_edit', {id:adplace.id}) }}{% else %}{{ path('core_cabinet_adplace_list_first_page') }}{% endif %}" >Рекламное место</a></li>
                 <li><a href="{{ path('core_cabinet_section_list_first_page') }}" >Разделы</a></li>
-                <li><a href="{{ path('core_cabinet_section_list_first_page') }}" >Стоимость размещения</a></li>
+                {% if adplace.id %}
+                <li {%  if app.request.attributes.get('_route') == 'core_cabinet_ad_place_price_first_page' or
+                            app.request.attributes.get('_route') == 'core_cabinet_ad_place_price_list' or
+                            app.request.attributes.get('_route') == 'core_cabinet_ad_place_price_create' or
+                            app.request.attributes.get('_route') == 'core_cabinet_ad_place_price_edit'
+                    %}  class="active" {% endif %}>
+                    <a href="{{ path('core_cabinet_ad_place_price_first_page', {id: adplace.id}) }}" >Стоимость размещения</a>
+                </li>
+                {% endif %}
                 {% if adplace.id %}
                 <li {%  if app.request.attributes.get('_route') == 'core_cabinet_adplace_getcode' %}  class="active" {% endif %}>
                     <a href="{{ path('core_cabinet_adplace_getcode', {id:adplace.id}) }}" >HTML-код для встраивания</a></li>{% endif %}

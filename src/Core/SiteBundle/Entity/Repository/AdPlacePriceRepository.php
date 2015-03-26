@@ -19,4 +19,114 @@ use Doctrine\ORM\EntityRepository;
  */
 class AdPlacePriceRepository extends EntityRepository
 {
+
+    public function findForUser($userId)
+    {
+        $qb = $this->createQueryBuilder('price');
+
+        $qb->select('price, place, priceModel')
+           ->join('price.adPlace', 'place')
+           ->join('price.priceModel', 'priceModel')
+           ->join('place.user', 'user')
+           ->where('user.id = :userId')
+           ->setParameter('userId', $userId)
+        ;
+
+        $result = $qb->getQuery()->getResult();
+
+
+        return $result;
+
+    }
+
+
+    public function findForPlace($placeId, $userId)
+    {
+        $qb = $this->createQueryBuilder('price');
+
+        $qb->select('price, priceModel')
+            ->join('price.adPlace', 'place')
+            ->join('price.priceModel', 'priceModel')
+            ->join('place.user', 'user')
+            ->where('user.id = :userId')
+            ->andWhere('place.id = :placeId')
+        ;
+
+        $qb->setParameter('userId', $userId)
+            ->setParameter('placeId', $placeId)
+        ;
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
+    }
+
+
+    public function findWithPlace($placeId, $userId)
+    {
+        $qb = $this->createQueryBuilder('price');
+
+        $qb->select('price, place, priceModel')
+            ->join('price.adPlace', 'place')
+            ->join('price.priceModel', 'priceModel')
+            ->join('place.user', 'user')
+            ->where('user.id = :userId')
+            ->andWhere('place.id = :placeId')
+        ;
+
+        $qb->setParameter('userId', $userId)
+            ->setParameter('placeId', $placeId)
+        ;
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
+    }
+
+    public function findWithDiscounts($id, $userId)
+    {
+        $qb = $this->createQueryBuilder('price');
+
+        $qb->select('price, place, priceModel, discounts')
+            ->join('price.adPlace', 'place')
+            ->join('price.priceModel', 'priceModel')
+            ->leftJoin('price.discounts', 'discounts')
+            ->join('place.user', 'user')
+            ->where('user.id = :userId')
+            ->andWhere('price.id = :id')
+        ;
+
+        $qb->setParameter('userId', $userId)
+            ->setParameter('id', $id)
+        ;
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        return $result;
+    }
+
+    /**
+     * @param integer $id
+     * @param integer $userId
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findForDelete($id, $userId)
+    {
+        $qb = $this->createQueryBuilder('price');
+
+        $qb
+            ->select('price, place')
+            ->join('price.adPlace', 'place')
+            ->join('place.user', 'user')
+            ->where('user.id = :userId')
+            ->andWhere('price.id = :id')
+        ;
+
+        $qb
+            ->setParameter('id', $id)
+            ->setParameter('userId', $userId)
+        ;
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        return $result;
+    }
+
 }

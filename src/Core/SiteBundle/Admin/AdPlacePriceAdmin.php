@@ -64,7 +64,7 @@ class AdPlacePriceAdmin extends Admin
         $formMapper
             ->with('Основное')
             ->add('adPlace', null, ['label' => 'Рекламное место', 'property' => 'name'])
-            ->add('priceModel', null, ['label' => 'Рекламное место', 'property' => 'captionRu'])
+            ->add('priceModel', null, ['label' => 'В чем указано количество','empty_value' => 'Необходимо выбрать', 'property' => 'captionRu'])
             ->add('cost', 'money', ['label' => 'Стоимость'])
             ->end()
             ->with('Скидки')
@@ -87,7 +87,7 @@ class AdPlacePriceAdmin extends Admin
                 'label' => '№'
             ))
             ->add('createdDateTime', null, ['label' => 'Дата создания'])
-            ->add('priceModel.captionRu', null, ['label' => 'Рекламное место'])
+            ->add('priceModel.captionRu', null, ['label' => 'В чем указано количество'])
             ->add('adPlace.name', null, ['label' => 'Рекламное место'])
             ->add('cost', 'money', ['label' => 'Стоимость'])
         ;
@@ -102,7 +102,7 @@ class AdPlacePriceAdmin extends Admin
                 'field_type' => 'text'), null, array('attr' => array('placeholder' => 'ID через запятую', 'title' => 'ID контрагента')
             ))
             //->add('createdDateTime', null, ['label' => 'Дата создания'])
-            ->add('priceModel', null, ['label' => 'Рекламное место'], null, array('attr' => ['placeholder' => 'Ценовая модель']))
+            ->add('priceModel', null, ['label' => 'Рекламное место'], null, array('attr' => ['placeholder' => 'В чем указано количество']))
             ->add('adPlace', null, ['label' => 'Рекламное место'], null, array('property' => 'name', 'attr' => ['placeholder' => 'Рекламное место']))
             ->add('cost', null, ['label' => 'Стоимость'], null, array('attr' => ['placeholder' => 'Стоимость']))
         ;

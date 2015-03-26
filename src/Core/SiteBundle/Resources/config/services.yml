@@ -74,3 +74,15 @@ services:
     tags:
     - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Материалы, label: Разделы рекламных мест }
     arguments: [null, Core\SiteBundle\Entity\AdPlacePriceDiscount, null]
+
+#форма цен для рекламных мест
+  core_ad_place_price_form:
+      class: Core\SiteBundle\Form\Type\AdPlacePriceFormType
+      tags:
+          - { name: form.type, alias: ad_place_price_form }
+
+#форма скидок цен для рекламных мест
+  core_ad_place_price_discount_form:
+      class: Core\SiteBundle\Form\Type\AdPlacePriceDiscountFormType
+      tags:
+          - { name: form.type, alias: ad_place_price_discount_form }

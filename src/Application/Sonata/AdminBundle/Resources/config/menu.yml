@@ -5,9 +5,10 @@
     Баннеры:                            { route: admin_core_banner_commonbanner_list }
     Площадки:                            { route: admin_core_site_commonsite_list }
     Размеры рекламных мест:                  { route: admin_core_directory_adplacesize_list }
-    Рекламные места:                  { route: admin_core_site_adplace_list }
-      #Скидки:                           { route: admin_core_site_adplaceprice_list }
-      #Стоимость:                        { route: admin_core_site_adplacepricediscount_list }
+    Рекламные места:                  #{ route: admin_core_site_adplace_list }
+      Места:                            { route: admin_core_site_adplace_list }
+      Стоимость:                           { route: admin_core_site_adplaceprice_list }
+      #Скидки:                        { route: admin_core_site_adplacepricediscount_list }
     Разделы рекламных мест:            { route: admin_core_site_section_list }
     Рекламные компании:             { route: admin_core_adcompany_adcompany_list }
     Размещения:                       { route: admin_core_adcompany_placement_list }

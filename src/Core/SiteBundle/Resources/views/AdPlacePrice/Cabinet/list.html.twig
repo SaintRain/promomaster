@@ -1,0 +1,97 @@
+{#вывод списка сайтов в ЛК#}
+{% extends "CoreSiteBundle:AdPlace\\Cabinet:tabs.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}Цены для рекламного места «{{ adplace.name }}»{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Стоимость размешения для рекламного места «{{ adplace.id }}»</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li>
+                        <a href="{{ path('core_cabinet_adplace_edit', {id : adplace.id}) }}">Редактирование настроек рекламного места «{{ adplace.name }}»</a>
+                    </li>
+                    <li class="active">Список цен для рекламного места «{{ adplace.name }}»</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block tab_content %}
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% if  subjects |length %}
+        <div class="row">
+            <h3>Список цен для рекламного места «{{ adplace.name }}»</h3>
+            <a style="margin-top: -30px" href="{{ path('core_cabinet_ad_place_price_create', {id: adplace.id}) }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить цену для рекламного места</a>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Рекламное место</th>
+                <th>Тип подсчета</th>
+                <th>Стоимость</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for subject in subjects %}
+                <tr>
+                    <td height="53px">
+                        <a href="{{ path('core_cabinet_ad_place_price_edit', {id:subject.id}) }}">
+                            {{ loop.index }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('core_cabinet_adplace_edit', {id:subject.adplace.id}) }}">
+                            <b>{{ subject.adplace.name }}</b>
+                        </a>
+                    </td>
+                    <td>
+                        <b>{{ subject.priceModel.captionRu }}</b>
+                    </td>
+                    <td>
+                        <b>{{ subject.cost }}</b>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {#
+        {% set routeFirsPage = 'core_cabinet_ad_place_price_first_page' %}
+        {% set routePage = 'core_cabinet_ad_place_price_list' %}
+
+        {{ knp_pagination_render(subjects, 'CoreSiteBundle:AdPlace/Cabinet:pagination.html.twig',{},
+        { routeFirsPage: routeFirsPage, routePage:routePage}) }}
+        #}
+    {% else %}
+        <h3>Вы еще не добавляли цен для рекламного места «{{ adplace.name }}»</h3>
+        <a href="{{ path('core_cabinet_ad_place_price_create', {id: adplace.id}) }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить цену для рекламного места</a>
+    {% endif %}
+
+{% endblock %}

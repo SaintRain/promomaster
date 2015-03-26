@@ -170,3 +170,44 @@ core_cabinet_section_delete:
     schemes:  [http]
     defaults:  { _controller: CoreSiteBundle:SectionCabinet:delete }
     requirements:
+
+# Вывод первой страницы списка рекламных мест в личном кабинете
+core_cabinet_ad_place_price_first_page:
+    path:      /cabinet/ad_place_price_list_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlacePrice:list }
+    requirements:
+          id: \d+
+
+#Список цен для рекламных мест ЛК
+core_cabinet_ad_place_price_list:
+    path:      /cabinet/ad_place_price_list_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlacePrice:list }
+    requirements:
+          id: \d+
+
+#добавление цены для рекламного места ЛК
+core_cabinet_ad_place_price_create:
+    path:      /cabinet/ad_place_price_create_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlacePrice:create }
+    requirements:
+          id: \d+
+
+#изменение цены для рекламного места ЛК
+core_cabinet_ad_place_price_edit:
+    path:      /cabinet/ad_place_price_edit_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlacePrice:edit }
+    requirements:
+          id: \d+
+
+#удаление цены для рекламного места ЛК
+core_cabinet_ad_place_price_delete:
+    path:      /cabinet/ad_place_price_delete_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlacePrice:delete }
+    #methods:  ['POST']
+    requirements:
+          id: \d+

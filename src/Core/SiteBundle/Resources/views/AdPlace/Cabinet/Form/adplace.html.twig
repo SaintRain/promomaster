@@ -110,6 +110,60 @@
                 {{ form_errors(form.sections) }}
             </div>
         </div>
+        {% if form.prices is defined %}
+        <div class="row margin-bottom-20">
+            <div class="prices collection-wrapper {% if form_errors(form.prices) %}state-error{% endif %}">
+                <label>Цены</label>
+                <div class="pull-right">
+                    <a href="javascript:void(0);" class="btn-u btn-u-xs collection-add" data-prototype="{% filter escape %}{{ include('CoreSiteBundle:AdPlacePrice/Cabinet/Form:price.html.twig', { 'form': form.prices.vars.prototype }) }}{% endfilter %}">
+                        <i class="fa fa-plus-square"></i>
+                        <span>&nbsp;Добавить цену</span>
+                    </a>
+                </div>
+                {% for price in form.prices %}
+                    <div class="row margin-bottom-20">
+                        <div class="col-sm-6  {% if form_errors(price.cost) %}state-error{% endif %}">
+                            <label>{{ price.cost.vars.label }}</label>
+                            {{ form_widget(price.cost,{ 'attr': {'class': 'form-control'} }) }}
+                            {{ form_errors(price.cost) }}
+                        </div>
+                        <div class="col-sm-6  {% if form_errors(price.priceModel) %}state-error{% endif %}">
+                            <label>{{ price.priceModel.vars.label }}</label>
+                            {{ form_widget(price.priceModel,{ 'attr': {'class': 'form-control'} }) }}
+                            {{ form_errors(price.priceModel) }}
+                        </div>
+                        {# discounts #}
+                        <div class="col-sm-12 margin-top-20">
+                            <div class="discounts collection-wrapper {% if form_errors(price.discounts) %}state-error{% endif %}">
+                                <label>Скидки</label>
+                                <div class="pull-right">
+                                    <a href="javascript:void(0);" class="btn-u btn-u-xs collection-add" data-prototype="{% filter escape %}{{ include('CoreSiteBundle:AdPlacePrice/Cabinet/Form:discount.html.twig', { 'form': price.discounts.vars.prototype }) }}{% endfilter %}">
+                                        <i class="fa fa-plus-square"></i>
+                                        <span>&nbsp;Добавить скидку</span>
+                                    </a>
+                                </div>
+                                {% for discount in price.discounts %}
+                                    <div class="row margin-bottom-20">
+                                        <div class="col-sm-6  {% if form_errors(discount.amount) %}state-error{% endif %}">
+                                            <label>{{ discount.amount.vars.label }}</label>
+                                            {{ form_widget(discount.amount,{ 'attr': {'class': 'form-control'} }) }}
+                                            {{ form_errors(discount.amount) }}
+                                        </div>
+                                        <div class="col-sm-6  {% if form_errors(discount.rate) %}state-error{% endif %}">
+                                            <label>{{ discount.rate.vars.label }}</label>
+                                            {{ form_widget(discount.rate,{ 'attr': {'class': 'form-control'} }) }}
+                                            {{ form_errors(discount.rate) }}
+                                        </div>
+                                    </div>
+                                {% endfor  %}
+                            </div>
+                        </div>
+                        {# End discounts #}
+                    </div>
+                {% endfor  %}
+            </div>
+        </div>
+        {% endif %}
 
 
         <div class="margin-bottom-20">
@@ -132,7 +186,18 @@
 
 
 <script>
+
+    /**
+     * Объект для хранения кол-ва колекций
+     */
+    {#
+    var collectionCount = {
+        prices : '{{ form.prices|length }}',
+        discounts : 0
+    };
+    #}
     $(function () {
+
         $('#form_size').change(function () {
             if ($(this).find('option:selected').attr('data-name') == 'specialnoe') {
                 $('.extraSize').show();
@@ -157,6 +222,21 @@
         });
         {% endif %}
     })
+
+    function manipulateCollection(count) {
+        // добавление коллекции
+        $('.collection-add').click(function(e) {
+            e.preventDefault();
+            var $this = $(this),
+                parentWrapper = $this.parents('.collection-wrapper'),
+                newWidget = $this.attr('data-prototype');
+            newWidget = newWidget.replace(/__name__/g, count);
+            parentWrapper.append(newWidget)
+
+            return count++;
+        });
+    }
+
 </script>
 
 

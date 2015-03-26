@@ -76,7 +76,7 @@ class AdPlacePrice
 
     /**
      * Размещения
-     * @ORM\OneToMany(targetEntity="AdPlacePriceDiscount", mappedBy="adPlacePrice", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AdPlacePriceDiscount", mappedBy="adPlacePrice", cascade={"persist"}, orphanRemoval=true)
      */
     private $discounts;
 
@@ -149,7 +149,7 @@ class AdPlacePrice
     /**
      * @param AdPlace $adPlace
      */
-    public function setAdPlace(AdPlace $adPlace)
+    public function setAdPlace(AdPlace $adPlace = null)
     {
         $this->adPlace = $adPlace;
         return $this;
@@ -178,7 +178,7 @@ class AdPlacePrice
      * @param AdPlacePriceDiscount $discount
      * @return $this
      */
-    public function addDiscount(AdPlacePriceDiscount $discount)
+    public function addDiscount(AdPlacePriceDiscount $discount = null)
     {
         if (!$this->discounts->contains($discount)) {
             $this->discounts->add($discount);
@@ -212,7 +212,7 @@ class AdPlacePrice
     /**
      * @param PriceModel $priceModel
      */
-    public function setPriceModel(PriceModel $priceModel)
+    public function setPriceModel(PriceModel $priceModel = null)
     {
         $this->priceModel = $priceModel;
         return $this;

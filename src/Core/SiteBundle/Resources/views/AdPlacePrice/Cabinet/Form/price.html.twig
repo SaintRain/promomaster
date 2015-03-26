@@ -1,0 +1,12 @@
+<div class="row margin-bottom-20">
+    <div class="col-sm-6  {% if form_errors(form.cost) %}state-error{% endif %}">
+        <label>{{ form.cost.vars.label }}</label>
+        {{ form_widget(form.cost,{ 'attr': {'class': 'form-control'} }) }}
+        {{ form_errors(form.cost) }}
+    </div>
+    <div class="col-sm-6  {% if form_errors(form.priceModel) %}state-error{% endif %}">
+        <label>{{ form.priceModel.vars.label }}</label>
+        {{ form_widget(form.priceModel,{ 'attr': {'class': 'form-control'} }) }}
+        {{ form_errors(form.priceModel) }}
+    </div>
+</div>

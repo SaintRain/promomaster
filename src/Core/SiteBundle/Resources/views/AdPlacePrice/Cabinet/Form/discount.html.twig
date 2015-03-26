@@ -1,0 +1,17 @@
+<div class="collection-row row margin-bottom-20">
+    <div class="col-sm-5  {% if form_errors(form.amount) %}state-error{% endif %}">
+        <label>{{ form.amount.vars.label }}</label>
+        {{ form_widget(form.amount,{ 'attr': {'class': 'form-control'} }) }}
+        {{ form_errors(form.amount) }}
+    </div>
+    <div class="col-sm-5  {% if form_errors(form.rate) %}state-error{% endif %}">
+        <label>{{ form.rate.vars.label }}</label>
+        {{ form_widget(form.rate,{ 'attr': {'class': 'form-control'} }) }}
+        {{ form_errors(form.rate) }}
+    </div>
+    <div class="col-sm-2">
+        <div style="margin-top: 32px;">
+            <a class="btn-u-xs btn-u btn-u-red collection-row-remove" href="javascript:void(0)"><i class="icon-close"></i>&nbsp;Удалить</a>
+        </div>
+    </div>
+</div>
