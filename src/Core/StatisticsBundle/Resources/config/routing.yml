@@ -1,14 +1,25 @@
-core_statistics_ajax_get_chart_price_history:
-    pattern:  /ajax/get_chart_price_history
-    schemes:  [https]
-    defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:getChartPriceHistory }
-
-core_statistics_generate_inventory:
-    pattern:  /ajax/generate_inventory
-    schemes:  [https]
-    defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:generateInventoryStatistics }
+#core_statistics_ajax_get_chart_price_history:
+#    pattern:  /ajax/get_chart_price_history
+#    schemes:  [https]
+#    defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:getChartPriceHistory }
+#
+#core_statistics_generate_inventory:
+#    pattern:  /ajax/generate_inventory
+#    schemes:  [https]
+#    defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:generateInventoryStatistics }
 
 core_statistics_get_audit_information:
     pattern:  /ajax/get_audit_information
     schemes:  [https]
     defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:getAuditInformation }
+
+
+
+#core_statistics_get_audit_information:
+#    pattern:  /ajax/get_audit_information
+#    schemes:  [http]
+#    defaults: { _controller: CoreStatisticsBundle:AjaxAdminStatistics:getAuditInformation }
+
+
+
+

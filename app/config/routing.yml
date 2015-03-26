@@ -96,6 +96,11 @@ core_statistics:
     resource: "@CoreStatisticsBundle/Resources/config/routing.yml"
     prefix:   /admin
 
+# статистика фронтенда
+core_statistics_frontend:
+    resource: "@CoreStatisticsBundle/Resources/config/frontend_routing.yml"
+    prefix:   /
+
 #Раздел FAQ
 core_faq:
     resource: "@CoreFaqBundle/Resources/config/routing.yml"

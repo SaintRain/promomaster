@@ -1,0 +1,42 @@
+{#Вывод статистики РК по токену#}
+{% extends "CoreCommonBundle::main_layout.html.twig" %}
+
+
+ {#SEO - заголовки #}
+{% block title %}Статистика рекламной компании «{{ adcompany.name }}»{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+{% block content %}
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->`
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Статистика рекламной компании</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+
+                    <li class="active">Статистика рекламной компании</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+    <div class="profile container content">
+        <div class="row">
+            {{ include ('CoreStatisticsBundle:AdCompany\\Cabinet:charts.html.twig') }}
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
+

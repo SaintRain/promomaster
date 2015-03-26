@@ -200,7 +200,8 @@ class ExtraBlocksLogic
 
         switch ($class) {
             case 'Core\OrderBundle\Entity\Order':
-                $comment = $em->getRepository('CoreOrderBundle:AdminCommentToOrder')->findOneBy(['id' => $id, 'order' => $object]);
+              //  $comment = $em->getRepository('CoreOrderBundle:AdminCommentToOrder')->findOneBy(['id' => $id, 'order' => $object]);
+                $comment='';
                 break;
             case 'Application\Sonata\UserBundle\Entity\User':
                 $comment = $em->getRepository('ApplicationSonataUserBundle:AdminCommentToUser')->findOneBy(['id' => $id, 'toUser' => $object]);

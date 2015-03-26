@@ -17,22 +17,40 @@ class AjaxAdminStatisticsController extends CoreController
 {
 
     /**
+     * Получение сводной информации
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response - json объект
+     */
+    public function getAdCompanyChartStatsGeneralHistoryAction(Request $request)
+    {
+
+        $adcompany_id = $request->request->get('adcompany_id');
+
+        $response = $this->get('core_statistics_logic')
+            ->getAdCompanyChartStatsGeneralHistory($adcompany_id);
+
+        return new Response($response);
+    }
+
+
+    /**
      * Получение графика изменения цены
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response - json объект
      */
-    public function getChartPriceHistoryAction(Request $request)
-    {
-        // подключаем сервис
-        $logic = $this->get('core_product_statistics_logic');
-
-        $id = $request->request->get('id'); // id продукта
-        // вызываем метод загрузки графика
-        $response = $logic->getChartPriceHistory($id);
-
-        return new Response($response);
-    }
+//    public function getChartPriceHistoryAction(Request $request)
+//    {
+//        // подключаем сервис
+//        $logic = $this->get('core_product_statistics_logic');
+//
+//        $id = $request->request->get('id'); // id продукта
+//        // вызываем метод загрузки графика
+//        $response = $logic->getChartPriceHistory($id);
+//
+//        return new Response($response);
+//    }
 
     /**
      * Генерация отчета по инвенторизации
@@ -40,17 +58,17 @@ class AjaxAdminStatisticsController extends CoreController
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function generateInventoryStatisticsAction(Request $request)
-    {
-        $data = $this->get('request')->query->all(); // id продукта
-        // подключаем сервис
-        $logic = $this->get('core_statistics_inventory_logic');
-
-        // вызываем метод загрузки картинок
-        $response = $logic->generateStatistics($data);
-
-        return new Response($response);
-    }
+//    public function generateInventoryStatisticsAction(Request $request)
+//    {
+//        $data = $this->get('request')->query->all(); // id продукта
+//        // подключаем сервис
+//        $logic = $this->get('core_statistics_inventory_logic');
+//
+//        // вызываем метод загрузки картинок
+//        $response = $logic->generateStatistics($data);
+//
+//        return new Response($response);
+//    }
 
     /**
      * Генерация истории объекта

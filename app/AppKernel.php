@@ -96,6 +96,7 @@ class AppKernel extends Kernel
             new Core\BannerBundle\CoreBannerBundle(),
             new Core\SiteBundle\CoreSiteBundle(),
             new Core\AdCompanyBundle\CoreAdCompanyBundle(),
+            new Ob\HighchartsBundle\ObHighchartsBundle(),
 
         );
 
@@ -106,7 +107,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new CoreSphere\ConsoleBundle\CoreSphereConsoleBundle();
-            $bundles[] = new Jns\Bundle\XhprofBundle\JnsXhprofBundle();
+           // $bundles[] = new Jns\Bundle\XhprofBundle\JnsXhprofBundle();
             $bundles[] = new Elao\WebProfilerExtraBundle\WebProfilerExtraBundle();
         }
         else if (in_array($this->getEnvironment(), array('test'))) {

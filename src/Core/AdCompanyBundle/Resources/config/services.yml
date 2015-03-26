@@ -34,3 +34,9 @@ services:
     arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic', '@core_placement_logic']
 
 
+
+# подписчик для РК
+  core_adcompany_subscriber:
+    class: Core\AdCompanyBundle\EventListener\AdCompanySubscriber
+    tags:
+        - { name: doctrine.event_subscriber }

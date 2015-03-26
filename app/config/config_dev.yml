@@ -11,15 +11,15 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
-jns_xhprof:
-    location_web:    http://xhprof
-    entity_manager:  ~
-    entity_class:    Core\StatisticsBundle\Entity\XhprofDetail
-    enable_xhgui:    false
-    enabled:         true
-    command: "option"
-    command_option_name: xhprof
-    request_query_argument: "__xhprof"
+#jns_xhprof:
+#    location_web:    http://xhprof
+#    entity_manager:  ~
+#    entity_class:    Core\StatisticsBundle\Entity\XhprofDetail
+#    enable_xhgui:    false
+#    enabled:         true
+#    command: "option"
+#    command_option_name: xhprof
+#    request_query_argument: "__xhprof"
 
 web_profiler_extra:
     routing:

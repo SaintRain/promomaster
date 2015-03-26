@@ -68,7 +68,7 @@ class AdCompanyCabinetController extends Controller
                 $this->setFlash('edit_success', 'Данные успешно обновлены');
                 return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $id]));
             } else {
-                return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany,  'form' => $form->createView()]);
+                return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', [ 'adcompany' => $adcompany,  'form' => $form->createView()]);
             }
         } else {
             return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany, 'form' => $form->createView()]);
@@ -99,7 +99,7 @@ class AdCompanyCabinetController extends Controller
                 $em->persist($adcompany);
                 $em->flush();
 
-                $this->setFlash('edit_success', 'Новая рекламная компания добавлена');
+                $this->setFlash('edit_success', 'Рекламная компания добавлена');
                 return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $adcompany->getId()]));
             } else {
                 return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany, 'form' => $form->createView()]);

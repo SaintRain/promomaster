@@ -1,7 +1,7 @@
 {#редактирование рекламной компании в ЛК#}
-{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
-
-{# SEO - заголовки #}
+{% extends "CoreAdCompanyBundle:AdCompany\\Cabinet:tabs.html.twig" %}
+{#{% form_theme form 'CoreCommonBundle:Form:choice_widget_with_data_attr.html.twig' %}#}
+ {#SEO - заголовки #}
 {% block title %}{% if adcompany.id %}Редактирование рекламной компании {{ adcompany.name }}{% else %}Добавление рекламной компании в систему{% endif %}{% endblock %}
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
@@ -25,122 +25,7 @@
     {% endblock %}
 
 
-{% block sub_content %}
-
-    {% if adcompany.id %}
-        <h3>Редактирование рекламной компании</h3>
-    {% else %}
-        <h3>Добавление новой рекламной компании</h3>
-    {% endif %}
-
-
-    {#форма редактирования профиля ЛК#}
-    {% for flashMessage in app.session.flashbag.get('edit_success') %}
-        <br/>
-        <div class="alert alert-success fade in">
-            {{ flashMessage | raw }}
-
-            &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_adcompany_create') }}'><i
-                        class='fa fa-plus-square'></i> &nbsp;Добавить еще рекламную компанию</a>
-            &nbsp;&nbsp;&nbsp;
-            <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_adcompany_list_first_page') }}'><i
-                        class='fa fa-reply'></i> &nbsp;Вернуться к списку рекламных компаний</a>
-
-        </div>
-    {% endfor %}
-
-
-    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
-        <br/>
-        <div class="alert alert-danger fade in">
-            {{ flashMessage | raw }}
-        </div>
-    {% endfor %}
-
-
-    {% if form.vars.errors | length %}
-        <br/>
-        <div class="alert alert-danger fade in">
-            {{ form_errors(form) }}
-        </div>
-    {% endif %}
-
-    {% include 'CoreAdCompanyBundle:AdCompany/Cabinet:form.html.twig' %}
-
-
-    {% block js %}
-
-        <script>
-            $(function () {
-
-                $("#datepicker").datepicker();
-                // Date range
-                $('#ad_company_type_startDateTime').datepicker({
-                    dateFormat: 'dd-mm-yy',
-                    prevText: '<i class="fa fa-angle-left"></i>',
-                    nextText: '<i class="fa fa-angle-right"></i>',
-                    onSelect: function (selectedDate) {
-                        $('#ad_company_type_finishDateTime').datepicker('option', 'minDate', selectedDate);
-                    }
-                });
-                $('#ad_company_type_finishDateTime').datepicker({
-                    dateFormat: 'dd-mm-yy',
-                    prevText: '<i class="fa fa-angle-left"></i>',
-                    nextText: '<i class="fa fa-angle-right"></i>',
-                    onSelect: function (selectedDate) {
-                        $('#ad_company_type_startDateTime').datepicker('option', 'maxDate', selectedDate);
-                    }
-                });
-
-
-                  //$(".date").mask('99-99-9999', {placeholder: '0'});
-
-                {% if adcompany.id %}
-                $('.delete').click(function () {
-                    var res = confirm('Вы действительно хотите удалить эту рекламную компанию из системы?');
-                    if (res) {
-                        window.location.href = '{{ path('core_cabinet_adcompany_delete', {id:adcompany.id}) }}';
-                    }
-                });
-                {% endif %}
-
-
-                $('.dateSettingsStart').change(function () {
-                    var value = $('.dateSettingsStart:checked').val();
-                    if (value == 1) {
-                        $('#ad_company_type_startDateTime').parents('div.col-sm-6').show();
-                        $('#ad_company_type_startDateTime').val('').focus();
-                        $('#ad_company_type_startDateTime').attr('required', 'required');
-                        $('.dateSettingsStartLabel').html('');
-                    }
-                    else {
-                        $('#ad_company_type_startDateTime').parents('div.col-sm-6').hide();
-                        $('#ad_company_type_startDateTime').val('');
-                        $('#ad_company_type_startDateTime').removeAttr('required');
-                        $('.dateSettingsStartLabel').html('Дата начала показов');
-                    }
-                });
-
-
-                $('.dateSettingsFinish').change(function () {
-                    var value = $('.dateSettingsFinish:checked').val();
-                    if (value == 1) {
-                        $('#ad_company_type_finishDateTime').parents('div.col-sm-6').show();
-                        $('#ad_company_type_finishDateTime').val('').focus();
-                        $('#ad_company_type_finishDateTime').attr('required', 'required');
-                        $('.dateSettingsFinishLabel').html('');
-                    }
-                    else {
-                        $('#ad_company_type_finishDateTime').parents('div.col-sm-6').hide();
-                        $('#ad_company_type_finishDateTime').val('');
-                        $('#ad_company_type_finishDateTime').removeAttr('required');
-                        $('.dateSettingsFinishLabel').html('Дата окончания показов');
-                    }
-                });
-
-
-            })
-        </script>
+    {% block tab_content1 %}
+        {{ include ('CoreAdCompanyBundle:AdCompany\\Cabinet\\Form:adcompany.html.twig') }}
     {% endblock %}
 
-{% endblock %}

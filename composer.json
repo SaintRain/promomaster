@@ -80,7 +80,8 @@
         "symfony/stopwatch": "2.5.7",
         "jns/xhprof-bundle": "1.0.*@dev",
         "facebook/xhprof": "dev-master@dev",
-        "elao/web-profiler-extra-bundle" : "~2.3@dev"
+        "elao/web-profiler-extra-bundle" : "~2.3@dev",
+        "ob/highcharts-bundle": "1.2"
 
     },
     "require-dev": {

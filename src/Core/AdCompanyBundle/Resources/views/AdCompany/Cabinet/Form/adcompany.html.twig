@@ -1,0 +1,226 @@
+{% if adcompany.id %}
+        <h3>Редактирование рекламной компании</h3>
+    {% else %}
+        <h3>Добавление новой рекламной компании</h3>
+    {% endif %}
+
+
+    {#форма редактирования профиля ЛК#}
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+
+            &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_adcompany_create') }}'><i
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще рекламную компанию</a>
+            &nbsp;&nbsp;&nbsp;
+            <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_adcompany_list_first_page') }}'><i
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку рекламных компаний</a>
+
+        </div>
+    {% endfor %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% if form.vars.errors | length %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+<form style="clear: both" class="sky-form sky-form-other-style"
+      action="{% if adcompany.id %}{{ path('core_cabinet_adcompany_edit', {id:adcompany.id}) }}{% else %}{{ path('core_cabinet_adcompany_create') }}{% endif %}" {{ form_enctype(form) }}
+      method="POST">
+    <fieldset class="sky-form-other-style">
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6  {% if form_errors(form.name) %}state-error{% endif %}">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+        <div class="row margin-bottom-20">
+            <div class="col-lg-6  {% if form_errors(form.placements) %}state-error{% endif %}">
+                {{ form_label(form.placements) }}
+                {{ form_widget(form.placements,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.placements) }}
+            </div>
+        </div>
+
+        <div class="row margin-bottom-20">
+            <div {% if not form.startDateTime.vars.value %}  style="display: none"  {% endif %}
+                    class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
+                <label>Дата начала показов</label>
+                <label class="input">
+                    <i class="icon-append fa fa-calendar"></i>
+                    {{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date'} }) }}
+                </label>
+
+                {{ form_errors(form.startDateTime) }}
+            </div>
+
+
+            <div class="col-sm-6">
+                <label class="dateSettingsStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>
+
+                <div class="inline-group">
+                    <label class="radio"><input {% if form.startDateTime.vars.value %}  checked=""  {% endif %}
+                                class="dateSettingsStart" value="1" type="radio" name="dateSettingsStart"><i
+                                class="rounded-x"></i>По
+                        дате</label>
+                    <label class="radio"><input {% if not form.startDateTime.vars.value %}  checked=""  {% endif %}
+                                class="dateSettingsStart" value="0" type="radio" name="dateSettingsStart"><i
+                                class="rounded-x"></i>Начать
+                        показ сразу</label>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row margin-bottom-20">
+            <div  {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}
+                    class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
+                <label>Дата окончания показов</label>
+
+                <label class="input">
+                    <i class="icon-append fa fa-calendar"></i>
+                    {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date'} }) }}
+                </label>
+
+            </div>
+
+            <div class="col-sm-6">
+                <label class="dateSettingsFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>
+
+                <div class="inline-group">
+                    <label class="radio"><input {% if form.finishDateTime.vars.value %}  checked=""  {% endif %}
+                                class="dateSettingsFinish" value="1" type="radio" name="dateSettingsFinish"><i
+                                class="rounded-x"></i>По
+                        дате</label>
+                    <label class="radio"><input {% if not form.finishDateTime.vars.value %}  checked=""  {% endif %}
+                                class="dateSettingsFinish" value="0" type="radio" name="dateSettingsFinish"><i
+                                class="rounded-x"></i>Показывать бесконечно</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="margin-bottom-20 {% if form_errors(form.defaultCountries) %}state-error{% endif %}">
+
+            <label>Страны</label>
+
+            {{ form_widget(form.defaultCountries,{ 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.defaultCountries) }}
+        </div>
+
+
+        <div class="margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
+            <label class="checkbox">
+                {{ form_widget(form.isEnabled) }}<i></i> {{ form.isEnabled.vars.label }}</label>
+            {{ form_errors(form.isEnabled) }}
+            </label>
+
+        </div>
+
+        <div class="margin-bottom-20">
+        </div>
+
+        {{ form_rest(form) }}
+
+        <div class="text-right">
+            <button class="btn-u" type="submit">{% if adcompany.id %}Сохранить{% else %}Добавить{% endif %}</button>
+            &nbsp;&nbsp;
+            <a href="{{ path('core_cabinet_adcompany_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+            {% if adcompany.id %}
+                &nbsp;&nbsp; или &nbsp;&nbsp;
+                <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>
+            {% endif %}
+
+        </div>
+
+    </fieldset>
+</form>
+
+
+{% block js %}
+
+    <script>
+        $(function () {
+
+            $("#datepicker").datepicker();
+            // Date range
+            $('#ad_company_type_startDateTime').datepicker({
+                dateFormat: 'dd-mm-yy',
+                prevText: '<i class="fa fa-angle-left"></i>',
+                nextText: '<i class="fa fa-angle-right"></i>',
+                onSelect: function (selectedDate) {
+                    $('#ad_company_type_finishDateTime').datepicker('option', 'minDate', selectedDate);
+                }
+            });
+            $('#ad_company_type_finishDateTime').datepicker({
+                dateFormat: 'dd-mm-yy',
+                prevText: '<i class="fa fa-angle-left"></i>',
+                nextText: '<i class="fa fa-angle-right"></i>',
+                onSelect: function (selectedDate) {
+                    $('#ad_company_type_startDateTime').datepicker('option', 'maxDate', selectedDate);
+                }
+            });
+
+
+            //$(".date").mask('99-99-9999', {placeholder: '0'});
+
+            {% if adcompany.id %}
+            $('.delete').click(function () {
+                var res = confirm('Вы действительно хотите удалить эту рекламную компанию из системы?');
+                if (res) {
+                    window.location.href = '{{ path('core_cabinet_adcompany_delete', {id:adcompany.id}) }}';
+                }
+            });
+            {% endif %}
+
+
+            $('.dateSettingsStart').change(function () {
+                var value = $('.dateSettingsStart:checked').val();
+                if (value == 1) {
+                    $('#ad_company_type_startDateTime').parents('div.col-sm-6').show();
+                    $('#ad_company_type_startDateTime').val('').focus();
+                    $('#ad_company_type_startDateTime').attr('required', 'required');
+                    $('.dateSettingsStartLabel').html('');
+                }
+                else {
+                    $('#ad_company_type_startDateTime').parents('div.col-sm-6').hide();
+                    $('#ad_company_type_startDateTime').val('');
+                    $('#ad_company_type_startDateTime').removeAttr('required');
+                    $('.dateSettingsStartLabel').html('Дата начала показов');
+                }
+            });
+
+
+            $('.dateSettingsFinish').change(function () {
+                var value = $('.dateSettingsFinish:checked').val();
+                if (value == 1) {
+                    $('#ad_company_type_finishDateTime').parents('div.col-sm-6').show();
+                    $('#ad_company_type_finishDateTime').val('').focus();
+                    $('#ad_company_type_finishDateTime').attr('required', 'required');
+                    $('.dateSettingsFinishLabel').html('');
+                }
+                else {
+                    $('#ad_company_type_finishDateTime').parents('div.col-sm-6').hide();
+                    $('#ad_company_type_finishDateTime').val('');
+                    $('#ad_company_type_finishDateTime').removeAttr('required');
+                    $('.dateSettingsFinishLabel').html('Дата окончания показов');
+                }
+            });
+
+
+        })
+    </script>
+{% endblock %}
