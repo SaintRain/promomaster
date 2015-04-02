@@ -41,7 +41,7 @@ class CommonBanner
      * @ORM\Column(type="string", length=100, nullable=false)
      * @Assert\NotBlank()
      */
-    private $name;
+    protected $name;
 
 
     /**
@@ -50,7 +50,7 @@ class CommonBanner
      * @ORM\JoinColumn(referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $user;
+    protected $user;
 
 
     /**
@@ -59,21 +59,21 @@ class CommonBanner
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
-    private $createdDateTime;
+    protected $createdDateTime;
 
     /**
      * Индекс позиции сортировки
      * @var int
      * @ORM\Column(type="bigint", nullable=true)
      */
-    private $indexPosition;
+    protected $indexPosition;
 
 
     /**
      * Статистика
      * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="banner")
      */
-    private $statistics;
+    protected $statistics;
 
 
     /**

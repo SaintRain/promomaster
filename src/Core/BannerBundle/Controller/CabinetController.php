@@ -8,6 +8,10 @@
 
 namespace Core\BannerBundle\Controller;
 
+use Core\BannerBundle\Form\Type\CodeBannerFormType;
+use Core\BannerBundle\Form\Type\FlashBannerFormType;
+use Core\BannerBundle\Form\Type\GeneralBannerFormType;
+use Core\BannerBundle\Form\Type\ImageBannerFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +19,7 @@ use Core\BannerBundle\Entity\CommonBanner;
 use Core\BannerBundle\Entity\ImageBanner;
 use Core\BannerBundle\Entity\FlashBanner;
 use Core\BannerBundle\Entity\CodeBanner;
-
+use Symfony\Component\HttpFoundation\Response;
 class CabinetController extends Controller
 {
 
@@ -204,6 +208,78 @@ class CabinetController extends Controller
                 ]
             );
         }
+    }
+
+
+    public function createAjaxAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException('Page Not Found');
+        }
+
+        $imageBanner = new ImageBanner();
+        $flashBanner = new FlashBanner();
+        $codeBanner = new CodeBanner();
+
+        $imageForm = $this->createForm('image_banner_form', $imageBanner);
+        $flashForm = $this->createForm('flash_banner_form', $flashBanner);
+        $codeForm = $this->createForm('code_banner_form', $codeBanner);
+
+        if ($request->request->count()) {
+            if ($request->get('image_banner_form')) {
+                $form = $imageForm;
+                $subject = $imageBanner;
+            } elseif($request->get('flash_banner_form')) {
+                $form = $flashForm;
+                $subject = $flashBanner;
+            } else {
+                $form = $codeForm;
+                $subject = $codeBanner;
+            }
+
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($subject);
+                $em->flush();
+
+                $answer = [
+                    'result'    => true,
+                    'data'      => '',
+                    'msg'       => 'ok'
+                ];
+            } else {
+                $content = $this->render('CoreBannerBundle:Banner\Cabinet\Forms:form_ajax.html.twig',[
+                    'imageForm' => $imageForm->createView(),
+                    'codeForm'  => $codeForm->createView(),
+                    'flashForm' => $flashForm->createView()
+                ])->getContent();
+
+                $answer = [
+                    'result'    => false,
+                    'data'      => $content,
+                    'msg'       => 'error'
+                ];
+            }
+        } else {
+            $content = $this->render('CoreBannerBundle:Banner\Cabinet\Forms:form_ajax.html.twig',[
+                            'imageForm' => $imageForm->createView(),
+                            'codeForm'  => $codeForm->createView(),
+                            'flashForm' => $flashForm->createView()
+                        ])->getContent();
+            $answer = [
+                'result'    => true,
+                'data'      => $content,
+                'msg'       => 'error'
+            ];
+        }
+
+        $response = new Response(json_encode($answer));
+
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+
     }
 
     /**

@@ -1,0 +1,12 @@
+<div class="collection-row row margin-bottom-20">
+    <div class="col-sm-5  {% if form_errors(form.banner) %}state-error{% endif %}">
+        {#<label>{{ form.banner.vars.label }}</label>#}
+        {{ form_widget(form.banner,{ 'attr': {'class': 'form-control'} }) }}
+        {{ form_errors(form.banner) }}
+    </div>
+    <div class="col-sm-2">
+        <div style="margin-top: 7px;">
+            <a class="btn-u-xs btn-u btn-u-red collection-row-remove" href="javascript:void(0)"><i class="icon-close"></i>&nbsp;Удалить</a>
+        </div>
+    </div>
+</div>

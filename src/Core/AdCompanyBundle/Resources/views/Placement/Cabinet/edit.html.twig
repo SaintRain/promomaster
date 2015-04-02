@@ -85,6 +85,7 @@
                 </div>
             </div>
 
+            {#
             <div class="row margin-bottom-20">
                 <div class="col-sm-6  {% if form_errors(form.placementBannersList) %}state-error{% endif %}">
                     <label>Баннеры</label>
@@ -92,7 +93,43 @@
                     {{ form_errors(form.placementBannersList) }}
                 </div>
             </div>
-
+            #}
+            <div class="row margin-bottom-20">
+                <div class="discounts collection-wrapper col-sm-12{% if form_errors(form.placementBannersList) %} state-error{% endif %}">
+                    <label>Список баннеров </label>
+                    {#
+                    <div class="pull-right" style="margin: 0 10px;">
+                        <a href="javascript:void(0);" class="btn-u btn-u-xs collection-add">
+                            <i class="fa fa-plus-square"></i>
+                            <span>&nbsp;Создать баннер</span>
+                        </a>
+                    </div>
+                    #}
+                    <div class="pull-right">
+                        <a href="{{ path('core_cabinet_banner_create_ajax') }}" class="btn-u btn-u-xs collection-add" data-prototype="{% filter escape %}
+                                {{ include('CoreAdCompanyBundle:Placement\\Cabinet\\Form:placement_banner.html.twig', { 'form': form.placementBannersList.vars.prototype }) }}
+                            {% endfilter %}">
+                            <i class="fa fa-plus-square"></i>
+                            <span>&nbsp;Добавить баннер</span>
+                        </a>
+                    </div>
+                    {% for placementBanner in form.placementBannersList %}
+                        <div class="collection-row row margin-bottom-20">
+                            <div class="col-sm-5  {% if form_errors(placementBanner.banner) %}state-error{% endif %}">
+                                {#<label>{{ placementBanner.banner.vars.label }}</label>#}
+                                {{ form_widget(placementBanner.banner,{ 'attr': {'class': 'form-control'} }) }}
+                                {{ form_errors(placementBanner.banner) }}
+                            </div>
+                            <div class="col-sm-2">
+                                <div style="margin-top: 7px;">
+                                    <a class="btn-u-xs btn-u btn-u-red collection-row-remove" href="javascript:void(0)"><i class="icon-close"></i>&nbsp;Удалить</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor  %}
+                    {% do form.placementBannersList.setRendered %}
+                </div>
+            </div>
 
             <div class="row margin-bottom-20">
                 <div class="col-sm-6  {% if form_errors(form.quantity) %}state-error{% endif %}">
@@ -196,12 +233,17 @@
 
     </form>
 
-
+    <div id="modal-placement"></div>
 
     {% block js %}
 
         <script>
+            var collectionCount = '{{ form.placementBannersList | length }}';
+
             $(function () {
+
+                manipulateCollection(collectionCount);
+
                 $( "#datepicker" ).datepicker();
                 // Date range
                 $('#form_startDateTime').datepicker({
@@ -268,6 +310,55 @@
                     }
                 });
             })
+
+
+            function manipulateCollection(collectionCount) {
+                /*
+                // добавление коллекции
+                $('.collection-add').click(function(e) {
+                    e.preventDefault();
+                    var $this = $(this),
+                            parentWrapper = $this.parents('.collection-wrapper'),
+                            newWidget = $this.attr('data-prototype');
+                    newWidget = newWidget.replace(/__name__/g, collectionCount);
+                    parentWrapper.append(newWidget)
+
+                    return false;
+                });
+                */
+                $('.collection-add').click(function(e) {
+                    var $this = $(this),
+                        modalPlacement = $('#modal-placement');
+
+                    $.ajax({
+                        type: 'POST',
+                        url:$this.attr('href'),
+                        success: function(data) {
+                            if (data.result) {
+                                modalPlacement.html(data.data);
+                                $('#responsive').modal('show');
+                            }
+                        },
+                        error: function () {
+                            console.log('error');
+                        }
+                    });
+
+                    return false;
+                });
+
+                // удаление коллекции
+                $('body').on('click' ,'.collection-row-remove', function(e){
+
+                    var $this = $(this),
+                            curRow = $this.parents('.collection-row');
+
+                    curRow.remove();
+
+                    return false;
+                });
+            }
+
         </script>
     {% endblock %}
 

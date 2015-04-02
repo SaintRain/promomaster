@@ -119,11 +119,13 @@ class PlacementCabinetController extends Controller
         $form = $this->createFormBuilder($placement)
             ->add('adCompany', null, ['required' => true, 'property' => 'name'])
             ->add('adPlace', null, ['required' => true, 'property' => 'name'])
+            /*
             ->add('placementBannersList', 'entity', [
                 'class'     => 'Core\AdCompanyBundle\Entity\PlacementBanner',
 //                'expanded'  => true,
                 'multiple'  => true,
                 'required' => false,'property'=>'banner.name'])
+            */
             ->add('startDateTime', 'text', ['required' => false , 'read_only'=>true])
             ->add('finishDateTime', 'text', ['required' => false, 'read_only'=>true])
             ->add('isEnabled', null, ['required' => false])
@@ -135,6 +137,13 @@ class PlacementCabinetController extends Controller
                 },
                 'required' => false, 'property'=>'captionRu'])
             ->add('defaultCountries', null, ['required' => false])
+            ->add('placementBannersList', 'collection', [
+                'by_reference' => false,
+                'type' => 'placement_banner_form',
+                'allow_add' => true,
+                'allow_delete' => true,
+
+            ])
             ->addModelTransformer(new PlacementTransformer())       //трансформер дат
             ->getForm();
 
