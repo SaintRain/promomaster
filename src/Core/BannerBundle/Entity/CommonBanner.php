@@ -22,7 +22,7 @@ use Symfony\Component\Validator\ExecutionContextInterface;
  * @ORM\HasLifecycleCallbacks()
  * @Assert\Callback(methods={"isValidCommon"})
  */
-class CommonBanner
+class CommonBanner implements \JsonSerializable
 {
 
     /**
@@ -184,6 +184,14 @@ class CommonBanner
 //                        ->atPath('price')
 //                        ->addViolation();
 //        }
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName()
+        ];
     }
 
 }

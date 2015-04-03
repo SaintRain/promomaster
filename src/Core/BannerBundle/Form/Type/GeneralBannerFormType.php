@@ -39,17 +39,18 @@ abstract class GeneralBannerFormType  extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-                ->add('bannerType', 'choice', [
-                    'label' => 'Тип баннер',
-                    'mapped' => false,
-                    //'empty_value' => 'Необходимо выбрать',
-                    'attr' => ['class' => 'banner_type'],
-                    'choices' => ['image' => 'Изображение', 'flash' => 'Flash', 'code' => 'HTML / Сторонний'],
-                ])
-                ->add('name', null, ['label'=> 'Название баннера'])
+        $data = $builder->getData();
+        if (!$data || !$data->getId()) {
+            $builder->add('bannerType', 'choice', [
+                'label' => 'Тип баннер',
+                'mapped' => false,
+                //'empty_value' => 'Необходимо выбрать',
+                'attr' => ['class' => 'banner_type'],
+                'choices' => ['image' => 'Изображение', 'flash' => 'Flash', 'code' => 'HTML / Сторонний'],
+            ]);
+        }
 
-        ;
+        $builder->add('name', null, ['label'=> 'Название баннера']);
 
         $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
             $data = $event->getData();
@@ -68,6 +69,7 @@ abstract class GeneralBannerFormType  extends AbstractType
             $this->checkIsExistSite($data, $form->get('name'));
 
         });
+
     }
     /*
     public function setDefaultOptions(OptionsResolverInterface $resolver)

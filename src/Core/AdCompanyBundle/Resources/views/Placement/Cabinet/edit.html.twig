@@ -114,18 +114,7 @@
                         </a>
                     </div>
                     {% for placementBanner in form.placementBannersList %}
-                        <div class="collection-row row margin-bottom-20">
-                            <div class="col-sm-5  {% if form_errors(placementBanner.banner) %}state-error{% endif %}">
-                                {#<label>{{ placementBanner.banner.vars.label }}</label>#}
-                                {{ form_widget(placementBanner.banner,{ 'attr': {'class': 'form-control'} }) }}
-                                {{ form_errors(placementBanner.banner) }}
-                            </div>
-                            <div class="col-sm-2">
-                                <div style="margin-top: 7px;">
-                                    <a class="btn-u-xs btn-u btn-u-red collection-row-remove" href="javascript:void(0)"><i class="icon-close"></i>&nbsp;Удалить</a>
-                                </div>
-                            </div>
-                        </div>
+                        {{ include('CoreAdCompanyBundle:Placement\\Cabinet\\Form:placement_banner.html.twig', { 'form': placementBanner }) }}
                     {% endfor  %}
                     {% do form.placementBannersList.setRendered %}
                 </div>
@@ -309,6 +298,32 @@
                         $('.dateSettingsFinishLabel').html('Дата окончания показов');
                     }
                 });
+
+                // редактирование банера
+                $('body').on('click', '.entity-desc', function(){
+                    var $this = $(this),
+                            modalPlacement = $('#modal-placement'),
+                            curId = $this.attr('data-id');
+                    modalPlacement.find('#responsive').remove();
+                    modalPlacement.html('');
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('core_cabinet_banner_edit_ajax') }}',
+                        data:'id='+ curId,
+                        success: function(data) {
+                            if (data.result) {
+                                modalPlacement.html(data.data);
+                                $('#responsive').modal('show');
+                            }
+                        },
+                        error: function () {
+                            console.log('error');
+                        }
+                    });
+
+                    return false;
+                });
+
             })
 
 
@@ -329,7 +344,8 @@
                 $('.collection-add').click(function(e) {
                     var $this = $(this),
                         modalPlacement = $('#modal-placement');
-
+                    modalPlacement.find('#responsive').remove();
+                    modalPlacement.html('');
                     $.ajax({
                         type: 'POST',
                         url:$this.attr('href'),
@@ -349,12 +365,10 @@
 
                 // удаление коллекции
                 $('body').on('click' ,'.collection-row-remove', function(e){
-
                     var $this = $(this),
                             curRow = $this.parents('.collection-row');
 
                     curRow.remove();
-
                     return false;
                 });
             }

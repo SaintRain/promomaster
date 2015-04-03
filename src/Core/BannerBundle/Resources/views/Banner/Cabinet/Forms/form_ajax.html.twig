@@ -6,12 +6,16 @@
 #}
 
 {% set errorForm = null %}
-{% if imageForm.vars.errors | length %}
-    {% set errorForm = 'imageForm' %}
-{% elseif  codeForm.vars.errors | length %}
-    {% set errorForm = 'codeForm' %}
-{% elseif   flashForm.vars.errors | length %}
-    {% set errorForm = 'flashForm' %}
+{% if formName is defined %}
+
+    {% if formName == 'code_banner_form' %}
+        {% set errorForm = 'codeForm' %}
+    {% elseif formName == 'image_banner_form' %}
+        {% set errorForm = 'imageForm' %}
+    {% elseif formName == 'flash_banner_form' %}
+        {% set errorForm = 'flashForm' %}
+    {% endif %}
+
 {% endif %}
 
 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="responsive" class="modal fade" style="display: none;">
@@ -19,9 +23,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel">Добавление банера</h4>
+                <h4 class="modal-title" id="myModalLabel">{% if subject is defined %} Добавление банера{% else %}Редактирование банера{% endif %}</h4>
                 <div class="modal-content-wr">
-                    <form id="form_image" class="{% if errorForm and (errorForm != 'imageForm') %} hidden{% endif %} trigger sky-form sky-form-other-style"action="{{ path('core_cabinet_banner_create_ajax') }}" {{ form_enctype(imageForm) }}
+                    {% if imageForm %}
+                    <form id="form_image" class="{% if (errorForm and (errorForm != 'imageForm')) %} hidden{% endif %} trigger sky-form sky-form-other-style"action="{{ path('core_cabinet_banner_create_ajax') }}" {{ form_enctype(imageForm) }}
                           method="POST">
                         <div class="modal-body">
                             <div class="row">
@@ -63,8 +68,9 @@
                             <button type="submit" class="btn-u btn-u-primary">Сохранить</button>
                         </div>
                     </form>
-
-                    <form id="form_code" class="trigger{% if not (errorForm == 'codeForm') %} hidden{% endif %} sky-form sky-form-other-style"action="{{ path('core_cabinet_banner_create_ajax') }}" {{ form_enctype(codeForm) }}
+                    {% endif %}
+                    {% if  codeForm %}
+                    <form id="form_code" class="trigger{% if (not (errorForm == 'codeForm')) and (subject is not defined) %} hidden{% endif %} sky-form sky-form-other-style"action="{{ path('core_cabinet_banner_create_ajax') }}" {{ form_enctype(codeForm) }}
                           method="POST">
                         <div class="modal-body">
                             {% if codeForm.vars.errors | length %}
@@ -106,8 +112,9 @@
                             <button type="submit" class="btn-u btn-u-primary">Сохранить</button>
                         </div>
                     </form>
-
-                    <form id="form_flash" class="trigger{% if not (errorForm == 'flashForm') %} hidden {% endif %} sky-form sky-form-other-style"action="{{ path('core_cabinet_banner_create_ajax') }}" {{ form_enctype(flashForm) }}
+                    {% endif %}
+                    {% if  flashForm %}
+                    <form id="form_flash" class="trigger{% if (not (errorForm == 'flashForm')) and (subject is not defined) %} hidden {% endif %} sky-form sky-form-other-style"action="{{ path('core_cabinet_banner_create_ajax') }}" {{ form_enctype(flashForm) }}
                           method="POST">
                         <div class="modal-body">
                             <div class="row">
@@ -144,12 +151,12 @@
                             <button type="submit" class="btn-u btn-u-primary">Сохранить</button>
                         </div>
                     </form>
+                    {% endif %}
                 </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 <script>
     (function($){
 
@@ -158,17 +165,17 @@
             // видимость формы
             $('body').on('change', '.banner_type', function(){
                 var $this = $(this),
-                    formId = 'form_' + $this.val(),
-                    curForm = $('#'+formId),
-                    same = $('.banner_type'),
-                    forms = $('.trigger');
+                        formId = 'form_' + $this.val(),
+                        curForm = $('#'+formId),
+                        same = $('.banner_type'),
+                        forms = $('.trigger');
                 same.each(function(index, element){
                     $(element).val($this.val());
                 });
                 forms.each(function(index, element){
                     var $this = $(element);
-                        $this.addClass('hidden');
-                        curForm.hide();
+                    $this.addClass('hidden');
+                    curForm.hide();
                 });
 
                 if (curForm.hasClass('hidden')) {
@@ -178,24 +185,39 @@
             });
 
 
-            $('body').on('submit', '.trigger', function() {
+            $('.trigger').submit(function() {
                 var $this = $(this),
-                    collectionWrapper = $('.collection-wrapper'),
-                    collectionCount = $('.collection-row').length,
-                    newWidget = $('.collection-add').attr('data-prototype'),
-                    answerPlacement = $('.modal-content-wr'),
-                    newWidget = newWidget.replace(/__name__/g, collectionCount),
-                    modalBlock = $('#responsive');
+                        collectionWrapper = $('.collection-wrapper'),
+                        collectionCount = $('.collection-row').length,
+                        newWidget = $('.collection-add').attr('data-prototype'),
+                        answerPlacement = $('#responsive .modal-content-wr'),
+                        newWidget = newWidget.replace(/__name__/g, collectionCount),
+                        postUrl,
+                        formData = $this.serialize(),
+                        modalBlock = $('#responsive');
+                {% if subject is defined %}
+                postUrl = "{{ path('core_cabinet_banner_edit_ajax') }}";
+                formData += '&id={{ subject.id }}';
+                {% else %}
+                postUrl = "{{ path('core_cabinet_banner_create_ajax') }}";
+                {% endif %}
                 $.ajax({
                     type: 'POST',
-                    url: "{{ path('core_cabinet_banner_create_ajax') }}",
-                    data: $this.serialize(),
+                    url: postUrl,
+                    data: formData,
                     success: function(data) {
                         if (data.result) {
                             modalBlock.modal('hide');
+                            {% if subject is defined %}
+                            $(".entity-desc[data-id='"+data.data.id+"']").find('.inner').html(data.data.name);
+                            {% else %}
+                            newWidget = newWidget.replace(/data-id="[0-9]+"/g, 'data-id="' + data.data.id + '"');
+                            newWidget = newWidget.replace(/\<span class="inner"\>.+\<\/span\>/g, '<span class="inner">' + data.data.name + '</span>');
                             collectionWrapper.append(newWidget);
+                            collectionWrapper.find('#form_placementBannersList_' + collectionCount + '_banner').val(data.data.id);
+                            {% endif %}
                         } else {
-                            answerPlacement.html($('.modal-content-wr', data.data).html());
+                            answerPlacement.replaceWith($(data.data).find('.modal-content-wr'));
                         }
                     },
                     error: function () {
@@ -207,9 +229,9 @@
             });
         });
 
-
-
     })(jQuery)
 </script>
+</div>
+
 
 {#{% endblock %}#}

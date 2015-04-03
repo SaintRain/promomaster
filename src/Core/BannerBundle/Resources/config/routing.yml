@@ -34,8 +34,14 @@ core_cabinet_banner_delete:
     requirements:
       id: \d+
 
-# добавление баннера в ЛК
+# добавление баннера в ЛК (ajax)
 core_cabinet_banner_create_ajax:
     path:      /cabinet/banner_create_ajax.html
     schemes:  [http]
     defaults:  { _controller: CoreBannerBundle:Cabinet:createAjax }
+
+# редакстиорвание баннера в ЛК (ajax)
+core_cabinet_banner_edit_ajax:
+    path:      /cabinet/banner_edit_ajax.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Cabinet:editAjax }

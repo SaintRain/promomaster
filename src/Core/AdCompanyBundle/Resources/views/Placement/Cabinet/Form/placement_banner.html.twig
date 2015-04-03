@@ -1,8 +1,12 @@
 <div class="collection-row row margin-bottom-20">
-    <div class="col-sm-5  {% if form_errors(form.banner) %}state-error{% endif %}">
+    <div class="col-sm-4  {% if form_errors(form.banner) %}state-error{% endif %}">
         {#<label>{{ form.banner.vars.label }}</label>#}
         {{ form_widget(form.banner,{ 'attr': {'class': 'form-control'} }) }}
         {{ form_errors(form.banner) }}
+    </div>
+    <div class="col-sm-2  {% if form_errors(form.banner) %}state-error{% endif %}">
+        {{ form_widget(form.preoritet,{ 'attr': {'class': 'form-control'} }) }}
+        {{ form_errors(form.preoritet) }}
     </div>
     <div class="col-sm-2">
         <div style="margin-top: 7px;">

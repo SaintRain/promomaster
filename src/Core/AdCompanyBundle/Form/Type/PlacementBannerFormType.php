@@ -30,11 +30,19 @@ class PlacementBannerFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            /*
             ->add('banner', 'entity', ['label'=>'Баннер',
                                         'empty_value'=>'Ничего не выбрано',
                                         'property'=>'name',
                                         'class' => 'Core\BannerBundle\Entity\CommonBanner'])
-            ->add('preoritet', null, ['label'=>'Приоритет'])
+            */
+            ->add('banner', 'banner_entity', [
+                                        'label'=>'Баннер',
+                                        //'empty_value'=>'Ничего не выбрано',
+                                        'property'=>'name',
+                                        'class' => 'Core\BannerBundle\Entity\CommonBanner'
+            ])
+            ->add('preoritet', null, ['label'=>'Приоритет', 'attr' =>['placeholder' => 'Приоритет']])
         ;
     }
 

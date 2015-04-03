@@ -34,3 +34,8 @@ services:
       arguments: ['@doctrine.orm.entity_manager', '@security.context']
       tags:
         - {name: form.type, alias: 'code_banner_form'}
+  core_banner_entity_form:
+     class: Core\BannerBundle\Form\Type\BannerEntityFormType
+     arguments: ["@doctrine.orm.entity_manager"]
+     tags:
+     - { name: form.type, alias: banner_entity }
