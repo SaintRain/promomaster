@@ -13,12 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * AdPlacePrice
  *
  * @ORM\Table(name="ad_place_price")
  * @ORM\Entity(repositoryClass="Core\SiteBundle\Entity\Repository\AdPlacePriceRepository")
+ * @UniqueEntity(fields={"priceModel","adPlace"}, message="Это значение уже используется. Необходимо выбрать другое или отредактировать уже существующее")
  */
 class AdPlacePrice
 {
