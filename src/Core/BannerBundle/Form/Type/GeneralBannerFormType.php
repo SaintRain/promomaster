@@ -13,9 +13,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Core\BannerBundle\Entity\ImageBanner;
+use Core\BannerBundle\Entity\FlashBanner;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 abstract class GeneralBannerFormType  extends AbstractType
 {
@@ -25,14 +28,32 @@ abstract class GeneralBannerFormType  extends AbstractType
     protected $em;
 
     /**
+     * @var RequestStack
+     */
+
+    protected $requestStack;
+
+    /**
      * @var SecurityContextInterface
      */
     protected $security;
 
-    public function __construct(EntityManagerInterface $em, SecurityContextInterface $security)
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
+
+    private static $sessionKeys = [
+        'image' => 'core_file_image',
+        'file' => 'core_file'
+    ];
+
+    public function __construct(EntityManagerInterface $em, SecurityContextInterface $security, SessionInterface $session, RequestStack $requestStack)
     {
         $this->em = $em;
         $this->security = $security;
+        $this->requestStack = $requestStack;
+        $this->session = $session;
     }
 
 
@@ -40,6 +61,8 @@ abstract class GeneralBannerFormType  extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $data = $builder->getData();
+        $file = null;
+
         if (!$data || !$data->getId()) {
             $builder->add('bannerType', 'choice', [
                 'label' => 'Тип баннер',
@@ -52,6 +75,18 @@ abstract class GeneralBannerFormType  extends AbstractType
 
         $builder->add('name', null, ['label'=> 'Название баннера']);
 
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) use (&$file) {
+            $data = $event->getData();
+            if ($data && $data->getId()) {
+                if ($data instanceof ImageBanner) {
+                    $file = $data->getImage()[0];
+
+                } elseif($data instanceof FlashBanner) {
+                    $file = $data->getFile()[0];
+                }
+            }
+        });
+
         $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
             $data = $event->getData();
             if (null == $data->getUser()) {
@@ -63,10 +98,27 @@ abstract class GeneralBannerFormType  extends AbstractType
 
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use (&$file){
             $data = $event->getData();
             $form = $event->getForm();
             $this->checkIsExistSite($data, $form->get('name'));
+
+            // нужно перевязвать файл, потому что он затирается
+            if ($data && $data->getId()) {
+                if ($data instanceof ImageBanner) {
+                    $data->setImage($file);
+                } elseif($data instanceof FlashBanner) {
+                    $file = $data->setFile($file);
+                }
+            }
+
+            if ($data instanceof ImageBanner || $data instanceof FlashBanner) {
+                if ($data instanceof ImageBanner) {
+                    $this->checkIsFileLoaded($form->get('image'), $form->get('name'));
+                } elseif($data instanceof FlashBanner) {
+                    $this->checkIsFileLoaded($form->get('file'), $form->get('name'));
+                }
+            }
 
         });
 
@@ -85,6 +137,7 @@ abstract class GeneralBannerFormType  extends AbstractType
         return 'general_banner_form';
     }
     */
+
     /**
      * Проверяет есть ли у пользователя баннер с таким именем
      * @param $banner
@@ -102,6 +155,32 @@ abstract class GeneralBannerFormType  extends AbstractType
         if ($res['quantity']) {
             $element
                 ->addError(new FormError('Баннер с указанным названием был добавлен вами ранее. Придумайте другое уникальное название.'));
+        }
+    }
+
+    /**
+     * Проверяет загрузку файлов
+     * @param $formElement
+     * @param $fieldErrorPlace
+     */
+    private function checkIsFileLoaded($formElement, $fieldErrorPlace)
+    {
+        $isError = false;
+        $fieldName = $formElement->getName();
+        $request = $this->requestStack->getCurrentRequest();
+        $data = $request->request->get('CoreFileBundleInput');
+        if ($data && $data[$fieldName]['form_id']) {
+            //$fileHash = $data[$fieldName]['form_id'];
+            //ld($fileHash);
+            $curSession = $this->session->get(self::$sessionKeys[$fieldName]);
+            if (!$curSession /* || !isset($curSession[$fileHash])*/) {
+                $isError = true;
+            }
+        } else {
+            $isError = true;
+        }
+        if ($isError) {
+            $fieldErrorPlace->addError(new FormError('Необходимо выбрать файл'));
         }
     }
 

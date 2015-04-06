@@ -32,10 +32,9 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <fieldset class="sky-form-other-style">
-
                                         {% for child in imageForm.children %}
                                         <div class="row margin-bottom-20">
-                                            <div class="col-sm-12  {% if form_errors(child) %}state-error{% endif %}">
+                                            <div class="col-sm-12{% if form_errors(child) %} state-error{% endif %}">
                                                 {% set  curClass = 'form-control'  %}
                                                 {% if child.vars.attr.class is defined %}
                                                     {%  set curClass = child.vars.attr.class ~ ' ' ~ curClass  %}
@@ -160,8 +159,6 @@
 <script>
     (function($){
 
-        $(function(){
-
             // видимость формы
             $('body').on('change', '.banner_type', function(){
                 var $this = $(this),
@@ -184,13 +181,13 @@
                 }
             });
 
-
-            $('.trigger').submit(function() {
+            $('body').off('submit', '.trigger');
+            $('body').on('submit', '.trigger', function() {
                 var $this = $(this),
                         collectionWrapper = $('.collection-wrapper'),
                         collectionCount = $('.collection-row').length,
                         newWidget = $('.collection-add').attr('data-prototype'),
-                        answerPlacement = $('#responsive .modal-content-wr'),
+                        answerPlacement = $('#responsive'),
                         newWidget = newWidget.replace(/__name__/g, collectionCount),
                         postUrl,
                         formData = $this.serialize(),
@@ -217,7 +214,9 @@
                             collectionWrapper.find('#form_placementBannersList_' + collectionCount + '_banner').val(data.data.id);
                             {% endif %}
                         } else {
-                            answerPlacement.replaceWith($(data.data).find('.modal-content-wr'));
+                            $('.modal-content-wr', answerPlacement).remove();
+                            $('#myModalLabel', answerPlacement).after($(data.data).find('.modal-content-wr'));
+
                         }
                     },
                     error: function () {
@@ -227,7 +226,6 @@
 
                 return false;
             });
-        });
 
     })(jQuery)
 </script>

@@ -217,6 +217,10 @@ class CabinetController extends Controller
             throw $this->createNotFoundException('Page Not Found');
         }
 
+        if (!$this->getUser()) {
+            throw $this->createNotFoundException('Page Not Found');
+        }
+
         $imageBanner = new ImageBanner();
         $flashBanner = new FlashBanner();
         $codeBanner = new CodeBanner();
@@ -293,6 +297,10 @@ class CabinetController extends Controller
         $em = $this->getDoctrine()->getManager();
         $id = $request->get('id');
         $subject = $em->getRepository('CoreBannerBundle:CommonBanner')->find((int)$id);
+
+        if (!$subject || !$this->getUser() || ($subject->getUser()->getId() != $this->getUser()->getId())) {
+            throw $this->createNotFoundException('Page Not Found');
+        }
         if ($subject instanceof ImageBanner) {
             $imageForm = $this->createForm('image_banner_form', $subject);
             $form = $imageForm;
@@ -303,6 +311,7 @@ class CabinetController extends Controller
             $codeForm = $this->createForm('code_banner_form', $subject);
             $form = $codeForm;
         }
+
         if ($request->request->count() > 1) {
             $form->handleRequest($request);
             if ($form->isValid()) {
