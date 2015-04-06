@@ -3,15 +3,17 @@
  {% block body %}
 
      {#{% spaceless %}#}
-         <div class="wrapper" >
-             {% block header %}
-                 {{ render (controller ('CoreCommonBundle:Fragments:header', {'request': app.request})) }}
-             {% endblock %}
+         <div id="wrap">
+             <div class="wrapper" >
+                 {% block header %}
+                     {{ render (controller ('CoreCommonBundle:Fragments:header', {'request': app.request})) }}
+                 {% endblock %}
 
-             {% block content %}
-             {% endblock %}
+                 {% block content %}
+                 {% endblock %}
 
-         </div><!--/wrapper-->
+             </div><!--/wrapper-->
+         </div>
          {% block footer %}
 
              <!--PromoMaster.net-->
