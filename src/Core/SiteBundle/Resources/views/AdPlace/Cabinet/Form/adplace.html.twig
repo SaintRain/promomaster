@@ -96,6 +96,20 @@
             </label>
         </div>
 
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6  {% if form_errors(form.gag) %}state-error{% endif %}">
+                <label>Заглушка</label>
+                <div class="pull-right">
+                    <a class="btn-u btn-u-xs gag-create" href="{{ path('core_cabinet_banner_create_ajax') }}">
+                        <i class="fa fa-plus-square"></i>
+                        <span>&nbsp;Добавить Заглушку</span>
+                    </a>
+                </div>
+                {{ form_widget(form.gag,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.gag) }}
+            </div>
+            <div id="gag-placement"></div>
+        </div>
 
         <div class="row margin-bottom-20">
             <div class="col-sm-6  {% if form_errors(form.sections) %}state-error{% endif %}">
@@ -221,7 +235,83 @@
             }
         });
         {% endif %}
-    })
+
+
+        // форма добавления загушки
+        $('.gag-create').click(function(e) {
+            var $this = $(this),
+                    modalPlacement = $('#gag-placement');
+            modalPlacement.find('#banner-modal').remove();
+            modalPlacement.html('');
+            $.ajax({
+                type: 'POST',
+                url:$this.attr('href')+'?isGag=1',
+                success: function(data) {
+                    if (data.result) {
+                        modalPlacement.html(data.data);
+                        $('#banner-modal').modal('show');
+                    }
+                },
+                error: function () {
+                    console.log('error');
+                }
+            });
+
+            return false;
+        });
+
+        // видимость форм загушки
+        $('body').on('change', '.banner_type', function(){
+            var $this = $(this),
+                    formId = 'form_' + $this.val(),
+                    curForm = $('#'+formId),
+                    same = $('.banner_type'),
+                    forms = $('.trigger');
+            same.each(function(index, element){
+                $(element).val($this.val());
+            });
+            forms.each(function(index, element){
+                var $this = $(element);
+                $this.addClass('hidden');
+                curForm.hide();
+            });
+
+            if (curForm.hasClass('hidden')) {
+                curForm.removeClass('hidden');
+                curForm.show();
+            }
+        });
+
+        // сохранение загулшки
+        $('#gag-placement').on('submit', 'form.trigger', function() {
+            var $this = $(this),
+                    collectionWrapper = $('.collection-wrapper'),
+                    postUrl,
+                    formData = $this.serialize(),
+                    modalBlock = $('#banner-modal');
+            $.ajax({
+                type: 'POST',
+                url: "{{ path('core_cabinet_banner_create_ajax', {'isGag': 1}) }}",
+                data: formData,
+                success: function(data) {
+                    if (data.result) {
+                        modalBlock.modal('hide');
+                        $('#form_gag').append('<option value="' + data.data.id +'">' + data.data.name +'</option>')
+                        $('#form_gag').val(data.data.id);
+                    } else {
+                        $('.modal-content-wr', modalBlock).remove();
+                        $('#myModalLabel', modalBlock).after($(data.data).find('.modal-content-wr'));
+                    }
+                },
+                error: function () {
+                    console.log('error');
+                }
+            });
+
+            return false;
+        });
+
+    });
 
     function manipulateCollection(count) {
         // добавление коллекции

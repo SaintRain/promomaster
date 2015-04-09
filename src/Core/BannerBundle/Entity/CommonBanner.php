@@ -68,6 +68,12 @@ class CommonBanner implements \JsonSerializable
      */
     protected $indexPosition;
 
+    /**
+     * Заглушка да - нет
+     * @var boolean
+     * @ORM\Column(type="boolean", options={"default" = 0})
+     */
+    protected $isGag = false;
 
     /**
      * Статистика
@@ -173,6 +179,23 @@ class CommonBanner implements \JsonSerializable
         $this->statistics = $statistics;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isIsGag()
+    {
+        return $this->isGag;
+    }
+
+    /**
+     * @param boolean $isGag
+     */
+    public function setIsGag($isGag)
+    {
+        $this->isGag = $isGag;
+
+        return $this;
+    }
 
     /**
      * Дополнительные проверки

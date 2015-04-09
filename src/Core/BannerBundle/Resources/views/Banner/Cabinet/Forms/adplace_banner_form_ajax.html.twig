@@ -1,0 +1,259 @@
+{#редактирование баннера в ЛК#}
+{#
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
+
+{% block sub_content %}
+#}
+
+{% set errorForm = null %}
+{% if formName is defined %}
+
+    {% if formName == 'code_banner_form' %}
+        {% set errorForm = 'codeForm' %}
+    {% elseif formName == 'image_banner_form' %}
+        {% set errorForm = 'imageForm' %}
+    {% elseif formName == 'flash_banner_form' %}
+        {% set errorForm = 'flashForm' %}
+    {% endif %}
+
+{% endif %}
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="banner-modal" class="modal fade" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">{% if subject is defined %}Редактирование заглушки{% else %}Добавление заглушки{% endif %}</h4>
+                <div class="modal-content-wr">
+                    {% if imageForm %}
+                        <form id="form_image" class="{% if (errorForm and (errorForm != 'imageForm')) %}hidden {% endif %}trigger sky-form sky-form-other-style"action="{{ path('core_cabinet_banner_create_ajax') }}" {{ form_enctype(imageForm) }}
+                              method="POST">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <fieldset class="sky-form-other-style">
+                                            {% for child in imageForm.children %}
+
+                                                {% set labelText  = child.vars.label %}
+                                                {%  if  labelText == 'Название баннера' %}
+                                                    {% set labelText  = 'Название заглушки' %}
+                                                    {% elseif  labelText == 'Тип баннера'%}
+                                                        {% set labelText  = 'Тип заглушки' %}
+                                                {% endif %}
+
+                                                <div class="row margin-bottom-20">
+                                                    <div class="col-sm-12{% if form_errors(child) %} state-error{% endif %}">
+                                                        {% set  curClass = 'form-control'  %}
+                                                        {% if child.vars.attr.class is defined %}
+                                                            {%  set curClass = child.vars.attr.class ~ ' ' ~ curClass  %}
+                                                        {% endif  %}
+                                                        {% if child.vars.name ==  'isOpenUrlInNewWindow' %}
+                                                    <label class="checkbox">
+                                                        {{ form_widget(child) }}<i></i> {{ labelText }}{% if child.vars.required %} *{%  endif %}</label>
+                                                    {{ form_errors(child) }}
+                                                    </label>
+                                                {% else %}
+                                                            <label>{{ labelText }}{% if child.vars.required %} *{%  endif %}</label>
+                                                            {{ form_widget(child,{ 'attr': {'class': curClass} }) }}
+                                                            {{ form_errors(child) }}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                            <div class=" margin-bottom-20">
+                                            </div>
+
+                                            {{ form_rest(imageForm) }}
+
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn-u btn-u-default" data-dismiss="modal">Отмена</button>
+                                <button type="submit" class="btn-u btn-u-primary">Сохранить</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                    {% if  codeForm %}
+                        <form id="form_code" class="trigger{% if (not (errorForm == 'codeForm')) and (subject is not defined) %} hidden{% endif %} sky-form sky-form-other-style"action="{{ path('core_cabinet_banner_create_ajax') }}" {{ form_enctype(codeForm) }}
+                              method="POST">
+                            <div class="modal-body">
+                                {% if codeForm.vars.errors | length %}
+                                    <br/>
+                                    <div class="alert alert-danger fade in">
+                                        {{ form_errors(codeForm) }}
+                                    </div>
+                                {% endif %}
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <fieldset class="sky-form-other-style">
+
+                                            {% for child in codeForm.children %}
+
+                                                {% set labelText  = child.vars.label %}
+                                                {%  if  labelText == 'Название баннера' %}
+                                                    {% set labelText  = 'Название заглушки' %}
+                                                {% elseif  labelText == 'Тип баннера'%}
+                                                    {% set labelText  = 'Тип заглушки' %}
+                                                {% elseif  labelText == 'Код баннера'%}
+                                                    {% set labelText  = 'Код заглушки' %}
+                                                {% endif %}
+
+                                                {% set  curClass = 'form-control'  %}
+                                                {% if child.vars.attr.class is defined %}
+                                                    {%  set curClass = child.vars.attr.class ~ ' ' ~ curClass  %}
+                                                {% endif  %}
+
+                                                <div class="row margin-bottom-20">
+                                                    <div class="col-sm-12  {% if form_errors(child) %}state-error{% endif %}">
+                                                        <label>{{ labelText }}{% if child.vars.required %} *{%  endif %}</label>
+                                                        {{ form_widget(child,{ 'attr': {'class': curClass} }) }}
+                                                        {{ form_errors(child) }}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                            <div class=" margin-bottom-20">
+                                            </div>
+
+                                            {{ form_rest(codeForm) }}
+
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn-u btn-u-default" data-dismiss="modal">Отмена</button>
+                                <button type="submit" class="btn-u btn-u-primary">Сохранить</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                    {% if  flashForm %}
+                        <form id="form_flash" class="trigger{% if (not (errorForm == 'flashForm')) and (subject is not defined) %} hidden {% endif %} sky-form sky-form-other-style"action="{{ path('core_cabinet_banner_create_ajax') }}" {{ form_enctype(flashForm) }}
+                              method="POST">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <fieldset class="sky-form-other-style">
+
+                                            {% for child in flashForm.children %}
+
+                                                {% set labelText  = child.vars.label %}
+                                                {%  if  labelText == 'Название баннера' %}
+                                                    {% set labelText  = 'Название заглушки' %}
+                                                {% elseif  labelText == 'Тип баннера'%}
+                                                    {% set labelText  = 'Тип заглушки' %}
+                                                {% endif %}
+
+                                                {% set  curClass = 'form-control'  %}
+                                                {% if child.vars.attr.class is defined %}
+                                                    {%  set curClass = child.vars.attr.class ~ ' ' ~ curClass  %}
+                                                {% endif  %}
+                                                <div class="row margin-bottom-20">
+                                                    <div class="col-sm-12  {% if form_errors(child) %}state-error{% endif %}">
+                                                        <label>{{ labelText }}{% if child.vars.required %} *{%  endif %}</label>
+                                                        {{ form_widget(child,{ 'attr': {'class': curClass} }) }}
+                                                        {{ form_errors(child) }}
+                                                        {% if  child.vars.note is defined %}
+                                                            <span class="note">{{ child.vars.note | raw }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                            <div class=" margin-bottom-20">
+                                            </div>
+
+                                            {{ form_rest(flashForm) }}
+
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn-u btn-u-default" data-dismiss="modal">Отмена</button>
+                                <button type="submit" class="btn-u btn-u-primary">Сохранить</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{#
+<script>
+    (function($){
+        $(function(){
+            // видимость формы
+            $('body').on('change', '.banner_type', function(){
+                var $this = $(this),
+                        formId = 'form_' + $this.val(),
+                        curForm = $('#'+formId),
+                        same = $('.banner_type'),
+                        forms = $('.trigger');
+                same.each(function(index, element){
+                    $(element).val($this.val());
+                });
+                forms.each(function(index, element){
+                    var $this = $(element);
+                    $this.addClass('hidden');
+                    curForm.hide();
+                });
+
+                if (curForm.hasClass('hidden')) {
+                    curForm.removeClass('hidden');
+                    curForm.show();
+                }
+            });
+
+            $('body').off('submit', '.trigger');
+            $('body').submit(function() {
+                console.log('ggg');
+                return false;
+            });
+            $('body').on('submit', '.trigger', function() {
+                var $this = $(this),
+                        collectionWrapper = $('.collection-wrapper'),
+                        postUrl,
+                        formData = $this.serialize(),
+                        modalBlock = $('#banner-modal');
+                {% if subject is defined %}
+                postUrl = "{{ path('core_cabinet_banner_edit_ajax') }}";
+                formData += '&id={{ subject.id }}';
+                {% else %}
+                postUrl = "{{ path('core_cabinet_banner_create_ajax') }}";
+                {% endif %}
+                $.ajax({
+                    type: 'POST',
+                    url: postUrl,
+                    data: formData,
+                    success: function(data) {
+                        if (data.result) {
+                            modalBlock.modal('hide');
+                            {% if subject is defined %}
+                            $(".entity-desc[data-id='"+data.data.id+"']").find('.inner').html(data.data.name);
+                            {% else %}
+                            $('#form_gag').append('<option value="' + data.data.id +'">' + data.data.name +'</option>')
+                            $('#form_gag').val(data.data.id);
+                            {% endif %}
+                        } else {
+                            $('.modal-content-wr', modalBlock).remove();
+                            $('#myModalLabel', modalBlock).after($(data.data).find('.modal-content-wr'));
+                        }
+                    },
+                    error: function () {
+                        console.log('error');
+                    }
+                });
+
+                return false;
+            });
+        });
+    })(jQuery)
+</script>
+#}
+</div>
+
+
+{#{% endblock %}#}

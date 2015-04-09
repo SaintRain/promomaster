@@ -1,0 +1,119 @@
+{#форма редактирования flash баннера#}
+<form id="form_flash" style="clear: both;{% if not show %}display: none{% endif %}"
+      class="sky-form sky-form-other-style"
+      action="{% if banner.id %}{{ path('core_cabinet_gag_edit', {id:banner.id}) }}{% else %}{{ path('core_cabinet_gag_create') }}{% endif %}" {{ form_enctype(form) }}
+      method="POST">
+
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+            &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_gag_create') }}'><i
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще заглушку</a>
+            &nbsp;&nbsp;&nbsp;
+            <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_gag_list_first_page') }}'><i
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку заглушек</a>
+        </div>
+    {% endfor %}
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+    {% if form.vars.errors | length %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <fieldset class="sky-form-other-style">
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6"><label>Тип заглушки*</label><select {% if banner.id %} disabled {% endif %}
+                        type="text"
+                        name="banner_type"
+                        required="required"
+                        class="banner_type form-control">
+                    <option value="image">
+                        Изображение
+                    </option>
+                    <option selected value="flash">Flash</option>
+                    <option value="code">HTML / Сторонний
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6  {% if form_errors(form.name) %}state-error{% endif %}">
+                <label>Название*</label>
+                {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-12  {% if form_errors(form.url) %}state-error{% endif %}">
+                <label>URL для перехода *</label>
+                {{ form_widget(form.url,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.url) }}
+                <span class="note">
+Чтобы система могла правильно учитывать клики по Flash баннерам, сделайте следующее.
+Создайте в баннере элемент типа button, для которого пропишите такой скрипт:
+<pre>
+on (release) {
+getURL(url, "_blank");
+}
+</pre>
+Если переход по рекламе должен осуществляться не в новом окне, а в текущем, то в методе getURL второй параметр измените на "_self".
+</span>
+            </div>
+
+        </div>
+
+
+        {#<div class="margin-bottom-20 {% if form_errors(form.isOpenUrlInNewWindow) %}state-error{% endif %}">#}
+        {#<label class="checkbox">#}
+        {#{{ form_widget(form.isOpenUrlInNewWindow) }}<i></i> Открывать URL в новом окне</label>#}
+        {#{{ form_errors(form.isOpenUrlInNewWindow) }}#}
+        {#</label>#}
+        {#</div>#}
+
+
+        <div class="row margin-bottom-20">
+            <div class="col-lg-12  {% if form_errors(form.file) %}state-error{% endif %}">
+                <label>Flash*</label>
+                {{ form_widget(form.file,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.file) }}
+            </div>
+        </div>
+
+
+        <div class=" margin-bottom-20">
+        </div>
+
+        {{ form_rest(form) }}
+
+        <div class="text-right">
+
+            <button class="btn-u" type="submit">{% if banner.id %}Сохранить{% else %}Добавить{% endif %}</button>
+            &nbsp;&nbsp;
+            <a href="{{ path('core_cabinet_gag_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+            {% if banner.id %}
+                &nbsp;&nbsp; или &nbsp;&nbsp;
+                <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>
+            {% endif %}
+
+        </div>
+
+    </fieldset>
+
+</form>
+
+  

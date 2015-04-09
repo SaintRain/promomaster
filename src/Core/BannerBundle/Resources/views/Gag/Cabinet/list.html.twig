@@ -1,0 +1,136 @@
+{#вывод списка баннеров в ЛК#}
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}Ваши заглушки{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Заглушки</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li class="active">Список ваших заглушек</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block sub_content %}
+    {% if  banners.getTotalItemCount %}
+        <h3>Список ваших загулшек</h3>
+    {% else %}
+        <h3>Вы еще не добавляли свои заглушки в систему</h3>
+    {% endif %}
+    <a style="margin-top: -30px" href="{{ path('core_cabinet_gag_create') }}" class="btn-u pull-right"><i
+                class="fa fa-plus-square"></i> &nbsp;Добавить заглушку</a>
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% if  banners.getTotalItemCount %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th width="5%">#</th>
+                <th width="40%">Название</th>
+                <th width="40%">URL перехода</th>
+                <th width="5%">Размер</th>
+                <th width="5%">Тип</th>
+                {#<th width="5%"></th>#}
+            </tr>
+            </thead>
+            <tbody>
+            {% for banner in banners %}
+                <tr>
+                    <td height="53px">{{ loop.index }}</td>
+                    <td><a title="Перейти на редактирование"
+                           href="{{ path('core_cabinet_gag_edit', {id:banner.id}) }}"><b>{{ banner.name }}</b></a>
+                    </td>
+                    <td style="   word-break: break-all;">
+                        {% if banner.url is defined %}
+                            <a target="_blank" href="{{ banner.url }}">{{ banner.url }}</a>
+                            {% if banner.isOpenUrlInNewWindow is defined and banner.isOpenUrlInNewWindow %}<br/><span>переход в новое окно</span>{% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if banner.image is defined %}
+                            {% if banner.image[0].width  is defined %}
+                                {{ banner.image[0].height }}x{{ banner.image[0].width }}
+                            {% endif %}
+                        {% else %}
+                            {% if banner.file[0].width is defined %}
+                                {% if banner.file[0].width is defined %}
+                                    {{ banner.file[0].height }}x{{ banner.file[0].width }}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+
+                        {% if banner.image is defined %}
+                            Изображение
+                        {% endif %}
+
+                        {% if banner.code is defined %}
+                            HTML / Сторонний
+                        {% endif %}
+
+                        {% if banner.file is defined %}
+                            Flash
+                        {% endif %}
+
+                    </td>
+                    {#<td nowrap>#}
+                        {#<a href="javascript:void(0);" data-id="{{ banner.id }}"#}
+                           {#class="delete btn-u btn-u-red">Удалить</a>#}
+                    {#</td>#}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% set routeFirsPage = 'core_cabinet_gag_list_first_page' %}
+        {% set routePage = 'core_cabinet_gag_list' %}
+
+        {{ knp_pagination_render(banners, 'CoreBannerBundle:Gag/Cabinet:pagination.html.twig',{},
+        { routeFirsPage: routeFirsPage, routePage:routePage}) }}
+
+    {% endif %}
+
+    <script>
+        $(function () {
+            $('.delete').click(function () {
+                var res = confirm('Вы действительно хотите удалить этот заглушку из системы?');
+                if (res) {
+                    var id = $(this).attr('data-id'),
+                            url = '{{ path('core_cabinet_gag_delete', {id:0}) }}';
+
+                    url = url.replace(0, id);
+                    window.location.href = url;
+                }
+            });
+        })
+    </script>
+{% endblock %}

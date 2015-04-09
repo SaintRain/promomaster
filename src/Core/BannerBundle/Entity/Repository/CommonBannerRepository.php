@@ -33,7 +33,6 @@ class CommonBannerRepository extends EntityRepository
                 ->orderBy('b.id', 'DESC')
                 ->setParameter(':user', $options['user']->getId())  ;
         }
-
         return $query;
     }
 
@@ -81,5 +80,25 @@ class CommonBannerRepository extends EntityRepository
         $res = $query->getQuery()->getOneOrNullResult();
 
         return $res;
+    }
+
+    /**
+     * Построение запроса на выборку заглушек
+     * @param array $options
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function generateGagQueryBuilderByFilter(array $options)
+    {
+        $query = $this->createQueryBuilder('b');
+
+        $query
+            ->where('b.isGag = :isGag')
+            ->andWhere('b.user=:user')
+            ->orderBy('b.id', 'DESC')
+            ->setMaxResults($options['maxResults'])
+            ->setParameter(':user', $options['user']->getId())
+            ->setParameter(':isGag', $options['isGag'])
+        ;
+        return $query;
     }
 }

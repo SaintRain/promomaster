@@ -1,38 +1,38 @@
 # Вывод первой страницы списка баннеров в личном кабинете
-core_cabinet_banner_list_first_page:
-    path:      /cabinet/banners.html
-    schemes:  [http]
-    defaults:  { _controller: CoreBannerBundle:Cabinet:list}
+#core_cabinet_banner_list_first_page:
+#    path:      /cabinet/banners.html
+#    schemes:  [http]
+#    defaults:  { _controller: CoreBannerBundle:Cabinet:list}
 
 # Вывод списка баннеров в ЛК
-core_cabinet_banner_list:
-    path:      /cabinet/banners/{page}.html
-    schemes:  [http]
-    defaults:  { _controller: CoreBannerBundle:Cabinet:list, page: 1 }
-    requirements:
-      page: \d+
+#core_cabinet_banner_list:
+#    path:      /cabinet/banners/{page}.html
+#    schemes:  [http]
+#    defaults:  { _controller: CoreBannerBundle:Cabinet:list, page: 1 }
+#    requirements:
+#      page: \d+
 
 # редактирование баннера в ЛК
-core_cabinet_banner_edit:
-    path:      /cabinet/banner_edit_{id}.html
-    schemes:  [http]
-    defaults:  { _controller: CoreBannerBundle:Cabinet:edit }
-    requirements:
-      id: \d+
+#core_cabinet_banner_edit:
+#    path:      /cabinet/banner_edit_{id}.html
+#    schemes:  [http]
+#    defaults:  { _controller: CoreBannerBundle:Cabinet:edit }
+#    requirements:
+#      id: \d+
 
 # добавление баннера в ЛК
-core_cabinet_banner_create:
-    path:      /cabinet/banner_create.html
-    schemes:  [http]
-    defaults:  { _controller: CoreBannerBundle:Cabinet:create }
+#core_cabinet_banner_create:
+#    path:      /cabinet/banner_create.html
+#    schemes:  [http]
+#    defaults:  { _controller: CoreBannerBundle:Cabinet:create }
 
 # удаление баннера в ЛК
-core_cabinet_banner_delete:
-    path:      /cabinet/banner_delete_{id}.html
-    schemes:  [http]
-    defaults:  { _controller: CoreBannerBundle:Cabinet:delete }
-    requirements:
-      id: \d+
+#core_cabinet_banner_delete:
+#    path:      /cabinet/banner_delete_{id}.html
+#    schemes:  [http]
+#    defaults:  { _controller: CoreBannerBundle:Cabinet:delete }
+#    requirements:
+#      id: \d+
 
 # добавление баннера в ЛК (ajax)
 core_cabinet_banner_create_ajax:
@@ -45,3 +45,40 @@ core_cabinet_banner_edit_ajax:
     path:      /cabinet/banner_edit_ajax.html
     schemes:  [http]
     defaults:  { _controller: CoreBannerBundle:Cabinet:editAjax }
+
+
+# Вывод первой страницы списка заглушек в личном кабинете
+core_cabinet_gag_list_first_page:
+    path:      /cabinet/banners.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Gag:list}
+
+# Вывод списка заглушек в ЛК
+core_cabinet_gag_list:
+    path:      /cabinet/banners/{page}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Gag:list, page: 1 }
+    requirements:
+      page: \d+
+
+# редактирование заглушки в ЛК
+core_cabinet_gag_edit:
+    path:      /cabinet/banner_edit_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Gag:edit }
+    requirements:
+      id: \d+
+
+# добавление заглушки в ЛК
+core_cabinet_gag_create:
+    path:      /cabinet/banner_create.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Gag:create }
+
+# удаление заглушки в ЛК
+core_cabinet_gag_delete:
+    path:      /cabinet/banner_delete_{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Gag:delete }
+    requirements:
+      id: \d+

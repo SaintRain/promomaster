@@ -8,12 +8,14 @@
 
 namespace Core\SiteBundle\Controller;
 
+use Doctrine\ORM\Tools\EntityRepositoryGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Core\SiteBundle\Entity\WebSite;
 use Core\SiteBundle\Entity\AdPlace;
 use Core\DirectoryBundle\Entity\Repository\AdPlaceSizeRepository;
+use Doctrine\ORM\EntityRepository;
 
 class AdPlaceCabinetController extends Controller
 {
@@ -148,6 +150,16 @@ class AdPlaceCabinetController extends Controller
             ->add('width', 'text', ['required' => false])
             ->add('height', 'text', ['required' => false])
             ->add('isShowInCatalog', null, ['required' => false])
+            ->add('gag', 'entity', [
+                'class'         => 'CoreBannerBundle:CommonBanner',
+                'property'      => 'name',
+                'empty_value'   => 'Необходимо выбрать',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                                ->where('u.isGag = :isGag')
+                                ->setParameter('isGag', true);
+                }
+            ])
             ->add('sections', null, ['property'=>'name', 'required' => false,'class' => 'CoreSiteBundle:Section', 'multiple' => true, 'expanded' => true, 'extraConfig' => [
                 'field' => 'sections',
                 'editUrl' => '',

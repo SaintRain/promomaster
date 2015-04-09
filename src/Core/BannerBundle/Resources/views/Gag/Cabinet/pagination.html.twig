@@ -1,0 +1,36 @@
+{#отображения пагинации#}
+
+{% if pageCount > 1 %}
+    {% set GET = app.request.query %}
+    {% set parameters = app.request.attributes.get('_route_params')|merge(GET.all)|merge({'page': app.request.attributes.get('page')}) %}
+<div class="text-left">
+    <ul class="pagination">
+        {% if previous is defined %}
+            <li>
+                <a href="{% if routeFirsPage is defined and previous == first %}
+                {{- path(routeFirsPage, parameters|merge({'page': null})) -}}
+                {%- else -%}
+                {{-  path(routePage, parameters|merge({'page': previous})) -}}
+                {%- endif -%}">«</a>
+            </li>
+        {% endif %}
+
+        {% for page in pagesInRange %}
+            <li {% if page == current %} class="active"  {% endif %}>
+                <a href="{% if routeFirsPage is defined and page == first %}
+                {{- path(routeFirsPage, parameters|merge({'page': null})) -}}
+                {%- else -%}
+                {{-  path(routePage, parameters|merge({'page': page})) -}}
+                {%- endif -%}">{{ page }}</a>
+            </li>
+        {% endfor %}
+
+
+        {% if next is defined %}
+            <li>
+                <a href="{{-  path(routePage, parameters|merge({'page': next})) -}}">»</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}

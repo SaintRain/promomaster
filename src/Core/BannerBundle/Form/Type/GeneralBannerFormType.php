@@ -65,7 +65,7 @@ abstract class GeneralBannerFormType  extends AbstractType
 
         if (!$data || !$data->getId()) {
             $builder->add('bannerType', 'choice', [
-                'label' => 'Тип баннер',
+                'label' => 'Тип баннера',
                 'mapped' => false,
                 //'empty_value' => 'Необходимо выбрать',
                 'attr' => ['class' => 'banner_type'],
