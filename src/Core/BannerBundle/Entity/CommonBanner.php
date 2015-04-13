@@ -22,7 +22,7 @@ use Symfony\Component\Validator\ExecutionContextInterface;
  * @ORM\HasLifecycleCallbacks()
  * @Assert\Callback(methods={"isValidCommon"})
  */
-class CommonBanner
+class CommonBanner implements \JsonSerializable
 {
 
     /**
@@ -41,7 +41,7 @@ class CommonBanner
      * @ORM\Column(type="string", length=100, nullable=false)
      * @Assert\NotBlank()
      */
-    private $name;
+    protected $name;
 
 
     /**
@@ -50,7 +50,7 @@ class CommonBanner
      * @ORM\JoinColumn(referencedColumnName="id")
      * @Assert\NotBlank()
      */
-    private $user;
+    protected $user;
 
 
     /**
@@ -59,21 +59,27 @@ class CommonBanner
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
-    private $createdDateTime;
+    protected $createdDateTime;
 
     /**
      * Индекс позиции сортировки
      * @var int
      * @ORM\Column(type="bigint", nullable=true)
      */
-    private $indexPosition;
+    protected $indexPosition;
 
+    /**
+     * Заглушка да - нет
+     * @var boolean
+     * @ORM\Column(type="boolean", options={"default" = 0})
+     */
+    protected $isGag = false;
 
     /**
      * Статистика
      * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="banner")
      */
-    private $statistics;
+    protected $statistics;
 
 
     /**
@@ -173,6 +179,23 @@ class CommonBanner
         $this->statistics = $statistics;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isIsGag()
+    {
+        return $this->isGag;
+    }
+
+    /**
+     * @param boolean $isGag
+     */
+    public function setIsGag($isGag)
+    {
+        $this->isGag = $isGag;
+
+        return $this;
+    }
 
     /**
      * Дополнительные проверки
@@ -184,6 +207,14 @@ class CommonBanner
 //                        ->atPath('price')
 //                        ->addViolation();
 //        }
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName()
+        ];
     }
 
 }

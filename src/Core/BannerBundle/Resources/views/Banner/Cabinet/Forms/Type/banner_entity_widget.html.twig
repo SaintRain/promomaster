@@ -1,0 +1,8 @@
+{% block banner_entity_widget %}
+    <div style="margin-top: 7px;">
+        <a class="active entity-desc" data-id="{{ form.vars.objId }}" href="javascript:void(0)">
+            <span class="inner">{{ form.vars.field }}</span>
+        </a>
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{#редактирование заглушки в ЛК#}
+{% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}{% if banner.id %}Редактирование настроек заглушки{% else %}Добавление заглушки в систему{% endif %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Сайты</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li><a href="{{ path('core_cabinet_gag_list_first_page') }}">Список ваших заглушек</a></li>
+                    <li class="active">Редактирование настроек вашей заглушки</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+{% block sub_content %}
+
+    {% if banner.id %}
+        <h3>Редактирование настроек вашего заглушки</h3>
+    {% else %}
+        <h3>Добавление нового заглушки в систему</h3>
+    {% endif %}
+
+
+    {#форма редактирования профиля ЛК#}
+    {% if banner.id %}
+        {{ include ('CoreBannerBundle:Gag\\Cabinet\\Forms:'~type~'BannerForm.html.twig', {show:true, banner:banner, form:form}) }}
+    {% else %}
+        {{ include ('CoreBannerBundle:Gag\\Cabinet\\Forms:imageBannerForm.html.twig', {show:false,banner:imageBanner, form:imageBannerForm}) }}
+        {{ include ('CoreBannerBundle:Gag\\Cabinet\\Forms:flashBannerForm.html.twig', {show:false,banner:flashBanner, form:flashBannerForm}) }}
+        {{ include ('CoreBannerBundle:Gag\\Cabinet\\Forms:codeBannerForm.html.twig', {show:false,banner:codeBanner, form:codeBannerForm}) }}
+    {% endif %}
+
+
+    <script>
+        $(function () {
+            {% if type %}
+                $('#form_{{ type }}').show();
+            {% endif %}
+
+            $('.banner_type').change(function () {
+                var type = $(this).find('option:selected').val();
+                //выставляем исходное состояние
+                $('#form_image .banner_type').val('image');
+                $('#form_flash .banner_type').val('flash');
+                $('#form_code .banner_type').val('code');
+
+                $('.sky-form').hide();
+                $('#form_' + type).show();
+            });
+
+
+            {% if banner.id %}
+            $('.delete').click(function () {
+                var res = confirm('Вы действительно хотите удалить эту заглушку из системы?');
+                if (res) {
+                    window.location.href = '{{ path('core_cabinet_gag_delete', {id:banner.id}) }}';
+                }
+            });
+            {% endif %}
+        })
+    </script>
+
+{% endblock %}

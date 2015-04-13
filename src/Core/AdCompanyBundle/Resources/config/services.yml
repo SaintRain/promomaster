@@ -40,3 +40,8 @@ services:
     class: Core\AdCompanyBundle\EventListener\AdCompanySubscriber
     tags:
         - { name: doctrine.event_subscriber }
+#форма для баннеров размещения
+  core_placement_banner:
+    class: Core\AdCompanyBundle\Form\Type\PlacementBannerFormType
+    tags:
+        - { name: form.type, alias: placement_banner_form }

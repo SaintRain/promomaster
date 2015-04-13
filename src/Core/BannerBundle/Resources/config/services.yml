@@ -13,3 +13,29 @@ services:
   core_banner_logic:
     class: Core\BannerBundle\Logic\BannerLogic
     arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic']
+
+  # форма для изображений
+  core_banner_image_form:
+      class: Core\BannerBundle\Form\Type\ImageBannerFormType
+      arguments: ['@doctrine.orm.entity_manager', '@security.context', '@session', '@request_stack']
+      tags:
+        - {name: form.type, alias: 'image_banner_form'}
+
+  # форма для flash
+  core_banner_flash_form:
+      class: Core\BannerBundle\Form\Type\FlashBannerFormType
+      arguments: ['@doctrine.orm.entity_manager', '@security.context', '@session', '@request_stack']
+      tags:
+        - {name: form.type, alias: 'flash_banner_form'}
+
+  # форма для html etc.
+  core_banner_code_form:
+      class: Core\BannerBundle\Form\Type\CodeBannerFormType
+      arguments: ['@doctrine.orm.entity_manager', '@security.context', '@session', '@request_stack']
+      tags:
+        - {name: form.type, alias: 'code_banner_form'}
+  core_banner_entity_form:
+     class: Core\BannerBundle\Form\Type\BannerEntityFormType
+     arguments: ["@doctrine.orm.entity_manager"]
+     tags:
+     - { name: form.type, alias: banner_entity }

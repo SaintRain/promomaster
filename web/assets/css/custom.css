@@ -46,3 +46,18 @@ div.state-error >input {
 /*.sonata-bc .table-bordered td.b-l-none{border-left: none;}*/
 /*.sonata-bc .table th, .sonata-bc .table td.text-center{text-align: center;}*/
 /*.counter-of-files,.counter-of-documents{display: none;}*/
+
+html {
+    min-height: 100%;
+    position: relative;
+}
+body {
+    margin-bottom: 375px;
+}
+.footer-v1 {
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    height: 375px;
+    overflow: hidden;
+}

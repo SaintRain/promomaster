@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\ExecutionContextInterface;
+use Core\BannerBundle\Entity\CommonBanner;
 
 /**
  * @ORM\Table(name="core_site_ad_place")
@@ -79,7 +80,7 @@ class AdPlace
      * @ORM\JoinColumn(referencedColumnName="id")
      * @Assert\NotBlank()
      */
-        private $user;
+    private $user;
 
     /**
      * Выводить в каталог
@@ -122,13 +123,19 @@ class AdPlace
      * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="adPlace")
      */
     private $statistics;
+
     /**
      * Стоимости размещений
      * @ORM\OneToMany(targetEntity="AdPlacePrice", mappedBy="adPlace", cascade={"persist"})
      */
     private $prices;
 
-
+    /**
+     * Заглушка
+     * @ORM\ManyToOne(targetEntity="Core\BannerBundle\Entity\CommonBanner")
+     * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
+     */
+    private $gag;
 
     public function __construct()
     {
@@ -425,6 +432,24 @@ class AdPlace
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getGag()
+    {
+        return $this->gag;
+    }
+
+    /**
+     * @param mixed $gag
+     */
+    public function setGag(CommonBanner $gag = null)
+    {
+        $gag->setIsGag(true);
+        $this->gag = $gag;
+
+        return $this;
+    }
 
     /**
      * Дополнительные проверки

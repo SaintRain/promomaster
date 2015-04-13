@@ -68,6 +68,30 @@ class BannerLogic
 
     }
 
+    /**
+     * Постраничная навигация заглушки
+     * @param $page
+     */
+    public function getGagsInCabinetForPage($page)
+    {
+        $filterRequest=[
+            'maxResults'    => 10,
+            'user' => $this->container->get('security.context')->getToken()->getUser(),
+            'isGag' => true
+        ];
+//        sort_field_name: knp_sort          # sort field query parameter name
+//        sort_direction_name: direction # sort direction query parameter name
+
+        $queryBuilder = $this->em->getRepository('CoreBannerBundle:CommonBanner')->generateGagQueryBuilderByFilter($filterRequest);
+
+
+
+
+        $sites = $this->paginator->paginate($queryBuilder, $page, $filterRequest['maxResults']);
+        return $sites;
+
+    }
+
 
 
 }

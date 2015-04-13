@@ -27,16 +27,17 @@
             <a href="{{ path('core_cabinet_adplace_list_first_page') }}"><i class="fa  fa-desktop   "></i> &nbsp;Рекламные места</a>
         </li>
 
-        <li  class="list-group-item {% if app.request.attributes.get('_route') == 'core_cabinet_banner_list_first_page'
-        or app.request.attributes.get('_route') == 'core_cabinet_banner_list'
-        or app.request.attributes.get('_route') == 'core_cabinet_banner_edit'
-        or app.request.attributes.get('_route') == 'core_cabinet_banner_create'
+        <li  class="list-group-item {% if app.request.attributes.get('_route') == 'core_cabinet_gag_list_first_page'
+        or app.request.attributes.get('_route') == 'core_cabinet_gag_list'
+        or app.request.attributes.get('_route') == 'core_cabinet_gag_edit'
+        or app.request.attributes.get('_route') == 'core_cabinet_gag_create'
         or app.request.attributes.get('_route') == 'core_cabinet_adplace_getcode'
 
 
         %} active{% endif %}">
-            <a href="{{ path('core_cabinet_banner_list_first_page') }}"><i class="fa fa-file-image-o"></i> &nbsp;Баннеры</a>
+            <a href="{{ path('core_cabinet_gag_list_first_page') }}"><i class="fa fa-file-image-o"></i> &nbsp;Заглушки</a>
         </li>
+
 
         <li class="list-group-item
  {% if app.request.attributes.get('_route') == 'core_cabinet_adcompany_list_first_page'

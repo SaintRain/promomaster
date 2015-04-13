@@ -6,20 +6,20 @@
  * @copyright LLC "PromoMaster"
  */
 
-namespace Core\BannerBundle;
+namespace Core\BannerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
 
 
-class CodeBannerType  extends AbstractType
+class CodeBannerFormType extends GeneralBannerFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', null, ['label'=> 'Название баннера'])
+        parent::buildForm($builder, $options);
+        $builder
+                //->add('name', null, ['label'=> 'Название баннера'])
                 ->add('code', null, ['label' => 'Код баннера'])
         ;
     }
@@ -34,7 +34,7 @@ class CodeBannerType  extends AbstractType
 
     public function getName()
     {
-        return 'code_banner_type';
+        return 'code_banner_form';
     }
 
 }
