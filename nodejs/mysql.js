@@ -238,7 +238,7 @@ mysqlGetPlacementBanners = function (id) {
     }
 
     var q = "SELECT id, preoritet, banner_id, placement_id " +
-        "FROM core_adcompany_placement_banner" + where;
+        "FROM core_adcompany_placement_banner " + where;
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {

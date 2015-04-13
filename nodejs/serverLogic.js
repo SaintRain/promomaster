@@ -100,8 +100,10 @@ exports.getAd = function (req, res, adplace_id) {
 
 
                 if (isAllowed) {
-                    //var ip = this.getIpFromReq(req);
-                    var ip = '176.114.35.119';
+                    var ip = this.getIpFromReq(req);
+                    if (ip=='127.0.0.1') {  //для теста на локальном
+                        var ip = '92.112.66.58';
+                    }
 
                     //перебираем все размещения и проверяем их по дате
                     for (key in SD.placementsByAdPlace['_' + adplace_id]) {
@@ -156,16 +158,26 @@ exports.getAd = function (req, res, adplace_id) {
                     }
                     else {
                         //проверяем есть ли заглушка для рекламного места
-                        //....
-
+                        if (SD.adplaces['_' + adplace_id].gag_id) {
+                            var banner = SD.banners['_' + SD.adplaces['_' + adplace_id].gag_id];
+                            this.sendBanner(res, banner, {id:0}, {id:0});
+                        }
+                        else {
+                            //отдаём пустой ответ
+                            this.sendResponse(res, {statusCode: 200, body: ''});
+                        }
                     }
                 }
                 else {
                     //проверяем есть ли заглушка для рекламного места
-                    //....
-
+                    if (SD.adplaces['_' + adplace_id].gag_id) {
+                        var banner = SD.banners['_' + SD.adplaces['_' + adplace_id].gag_id];
+                        this.sendBanner(res, banner, {id:0}, {id:0});
+                    }else {
+                        //отдаём пустой ответ
+                        this.sendResponse(res, {statusCode: 200, body: ''});
+                    }
                 }
-
 
             }
             else {
@@ -215,8 +227,10 @@ exports.click = function (req, res, adplace_id, placement_id, placementbanner_id
 //проверяет по странам
 exports.checkByGeo = function (ip, countryMatch, key) {
     if (typeof(countryMatch[key]) !== 'undefined') {
+
         var geo = GEOIP.lookup(ip),
             country_id = SD.countriesByAlpha2[geo.country].id;
+
         //если есть страна в связях
         if (countryMatch[key]['_' + country_id]) {
 
