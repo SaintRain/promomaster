@@ -96,9 +96,18 @@ class Country
      */
     private $citiesAmount = 0;
 
+    /**
+     * Секция мира
+     * @var WorldSection
+     * @ORM\ManyToOne(targetEntity="WorldSection", cascade={"persist"}, inversedBy="countryList")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     * @Assert\NotBlank()
+     */
+    private $worldSection;
+
     public function __toString()
     {
-        return $this->getCaptionRu();
+        return (string)$this->getCaptionRu();
     }
 
     public function __construct()
@@ -247,5 +256,22 @@ class Country
     public function getCaption($locale)
     {
         return $caption = Intl::getRegionBundle()->getCountryName($this->alpha2, $locale);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWorldSection()
+    {
+        return $this->worldSection;
+    }
+
+    /**
+     * @param mixed $wordlSection
+     */
+    public function setWorldSection(WorldSection $worldSection = null)
+    {
+        $this->worldSection = $worldSection;
+        return $this;
     }
 }

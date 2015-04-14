@@ -94,6 +94,7 @@ twig:
             - 'CoreSlugHistoryBundle:Admin\Form:slug_history_widget.html.twig'
             - 'CoreCategoryBundle:Form:FrontendCategory_widget.html.twig'
             - 'CoreBannerBundle:Banner\Cabinet\Forms\Type:banner_entity_widget.html.twig'
+            - 'CoreDirectoryBundle:Form\Type:country_form_frontend_widget.html.twig'
 
 
 # Assetic Configuration

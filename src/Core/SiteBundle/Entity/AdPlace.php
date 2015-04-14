@@ -137,11 +137,21 @@ class AdPlace
      */
     private $gag;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Core\DirectoryBundle\Entity\Country")
+     * @ORM\JoinTable(name="core_site_ad_place_match_country",
+     *      joinColumns={@ORM\JoinColumn(referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(referencedColumnName="id")}
+     *      )
+     **/
+    private $countryList;
+
     public function __construct()
     {
         $this->sections = new ArrayCollection();
         $this->placements = new ArrayCollection();
         $this->prices = new ArrayCollection();
+        $this->countryList = new ArrayCollection();
     }
 /*
     public function __toString()
@@ -447,6 +457,25 @@ class AdPlace
     {
         $gag->setIsGag(true);
         $this->gag = $gag;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCountryList()
+    {
+        return $this->countryList;
+    }
+
+    /**
+     * @param mixed $countryList
+     */
+    public function setCountryList($countryList)
+    {
+        ldd($countryList);
+        $this->countryList = $countryList;
 
         return $this;
     }

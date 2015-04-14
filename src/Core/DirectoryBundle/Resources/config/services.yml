@@ -133,3 +133,23 @@ services:
     tags:
     - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Системное, label: "Тип размещения" }
     arguments: [null, Core\DirectoryBundle\Entity\PriceModel, null]
+
+  #Форма для стран фронтэнд
+  core_directory_country_frontend:
+    class: Core\DirectoryBundle\Form\Type\CountryFormType
+    arguments: ['@doctrine.orm.entity_manager']
+    tags:
+        - { name: form.type, alias: country_form_frontend }
+
+  #Форма для стран фронтэнд
+  core_directory_country_frontend_extension:
+    class: Core\DirectoryBundle\Form\Extension\CountryFormTypeExtension
+    tags:
+        - { name: form.type_extension, alias: entity }
+
+#сервис для редактирования мирых разделов
+  core_directory_world_section_admin:
+    class: Core\DirectoryBundle\Admin\WorldSectionAdmin
+    tags:
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore, group: Системное, label: "Мировые разделы" }
+    arguments: [null, Core\DirectoryBundle\Entity\WorldSection, null]

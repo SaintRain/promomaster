@@ -166,6 +166,31 @@ class AdPlaceCabinetController extends Controller
                 'deleteUrl' => '',
             ]])
             /*
+            ->add('countryList', 'country_form_frontend', [
+                'class'     => 'CoreDirectoryBundle:Country',
+                //'property'  => 'name',
+                //'choices'   => $this->getChoices(),
+                'expanded'  => true,
+                'multiple'  => true,
+                'required' => false
+            ])
+            */
+            ->add('countryList', 'entity', [
+                    //'required' => false ,
+                    //'by_reference' => false,
+                    'class'     => 'CoreDirectoryBundle:Country',
+                    //'property'  => 'name',
+                    'withSubset' => true,
+                    'expanded'  => true,
+                    'multiple'  => true,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('c')
+                            ->select('c, w')
+                            ->innerJoin('c.worldSection', 'w')
+                        ;
+                    }
+            ])
+            /*
             ->add('prices', 'collection', [
                 //'by_reference' => false,
                 'allow_add' => true,

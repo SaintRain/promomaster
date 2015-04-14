@@ -1,0 +1,125 @@
+{% extends 'form_div_layout.html.twig' %}
+{%- block choice_widget_expanded -%}
+    {%  set modalName = (form.vars.id | lower)  ~ '_country_modal' %}
+    <div class="row">
+        <div class="col-md-12">
+            <div id="selected_country">
+                <ul class="list-style">
+                {% if activeChoices | length %}
+                    {% for val in activeChoices %}
+                        <li>{{ val }}</li>
+                    {% endfor %}
+                    {% else %}
+                    <li>Активно для всех стран</li>
+                {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="{{ modalName }}" class="modal fade" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h2>Выбрать страны</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div {{ block('widget_container_attributes') }}>
+                                    {% for key, child in form.vars.views %}
+                                        <ul class="list-unstyled world-section-wr">
+                                            <label>
+                                                <input class="world-section" type="checkbox" name="{{ key }}"{% if child.isChecked %}checked="checked"{% endif %} value="{{ key }}">
+                                                <span  style="color: #72c02c; margin-left: 5px; vertical-align: top; display: inline-block;">{{ key }}</span>
+                                            </label>
+                                            <ul class="list-unstyled world-section-inner">
+                                                {% for inner in child.views %}
+                                                    <li style="margin-left: 15px;">
+                                                        {{- form_widget(inner) -}}
+                                                        {#{{- form_label(inner) -}}#}
+                                                        <label for="{{ inner.vars.id }}" style="margin-left: 5px; vertical-align: middle;">{{ inner.vars.label }}</label>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </ul>
+                                    {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-u btn-u-default" data-dismiss="modal">Отмена</button>
+                    &nbsp;
+                    <button type="button" class="btn-u btn-u-primary" data-dismiss="modal">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function($){
+            $(function(){
+
+                $('.country-select').click(function(){
+                    $('#{{ modalName }}').modal('show');
+                });
+
+
+                $('.world-section').click(function(){
+                    var $this = $(this),
+                        parentBlock = $this.parents('.world-section-wr'),
+                        elements = $('input', parentBlock),
+                        isChecked = $this.prop('checked');
+
+                    elements.each(function(index, element){
+                        var $this = $(element);
+                        $this.prop('checked', isChecked);
+                    });
+                });
+
+                $('.world-section-inner input').click(function(){
+                    var $this = $(this),
+                        parent = $this.parents('.world-section-inner'),
+                        mainParent = $this.parents('.world-section-wr'),
+                        sectionInput = $('.world-section', mainParent),
+                        isAllInSameState = true,
+                        siblings = $('input', parent),
+                        curState = $this.prop('checked');
+                    siblings.each(function(index, element) {
+                        $this = $(element);
+                        if (curState != $this.prop('checked')) {
+                            isAllInSameState = false;
+                            return false;
+                        }
+                    });
+
+                    if (isAllInSameState) {
+                        sectionInput.prop('checked', curState)
+                    } else {
+                        sectionInput.prop('checked', false);
+                    }
+
+                });
+
+                $('#{{ modalName }} .btn-u-primary').click(function(){
+                    var placement = $('#selected_country ul'),
+                        countries =  [];
+                    $('#{{ modalName }} .world-section-inner input').each(function(index, element){
+                        var $this = $(element);
+                        if ($(element).prop('checked')) {
+                            countries.push($(element).siblings('label').text());
+                        }
+                    });
+                    if (countries.length) {
+                        placement.html('<li>' + (countries.join('</li><li>')) + '</li>' )
+                    } else {
+                        placement.html('<li>Активно для всех стран</li>');
+                    }
+
+                });
+            });
+
+
+        })(jQuery)
+    </script>
+{%- endblock choice_widget_expanded -%}

@@ -38,6 +38,7 @@
     {% endif %}
 
 {% form_theme form.sections 'CoreSiteBundle:AdPlace/Cabinet/Form:fields_section.html.twig' %}
+{% form_theme form.countryList 'CoreDirectoryBundle:Form/Type:country_form_frontend_widget.html.twig' %}
 <form style="clear: both" class="sky-form sky-form-other-style"
       action="{% if adplace.id %}{{ path('core_cabinet_adplace_edit', {id:adplace.id}) }}{% else %}{{ path('core_cabinet_adplace_create') }}{% endif %}" {{ form_enctype(form) }}
       method="POST">
@@ -178,6 +179,20 @@
             </div>
         </div>
         {% endif %}
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6  {% if form_errors(form.countryList) %}state-error{% endif %}">
+                <label>Страны</label>
+                <div class="pull-right">
+                    <a href="javascript:void(0);" class="btn-u btn-u-xs country-select">
+                        <i class="fa fa-plus-square"></i>
+                        <span>&nbsp;Выбрать страны</span>
+                    </a>
+                </div>
+                {{ form_widget(form.countryList) }}
+                {{ form_errors(form.countryList) }}
+            </div>
+        </div>
 
 
         <div class="margin-bottom-20">

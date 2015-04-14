@@ -71,6 +71,12 @@ class CountryAdmin extends Admin
                 'disabled' => true,
                 'data' => $obj->getId() ? $obj->getCaptionRu() : ''
                 ))
+            ->add('worldSection', 'sonata_type_model', array(
+                'empty_value' => 'Необходимо выбрать',
+                'btn_add' => false,
+                'label' => 'Мировой раздел',
+                'required' => false,
+                ))
             ->add('alpha2', null, array(
                 'label' => 'label.alpha2',
                 'disabled' => true))

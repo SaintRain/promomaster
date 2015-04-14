@@ -48,6 +48,7 @@ FAQ:
     Статьи:                             { route: admin_core_faq_article_list}
 Системное:
     Гео данные:
+        Мировые разделы:                {route: admin_core_directory_worldsection_list}
         Страны:                         { route: admin_core_directory_country_list }
         Регионы:                        { route: admin_core_directory_region_list }
         Города:                         { route: admin_core_directory_city_list }

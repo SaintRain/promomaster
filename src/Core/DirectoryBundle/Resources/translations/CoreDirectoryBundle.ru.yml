@@ -21,16 +21,20 @@ breadcrumb:
   link_remote_video_delete: Удаление видео
   link_price_model_delete: Удаление ценовой модели
   link_price_model_list: Список ценовых моделей
+  link_world_section_list: Список мировых разделов
+  link_world_section_delete: Удаление мирового раздела
   create:
     Currency: Добавление нового продукта
     Country: Добавление новой страны
     Units: Добавление единицы измерения
-    UnitsGroups: Добавление группы единиц измерения    
+    UnitsGroups: Добавление группы единиц измерения
+    WorldSection: Добавление мирового раздела
   edit:
     Currency: Редактирование валюты
     Country: Редактирование страны
     Units: Редактирование единицы измерения
-    UnitsGroups: Редактирования группы единиц измерения    
+    UnitsGroups: Редактирования группы единиц измерения
+    WorldSection: Редактирования мирового раздела
 Currency: Валюты
 Country: Страны
 filter:
