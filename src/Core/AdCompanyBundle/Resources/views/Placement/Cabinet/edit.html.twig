@@ -312,6 +312,7 @@
                         data:'id='+ curId,
                         success: function(data) {
                             if (data.result) {
+
                                 modalPlacement.html(data.data);
                                 $('#responsive').modal('show');
                             }
@@ -342,6 +343,7 @@
                 });
                 */
                 $('.collection-add').click(function(e) {
+
                     var $this = $(this),
                         modalPlacement = $('#modal-placement');
                     modalPlacement.find('#responsive').remove();
@@ -353,6 +355,8 @@
                             if (data.result) {
                                 modalPlacement.html(data.data);
                                 $('#responsive').modal('show');
+                                console.log(data.data)
+
                             }
                         },
                         error: function () {
