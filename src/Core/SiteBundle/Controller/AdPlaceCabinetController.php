@@ -47,6 +47,7 @@ class AdPlaceCabinetController extends Controller
         $em = $this->getDoctrine()->getManager();
         $adplace = $em->getRepository('CoreSiteBundle:AdPlace')->find($id);
         $form = $this->getForm($adplace);
+        $gagsCount = $em->getRepository('CoreBannerBundle:CommonBanner')->getGagsCount($this->getUser()->getId());
 
         //Сохранения изменения
         //$request = $this->get('request');
@@ -74,10 +75,18 @@ class AdPlaceCabinetController extends Controller
                 $this->setFlash('edit_success', 'Данные успешно обновлены');
                 return new RedirectResponse($this->generateUrl('core_cabinet_adplace_edit', ['id' => $id]));
             } else {
-                return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', ['adplace' => $adplace, 'form' => $form->createView()]);
+                return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', [
+                    'adplace' => $adplace,
+                    'form' => $form->createView(),
+                    'gagsCount' => $gagsCount
+                ]);
             }
         } else {
-            return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', ['adplace' => $adplace, 'form' => $form->createView()]);
+            return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', [
+                'adplace' => $adplace,
+                'form' => $form->createView(),
+                'gagsCount' => $gagsCount
+            ]);
         }
     }
 
@@ -94,7 +103,7 @@ class AdPlaceCabinetController extends Controller
         $adplace->setUser($user);
         $form = $this->getForm($adplace);
         $em = $this->getDoctrine()->getManager();
-
+        $gagsCount = $em->getRepository('CoreBannerBundle:CommonBanner')->getGagsCount($this->getUser()->getId());
 
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
@@ -119,10 +128,18 @@ class AdPlaceCabinetController extends Controller
                 $this->setFlash('edit_success', 'Новое рекламное место добавлено');
                 return new RedirectResponse($this->generateUrl('core_cabinet_adplace_edit', ['id' => $adplace->getId()]));
             } else {
-                return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', ['adplace' => $adplace, 'form' => $form->createView()]);
+                return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', [
+                    'adplace' => $adplace,
+                    'form' => $form->createView(),
+                    'gagsCount' => $gagsCount
+                ]);
             }
         } else {
-            return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', ['adplace' => $adplace, 'form' => $form->createView()]);
+            return $this->render('CoreSiteBundle:AdPlace\Cabinet:edit.html.twig', [
+                'adplace' => $adplace,
+                'form' => $form->createView(),
+                'gagsCount' => $gagsCount
+            ]);
         }
     }
 

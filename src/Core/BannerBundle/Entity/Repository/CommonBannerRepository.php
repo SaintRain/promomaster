@@ -101,4 +101,27 @@ class CommonBannerRepository extends EntityRepository
         ;
         return $query;
     }
+
+    /**
+     * @param $userId
+     * @return array
+     */
+    public function getGagsCount($userId, $isGag = true)
+    {
+        $qb = $this->createQueryBuilder('g');
+        $qb->select('COUNT (g.id) as total')
+            ->leftJoin('g.user', 'u')
+            ->where('u.id = :userId')
+            ->andWhere('g.isGag = :isGag')
+            ->setParameter('userId', $userId)
+            ->setParameter('isGag', $isGag)
+        ;
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+        if (isset($result['total']) && $result['total']) {
+            return (int)$result['total'];
+        } else {
+            return null;
+        }
+    }
 }

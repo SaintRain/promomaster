@@ -215,6 +215,76 @@ class GagController extends Controller
         }
     }
 
+    public function editAjaxAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException('Page Not Found');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->get('id');
+        $subject = $em->getRepository('CoreBannerBundle:CommonBanner')->find((int)$id);
+
+        if (!$subject || !$this->getUser() || ($subject->getUser()->getId() != $this->getUser()->getId())) {
+            throw $this->createNotFoundException('Page Not Found');
+        }
+        if ($subject instanceof ImageBanner) {
+            $imageForm = $this->createForm('image_banner_form', $subject);
+            $form = $imageForm;
+        } elseif ($subject instanceof FlashBanner) {
+            $flashForm = $this->createForm('flash_banner_form', $subject);
+            $form = $flashForm;
+        } else {
+            $codeForm = $this->createForm('code_banner_form', $subject);
+            $form = $codeForm;
+        }
+
+        if ($request->request->count() > 1) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em->flush();
+                $em->refresh($subject);
+                $answer = [
+                    'result'    => true,
+                    'data'      => $subject,
+                    'msg'       => 'ok'
+                ];
+            } else {
+                $content = $this->render('CoreBannerBundle:Gag\Cabinet\Forms:adplace_banner_form_ajax.html.twig',[
+                    'imageForm' => (isset($imageForm)) ? $imageForm->createView() : null,
+                    'codeForm'  => (isset($codeForm)) ? $codeForm->createView() : null,
+                    'flashForm' => (isset($flashForm)) ?  $flashForm->createView() : null,
+                    'subject'   => $subject
+                ])->getContent();
+
+                $answer = [
+                    'result'    => false,
+                    'data'      => $content,
+                    'msg'       => 'error'
+                ];
+            }
+        } else {
+            $content = $this->render('CoreBannerBundle:Gag\Cabinet\Forms:adplace_banner_form_ajax.html.twig',[
+                'imageForm' => (isset($imageForm)) ? $imageForm->createView() : null,
+                'codeForm'  => (isset($codeForm)) ? $codeForm->createView() : null,
+                'flashForm' => (isset($flashForm)) ?  $flashForm->createView() : null,
+                'subject'   => $subject
+            ])->getContent();
+            $answer = [
+                'result'    => true,
+                'data'      => $content,
+                'msg'       => 'create'
+            ];
+        }
+
+        $response = new Response(json_encode($answer));
+
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+
+    }
+
     /**
      * Удаление баннера
      * @return \Symfony\Component\HttpFoundation\Response

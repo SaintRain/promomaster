@@ -98,16 +98,30 @@
         </div>
 
         <div class="row margin-bottom-20">
-            <div class="col-sm-6  {% if form_errors(form.gag) %}state-error{% endif %}">
-                <label>Заглушка</label>
-                <div class="pull-right">
-                    <a class="btn-u btn-u-xs gag-create" href="{{ path('core_cabinet_banner_create_ajax') }}">
-                        <i class="fa fa-plus-square"></i>
-                        <span>&nbsp;Добавить Заглушку</span>
-                    </a>
+            <div class="col-sm-12  {% if form_errors(form.gag) %}state-error{% endif %}">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Заглушка</label>
+                        <div class="pull-right">
+                            <a class="btn-u btn-u-xs gag-create" href="{{ path('core_cabinet_banner_create_ajax') }}">
+                                <i class="fa fa-plus-square"></i>
+                                <span>&nbsp;Добавить Заглушку</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                {{ form_widget(form.gag,{ 'attr': {'class': 'form-control'} }) }}
-                {{ form_errors(form.gag) }}
+                <div class="row gags-container{% if not (gagsCount | length) %} hidden{% endif %}">
+                    <div class="col-sm-6">
+                        {{ form_widget(form.gag,{ 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    <div class="col-sm-6">
+                        <a data-id="{% if form.gag.vars.value %}{{ form.gag.vars.value }}{% else %}0{% endif %}" style="margin-top: 6px; margin-left: -15px;" class="btn-u btn-u-blue btn-u-xs gag-edit" href="{{ path('core_cabinet_banner_edit_ajax') }}">
+                            <i class="fa fa-pencil"></i>
+                            <span>&nbsp;Редактировать Заглушку</span>
+                        </a>
+                    </div>
+                    {{ form_errors(form.gag) }}
+                </div>
             </div>
             <div id="gag-placement"></div>
         </div>
@@ -255,7 +269,7 @@
         // форма добавления загушки
         $('.gag-create').click(function(e) {
             var $this = $(this),
-                    modalPlacement = $('#gag-placement');
+                modalPlacement = $('#gag-placement');
             modalPlacement.find('#banner-modal').remove();
             modalPlacement.html('');
             $.ajax({
@@ -301,18 +315,31 @@
         $('#gag-placement').on('submit', 'form.trigger', function() {
             var $this = $(this),
                     collectionWrapper = $('.collection-wrapper'),
-                    postUrl,
+                    curId = $this.attr('data-id') * 1,
+                    postUrl = curId ? "{{ path('core_cabinet_gag_edit_ajax') }}" : "{{ path('core_cabinet_banner_create_ajax', {'isGag': 1}) }}",
                     formData = $this.serialize(),
+                    gagsContainer = $('.gags-container'),
                     modalBlock = $('#banner-modal');
+            if (curId) {
+                formData += '&id='+curId;
+            }
             $.ajax({
                 type: 'POST',
-                url: "{{ path('core_cabinet_banner_create_ajax', {'isGag': 1}) }}",
+                url: postUrl,
                 data: formData,
                 success: function(data) {
                     if (data.result) {
                         modalBlock.modal('hide');
-                        $('#form_gag').append('<option value="' + data.data.id +'">' + data.data.name +'</option>')
-                        $('#form_gag').val(data.data.id);
+                        if (curId) {
+                            $('#form_gag option:selected').text(data.data.name);
+                        } else {
+                            $('#form_gag').append('<option value="' + data.data.id +'">' + data.data.name +'</option>');
+                            $('#form_gag').val(data.data.id);
+                        }
+                        if (gagsContainer.is(':hidden')) {
+                            gagsContainer.removeClass('hidden');
+                            gagsContainer.show();
+                        }
                     } else {
                         $('.modal-content-wr', modalBlock).remove();
                         $('#myModalLabel', modalBlock).after($(data.data).find('.modal-content-wr'));
@@ -323,6 +350,34 @@
                 }
             });
 
+            return false;
+        });
+
+        // редактирование загулшки
+        $('.gag-edit').click(function() {
+            var $this = $(this),
+                gagsList = $('#form_gag'),
+                modalPlacement = $('#gag-placement'),
+                curId = gagsList.val() || $this.attr('data-id');
+
+            if (!(curId*1)) {
+                alert('Необходимо выбрать заглушку');
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: "{{ path('core_cabinet_gag_edit_ajax') }}",
+                data: "id=" + curId,
+                success: function(data) {
+                    if (data.result) {
+                        modalPlacement.html($(data.data));
+                        $('#banner-modal').modal('show');
+                    }
+                },
+                error: function () {
+                    console.log('error');
+                }
+            });
             return false;
         });
 

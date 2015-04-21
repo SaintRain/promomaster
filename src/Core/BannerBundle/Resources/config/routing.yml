@@ -82,3 +82,9 @@ core_cabinet_gag_delete:
     defaults:  { _controller: CoreBannerBundle:Gag:delete }
     requirements:
       id: \d+
+
+# редакстиорвание заглушки в ЛК (ajax)
+core_cabinet_gag_edit_ajax:
+    path:      /cabinet/banner_gag_edit_ajax.html
+    schemes:  [http]
+    defaults:  { _controller: CoreBannerBundle:Gag:editAjax }
