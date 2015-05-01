@@ -148,9 +148,11 @@
                     core_file_ajax_remove_file = '{{ path('core_file_ajax_remove_file') }}';
         </script>
 
-        {% javascripts  'bundles/corefile/core_file_frontend.js' output='js/compiled/core_file_frontend.js' filter='yui_js' %}
-        <script src="{{ asset_url }}"></script>
-        {% endjavascripts %}
+
+{#просто добавить загрузки файла в общий шаблон#}
+        {#{% javascripts  'bundles/corefile/core_file_frontend.js' output='js/compiled/core_file_frontend.js' filter='yui_js' %}#}
+        {#<script src="{{ asset_url }}"></script>#}
+        {#{% endjavascripts %}#}
 
     {% endif %}
 
