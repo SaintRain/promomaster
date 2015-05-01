@@ -185,13 +185,21 @@
                 </div>
             </div>
 
-            <div class="margin-bottom-20 {% if form_errors(form.defaultCountries) %}state-error{% endif %}">
-
-                <label>Страны</label>
-
-                {{ form_widget(form.defaultCountries,{ 'attr': {'class': 'form-control'} }) }}
-                {{ form_errors(form.defaultCountries) }}
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.defaultCountries) %}state-error{% endif %}">
+                    <label>Страны</label>
+                    <div class="pull-right">
+                        <a href="javascript:void(0);" class="btn-u btn-u-xs country-select">
+                            <i class="fa fa-plus-square"></i>
+                            <span>&nbsp;Выбрать страны</span>
+                        </a>
+                    </div>
+                    {{ form_widget(form.defaultCountries) }}
+                    {{ form_errors(form.defaultCountries) }}
+                </div>
             </div>
+
+
 
             <div class="margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
                 <label class="checkbox">

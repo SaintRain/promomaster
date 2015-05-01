@@ -15,6 +15,7 @@ use  Core\AdCompanyBundle\Entity\Placement;
 use  Core\AdCompanyBundle\Entity\AdCompany;
 use Core\AdCompanyBundle\Form\DataTransformer\PlacementTransformer;
 use Core\DirectoryBundle\Entity\Repository\PriceModelRepository;
+use Doctrine\ORM\EntityRepository;
 
 class PlacementCabinetController extends Controller
 {
@@ -136,7 +137,23 @@ class PlacementCabinetController extends Controller
                     return $er->createQueryBuilder('pm')->where('pm.name != :name')->setParameter('name','daysquantity');
                 },
                 'required' => false, 'property'=>'captionRu'])
-            ->add('defaultCountries', null, ['required' => false])
+           // ->add('defaultCountries', null, ['required' => false])
+            ->add('defaultCountries', 'entity', [
+                //'required' => false ,
+                //'by_reference' => false,
+                'class'     => 'CoreDirectoryBundle:Country',
+                //'property'  => 'name',
+                'withSubset' => true,
+                'expanded'  => true,
+                'multiple'  => true,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->select('c, w')
+                        ->innerJoin('c.worldSection', 'w')
+                        ;
+                }
+            ])
+
             ->add('placementBannersList', 'collection', [
                 'by_reference' => false,
                 'type' => 'placement_banner_form',
