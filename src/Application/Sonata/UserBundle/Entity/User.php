@@ -27,6 +27,9 @@ class User extends BaseUser
 {
 
     const SALT = 'olikids';
+    const USER_TYPE_WEBMASTER = 0;
+    const USER_TYPE_ADVERTISER = 1;
+    const USER_TYPE_WEBMASTER_AND_ADVERTISER = 2;
 
     /**
      * @var integer $id
@@ -46,13 +49,13 @@ class User extends BaseUser
 
     /**
      *
-     * @var collection $favoriteProducts;
+     * @var collection $favoriteProducts ;
      */
 //    protected $favoriteProducts;
 
     /**
      *
-     * @var collection $favoriteProducts;
+     * @var collection $favoriteProducts ;
      */
 //    protected $historyProducts;
 
@@ -76,24 +79,24 @@ class User extends BaseUser
 
     /**
      * Контрагенты пользователя
-     * @var collection $contragents;
+     * @var collection $contragents ;
      */
     protected $contragents;
 
     /**
      * Админские комментарии
-     * @var collection $contragents;
+     * @var collection $contragents ;
      */
     protected $adminComments;
 
     /**
-     * @var collection $contragents;
+     * @var collection $contragents ;
      */
     private $subscribersOnAdminComments;
 
     /**
      * Отзывы
-     * @var ArrayCollection $contragents;
+     * @var ArrayCollection $contragents ;
      */
     protected $reviews;
 
@@ -108,6 +111,8 @@ class User extends BaseUser
      */
     protected $logs;
 
+    protected $userStatus = self::USER_TYPE_WEBMASTER_AND_ADVERTISER;
+
     public function __construct()
     {
         parent::__construct();
@@ -119,7 +124,7 @@ class User extends BaseUser
         $this->subscribersOnAdminComments = new ArrayCollection();
         $this->reviews = new ArrayCollection();
         $this->reviewsLikes = new ArrayCollection();
-        $this->logs =  new ArrayCollection();
+        $this->logs = new ArrayCollection();
     }
 
     /**
@@ -171,7 +176,7 @@ class User extends BaseUser
         } else {
             $this->newEmailHash = md5($this->newEmail . self::SALT);
         }
-        
+
         return $this;
     }
 
@@ -428,8 +433,26 @@ class User extends BaseUser
         return $caption;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUserStatus()
+    {
+        return $this->userStatus;
+    }
+
+    /**
+     * @param mixed $userStatus
+     */
+    public function setUserStatus($userStatus)
+    {
+        $this->userStatus = $userStatus;
+    }
+
+
     public function getFullname()
     {
         return trim(sprintf("%s %s", $this->getLastname(), $this->getFirstname()));
     }
+
 }

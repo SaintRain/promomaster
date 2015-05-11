@@ -32,3 +32,4 @@
 /src/Core/PaymentBundle/Certificate/out
 access.log
 error.log
+/node_modules/

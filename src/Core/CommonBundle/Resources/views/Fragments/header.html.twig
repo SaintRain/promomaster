@@ -79,12 +79,16 @@
                     <li>
                         <i class="search fa fa-search search-btn"></i>
                         <div class="search-open">
+                            <form action="{{ path('core_faq_search') }}" method="get">
                             <div class="input-group animated fadeInDown">
-                                <input type="text" class="form-control" placeholder="Искать">
+
+                                <input required="required" name="search_faq_type[searchQuery]" type="text" class="form-control" placeholder="Искать">
                                     <span class="input-group-btn">
-                                        <button class="btn-u" type="button">Найти</button>
+                                        <button class="btn-u" type="submit">Найти</button>
                                     </span>
+
                             </div>
+                            </form>
                         </div>
                     </li>
                     <!-- End Search Block -->

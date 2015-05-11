@@ -130,7 +130,7 @@ class SiteCabinetController extends Controller
     private function getForm($site)
     {
         $form = $this->createFormBuilder($site)
-            ->add('domain', 'text', ['required' => true])
+            ->add('domain', 'text', ['required' => true, 'trim'=>true])
             ->add('mirrors', 'textarea', ['required' => false])
             ->add('keywords', 'textarea', ['required' => false, 'attr' => ['rows' => 5]])
             ->add('categories', 'FrontendCategory', ['required' => true,

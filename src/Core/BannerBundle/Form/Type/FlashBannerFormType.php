@@ -49,13 +49,13 @@ class FlashBannerFormType extends GeneralBannerFormType
         ));
     }
 
-    public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->children['file']->vars['note'] = 'Чтобы система могла правильно учитывать клики по Flash баннерам, сделайте следующее.';
-        $view->children['file']->vars['note'] .= 'Создайте в баннере элемент типа button, для которого пропишите такой скрипт:';
-        $view->children['file']->vars['note'] .= '<pre>on (release) {getURL(url, "_blank");}</pre>';
-        $view->children['file']->vars['note'] .= 'Если переход по рекламе должен осуществляться не в новом окне, а в текущем, то в методе getURL второй параметр измените на "_self"';
-    }
+//    public function finishView(FormView $view, FormInterface $form, array $options)
+//    {
+//        $view->children['file']->vars['note'] = 'Чтобы система могла правильно учитывать клики по Flash баннерам, сделайте следующее.';
+//        $view->children['file']->vars['note'] .= 'Создайте в баннере элемент типа button, для которого пропишите такой скрипт:';
+//        $view->children['file']->vars['note'] .= '<pre>on (release) {getURL(url, "_blank");}</pre>';
+//        $view->children['file']->vars['note'] .= 'Если переход по рекламе должен осуществляться не в новом окне, а в текущем, то в методе getURL второй параметр измените на "_self"';
+//    }
 
 
     /**

@@ -63,6 +63,8 @@
         <field name="notation" column="notation" type="text" nullable="true" />
         <field name="isRssNews" column="is_rss_news" type="boolean" nullable="false" />
         <field name="isSocialAuth" column="is_social_auth" type="boolean" nullable="false" />
+        <field name="userStatus" type="smallint" nullable="true" />
+
 
     </entity>
 

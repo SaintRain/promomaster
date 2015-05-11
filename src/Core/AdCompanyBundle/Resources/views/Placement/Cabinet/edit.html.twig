@@ -106,17 +106,22 @@
                     </div>
                     #}
                     <div class="pull-right">
-                        <a href="{{ path('core_cabinet_banner_create_ajax') }}" class="btn-u btn-u-xs collection-add" data-prototype="{% filter escape %}
+                        <a href="{{ path('core_cabinet_banner_create_ajax') }}" class="btn-u btn-u-xs collection-add"
+                           data-prototype="{% filter escape %}
                                 {{ include('CoreAdCompanyBundle:Placement\\Cabinet\\Form:placement_banner.html.twig', { 'form': form.placementBannersList.vars.prototype }) }}
                             {% endfilter %}">
                             <i class="fa fa-plus-square"></i>
                             <span>&nbsp;Добавить баннер</span>
                         </a>
                     </div>
+
+
                     {% for placementBanner in form.placementBannersList %}
                         {{ include('CoreAdCompanyBundle:Placement\\Cabinet\\Form:placement_banner.html.twig', { 'form': placementBanner }) }}
-                    {% endfor  %}
+                    {% endfor %}
+
                     {% do form.placementBannersList.setRendered %}
+
                 </div>
             </div>
 
@@ -138,9 +143,9 @@
             </div>
 
 
-
             <div class="row margin-bottom-20">
-                <div {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  style="display: none"  {% endif %}  class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
+                <div {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  style="display: none"  {% endif %}
+                        class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
                     <label>Дата начала показов</label>
                     <label class="input">
                         <i class="icon-append fa fa-calendar"></i>
@@ -153,10 +158,15 @@
 
                 <div class="col-sm-6">
                     <label class="dateSettingsStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>
+
                     <div class="inline-group">
-                        <label class="radio"><input {% if form.startDateTime.vars.value or form.startDateTime.vars.errors|length %}  checked=""  {% endif %}  class="dateSettingsStart" value="1" type="radio" name="dateSettingsStart"><i class="rounded-x"></i>По
+                        <label class="radio"><input {% if form.startDateTime.vars.value or form.startDateTime.vars.errors|length %}  checked=""  {% endif %}
+                                    class="dateSettingsStart" value="1" type="radio" name="dateSettingsStart"><i
+                                    class="rounded-x"></i>По
                             дате</label>
-                        <label class="radio"><input {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  checked=""  {% endif %} class="dateSettingsStart"  value="0" type="radio" name="dateSettingsStart"><i class="rounded-x"></i>Начать
+                        <label class="radio"><input {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  checked=""  {% endif %}
+                                    class="dateSettingsStart" value="0" type="radio" name="dateSettingsStart"><i
+                                    class="rounded-x"></i>Начать
                             показ сразу</label>
                     </div>
                 </div>
@@ -164,7 +174,8 @@
 
 
             <div class="row margin-bottom-20">
-                <div  {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length %}  style="display: none"  {% endif %}   class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
+                <div  {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length %}  style="display: none"  {% endif %}
+                        class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
                     <label>Дата окончания показов</label>
 
                     <label class="input">
@@ -177,10 +188,15 @@
 
                 <div class="col-sm-6">
                     <label class="dateSettingsFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>
+
                     <div class="inline-group">
-                        <label class="radio"><input {% if form.finishDateTime.vars.value or form.finishDateTime.vars.errors|length  %}  checked=""  {% endif %}  class="dateSettingsFinish" value="1" type="radio" name="dateSettingsFinish"><i class="rounded-x"></i>По
+                        <label class="radio"><input {% if form.finishDateTime.vars.value or form.finishDateTime.vars.errors|length %}  checked=""  {% endif %}
+                                    class="dateSettingsFinish" value="1" type="radio" name="dateSettingsFinish"><i
+                                    class="rounded-x"></i>По
                             дате</label>
-                        <label class="radio"><input {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length  %}  checked=""  {% endif %} class="dateSettingsFinish"  value="0" type="radio" name="dateSettingsFinish"><i class="rounded-x"></i>Показывать бесконечно</label>
+                        <label class="radio"><input {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length %}  checked=""  {% endif %}
+                                    class="dateSettingsFinish" value="0" type="radio" name="dateSettingsFinish"><i
+                                    class="rounded-x"></i>Показывать бесконечно</label>
                     </div>
                 </div>
             </div>
@@ -188,6 +204,7 @@
             <div class="row margin-bottom-20">
                 <div class="col-sm-6  {% if form_errors(form.defaultCountries) %}state-error{% endif %}">
                     <label>Страны</label>
+
                     <div class="pull-right">
                         <a href="javascript:void(0);" class="btn-u btn-u-xs country-select">
                             <i class="fa fa-plus-square"></i>
@@ -198,7 +215,6 @@
                     {{ form_errors(form.defaultCountries) }}
                 </div>
             </div>
-
 
 
             <div class="margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
@@ -241,7 +257,7 @@
 
                 manipulateCollection(collectionCount);
 
-                $( "#datepicker" ).datepicker();
+                $("#datepicker").datepicker();
                 // Date range
                 $('#form_startDateTime').datepicker({
                     dateFormat: 'dd-mm-yy',
@@ -261,7 +277,7 @@
                 });
 
 
-            //      $(".date").mask('99-99-9999', {placeholder: '0'});
+                //      $(".date").mask('99-99-9999', {placeholder: '0'});
 
 
                 {% if placement.id %}
@@ -308,7 +324,7 @@
                 });
 
                 // редактирование банера
-                $('body').on('click', '.entity-desc', function(){
+                $('body').on('click', '.entity-desc', function () {
                     var $this = $(this),
                             modalPlacement = $('#modal-placement'),
                             curId = $this.attr('data-id');
@@ -317,8 +333,8 @@
                     $.ajax({
                         type: 'POST',
                         url: '{{ path('core_cabinet_banner_edit_ajax') }}',
-                        data:'id='+ curId,
-                        success: function(data) {
+                        data: 'id=' + curId,
+                        success: function (data) {
                             if (data.result) {
 
                                 modalPlacement.html(data.data);
@@ -338,28 +354,28 @@
 
             function manipulateCollection(collectionCount) {
                 /*
-                // добавление коллекции
-                $('.collection-add').click(function(e) {
-                    e.preventDefault();
-                    var $this = $(this),
-                            parentWrapper = $this.parents('.collection-wrapper'),
-                            newWidget = $this.attr('data-prototype');
-                    newWidget = newWidget.replace(/__name__/g, collectionCount);
-                    parentWrapper.append(newWidget)
+                 // добавление коллекции
+                 $('.collection-add').click(function(e) {
+                 e.preventDefault();
+                 var $this = $(this),
+                 parentWrapper = $this.parents('.collection-wrapper'),
+                 newWidget = $this.attr('data-prototype');
+                 newWidget = newWidget.replace(/__name__/g, collectionCount);
+                 parentWrapper.append(newWidget)
 
-                    return false;
-                });
-                */
-                $('.collection-add').click(function(e) {
+                 return false;
+                 });
+                 */
+                $('.collection-add').click(function (e) {
 
                     var $this = $(this),
-                        modalPlacement = $('#modal-placement');
+                            modalPlacement = $('#modal-placement');
                     modalPlacement.find('#responsive').remove();
                     modalPlacement.html('');
                     $.ajax({
                         type: 'POST',
-                        url:$this.attr('href'),
-                        success: function(data) {
+                        url: $this.attr('href'),
+                        success: function (data) {
                             if (data.result) {
                                 modalPlacement.html(data.data);
                                 $('#responsive').modal('show');
@@ -376,7 +392,7 @@
                 });
 
                 // удаление коллекции
-                $('body').on('click' ,'.collection-row-remove', function(e){
+                $('body').on('click', '.collection-row-remove', function (e) {
                     var $this = $(this),
                             curRow = $this.parents('.collection-row');
 

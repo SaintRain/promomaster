@@ -1,4 +1,3 @@
-
 {% if adplace.id %}
     <h3>Редактирование настроек вашего рекламного места</h3>
 {% else %}
@@ -46,10 +45,10 @@
 
         <div class="row margin-bottom-20">
             <div class="col-lg-6  {% if form_errors(form.site) %}state-error{% endif %}">
-                <label>Сайт*</label>
+                <label>Площадка*</label>
                 {{ form_widget(form.site,{ 'attr': {'class': 'form-control'} }) }}
                 {{ form_errors(form.site) }}
-                <span class="note">Выберите сайт на котором распологается рекламное место.</span>
+                <span class="note">Выберите площадку на которой распологается рекламное место.</span>
             </div>
         </div>
 
@@ -68,6 +67,7 @@
                 <label>Размер*</label>
                 {{ form_widget(form.size,{ 'attr': {'class': 'form-control'} }) }}
                 {{ form_errors(form.size) }}
+                <span class="note">Укажите размер рекламного места, где будет показываться реклама.</span>
             </div>
         </div>
 
@@ -92,7 +92,7 @@
 
         <div class="margin-bottom-20 {% if form_errors(form.isShowInCatalog) %}state-error{% endif %}">
             <label class="checkbox">
-                {{ form_widget(form.isShowInCatalog) }}<i></i> Выводить в каталог</label>
+                {{ form_widget(form.isShowInCatalog) }}<i></i> Выводить рекламное место в каталоге сервиса</label>
                 {{ form_errors(form.isShowInCatalog) }}
             </label>
         </div>
@@ -102,39 +102,52 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <label>Заглушка</label>
+
+                        {% if not (gagsCount | length) %}
                         <div class="pull-right">
                             <a class="btn-u btn-u-xs gag-create" href="{{ path('core_cabinet_banner_create_ajax') }}">
                                 <i class="fa fa-plus-square"></i>
-                                <span>&nbsp;Добавить Заглушку</span>
+                                <span>&nbsp;Добавить заглушку</span>
                             </a>
                         </div>
+                        {% endif %}
+
                     </div>
                 </div>
+
                 <div class="row gags-container{% if not (gagsCount | length) %} hidden{% endif %}">
                     <div class="col-sm-6">
                         {{ form_widget(form.gag,{ 'attr': {'class': 'form-control'} }) }}
                     </div>
                     <div class="col-sm-6">
-                        <a data-id="{% if form.gag.vars.value %}{{ form.gag.vars.value }}{% else %}0{% endif %}" style="margin-top: 6px; margin-left: -15px;" class="btn-u btn-u-blue btn-u-xs gag-edit" href="{{ path('core_cabinet_banner_edit_ajax') }}">
-                            <i class="fa fa-pencil"></i>
-                            <span>&nbsp;Редактировать Заглушку</span>
+                        <a data-id="{% if form.gag.vars.value %}{{ form.gag.vars.value }}{% else %}0{% endif %}" style="margin-left: -15px;" class="btn-u  gag-edit" href="{{ path('core_cabinet_banner_edit_ajax') }}">
+                            <i  title="Редактировать заглушку" class="fa fa-pencil"></i>
+                        </a>
+                        &nbsp;&nbsp;
+                        <a class="btn-u  gag-create" href="{{ path('core_cabinet_banner_create_ajax') }}">
+                            <i title="Добавить заглушку" class="fa fa-plus-square"></i>
                         </a>
                     </div>
                     {{ form_errors(form.gag) }}
                 </div>
             </div>
             <div id="gag-placement"></div>
+            <div class="col-sm-12">
+                <span class="note">Когда реклама не показывается будет показана заглушка в рекламном месте.</span>
+            </div>
         </div>
 
         <div class="row margin-bottom-20">
             <div class="col-sm-6  {% if form_errors(form.sections) %}state-error{% endif %}">
                 <label>Разделы</label>
                 <div class="pull-right">
-                    <a href="{{ path('core_cabinet_section_create_ajax') }}" class="btn-u btn-u-xs section-create">
+                    <a href="{{ path('core_cabinet_section_create_ajax') }}" class="btn-u section-create">
                         <i class="fa fa-plus-square"></i>
                         <span>&nbsp;Добавить раздел</span>
                     </a>
                 </div>
+                <br/>
+                <br/>
                 {{ form_widget(form.sections) }}
                 {{ form_errors(form.sections) }}
             </div>

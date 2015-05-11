@@ -34,8 +34,10 @@
         </div>
     {% endif %}
 
-    <form class="sky-form sky-form-other-style"  action="{{ path('sonata_user_profile_show') }}" {{ form_enctype(form) }} method="POST">
-        <header  class="sky-form-other-style">Редактирование профиля</header><br/>
+    <form class="sky-form sky-form-other-style" action="{{ path('sonata_user_profile_show') }}" {{ form_enctype(form) }}
+          method="POST">
+        <header class="sky-form-other-style">Редактирование профиля</header>
+        <br/>
         <fieldset class="sky-form-other-style">
 
             <div class="row margin-bottom-20">
@@ -79,13 +81,19 @@
             </div>
 
 
+            <div class="margin-bottom-20 {% if form_errors(form.userStatus) %}state-error{% endif %}">
+                <label>Ваш статус* </label>
+                {{ form_widget(form.userStatus,{ 'attr': {
+                    'class': 'form-control '} }) }}
+                {{ form_errors(form.userStatus) }}
+            </div>
+
             <div class="margin-bottom-20 {% if form_errors(form.isRssNews) %}state-error{% endif %}">
                 <label class="checkbox">
                     {{ form_widget(form.isRssNews) }}<i></i> Получать рассылку</label>
                 {{ form_errors(form.isRssNews) }}
                 </label>
             </div>
-
 
             <div class=" margin-bottom-20">
                 <h3>Изменить пароль</h3>
@@ -104,6 +112,9 @@
                     {{ form_errors(form.plainPassword.second) }}
                 </div>
             </div>
+
+
+
 
             <div class=" margin-bottom-20">
             </div>

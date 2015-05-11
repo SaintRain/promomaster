@@ -33,7 +33,7 @@ class Statistics
     /**
      * Рекламная место
      * @ORM\ManyToOne(targetEntity="Core\SiteBundle\Entity\AdPlace", inversedBy="statistics")
-     * @ORM\JoinColumn(referencedColumnName="id", onDelete="RESTRICT")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="SET NULL")
      * @Assert\NotBlank()
      */
     private $adPlace;
@@ -48,9 +48,9 @@ class Statistics
 
 
     /**
-     * Размещение
+     * Баннер размещения
      * @ORM\ManyToOne(targetEntity="Core\AdCompanyBundle\Entity\PlacementBanner", inversedBy="statistics")
-     * @ORM\JoinColumn(referencedColumnName="id", onDelete="RESTRICT")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="SET NULL")
      * @Assert\NotBlank()
      */
     private $placementBanner;
