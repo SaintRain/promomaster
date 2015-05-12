@@ -1,0 +1,30 @@
+{#редактирование рекламного места в ЛК#}
+{% extends "CoreSiteBundle:AdPlace\\Cabinet:tabs.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}{% if adplace.id %}Редактирование разделов рекламного места{% else %}Добавление рекламного места в систему{% endif %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+
+    {% block breadcrumbs %}
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left">Рекламные места</h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                    <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
+                    <li><a href="{{ path('core_cabinet_adplace_list_first_page') }}">Список ваших рекламных мест</a>
+                    </li>
+                    <li class="active">Редактирование настроек вашего рекламного места</li>
+                </ul>
+            </div>
+        </div>
+        <!--=== End Breadcrumbs ===-->
+    {% endblock %}
+
+
+    {% block tab_content %}
+        {{ include ('CoreSiteBundle:AdPlace\\Cabinet\\Form:sections.html.twig') }}
+    {% endblock %}

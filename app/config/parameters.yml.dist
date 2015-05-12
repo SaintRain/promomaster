@@ -18,8 +18,8 @@ parameters:
     filebrowserBrowseRoute: elfinder  #папка куда будут сохраняться файлы из elfinder-менеджера
     default_timezone: Europe/Moscow
     default_currency: RUB
-    default_email: info@olikids.ru
-    default_email_sender_name: info@olikids.ru
+    default_email: info@PromoMaster.net
+    default_email_sender_name: info@PromoMaster.net
     java_path: /usr/bin/java    #папка, где хранится ява
     router.request_context.host: %domain_ru%  #дефолтный домен, нужен для консоли, чтобы ставить правильный домен на роуты
     router.request_context.base_url: app_dev.php #для прода ставим null

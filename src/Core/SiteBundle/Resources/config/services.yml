@@ -86,3 +86,5 @@ services:
       class: Core\SiteBundle\Form\Type\AdPlacePriceDiscountFormType
       tags:
           - { name: form.type, alias: ad_place_price_discount_form }
+
+

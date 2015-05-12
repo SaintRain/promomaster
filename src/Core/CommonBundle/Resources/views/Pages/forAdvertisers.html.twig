@@ -1,0 +1,32 @@
+{% extends "CoreCommonBundle::main_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}PromoMaster.net{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+{% block js_head %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.initSliders();
+            ParallaxSlider.initParallaxSlider();
+        });
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <h1 class="pull-left">Рекламодателям</h1>
+            <ul class="pull-right breadcrumb">
+                <li><a href="{ path('core_common_index') }}">Главная</a></li>
+                <li class="active">Рекламодателям</li>
+            </ul>
+        </div><!--/container-->
+    </div>
+
+{% endblock %}

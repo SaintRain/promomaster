@@ -25,6 +25,26 @@ class PagesController extends Controller
         return $this->render('CoreCommonBundle:Pages:test.html.twig');
     }
 
+    public function aboutAction()
+    {
+        return $this->render('CoreCommonBundle:Pages:about.html.twig');
+    }
+
+    public function advertisersAction()
+    {
+        return $this->render('CoreCommonBundle:Pages:forAdvertisers.html.twig');
+    }
+
+    public function webmastersAction()
+    {
+        return $this->render('CoreCommonBundle:Pages:forWebmasters.html.twig');
+    }
+
+    public function agenciesAction()
+    {
+        return $this->render('CoreCommonBundle:Pages:forAgencies.html.twig');
+    }
+
 
 //    /**
 //     * 404 ошибка, метод используется для внутреннего перенаправления

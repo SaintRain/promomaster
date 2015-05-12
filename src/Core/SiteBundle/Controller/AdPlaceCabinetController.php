@@ -168,16 +168,16 @@ class AdPlaceCabinetController extends Controller
             ->add('height', 'text', ['required' => false])
             ->add('isShowInCatalog', null, ['required' => false])
             ->add('gag', 'entity', [
-                'class'         => 'CoreBannerBundle:CommonBanner',
-                'property'      => 'name',
-                'empty_value'   => 'Необходимо выбрать',
+                'class' => 'CoreBannerBundle:CommonBanner',
+                'property' => 'name',
+                'empty_value' => 'Необходимо выбрать',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
-                                ->where('u.isGag = :isGag')
-                                ->setParameter('isGag', true);
+                        ->where('u.isGag = :isGag')
+                        ->setParameter('isGag', true);
                 }
             ])
-            ->add('sections', null, ['property'=>'name', 'required' => false,'class' => 'CoreSiteBundle:Section', 'multiple' => true, 'expanded' => true, 'extraConfig' => [
+            ->add('sections', null, ['property' => 'name', 'required' => false, 'class' => 'CoreSiteBundle:Section', 'multiple' => true, 'expanded' => true, 'extraConfig' => [
                 'field' => 'sections',
                 'editUrl' => '',
                 'deleteUrl' => '',
@@ -193,19 +193,18 @@ class AdPlaceCabinetController extends Controller
             ])
             */
             ->add('countryList', 'entity', [
-                    //'required' => false ,
-                    //'by_reference' => false,
-                    'class'     => 'CoreDirectoryBundle:Country',
-                    //'property'  => 'name',
-                    'withSubset' => true,
-                    'expanded'  => true,
-                    'multiple'  => true,
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('c')
-                            ->select('c, w')
-                            ->innerJoin('c.worldSection', 'w')
-                        ;
-                    }
+                //'required' => false ,
+                //'by_reference' => false,
+                'class' => 'CoreDirectoryBundle:Country',
+                //'property'  => 'name',
+                'withSubset' => true,
+                'expanded' => true,
+                'multiple' => true,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->select('c, w')
+                        ->innerJoin('c.worldSection', 'w');
+                }
             ])
             /*
             ->add('prices', 'collection', [
@@ -281,6 +280,36 @@ class AdPlaceCabinetController extends Controller
         return $this->render('CoreSiteBundle:AdPlace\Cabinet:code.html.twig', ['adplace' => $adplace]);
 
     }
+
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getAdplaceSectionsAction($id, Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $adplace = $em->getRepository('CoreSiteBundle:AdPlace')->find($id);
+        $form = $this->getForm($adplace);
+
+        //Сохранения изменения
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            $updated=true;
+        }
+        else {
+            $updated=false;
+        }
+
+
+        return $this->render('CoreSiteBundle:AdPlace\Cabinet:editSections.html.twig', [
+            'adplace' => $adplace,
+            'form' => $form->createView(),
+            'updated'=>$updated
+        ]);
+
+    }
+
 
     /**
      * Установка сообщений

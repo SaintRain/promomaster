@@ -20,9 +20,9 @@ class FragmentsController extends Controller
     /**
      * Шапка
      */
-    public function headerAction($request = null)
+    public function headerAction($request = null, $active_route=null)
     {
-        $response = $this->render('CoreCommonBundle:Fragments:header.html.twig');
+        $response = $this->render('CoreCommonBundle:Fragments:header.html.twig', ['active_route'=>$active_route]);
 
         return $response;
     }

@@ -18,10 +18,26 @@ auth_receiver:
     defaults: { _controller: CoreCommonBundle:Pages:receiver }
 
 
-core_common_test:
-    pattern:  /test
+core_common_about:
+    pattern:  /about.html
     schemes:  [http]
-    defaults: { _controller: CoreCommonBundle:Pages:test }
+    defaults: { _controller: CoreCommonBundle:Pages:about }
+
+
+core_common_advertisers:
+    pattern:  /advertisers.html
+    schemes:  [http]
+    defaults: { _controller: CoreCommonBundle:Pages:advertisers }
+
+core_common_webmasters:
+    pattern:  /webmaster.html
+    schemes:  [http]
+    defaults: { _controller: CoreCommonBundle:Pages:webmasters }
+
+core_common_agencies:
+    pattern:  /agencies.html
+    schemes:  [http]
+    defaults: { _controller: CoreCommonBundle:Pages:agencies }
 
 #экранируем, чтобы по прямой ссылке страницы не были доступны
 #core_common_error404:

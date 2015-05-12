@@ -90,12 +90,7 @@
         </div>
 
 
-        <div class="margin-bottom-20 {% if form_errors(form.isShowInCatalog) %}state-error{% endif %}">
-            <label class="checkbox">
-                {{ form_widget(form.isShowInCatalog) }}<i></i> Выводить рекламное место в каталоге сервиса</label>
-                {{ form_errors(form.isShowInCatalog) }}
-            </label>
-        </div>
+
 
         <div class="row margin-bottom-20">
             <div class="col-sm-12  {% if form_errors(form.gag) %}state-error{% endif %}">
@@ -137,7 +132,7 @@
             </div>
         </div>
 
-        <div class="row margin-bottom-20">
+        <div class="row margin-bottom-20" style="display:none;">
             <div class="col-sm-6  {% if form_errors(form.sections) %}state-error{% endif %}">
                 <label>Разделы</label>
                 <div class="pull-right">
@@ -207,7 +202,7 @@
         </div>
         {% endif %}
 
-        <div class="row margin-bottom-20">
+        <div class="row margin-bottom-20" style="display:none;">
             <div class="col-sm-6  {% if form_errors(form.countryList) %}state-error{% endif %}">
                 <label>Страны</label>
                 <div class="pull-right">
@@ -221,7 +216,12 @@
             </div>
         </div>
 
-
+        <div class="margin-bottom-20 {% if form_errors(form.isShowInCatalog) %}state-error{% endif %}">
+            <label class="checkbox">
+                {{ form_widget(form.isShowInCatalog) }}<i></i> Выводить рекламное место в каталоге сервиса</label>
+            {{ form_errors(form.isShowInCatalog) }}
+            </label>
+        </div>
         <div class="margin-bottom-20">
         </div>
 
@@ -230,7 +230,7 @@
         <div class="text-right">
             <button class="btn-u" type="submit">{% if adplace.id %}Сохранить{% else %}Добавить{% endif %}</button>
             &nbsp;&nbsp;
-            <a href="{{ path('core_cabinet_site_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+            <a href="{{ path('core_cabinet_adplace_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
             {% if adplace.id %}
                 &nbsp;&nbsp; или &nbsp;&nbsp;
                 <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>

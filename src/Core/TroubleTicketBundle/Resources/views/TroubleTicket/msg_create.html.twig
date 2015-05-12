@@ -5,14 +5,14 @@
 {{ eval(ServiceContainer.get('core_config_logic').get('contact-msg-template'))|raw }}
 
 {#<h3>Уважаемый(ая) {{ticket.authorName ? ticket.authorName : ticket.authorEmail}}!</h3>#}
-{#<p>В интернет магазине olikids.ru по вашему вопросу (обращению) создано сообщение №{{ticket.id}} в категории «{{ticket.category.captionRu}}».</p>#}
+{#<p>В интернет магазине PromoMaster.net по вашему вопросу (обращению) создано сообщение №{{ticket.id}} в категории «{{ticket.category.captionRu}}».</p>#}
 {#<p>Просим вас не отвечать на это уведомление: оно выслано автоматически. Всю историю сообщений Вы можете проследить по данной ссылке: <a href="{{ticketLink}}">{{ticketLink}}</a></p>#}
 
 {#<p>-- <br />С вопросами и предложениями обращайтесь через форму <a href="{{contactsLink}}">обратной связи</a></p>#}
 
 {#<p>С уважением и наилучшими пожеланиями,</p>#}
 {#<p>команда {{base_url}}</p>#}
-{#<p>olikids.ru - оборудование для беспроводной связи</p>#}
+{#<p>PromoMaster.net - оборудование для беспроводной связи</p>#}
 
 {#{% set phonesKeys = {'rostov': 'phones.simple.rostov', 'msk' : 'phones.simple.msk', 'spb' : 'phones.simple.spb'} %}#}
 {#{% set phones = ServiceContainer.get('core_config_logic').get('phones') %}#}

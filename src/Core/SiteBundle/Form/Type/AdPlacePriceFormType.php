@@ -38,7 +38,7 @@ class AdPlacePriceFormType extends AbstractType
                 ])
             */
             ->add('discounts', 'collection', [
-                'label'              => 'Скидки',
+                'label'              => 'Оптовые скидки',
                 'by_reference'       => false,
                 'allow_add'          => true,
                 'allow_delete'       => true,

@@ -42,7 +42,7 @@
             <div class="collapse navbar-collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
                     <!-- Home -->
-                    <li class=" active">
+                    <li {% if active_route == 'core_common_index' %}class="active"{% endif %}>
                         <a href="{{ path('core_common_index') }}" >
                             На главную
                         </a>
@@ -50,26 +50,26 @@
                     <!-- End Home -->
 
 
-                    <li class=" ">
-                        <a href="{{ path('core_common_index') }}" >
+                    <li {% if active_route == 'core_common_webmasters' %}class="active"{% endif %}>
+                        <a href="{{ path('core_common_webmasters') }}" >
                             Площадкам
                         </a>
                     </li>
 
-                    <li class=" ">
-                        <a href="{{ path('core_common_index') }}" >
+                    <li {% if active_route == 'core_common_agencies' %}class="active"{% endif %}>
+                        <a href="{{ path('core_common_agencies') }}" >
                             Агенствам
                         </a>
                     </li>
 
-                    <li class=" ">
-                        <a href="{{ path('core_common_index') }}" >
+                    <li {% if active_route == 'core_common_advertisers' %}class="active"{% endif %}>
+                        <a href="{{ path('core_common_advertisers') }}" >
                             Рекламодателям
                         </a>
                     </li>
 
-                    <li class=" ">
-                        <a href="{{ path('core_common_index') }}" >
+                    <li {% if active_route == 'core_common_about' %}class="active"{% endif %}>
+                        <a href="{{ path('core_common_about') }}" >
                             О нас
                         </a>
                     </li>

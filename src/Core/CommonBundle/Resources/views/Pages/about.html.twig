@@ -1,0 +1,78 @@
+{% extends "CoreCommonBundle::main_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}PromoMaster.net{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
+
+{% block js_head %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.initSliders();
+            ParallaxSlider.initParallaxSlider();
+        });
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <h1 class="pull-left">О нас</h1>
+            <ul class="pull-right breadcrumb">
+                <li><a href="{ path('core_common_index') }}">Главная</a></li>
+                <li class="active">О нас</li>
+            </ul>
+        </div><!--/container-->
+    </div>
+
+
+    <div class="title-box-v2">
+        <h2>О компании <span class="color-green">PromoMaster</span></h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+
+
+    <div class="parallax-bg parallaxBg1" style="background-position: 50% 91px;">
+        <div class="container content parallax-about">
+            <div class="title-box-v2">
+                <h2>Идея стартапа</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="banner-info light margin-bottom-10">
+                        <i class="rounded-x icon-bell"></i>
+                        <div class="overflow-h">
+                            <h3>Our mission</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tincidunt sit amet dui auctor pellentesque. Nulla ut posuere purus.</p>
+                        </div>
+                    </div>
+                    <div class="banner-info light margin-bottom-10">
+                        <i class="rounded-x fa fa-magic"></i>
+                        <div class="overflow-h">
+                            <h3>Our vision</h3>
+                            <p>Phasellus vitae rhoncus ipsum. Aliquam ultricies, velit sit amet scelerisque tincidunt, dolor neque consequat est, a dictum felis metus eget nulla.</p>
+                        </div>
+                    </div>
+                    <div class="banner-info light margin-bottom-10">
+                        <i class="rounded-x fa fa-thumbs-o-up"></i>
+                        <div class="overflow-h">
+                            <h3>We are good at ...</h3>
+                            <p>Nunc ac ligula ut diam rutrum porttitor. Integer et neque at lacus placerat pretium eu ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra.</p>
+                        </div>
+                    </div>
+                    <div class="margin-bottom-20"></div>
+                </div>
+                <div class="col-md-6">
+                    <img class="img-responsive" src="assets/img/mockup/1.png" alt="">
+                </div>
+            </div>
+        </div><!--/container-->
+    </div>
+
+{% endblock %}

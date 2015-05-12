@@ -10,7 +10,7 @@
                             <td><label style="margin-left: -15px; margin-top: -5px" title="Включить проверку раздела" class="toggle">{{- form_widget(child) -}}<i class="rounded-4x"></i></label>
                                 </td>
                             <td width="90%">
-                                <a data-id="{{ curObj.id }}" class="section-edit" href="{{ path('core_cabinet_section_edit_ajax', {'id':curObj.id }) }}">{{ curObj.name }}</a>
+                                <a data-id="{{ curObj.id }}" class="section-edit" href="{{ path('core_cabinet_section_edit_ajax', {'id':curObj.id }) }}"><u>{{ curObj.name }}</u></a>
                             </td>
                             <td>
                                 <a data-id="{{ curObj.id }}"  class="section-delete" href="javascript:void(0);"><i  class="icon-trash" aria-hidden="true"></i></a>
