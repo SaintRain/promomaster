@@ -1,0 +1,1 @@
+<?php return unserialize('a:1:{i:0;O:29:"Doctrine\\ORM\\Mapping\\OneToOne":6:{s:12:"targetEntity";s:39:"Core\\TroubleTicketBundle\\Entity\\Message";s:8:"mappedBy";s:3:"log";s:10:"inversedBy";N;s:7:"cascade";a:4:{i:0;s:7:"persist";i:1;s:5:"merge";i:2;s:7:"refresh";i:3;s:6:"detach";}s:5:"fetch";s:4:"LAZY";s:13:"orphanRemoval";b:0;}}');

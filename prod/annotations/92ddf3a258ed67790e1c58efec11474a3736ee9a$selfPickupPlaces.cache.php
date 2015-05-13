@@ -1,0 +1,1 @@
+<?php return unserialize('a:1:{i:0;O:30:"Doctrine\\ORM\\Mapping\\OneToMany":6:{s:8:"mappedBy";s:4:"city";s:12:"targetEntity";s:34:"Core\\DeliveryBundle\\Entity\\Address";s:7:"cascade";a:1:{i:0;s:7:"persist";}s:5:"fetch";s:10:"EXTRA_LAZY";s:13:"orphanRemoval";b:1;s:7:"indexBy";N;}}');
