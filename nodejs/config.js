@@ -12,7 +12,7 @@ CONFIG = {
         port: ''
     },
     logoptions: {
-        to: 'promomaster.net@mail.ru',
+        to: 'promomaster.net@mail.ru"',
         from: 'promomaster.net@mail.ru',
         host: 'smtp.mail.ru',
         port: 465,
