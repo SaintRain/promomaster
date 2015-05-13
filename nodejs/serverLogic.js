@@ -61,7 +61,6 @@ exports.getAd = function (req, res, adplace_id) {
 
         //проверяем, чтоб домен рефера совпадал с тем, что у нас прописан в базе. Иначе возможна накрутка показов с других площадок
         if (typeof(SD.adplaces['_' + adplace_id]) !== 'undefined' && SD.sites['_' + SD.adplaces['_' + adplace_id].site_id].domain == domain) {
-
             if (SD.placementsByAdPlace['_' + adplace_id]) {  //если есть размещения
 
                 //если заданы разделы проверяем, чтоб раздел совпадал
@@ -101,7 +100,7 @@ exports.getAd = function (req, res, adplace_id) {
 
                 if (isAllowed) {
                     var ip = this.getIpFromReq(req);
-                    if (ip=='127.0.0.1') {  //для теста на локальном
+                    if (ip == '127.0.0.1') {  //для теста на локальном
                         var ip = '92.112.66.58';
                     }
 
@@ -160,7 +159,7 @@ exports.getAd = function (req, res, adplace_id) {
                         //проверяем есть ли заглушка для рекламного места
                         if (SD.adplaces['_' + adplace_id].gag_id) {
                             var banner = SD.banners['_' + SD.adplaces['_' + adplace_id].gag_id];
-                            this.sendBanner(res, banner, {id:0}, {id:0});
+                            this.sendBanner(res, banner, {id: 0}, {id: 0});
                         }
                         else {
                             //отдаём пустой ответ
@@ -172,8 +171,8 @@ exports.getAd = function (req, res, adplace_id) {
                     //проверяем есть ли заглушка для рекламного места
                     if (SD.adplaces['_' + adplace_id].gag_id) {
                         var banner = SD.banners['_' + SD.adplaces['_' + adplace_id].gag_id];
-                        this.sendBanner(res, banner, {id:0}, {id:0});
-                    }else {
+                        this.sendBanner(res, banner, {id: 0}, {id: 0});
+                    } else {
                         //отдаём пустой ответ
                         this.sendResponse(res, {statusCode: 200, body: ''});
                     }
@@ -290,15 +289,18 @@ exports.sendBanner = function (res, banner, placement, placementBanner) {
     if (banner.dtype == 'ImageBanner') {
         var source = banner.image_src,
             width = banner.image_width,
-            height = banner.image_height;
+            height = banner.image_height,
+            url = banner.url;
     }
     else if (banner.dtype == 'FlashBanner') {
         var source = banner.file_src,
             width = banner.file_width,
-            height = banner.file_height;
+            height = banner.file_height,
+            url = banner.url;
     }
     else if (banner.dtype == 'CodeBanner') {
-        var source = banner.code;
+        var source = banner.code,
+            url = false;
     }
 
     var body = {
@@ -309,8 +311,8 @@ exports.sendBanner = function (res, banner, placement, placementBanner) {
         width: width,
         height: height,
         source: source,
-        isOpenUrlInNewWindow: banner.isOpenUrlInNewWindow
-        // url: banner.url
+        isOpenUrlInNewWindow: banner.isOpenUrlInNewWindow,
+        url: url
     }
     //отдаём ссылку на баннер
     this.sendResponse(res, {statusCode: 200, body: body});

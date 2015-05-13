@@ -358,6 +358,7 @@ class CabinetController extends Controller
             ];
         }
 
+
         $response = new Response(json_encode($answer));
 
         $response->headers->set('Content-Type', 'application/json');

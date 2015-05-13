@@ -7,21 +7,22 @@
                     <tr>
                         {% if child.parent.vars.extraData[child.vars.value] is defined  %}
                             {% set curObj =  child.parent.vars.extraData[child.vars.value] %}
-                            <td>{{- form_widget(child) -}}</td>
-                            <td>
-                                <a data-id="{{ curObj.id }}" class="section-edit" href="{{ path('core_cabinet_section_edit_ajax', {'id':curObj.id }) }}">{{ curObj.name }}</a>
+                            <td><label style="margin-left: -15px; margin-top: -5px" title="Включить проверку раздела" class="toggle">{{- form_widget(child) -}}<i class="rounded-4x"></i></label>
+                                </td>
+                            <td width="90%">
+                                <a data-id="{{ curObj.id }}" class="section-edit" href="{{ path('core_cabinet_section_edit_ajax', {'id':curObj.id }) }}"><u>{{ curObj.name }}</u></a>
                             </td>
                             <td>
-                                <a data-id="{{ curObj.id }}" class="section-delete" href="javascript:void(0);">
-                                    <i class="icon-trash" aria-hidden="true"></i>
-                                </a>
+                                <a data-id="{{ curObj.id }}"  class="section-delete" href="javascript:void(0);"><i  class="icon-trash" aria-hidden="true"></i></a>
                             </td>
                         {% endif %}
                     </tr>
                 {% endfor -%}
             </tbody>
         </table>
+        <span class="note">Разделы используются для настройки показов рекламы.</span>
         <div id="modal_placement"></div>
+
     </div>
     <script>
         (function($){

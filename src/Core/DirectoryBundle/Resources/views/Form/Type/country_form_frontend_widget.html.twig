@@ -4,13 +4,15 @@
     <div class="row">
         <div class="col-md-12">
             <div id="selected_country">
-                <ul class="list-style">
+                <ul class="list-style" style="padding-left: 0px">
                 {% if activeChoices | length %}
                     {% for val in activeChoices %}
-                        <li>{{ val }}</li>
+                        <i class="fa fa-check color-green"></i> {{ val }}<br/>
                     {% endfor %}
                     {% else %}
-                    <li>Активно для всех стран</li>
+
+
+                        <i class="fa fa-check color-green"></i> Активно для всех стран<br/>
                 {% endif %}
                 </ul>
             </div>
@@ -111,9 +113,9 @@
                         }
                     });
                     if (countries.length) {
-                        placement.html('<li>' + (countries.join('</li><li>')) + '</li>' )
+                        placement.html('<i class="fa fa-check color-green"></i> ' + (countries.join('<br/><i class="fa fa-check color-green"></i> ')) + '<br/>' )
                     } else {
-                        placement.html('<li>Активно для всех стран</li>');
+                        placement.html('<i class="fa fa-check color-green"></i> Активно для всех стран');
                     }
 
                 });

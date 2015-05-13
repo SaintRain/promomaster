@@ -25,6 +25,31 @@ class PagesController extends Controller
         return $this->render('CoreCommonBundle:Pages:test.html.twig');
     }
 
+    public function aboutAction()
+    {
+        return $this->render('CoreCommonBundle:Pages:about.html.twig');
+    }
+
+    public function advertisersAction()
+    {
+        return $this->render('CoreCommonBundle:Pages:forAdvertisers.html.twig');
+    }
+
+    public function webmastersAction()
+    {
+        return $this->render('CoreCommonBundle:Pages:forWebmasters.html.twig');
+    }
+
+    public function agenciesAction()
+    {
+        return $this->render('CoreCommonBundle:Pages:forAgencies.html.twig');
+    }
+
+    public function termsAction()
+    {
+        return $this->render('CoreCommonBundle:Pages:terms.html.twig');
+    }
+
     /**
      * @param $slug
      * @return \Symfony\Component\HttpFoundation\Response

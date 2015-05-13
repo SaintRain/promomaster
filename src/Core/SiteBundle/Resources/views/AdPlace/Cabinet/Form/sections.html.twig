@@ -1,0 +1,127 @@
+<h3>Настройка разделов фильтрации для рекламного места</h3>
+
+{#форма редактирования разделов  рекламного места#}
+
+{% if updated %}
+        <br/>
+        <div class="alert alert-success fade in">
+            Данные успешно обновлены
+
+            &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_adplace_create') }}'><i
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще рекламное место</a>
+            &nbsp;&nbsp;&nbsp;
+            <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_adplace_list_first_page') }}'><i
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку рекламных мест</a>
+
+        </div>
+{% endif %}
+
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% if form.vars.errors | length %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+{% form_theme form.sections 'CoreSiteBundle:AdPlace/Cabinet/Form:fields_section.html.twig' %}
+{% form_theme form.countryList 'CoreDirectoryBundle:Form/Type:country_form_frontend_widget.html.twig' %}
+<form style="clear: both" class="sky-form sky-form-other-style"
+      action="{% if adplace.id %}{{ path('core_cabinet_adplace_section_edit', {id:adplace.id}) }}{% else %}{{ path('core_cabinet_adplace_create') }}{% endif %}" {{ form_enctype(form) }}
+      method="POST">
+    <fieldset class="sky-form-other-style">
+
+
+        <div class="row margin-bottom-20">
+            <div class="col-sm-12  {% if form_errors(form.sections) %}state-error{% endif %}">
+                <div class="pull-right">
+                    <a href="{{ path('core_cabinet_section_create_ajax') }}" class="btn-u section-create">
+                        <i class="fa fa-plus-square"></i>
+                        <span>&nbsp;Добавить раздел</span>
+                    </a>
+                </div>
+                <br/>
+                <br/>
+                {{ form_widget(form.sections) }}
+                {{ form_errors(form.sections) }}
+            </div>
+        </div>
+
+
+        <div class="margin-bottom-20">
+        </div>
+
+
+        <div class="text-right">
+            <button class="btn-u" type="submit">{% if adplace.id %}Сохранить{% else %}Добавить{% endif %}</button>
+            &nbsp;&nbsp;
+            <a href="{{ path('core_cabinet_adplace_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+            {% if adplace.id %}
+                &nbsp;&nbsp; или &nbsp;&nbsp;
+                <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>
+            {% endif %}
+        </div>
+        {{ form_widget(form._token) }}
+
+    </fieldset>
+
+</form>
+
+
+<script>
+    $(function () {
+
+        $('#form_size').change(function () {
+            if ($(this).find('option:selected').attr('data-name') == 'specialnoe') {
+                $('.extraSize').show();
+                $('#form_height').attr('required', 'required');
+                $('#form_width').attr('required', 'required');
+            }
+            else {
+                $('.extraSize').hide();
+                $('#form_height').removeAttr('required');
+                $('#form_width').removeAttr('required');
+            }
+        });
+
+        $('#form_size').change();
+
+        {% if adplace.id %}
+        $('.delete').click(function () {
+            var res = confirm('Вы действительно хотите удалить это рекламное место из системы?');
+            if (res) {
+                window.location.href = '{{ path('core_cabinet_adplace_delete', {id:adplace.id}) }}';
+            }
+        });
+        {% endif %}
+
+
+    });
+
+    function manipulateCollection(count) {
+        // добавление коллекции
+        $('.collection-add').click(function (e) {
+            e.preventDefault();
+            var $this = $(this),
+                    parentWrapper = $this.parents('.collection-wrapper'),
+                    newWidget = $this.attr('data-prototype');
+            newWidget = newWidget.replace(/__name__/g, count);
+            parentWrapper.append(newWidget)
+
+            return count++;
+        });
+    }
+
+</script>
+
+
+

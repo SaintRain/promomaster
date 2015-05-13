@@ -63,16 +63,7 @@
                 <label>URL для перехода *</label>
                 {{ form_widget(form.url,{ 'attr': {'class': 'form-control'} }) }}
                 {{ form_errors(form.url) }}
-                <span class="note">
-Чтобы система могла правильно учитывать клики по Flash баннерам, сделайте следующее.
-Создайте в баннере элемент типа button, для которого пропишите такой скрипт:
-<pre>
-on (release) {
-getURL(url, "_blank");
-}
-</pre>
-Если переход по рекламе должен осуществляться не в новом окне, а в текущем, то в методе getURL второй параметр измените на "_self".
-</span>
+                {{ include ('CoreBannerBundle:Banner\\Cabinet\\Forms:flashBannerMsg.html.twig') }}
             </div>
 
         </div>

@@ -61,9 +61,17 @@
                             <label>Повторите пароль*</label>
                             {{ form_widget(form.plainPassword.second, { 'attr': { 'class': 'form-control'} }) }}
                             {{ form_errors(form.plainPassword.second) }}
-
                         </div>
                     </div>
+
+                    <div class="margin-bottom-20 {% if form_errors(form.userStatus) %}state-error{% endif %}">
+                        <label>Ваш статус*</label>
+                        {{ form_widget(form.userStatus,{ 'attr': {
+                            'class': 'form-control '} }) }}
+                        {{ form_errors(form.userStatus) }}
+                    </div>
+
+
 
 
                     {#<div class="margin-bottom-20 {% if form_errors(form.isRssNews) %}state-error{% endif %}">#}
@@ -82,7 +90,7 @@
                                        class="text_input"
                                        name="isAgreeWithRules" {% if app.request.get('isAgreeWithRules') %} checked {% endif %}
                                        type="checkbox"><i></i>
-                                Я прочитал и согласен с <a href="page_terms.html" class="color-green">условиями
+                                Я прочитал и согласен с <a href="{{ path('core_common_terms') }}" class="color-green">условиями
                                     пользования</a>
                             </label>
 

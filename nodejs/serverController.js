@@ -65,7 +65,6 @@ TRYCATCH(function () {
 //обработка запроса на получение баннера
     APP.get('/get', function (req, res) {
 
-
         if (req.query.id) {
             LOGIC.getAd(req, res, parseInt(req.query.id));
         }

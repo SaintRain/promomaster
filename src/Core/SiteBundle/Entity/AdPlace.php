@@ -455,7 +455,9 @@ class AdPlace
      */
     public function setGag(CommonBanner $gag = null)
     {
-        $gag->setIsGag(true);
+        if (!is_null($gag)) {
+            $gag->setIsGag(true);
+        }
         $this->gag = $gag;
 
         return $this;

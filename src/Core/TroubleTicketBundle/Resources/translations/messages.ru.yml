@@ -33,7 +33,7 @@ ticket:
   success:
     create: По вашему вопросу (обращению) создано сообщение &num; %number%. Всю историю сообщений Вы можете проследить по ссылке <a href="%link%">%link%</a>
   send:
-    create: Создано сообщение [№%number%] на olikids.ru
-    edit: Вам пришел ответ на ваше сообщение [№%number%] на сайте olikids.ru
+    create: Создано сообщение [№%number%] на PromoMaster.net
+    edit: Вам пришел ответ на ваше сообщение [№%number%] на сайте PromoMaster.net
   create: Новое обращение
 'tickets not found': Вы еще не оставляли никаких обращений

@@ -52,10 +52,12 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Отмена</button>
                     <button class="btn-u btn-u-primary"
-                            type="submit">{% if section.id %}Сохранить{% else %}Добавить{% endif %}</button>
+                            type="submit">{% if section.id %}Сохранить{% else %}Добавить{% endif %}</button>&nbsp;&nbsp;
+                    <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Отмена</button>
                 </div>
             </form>
         </div>
@@ -77,8 +79,12 @@
                     success: function (data) {
                         if (data.result) {
 
+//                        <input type="checkbox" id="form_sections_2" name="form[sections][]" value="2"><i class="rounded-4x"></i></label>
+
                             if ($this.hasClass('create')) {
-                                elt = $('<tr><td><input type="checkbox" value="' + data.data.section.id + '" name="form[sections][]" id="form_sections_' + data.data.section.id + '"></td><td><a href="/app_dev.php/cabinet/section_edit_' + data.data.section.id + '.json" class="section-edit" data-id="4">' + data.data.section.name + '</a></td><td><a href="javascript:void(0);" class="section-delete" data-id="' + data.data.section.id + '"><i aria-hidden="true" class="icon-trash"></i></a></td></tr>');
+                                elt = $('<tr><td><label style="margin-left: -15px; margin-top: -5px" title="Включить проверку раздела" class="toggle">' +
+                                '<input type="checkbox" value="' + data.data.section.id + '" name="form[sections][]" id="form_sections_' + data.data.section.id + '">' +
+                                '<i class="rounded-4x"></i></label></td><td><a href="/app_dev.php/cabinet/section_edit_' + data.data.section.id + '.json" class="section-edit" data-id="4"><u>' + data.data.section.name + '</u></a></td><td><a href="javascript:void(0);" class="section-delete" data-id="' + data.data.section.id + '"><i aria-hidden="true" class="icon-trash"></i></a></td></tr>');
                                 $('#form_sections tbody').append(elt);
                             } else {
                                 activeLink.text(data.data.section.name);

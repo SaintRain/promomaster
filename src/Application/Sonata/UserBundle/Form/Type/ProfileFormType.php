@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormEvent;
 use FOS\UserBundle\Form\Type\ProfileFormType as BaseType;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Form\FormError;
+use Application\Sonata\UserBundle\Entity\User;
 
 
 class ProfileFormType extends BaseType
@@ -42,6 +43,8 @@ class ProfileFormType extends BaseType
                 ->add('phone', null, array('label'=>'form.label.profile.phone', 'attr' => array('class'=>'text_input', 'size' => 40)))
                 ->add('isRssNews', null, array('required' => false, 'label'=>'form.label.profile.rssNews', 'attr' => array('class'=>'text_input', 'size' => 40)))
               //  ->add('notation', null, array('label'=>'form.label.profile.notation', 'attr' => array('class'=>'text_input textarea', 'rows' => 5, 'cols' => 50)))
+
+
                 
         ;
         if (!$this->security->getToken()->getUser()->getIsSocialAuth()) {
@@ -55,6 +58,12 @@ class ProfileFormType extends BaseType
 
             //$builder->add('plainPassword', 'password', array('required' => false, 'label'=>'form.label.profile.password', 'attr' => array('class'=>'text_input', 'size' => 40)));
         }
+
+        $builder->add('userStatus', 'choice', [
+        'choices' => $this::getUserStatuses(),
+        'label' => 'Статус'
+    ]);
+
         $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
            $data = $event->getData();
            $user = $this->security->getToken()->getUser();
@@ -67,6 +76,18 @@ class ProfileFormType extends BaseType
                }
            }
         });
+    }
+
+    private function getUserStatuses()
+    {
+
+        $data = [
+            User::USER_TYPE_WEBMASTER => 'Вебмастер',
+            User::USER_TYPE_ADVERTISER => 'Рекламодатель',
+            User::USER_TYPE_WEBMASTER_AND_ADVERTISER => 'Вебмастер и рекламодатель',
+
+        ];
+        return $data;
     }
 
 

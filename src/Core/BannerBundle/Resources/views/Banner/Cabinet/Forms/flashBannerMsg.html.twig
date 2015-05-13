@@ -1,0 +1,40 @@
+<div>
+    <div><a
+                href="#collapse-1" data-parent="#accordion" data-toggle="collapse"
+                class="accordion-toggle"><u>Посмотреть требования к flash-ролику</u>
+        </a></div>
+    <div class="panel-collapse collapse" id="collapse-1">
+        <div >
+<br/>
+
+
+                <b>Создание flash-ролика на ActionScript 2.0 и FlashPlayer не ниже 8.0</b><br/>
+                Чтобы система могла правильно учитывать клики по Flash баннерам, сделайте следующее.
+                Создайте в баннере элемент типа button, для которого пропишите такой скрипт:
+<pre>
+on (release) {
+getURL(url, "_blank");
+}
+</pre>
+                Если переход по рекламе должен осуществляться не в новом окне, а в текущем, то в
+                методе getURL второй параметр измените на "_self".
+
+
+                <br/><br/>
+                <b>Создание flash-ролика на ActionScript 3.0 и FlashPlayer не ниже 9.0</b><br/>
+                Создайте прозрачную кнопку поверх всей анимации, дайте кнопке Instance name
+                <b>btn</b>, далее в кадре напишите код:
+                <br/>
+
+<pre>
+var obj:Object = this.root.loaderInfo.parameters;
+var url:String = obj.link1;
+btn.addEventListener(MouseEvent.CLICK,onClick);
+function onClick(e:MouseEvent):void{
+    navigateToURL(new URLRequest(url), "_blank");
+}
+</pre>
+
+        </div>
+    </div>
+</div>

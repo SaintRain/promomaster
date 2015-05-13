@@ -22,7 +22,7 @@ class AdPlacePriceFormType extends AbstractType
         }
 
         $builder
-            ->add('cost', null, ['label' => 'Стоимость за 1 условную единицу'])
+            ->add('cost', null, ['label' => 'Стоимость в руб. за 1 условную единицу'])
             ->add('priceModel', 'entity',
                 ['label'       => 'В чем указано количество',
                  'empty_value' => 'Необходимо выбрать',
@@ -38,7 +38,7 @@ class AdPlacePriceFormType extends AbstractType
                 ])
             */
             ->add('discounts', 'collection', [
-                'label'              => 'Скидки',
+                'label'              => 'Оптовые скидки',
                 'by_reference'       => false,
                 'allow_add'          => true,
                 'allow_delete'       => true,
