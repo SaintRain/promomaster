@@ -21,7 +21,7 @@ function __GET_AD(adplace_id) {
 
 //класс для работы с сервером
 var __PromoMasterClient = {
-    connectServerUrl: "http://127.0.0.1:1337", //адрес подключения к серверу
+    connectServerUrl: "http://www.promomaster.net:1337", //адрес подключения к серверу
    // isInitialized: false,
    // init: function (place_id) {
    //     if (!this.isInitialized) {
