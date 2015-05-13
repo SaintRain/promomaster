@@ -107,13 +107,10 @@ var __PromoMasterClient = {
     getAd: function (adplace_id) {
         $.get(this.connectServerUrl + '/get',
             {id: adplace_id})
-            .done(function (response) {
+            .success(function (response) {
                 __PromoMasterClient.drawBanner(response, adplace_id);
             })
-            .fail(function (response) {
-                console.log(response);
-            })
-            .always(function (response) {
+            .error(function (response) {
                 console.log(response);
             });
     }
