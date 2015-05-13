@@ -45,6 +45,13 @@ class PagesController extends Controller
         return $this->render('CoreCommonBundle:Pages:forAgencies.html.twig');
     }
 
+    public function termsAction()
+    {
+        return $this->render('CoreCommonBundle:Pages:terms.html.twig');
+    }
+
+
+
 
 //    /**
 //     * 404 ошибка, метод используется для внутреннего перенаправления

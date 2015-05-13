@@ -90,7 +90,7 @@
                                        class="text_input"
                                        name="isAgreeWithRules" {% if app.request.get('isAgreeWithRules') %} checked {% endif %}
                                        type="checkbox"><i></i>
-                                Я прочитал и согласен с <a href="page_terms.html" class="color-green">условиями
+                                Я прочитал и согласен с <a href="{{ path('core_common_terms') }}" class="color-green">условиями
                                     пользования</a>
                             </label>
 

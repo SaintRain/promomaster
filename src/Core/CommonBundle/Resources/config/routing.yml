@@ -39,6 +39,13 @@ core_common_agencies:
     schemes:  [http]
     defaults: { _controller: CoreCommonBundle:Pages:agencies }
 
+core_common_terms:
+    pattern:  /terms.html
+    schemes:  [http]
+    defaults: { _controller: CoreCommonBundle:Pages:terms }
+
+
+
 #экранируем, чтобы по прямой ссылке страницы не были доступны
 #core_common_error404:
 #    pattern:  /error404.html
