@@ -33,3 +33,4 @@
 access.log
 error.log
 /node_modules/
+/nodejs/config.js
