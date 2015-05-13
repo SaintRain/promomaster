@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Core\SiteBundle\Entity\WebSite;
+use Core\SiteBundle\Form\Type\SiteFormType;
 
 class SiteCabinetController extends Controller
 {
@@ -46,8 +47,7 @@ class SiteCabinetController extends Controller
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $site = $this->getDoctrine()->getManager()->getRepository('CoreSiteBundle:CommonSite')->find($id);
-        $form = $this->getForm($site);
-
+        $form = $this->createForm(new SiteFormType(), $site);
 
         $categories = $this->getDoctrine()->getManager()->getRepository('CoreCategoryBundle:SiteCategory')
             ->getBuildTree()[0]['__children'];
@@ -67,6 +67,7 @@ class SiteCabinetController extends Controller
             if (!$isBadName && $form->isValid()) {
 
                 $em = $this->getDoctrine()->getManager();
+                $this->makeSnapShot($site);
                 $em->flush();
 
                 $this->setFlash('edit_success', 'Данные успешно обновлены');
@@ -86,11 +87,10 @@ class SiteCabinetController extends Controller
      */
     public function createAction()
     {
-
         $site = new WebSite();  //пока только веб-сайты
         $user = $this->container->get('security.context')->getToken()->getUser();
         $site->setUser($user);
-        $form = $this->getForm($site);
+        $form = $this->createForm(new SiteFormType(), $site);
 
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
@@ -111,7 +111,8 @@ class SiteCabinetController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($site);
                 $em->flush();
-
+                $this->makeSnapShot($site);
+                $em->flush();
                 $this->setFlash('edit_success', 'Новый сайт добавлен');
                 return new RedirectResponse($this->generateUrl('core_cabinet_site_edit', ['id' => $site->getId()]));
             } else {
@@ -253,7 +254,32 @@ class SiteCabinetController extends Controller
         return $response;
     }
 
+    public function createSiteImageAction(Request $request)
+    {
 
+        if (!$request->isXmlHttpRequest() || !$request->request->get('site')) {
+            throw $this->createNotFoundException('Page Not Found');
+        }
+
+        $filePath = sprintf('%s/%s.jpg',  sys_get_temp_dir(), md5(time()));
+        $this->get('knp_snappy.image')->generate($request->get('site'), $filePath);
+
+        $answer = ['data' => base64_encode(file_get_contents($filePath)), 'result' => 'ok'];
+        $response = new Response(json_encode($answer));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+
+    public function showAction($id)
+    {
+        $site = $this->getDoctrine()->getManager()->getRepository('CoreSiteBundle:CommonSite')->find($id);
+        if (!$site) {
+            throw $this->createNotFoundException('Site Not Found');
+        }
+        return $this->render('CoreSiteBundle:Site\Cabinet:show.html.twig', ['site' => $site]);
+    }
     /**
      * Установка сообщений
      * @param string $action
@@ -264,5 +290,15 @@ class SiteCabinetController extends Controller
         $this->container->get('session')->getFlashBag()->set($action, $value);
     }
 
-
+    private function makeSnapShot(WebSite $site)
+    {
+        $file = sprintf('site-%d.jpg', $site->getId());
+        $path = sprintf('%s/%d/%s', $site->getUploadRootDir(), $site->getUser()->getId(), $file);
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        if ($this->get('knp_snappy.image')->generate($site->getDomain(), $path)) {
+            $site->setSnapShot($file);
+        }
+    }
 }

@@ -42,3 +42,7 @@ core_common_test:
 #    schemes:  [http]
 #    defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:contact }
 
+core_common_catalog:
+    pattern:  /sites-catalog/{slug}
+    schemes:  [http]
+    defaults: { _controller: CoreCommonBundle:Pages:siteCatalog, slug: '' }

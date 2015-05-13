@@ -628,3 +628,8 @@ fos_http_cache:
 #            nginx:
 #                enabled: false
 
+knp_snappy:
+    image:
+        enabled:    true
+        binary:     /usr/local/bin/wkhtmltoimage
+        options:    []

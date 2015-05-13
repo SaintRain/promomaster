@@ -54,6 +54,21 @@ class CommonSiteRepository extends EntityRepository
         return $res;
     }
 
+    public function findForCategory($slug, $isVerified = true)
+    {
+        $res = $this->createQueryBuilder('s')
+            ->leftJoin('s.categories', 'cat')
+            ->where('cat.slug = :slug')
+            ->andWhere('s.isVerified = :isVerified')
+            ->setParameters(
+                [':isVerified' => $isVerified,
+                 ':slug' => $slug
+                ]
+            )
+            ->getQuery()->
+            getResult();
 
+        return $res;
+    }
 
 }

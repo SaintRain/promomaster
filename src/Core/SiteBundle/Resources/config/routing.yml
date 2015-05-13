@@ -211,3 +211,15 @@ core_cabinet_ad_place_price_delete:
     #methods:  ['POST']
     requirements:
           id: \d+
+core_create_site_img:
+    path:      /cabinet/site/create-snap.json
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SiteCabinet:createSiteImage }
+    requirements:
+          id: \d+
+core_create_site_show:
+    path:      /site-{id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SiteCabinet:show }
+    requirements:
+          id: \d+

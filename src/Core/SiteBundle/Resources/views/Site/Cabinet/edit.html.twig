@@ -118,7 +118,21 @@
                 </div>
             </div>
 
-
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.description) %}state-error{% endif %}">
+                    <label>Описание</label>
+                    {{ form_widget(form.description,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.description) }}
+                </div>
+            </div>
+            <div class="row margin-bottom-20">
+                <div class="col-sm-6  {% if form_errors(form.shortDescription) %}state-error{% endif %}">
+                    <label>Краткое описание</label>
+                    {{ form_widget(form.shortDescription,{ 'attr': {'class': 'form-control'} }) }}
+                    <span class="note">Если не заполнять, то будет использован текст из описание длиной 120 символов</span>
+                    {{ form_errors(form.shortDescription) }}
+                </div>
+            </div>
             <div class="margin-bottom-20">
             </div>
 
@@ -139,8 +153,6 @@
 
     </form>
 
-
-
     <script>
         $(function () {
 
@@ -152,6 +164,23 @@
                 }
             });
             {% endif %}
+            {#
+                $('#show-image').click(function(){
+                    var $this = $(this),
+                        $image = $('#site_form_domain'),
+                        imgContainer =$('#img-container');
+                    if ($image.val()) {
+                        $.ajax({
+                            url: "{{ path('core_create_site_img') }}",
+                            data: 'site=' + $image.val(),
+                            method: 'POST',
+                            success: function(data) {
+                                imgContainer.html('<img src="data:image/jpg;base64, '+ data.data +'">');
+                            }
+                        })
+                    }
+                });
+            #}
         })
     </script>
 
