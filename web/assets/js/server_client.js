@@ -3,12 +3,12 @@
  */
 
 //Включает на площадке jquery, если её нет
-if (!window.jQuery) {
+//if (!window.jQuery) {
     var jq = document.createElement('script');
     jq.type = 'text/javascript';
     jq.src = 'https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js';
     document.getElementsByTagName('head')[0].appendChild(jq);
-}
+//}
 
 /**
  * Инициализирует рекламный баннер в том месте, где вызвали
@@ -22,45 +22,6 @@ function __GET_AD(adplace_id) {
 //класс для работы с сервером
 var __PromoMasterClient = {
     connectServerUrl: "http://www.promomaster.net:1337", //адрес подключения к серверу
-   // isInitialized: false,
-   // init: function (place_id) {
-   //     if (!this.isInitialized) {
-   //         this.getOptions(place_id);
-   //     }
-   // },
-   // //получает начальные настройки площадки для ротации баннеров
-   // getOptions: function (adplace_id) {
-   //
-   //     $.post("example.php", function () {
-   //         alert("success");
-   //     })
-   //         .done(function () {
-   //             alert("second success");
-   //         })
-   //         .fail(function () {
-   //             alert("error");
-   //         })
-   //         .always(function () {
-   //             alert("finished");
-   //         });
-   // },
-
-
-//    var obj:Object = this.root.loaderInfo.parameters;
-//var url:String = obj.link1;
-//btn.addEventListener(MouseEvent.CLICK,onClick);
-//function onClick(e:MouseEvent):void{
-//    navigateToURL(new URLRequest(url), "_blank");
-//}
-
-
-//    var obj:Object = this.root.loaderInfo.parameters;
-//var url:String = obj.url;
-//btn.addEventListener(MouseEvent.CLICK,onClick);
-//function onClick(e:MouseEvent):void{
-//    navigateToURL(new URLRequest(url), "_blank");
-//}
-
 
     //прорисовка баннера
     drawBanner: function (banner, adplace_id) {
@@ -114,6 +75,9 @@ var __PromoMasterClient = {
                 console.log(response);
             });
     }
+
+
+
 
 };
 
