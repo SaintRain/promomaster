@@ -169,6 +169,7 @@ class AdPlaceCabinetController extends Controller
             ->add('isShowInCatalog', null, ['required' => false])
             ->add('gag', 'entity', [
                 'class' => 'CoreBannerBundle:CommonBanner',
+                'required' => false,
                 'property' => 'name',
                 'empty_value' => 'Необходимо выбрать',
                 'query_builder' => function (EntityRepository $er) {

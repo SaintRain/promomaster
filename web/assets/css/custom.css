@@ -61,3 +61,10 @@ body {
     height: 375px;
     overflow: hidden;
 }
+.modal-body .file-attachment img {
+    max-width: 540px;
+}
+.modal-body .col-md-12 {
+    overflow: hidden;
+    position: relative;
+}

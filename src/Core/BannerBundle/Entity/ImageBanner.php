@@ -27,7 +27,6 @@ class ImageBanner extends CommonBanner
      * @var string
      * @ORM\Column(type="string", length=250, nullable=false)
      * @Assert\Url()
-     * @Assert\NotBlank()
      */
     private $url;
 
@@ -117,6 +116,11 @@ class ImageBanner extends CommonBanner
      */
     public function isValid(ExecutionContextInterface $context)
     {
+        if (!$this->isGag) {
+            $context->buildViolation('Необходимо указать')
+                        ->atPath('url')
+                        ->addViolation();
+        }
 //        if (!($this->getImage()) ) {
 //            $context->buildViolation('Пожалуйста, укажите цену')
 //                        ->atPath('image')

@@ -225,15 +225,20 @@ class CabinetController extends Controller
         $flashBanner = new FlashBanner();
         $codeBanner = new CodeBanner();
 
-        $imageForm = $this->createForm('image_banner_form', $imageBanner);
-        $flashForm = $this->createForm('flash_banner_form', $flashBanner);
-        $codeForm = $this->createForm('code_banner_form', $codeBanner);
-
         if ($request->query->get('isGag') && $request->query->get('isGag') == 1) {
+            $isBanner = false;
+            $flashBanner->setIsGag(true);
+            $imageBanner->setIsGag(true);
             $template = 'CoreBannerBundle:Banner\Cabinet\Forms:adplace_banner_form_ajax.html.twig';
         } else {
             $template = 'CoreBannerBundle:Banner\Cabinet\Forms:form_ajax.html.twig';
+            $isBanner = true;
         }
+
+        $imageForm = $this->createForm('image_banner_form', $imageBanner, ['isBanner' => $isBanner]);
+        $flashForm = $this->createForm('flash_banner_form', $flashBanner, ['isBanner' => $isBanner]);
+        $codeForm = $this->createForm('code_banner_form', $codeBanner);
+
         if ($request->request->count()) {
             if ($request->get('image_banner_form')) {
                 $form = $imageForm;
@@ -249,9 +254,6 @@ class CabinetController extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
-                if ($request->query->get('isGag') && $request->query->get('isGag') == 1) {
-                    $subject->setIsGag(true);
-                }
                 $em->persist($subject);
                 $em->flush();
 
