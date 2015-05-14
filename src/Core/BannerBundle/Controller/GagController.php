@@ -319,7 +319,7 @@ class GagController extends Controller
     {
         $form = $this->createFormBuilder($banner)
             ->add('name', 'text', ['required' => true])
-            ->add('url', 'text', ['required' => true])
+            ->add('url', 'text', ['required' => false])
             ->add('isOpenUrlInNewWindow', null, ['required' => false])
             ->add('image', 'multiupload_file_frontend', array(
                 'required' => true,
@@ -354,7 +354,7 @@ class GagController extends Controller
     {
         $form = $this->createFormBuilder($banner)
             ->add('name', 'text', ['required' => true])
-            ->add('url', 'text', ['required' => true])
+            ->add('url', 'text', ['required' => false])
 //            ->add('isOpenUrlInNewWindow', null, ['required' => false])
             ->add('file', 'multiupload_file_frontend', array(
                 'required' => true,
