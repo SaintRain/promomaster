@@ -4,7 +4,7 @@
         {%  set modalName = (form.vars.id | lower)  ~ '_country_modal' %}
         <div class="row">
             <div class="col-md-12">
-                <div id="selected_country_{{ modalName }}">
+                <div class="selected_country_{{ modalName }}">
                     <ul class="list-style" style="padding-left: 0px">
                     {% if activeChoices | length %}
                         {% for val in activeChoices %}
@@ -31,7 +31,7 @@
                             <div class="col-md-12">
                                 <div {{ block('widget_container_attributes') }}>
                                         {% for key, child in form.vars.views %}
-                                            <ul class="list-unstyled world-section-wr">
+                                            <ul id="world_section_wr_{{ modalName }}" class="list-unstyled world-section-wr">
                                                 <label>
                                                     <input class="world-section" type="checkbox" name="{{ key }}"{% if child.isChecked %}checked="checked"{% endif %} value="{{ key }}">
                                                     <span  style="color: #72c02c; margin-left: 5px; vertical-align: top; display: inline-block;">{{ key }}</span>
@@ -59,6 +59,131 @@
                 </div>
             </div>
         </div>
+        <script>
+            (function($){
+                'use strict';
+                $(function(){
+                    var modalContainer = null,
+                        countryModalId = '#{{ modalName }}';
+                    $('.list-unstyled.world-section-wr').parent('div').removeClass('form-control');
+
+                    function modalShowHide(){
+                        $('body').on('show.bs.modal', countryModalId, function (e) {
+                            if (modalContainer) {
+                                modalContainer.modal('hide');
+                            }
+                        });
+
+                        $('body').on('hidden.bs.modal', countryModalId, function (e) {
+                            if (modalContainer) {
+                                $('#modal-inner-placement ' + countryModalId).remove();
+                                $('#modal-inner-placement').html('');
+                                modalContainer.modal('show');
+                            }
+                        });
+                    }
+
+                    function fakeSubmit() {
+                        $('body').off('click', (countryModalId + ' .btn-u-primary'));
+                        $('body').on('click', (countryModalId + ' .btn-u-primary'), function(){
+                            if (modalContainer) {
+                                $('.modal-body .modal-body', modalContainer).replaceWith($('#modal-inner-placement .modal-body'));
+                            }
+
+                            var placement = $('.selected_country_' + (countryModalId.replace('#', '')) + '> ul'),
+                                    countries =  [];
+                            $('#world_section_wr_' + (countryModalId.replace('#', '')) + ' .world-section-inner input')
+                            .each(function(index, element){
+                                var $this = $(element);
+
+                                if ($(element).prop('checked') && !$(element).parents('.collection-row').length) {
+                                    countries.push($(element).siblings('label').text());
+                                }
+                            });
+                            if (countries.length) {
+                                var $html = '<i class="fa fa-check color-green"></i> ' +
+                                        (countries.join('<br/><i class="fa fa-check color-green"></i> ')) +
+                                        '<br/>';
+                                placement.html($html);
+                            } else {
+                                placement.html('<i class="fa fa-check color-green"></i> Активно для всех стран');
+                            }
+
+                        });
+                    }
+
+                    $('body').on('click', '.world-section', function(){
+                        var $this = $(this),
+                                parentBlock = $this.parents('.world-section-wr'),
+                                elements = $('input', parentBlock),
+                                isChecked = $this.prop('checked');
+
+                        elements.each(function(index, element){
+                            var $this = $(element);
+                            $this.prop('checked', isChecked);
+                        });
+                    });
+
+                    $('body').on('click', '.world-section-inner input', function(){
+                        var $this = $(this),
+                            parent = $this.parents('.world-section-inner'),
+                            mainParent = $this.parents('.world-section-wr'),
+                            sectionInput = $('.world-section', mainParent),
+                            isAllInSameState = true,
+                            siblings = $('input', parent),
+                            curState = $this.prop('checked');
+
+                        siblings.each(function(index, element) {
+                            $this = $(element);
+                            if (curState != $this.prop('checked')) {
+                                isAllInSameState = false;
+                                return false;
+                            }
+                        });
+
+                        if (isAllInSameState) {
+                            sectionInput.prop('checked', curState)
+                        } else {
+                            sectionInput.prop('checked', false);
+                        }
+
+                    });
+
+                    $('body').off('click', '.country-select');
+                    $('body').on('click', '.country-select', function(event){
+                        var $this = $(this),
+                            scriptTag;
+                        if ($this.parents('#modal-top-placement .modal').length) {
+                            modalContainer = $this.parentsUntil('form').parents('.modal');
+                            scriptTag = $('.modal', modalContainer).next('script');
+                            scriptTag.remove();
+                            countryModalId = '#' + $('.modal', modalContainer).attr('id');
+                        } else if ($this.parents('#placement-modal-container .modal-body > .row').length) {
+                            modalContainer = $this.parentsUntil('form').parents('.modal');
+                            countryModalId = '#' + $('.modal', modalContainer).attr('id');
+                            scriptTag = $('.modal', modalContainer).next('script');
+                            scriptTag.remove();
+                        } else {
+                            modalContainer = null;
+                        }
+
+                        modalShowHide();
+                        fakeSubmit();
+                        if (modalContainer) {
+                            $('#modal-inner-placement').html($(countryModalId).clone(true));
+                            $('#modal-inner-placement ' + countryModalId).modal('show');
+                        } else {
+                            countryModalId = '#' + $this.parent('div').siblings('.modal').attr('id');
+                            $(countryModalId).modal('show');
+                        }
+
+                    });
+
+                });
+            })(jQuery);
+        </script>
+        {#
+
         <script>
             'use strict';
             (function($){
@@ -197,6 +322,7 @@
                 });
             })(jQuery)
         </script>
+        #}
         {% else %}
             <div {{ block('widget_container_attributes') }}>
                 {%- for child in form %}
