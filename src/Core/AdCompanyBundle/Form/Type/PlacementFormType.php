@@ -31,14 +31,35 @@ class PlacementFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-        $builder->add('adCompany', null, ['required' => true, 'property' => 'name'])
-            ->add('adPlace', null, ['required' => true, 'property' => 'name'])
-            ->add('placementBannersList', 'entity', [
-                'class'     => 'Core\AdCompanyBundle\Entity\PlacementBanner',
+        //ldd($builder->getData());
+        $builder
+//            ->add('placementBannersList', 'entity', [
+//                'class'     => 'Core\AdCompanyBundle\Entity\PlacementBanner',
 //                'expanded'  => true,
+//                'multiple'  => true,
+//                'required' => false,'property'=>'banner.name'])
+            ->add('placementBannersList', 'collection', [
+                'by_reference' => false,
+                'type' => 'placement_banner_form',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype_name' => '__banner_name__'
+            ])
+            ->add('defaultCountries', 'entity', [
+                //'required' => false ,
+                //'by_reference' => false,
+                'class'     => 'CoreDirectoryBundle:Country',
+                //'property'  => 'name',
+                'withSubset' => true,
+                'expanded'  => true,
                 'multiple'  => true,
-                'required' => false,'property'=>'banner.name'])
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->select('c, w')
+                        ->innerJoin('c.worldSection', 'w')
+                        ;
+                }
+            ])
             ->add('startDateTime', 'text', ['required' => false , 'read_only'=>true])
             ->add('finishDateTime', 'text', ['required' => false, 'read_only'=>true])
             ->add('isEnabled', null, ['required' => false])
@@ -49,16 +70,23 @@ class PlacementFormType extends AbstractType
                     return $er->createQueryBuilder('pm')->where('pm.name != :name')->setParameter('name','daysquantity');
                 },
                 'required' => false, 'property'=>'captionRu'])
-            ->add('defaultCountries', null, ['required' => false])
             ->addModelTransformer(new PlacementTransformer())       //трансформер дат
         ;
+        if ($options['adCompanyField']) {
+            $builder->add('adCompany', null, ['required' => true, 'property' => 'name']);
+        }
+        if ($options['adPlaceField']) {
+            $builder->add('adPlace', null, ['required' => true, 'property' => 'name']);
+        }
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
            'data_class' => 'Core\AdCompanyBundle\Entity\Placement',
-           'cascade_validation' => true
+           'cascade_validation' => true,
+           'adCompanyField' => true,
+           'adPlaceField' => true,
         ]);
     }
 

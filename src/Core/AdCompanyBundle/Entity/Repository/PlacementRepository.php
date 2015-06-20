@@ -86,4 +86,20 @@ class PlacementRepository extends EntityRepository {
         return $res;
     }
 
+    /**
+     * @param $adPlaceId
+     * @return string
+     */
+    public function findForAdPlace($adPlaceId)
+    {
+        $res = $this->createQueryBuilder('ap')
+            ->leftJoin('ap.adPlace', 'adPlace')
+            ->where('adPlace.id = :adPlaceId')
+            ->setParameter(':adPlaceId', $adPlaceId)
+            ->getQuery()->
+            getResult();
+
+        return $res;
+    }
+
 }

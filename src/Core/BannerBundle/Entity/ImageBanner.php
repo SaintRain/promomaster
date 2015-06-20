@@ -116,7 +116,7 @@ class ImageBanner extends CommonBanner
      */
     public function isValid(ExecutionContextInterface $context)
     {
-        if (!$this->isGag) {
+        if (!$this->isGag && !$this->getUrl()) {
             $context->buildViolation('Необходимо указать')
                         ->atPath('url')
                         ->addViolation();

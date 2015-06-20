@@ -1,0 +1,381 @@
+{% form_theme form.sections 'CoreSiteBundle:AdPlace/Cabinet/Form:fields_section.html.twig' %}
+{% form_theme form.countryList 'CoreDirectoryBundle:Form/Type:country_form_frontend_widget.html.twig' %}
+    <div class="row margin-bottom-20 {% if siteDefined is defined and siteDefined %} hidden{% endif %}">
+        <div class="{{ fieldGroupClass }}  {% if form_errors(form.site) %}state-error{% endif %}">
+            <label>Площадка*</label>
+            {{ form_widget(form.site,{ 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.site) }}
+            <span class="note">Выберите площадку на которой распологается рекламное место.</span>
+        </div>
+    </div>
+<div class="row margin-bottom-20">
+    <div class="{{ fieldGroupClass }}  {% if form_errors(form.name) %}state-error{% endif %}">
+        <label>Название*</label>
+        {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
+
+        {{ form_errors(form.name) }}
+    </div>
+</div>
+
+<div class="row margin-bottom-20">
+    <div class="{{ fieldGroupClass }}  {% if form_errors(form.size) %}state-error{% endif %}">
+        <label>Размер*</label>
+        {{ form_widget(form.size,{ 'attr': {'class': 'form-control'} }) }}
+        {{ form_errors(form.size) }}
+        <span class="note">Укажите размер рекламного места, где будет показываться реклама.</span>
+    </div>
+</div>
+
+<div class="row margin-bottom-20 extraSize" style="display: none">
+    <div class="{{ fieldGroupClass }}  {% if form_errors(form.height) %}state-error{% endif %}">
+        <label>Высота*</label>
+        {{ form_widget(form.height,{ 'attr': {'class': 'form-control'} }) }}
+        {{ form_errors(form.height) }}
+        <span class="note">Введите высоту рекламного места в пикселях.</span>
+    </div>
+</div>
+
+<div class="row margin-bottom-20 extraSize" style="display: none">
+    <div class="{{ fieldGroupClass }}  {% if form_errors(form.width) %}state-error{% endif %}">
+        <label>Ширина*</label>
+        {{ form_widget(form.width,{ 'attr': {'class': 'form-control'} }) }}
+        {{ form_errors(form.width) }}
+        <span class="note">Введите ширину рекламного места в пикселях.</span>
+    </div>
+</div>
+<div class="row margin-bottom-20">
+    <div class="col-sm-12  {% if form_errors(form.gag) %}state-error{% endif %}">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Заглушка</label>
+
+                {% if not (gagsCount | length) %}
+                    <div class="pull-right">
+                        <a class="btn-u btn-u-xs gag-create" href="{{ path('core_cabinet_banner_create_ajax') }}">
+                            <i class="fa fa-plus-square"></i>
+                            <span>&nbsp;Добавить заглушку</span>
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="row gags-container{% if not (gagsCount | length) %} hidden{% endif %}">
+            <div class="col-sm-6">
+                {{ form_widget(form.gag,{ 'attr': {'class': 'form-control'} }) }}
+            </div>
+            <div class="col-sm-6">
+                <a data-id="{% if form.gag.vars.value %}{{ form.gag.vars.value }}{% else %}0{% endif %}" style="margin-left: -15px;" class="btn-u  gag-edit" href="{{ path('core_cabinet_banner_edit_ajax') }}">
+                    <i  title="Редактировать заглушку" class="fa fa-pencil"></i>
+                </a>
+                &nbsp;&nbsp;
+                <a class="btn-u  gag-create" href="{{ path('core_cabinet_banner_create_ajax') }}">
+                    <i title="Добавить заглушку" class="fa fa-plus-square"></i>
+                </a>
+            </div>
+            {{ form_errors(form.gag) }}
+        </div>
+    </div>
+    <div id="gag-placement"></div>
+    <div class="col-sm-12">
+        <span class="note">Когда реклама не показывается будет показана заглушка в рекламном месте.</span>
+    </div>
+</div>
+
+<div class="row margin-bottom-20" style="display:none;">
+    <div class="{{ fieldGroupClass }}  {% if form_errors(form.sections) %}state-error{% endif %}">
+        <label>Разделы</label>
+        <div class="pull-right">
+            <a href="{{ path('core_cabinet_section_create_ajax') }}" class="btn-u section-create">
+                <i class="fa fa-plus-square"></i>
+                <span>&nbsp;Добавить раздел</span>
+            </a>
+        </div>
+        <br/>
+        <br/>
+        {{ form_widget(form.sections) }}
+        {{ form_errors(form.sections) }}
+    </div>
+</div>
+{% if form.prices is defined %}
+    <div class="row margin-bottom-20">
+        <div class="prices collection-wrapper {% if form_errors(form.prices) %}state-error{% endif %}">
+            <label>Цены</label>
+            <div class="pull-right">
+                <a href="javascript:void(0);" class="btn-u btn-u-xs collection-add" data-prototype="{% filter escape %}{{ include('CoreSiteBundle:AdPlacePrice/Cabinet/Form:price.html.twig', { 'form': form.prices.vars.prototype }) }}{% endfilter %}">
+                    <i class="fa fa-plus-square"></i>
+                    <span>&nbsp;Добавить цену</span>
+                </a>
+            </div>
+            {% for price in form.prices %}
+                <div class="row margin-bottom-20">
+                    <div class="col-sm-6  {% if form_errors(price.cost) %}state-error{% endif %}">
+                        <label>{{ price.cost.vars.label }}</label>
+                        {{ form_widget(price.cost,{ 'attr': {'class': 'form-control'} }) }}
+                        {{ form_errors(price.cost) }}
+                    </div>
+                    <div class="col-sm-6  {% if form_errors(price.priceModel) %}state-error{% endif %}">
+                        <label>{{ price.priceModel.vars.label }}</label>
+                        {{ form_widget(price.priceModel,{ 'attr': {'class': 'form-control'} }) }}
+                        {{ form_errors(price.priceModel) }}
+                    </div>
+                    {# discounts #}
+                    <div class="col-sm-12 margin-top-20">
+                        <div class="discounts collection-wrapper {% if form_errors(price.discounts) %}state-error{% endif %}">
+                            <label>Скидки</label>
+                            <div class="pull-right">
+                                <a href="javascript:void(0);" class="btn-u btn-u-xs collection-add" data-prototype="{% filter escape %}{{ include('CoreSiteBundle:AdPlacePrice/Cabinet/Form:discount.html.twig', { 'form': price.discounts.vars.prototype }) }}{% endfilter %}">
+                                    <i class="fa fa-plus-square"></i>
+                                    <span>&nbsp;Добавить скидку</span>
+                                </a>
+                            </div>
+                            {% for discount in price.discounts %}
+                                <div class="row margin-bottom-20">
+                                    <div class="col-sm-6  {% if form_errors(discount.amount) %}state-error{% endif %}">
+                                        <label>{{ discount.amount.vars.label }}</label>
+                                        {{ form_widget(discount.amount,{ 'attr': {'class': 'form-control'} }) }}
+                                        {{ form_errors(discount.amount) }}
+                                    </div>
+                                    <div class="col-sm-6  {% if form_errors(discount.rate) %}state-error{% endif %}">
+                                        <label>{{ discount.rate.vars.label }}</label>
+                                        {{ form_widget(discount.rate,{ 'attr': {'class': 'form-control'} }) }}
+                                        {{ form_errors(discount.rate) }}
+                                    </div>
+                                </div>
+                            {% endfor  %}
+                        </div>
+                    </div>
+                    {# End discounts #}
+                </div>
+            {% endfor  %}
+        </div>
+    </div>
+{% endif %}
+
+<div class="row margin-bottom-20" style="display:none;">
+    <div class="{{ fieldGroupClass }}  {% if form_errors(form.countryList) %}state-error{% endif %}">
+        <label>Страны</label>
+        <div class="pull-right">
+            <a href="javascript:void(0);" class="btn-u btn-u-xs country-select">
+                <i class="fa fa-plus-square"></i>
+                <span>&nbsp;Выбрать страны</span>
+            </a>
+        </div>
+        {{ form_widget(form.countryList) }}
+        {{ form_errors(form.countryList) }}
+    </div>
+</div>
+
+<div class="margin-bottom-20 {% if form_errors(form.isShowInCatalog) %}state-error{% endif %}">
+    <label class="checkbox">
+        {{ form_widget(form.isShowInCatalog) }}<i></i> Выводить рекламное место в каталоге сервиса</label>
+    {{ form_errors(form.isShowInCatalog) }}
+    </label>
+    {{ form_rest(form) }}
+</div>
+<div class="margin-bottom-20">
+</div>
+<script>
+
+    /**
+     * Объект для хранения кол-ва колекций
+     */
+    {#
+    var collectionCount = {
+        prices : '{{ form.prices|length }}',
+        discounts : 0
+    };
+    #}
+    $(function () {
+        var topModal = $('#modal-top-placement #adplace-modal'),
+            isTopModal = $('#modal-top-placement').length;
+
+        /*
+        // topmodal show
+        $('body').on('click', '#banner-modal .close, #banner-modal .btn-u-default', function(){
+            topModal.modal('show');
+        });
+
+        // topmodal show
+        $('body').on('keyup', function(e){
+            console.log('keyup');
+            var innerModal = $('#modal-inner-placement > .modal');
+            if (innerModal.is(':visible') && topModal && topModal.is(':hidden') && e.which == 27){
+                console.log('keyup true');
+                //topModal.modal('show');
+            }
+            return false;
+        });
+        */
+
+        $('body').on('hidden.bs.modal', '#banner-modal', function (e) {
+            $('#modal-top-placement #adplace-modal').modal('show');
+        });
+
+        $('#form_size').change(function () {
+            if ($(this).find('option:selected').attr('data-name') == 'specialnoe') {
+                $('.extraSize').show();
+                $('#form_height').attr('required', 'required');
+                $('#form_width').attr('required', 'required');
+            }
+            else {
+                $('.extraSize').hide();
+                $('#form_height').removeAttr('required');
+                $('#form_width').removeAttr('required');
+            }
+        });
+
+        $('#form_size').change();
+
+        {% if adplace.id %}
+        $('.delete').click(function () {
+            var res = confirm('Вы действительно хотите удалить это рекламное место из системы?');
+            if (res) {
+                window.location.href = '{{ path('core_cabinet_adplace_delete', {id:adplace.id}) }}';
+            }
+        });
+        {% endif %}
+
+
+        // форма добавления загушки
+        $('.gag-create').click(function(e) {
+            var $this = $(this),
+                modalPlacement = $('#modal-inner-placement').length ? $('#modal-inner-placement') : $('#gag-placement');
+            modalPlacement.find('#banner-modal').remove();
+            modalPlacement.html('');
+            $.ajax({
+                type: 'POST',
+                url:$this.attr('href')+'?isGag=1',
+                success: function(data) {
+                    if (data.result) {
+                        modalPlacement.html(data.data);
+                        $('#banner-modal').modal('show');
+                        if (isTopModal) {
+                            topModal.modal('hide');
+                        }
+                    }
+                },
+                error: function () {
+                    console.log('error');
+                }
+            });
+
+            return false;
+        });
+
+        // видимость форм загушки
+        $('body').on('change', '.banner_type', function(){
+            var $this = $(this),
+                    formId = 'form_' + $this.val(),
+                    curForm = $('#'+formId),
+                    same = $('.banner_type'),
+                    forms = $('.trigger');
+            same.each(function(index, element){
+                $(element).val($this.val());
+            });
+            forms.each(function(index, element){
+                var $this = $(element);
+                $this.addClass('hidden');
+                curForm.hide();
+            });
+
+            if (curForm.hasClass('hidden')) {
+                curForm.removeClass('hidden');
+                curForm.show();
+            }
+        });
+
+        // сохранение загулшки
+        $('#gag-placement, #modal-inner-placement').on('submit', 'form.trigger', function() {
+            var $this = $(this),
+                    collectionWrapper = $('.collection-wrapper'),
+                    curId = $this.attr('data-id') * 1,
+                    postUrl = curId ? "{{ path('core_cabinet_gag_edit_ajax') }}" : "{{ path('core_cabinet_banner_create_ajax', {'isGag': 1}) }}",
+                    formData = $this.serialize(),
+                    gagsContainer = $('.gags-container'),
+                    modalBlock = $('#banner-modal');
+            if (curId) {
+                formData += '&id='+curId;
+            }
+            $.ajax({
+                type: 'POST',
+                url: postUrl,
+                data: formData,
+                success: function(data) {
+                    if (data.result) {
+                        modalBlock.modal('hide');
+                        if (curId) {
+                            $('#form_gag option:selected').text(data.data.name);
+                        } else {
+                            $('#form_gag').append('<option value="' + data.data.id +'">' + data.data.name +'</option>');
+                            $('#form_gag').val(data.data.id);
+                        }
+                        if (gagsContainer.is(':hidden')) {
+                            gagsContainer.removeClass('hidden');
+                            gagsContainer.show();
+                        }
+                        if (isTopModal) {
+                            topModal.modal('show');
+                        }
+                    } else {
+                        $('.modal-content-wr', modalBlock).remove();
+                        $('#myModalLabel', modalBlock).after($(data.data).find('.modal-content-wr'));
+                    }
+                },
+                error: function () {
+                    console.log('error');
+                }
+            });
+
+            return false;
+        });
+
+        // редактирование загулшки
+        $('.gag-edit').click(function() {
+            var $this = $(this),
+                    gagsList = $('#form_gag'),
+                    modalPlacement = $('#modal-inner-placement').length ? $('#modal-inner-placement') : $('#gag-placement'),
+                    curId = gagsList.val() || $this.attr('data-id');
+
+            if (!(curId*1)) {
+                alert('Необходимо выбрать заглушку');
+                return false;
+            }
+            $.ajax({
+                type: 'POST',
+                url: "{{ path('core_cabinet_gag_edit_ajax') }}",
+                data: "id=" + curId,
+                success: function(data) {
+                    if (data.result) {
+                        modalPlacement.html($(data.data));
+                        if (isTopModal) {
+                            topModal.modal('hide');
+                            console.log('here2');
+                        }
+                        $('#banner-modal').modal('show');
+                    }
+                },
+                error: function () {
+                    console.log('error');
+                }
+            });
+            return false;
+        });
+
+    });
+
+    function manipulateCollection(count) {
+        // добавление коллекции
+        $('.collection-add').click(function(e) {
+            e.preventDefault();
+            var $this = $(this),
+                    parentWrapper = $this.parents('.collection-wrapper'),
+                    newWidget = $this.attr('data-prototype');
+            newWidget = newWidget.replace(/__name__/g, count);
+            parentWrapper.append(newWidget)
+
+            return count++;
+        });
+    }
+</script>

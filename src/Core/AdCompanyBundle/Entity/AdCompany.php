@@ -265,16 +265,20 @@ class AdCompany
 
     public function addPlacement($placement)
     {
-        $placement->setAdCompany($this);
         if (!$this->placements->contains($placement)) {
             $this->placements->add($placement);
+            $placement->setAdCompany($this);
         }
+
         return $this;
     }
 
     public function removePlacement($placement)
     {
-        $this->placements->removeElement($placement);
+        if ($this->placements->contains($placement)) {
+            $this->placements->removeElement($placement);
+        }
+
         return $this;
     }
 

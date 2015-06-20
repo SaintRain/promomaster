@@ -232,3 +232,28 @@ core_create_site_show:
     defaults:  { _controller: CoreSiteBundle:SiteCabinet:show }
     requirements:
           id: \d+
+
+core_cabinet_ad_place_create_ajax:
+    path:     /cabinet/place/create_ajax.json
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlaceCabinet:createAjax }
+
+core_cabinet_ad_place_edit_ajax:
+    path:     /cabinet/place/edit_ajax.json
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlaceCabinet:editAjax }
+
+core_cabinet_site_create_ajax:
+    path:     /cabinet/site/create_ajax.json
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SiteCabinet:createAjax }
+
+core_cabinet_site_edit_ajax:
+    path:     /cabinet/site/edit_ajax.json
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SiteCabinet:editAjax }
+
+core_cabinet_site_adplaces:
+    path:      /site-adplaces.json
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:AdPlaceCabinet:siteAdPlacesAjax }

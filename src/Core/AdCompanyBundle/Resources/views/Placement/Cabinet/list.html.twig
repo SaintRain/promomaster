@@ -62,8 +62,10 @@
                     <td><a href="{{ path('core_cabinet_placement_edit', {id: placement.id }) }}"><b>{{ placement.id  }}</b></a></td>
                     <td>
                         {{ placement.adPlace.name }} {{ placement.adPlace.width }}x{{ placement.adPlace.height }}
-                        <br/>
-                        {{ placement.adPlace.site.domain }}
+                        {% if placement.adPlace.site %}
+                            <br/>
+                            {{ placement.adPlace.site.name }}
+                        {% endif %}
                     </td>
 
                     <td>

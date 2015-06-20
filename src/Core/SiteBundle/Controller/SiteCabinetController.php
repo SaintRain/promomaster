@@ -123,6 +123,70 @@ class SiteCabinetController extends Controller
         }
     }
 
+    public function createAjaxAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException('Page Not Found');
+        }
+        $site = new WebSite();  //пока только веб-сайты
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $site->setUser($user);
+        $form = $this->createForm(new SiteFormType(), $site);
+
+        $request = $this->get('request');
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+            if ($this->container->get('core_site_logic')->checkIsExistWebSite($site, $user)) {
+                $this->setFlash('edit_errors', 'Сайт с указанным адресом был добавлен вами ранее.');
+                $isBadName = true;
+            } else {
+                $isBadName = false;
+            }
+            if (!$isBadName && $form->isValid()) {
+
+                //генерируем проверочный код
+                $verifiedCode = $this->get('core_site_logic')->generateVerifiedCode($site);
+                $site->setVerifiedCode($verifiedCode);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($site);
+                $em->flush();
+                $this->makeSnapShot($site);
+                $em->flush();
+                $answer = [
+                    'data' => ['id' => $site->getId(), 'name' => $site->getName()],
+                    'result' => true
+                ];
+
+            } else {
+                $html = $this->render('CoreSiteBundle:Site\Form:form_modal.html.twig', [
+                    'site' => $site,
+                    'form' => $form->createView()
+                ])->getContent();
+                $answer = [
+                    'data'      => $html,
+                    'result'    => false
+                ];
+
+            }
+        } else {
+            $html = $this->render('CoreSiteBundle:Site\Form:form_modal.html.twig', [
+                'site' => $site,
+                'form' => $form->createView()
+            ])->getContent();
+            $answer = [
+                'data'      => $html,
+                'result'    => true
+                ];
+        }
+
+        $response = new Response(json_encode($answer));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
     /**
      * Форма сайта
      * @param $site
