@@ -1,0 +1,94 @@
+{% extends "CoreCommonBundle::main_layout.html.twig" %}
+
+{# SEO - заголовки #}
+{% block title %}OliKids.ru — интернет-магазин игрушек и детских товаров{% endblock %}
+{% block meta_keywords %}Детские игрушки, транспорт, куклы, машинки, детские товары{% endblock %}
+{% block meta_description %}Интернет-магазин детских товаров, где можно купить игрушки, самокаты, радионяни, бутылочки.{% endblock %}
+{% block css %}
+    {{ parent() }}
+    <style>
+        .site-desc .headline {
+            border-bottom: 1px solid #dedede;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .site-desc .headline h3 {
+            color: #687074;
+            float: left;
+            font-size: 20px;
+            text-transform: uppercase
+        }
+        .site-desc ul {
+            margin: 0;
+            padding: 0;
+        }
+        .site-desc li{
+            background: none repeat scroll 0 0 #f8f8f8;
+            border: 2px solid #dedede;
+            color: #dedede;
+            display: block;
+            float: left;
+            font-size: 24px;
+            height: 30px;
+            font-size: 15px;
+            padding: 5px;
+            margin: 0 5px 0 0;
+            text-align: left;
+            text-transform: uppercase;
+            line-height: 120%;
+        }
+        .site-desc li:after {
+            content: ".";
+            visibility: hidden;
+            display: block;
+            clear: both;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="container">
+        <h1 class="pull-left">{{ site.name }}</h1>
+        <ul class="pull-right breadcrumb">
+            <li>
+                <a href="{{ path('core_common_index') }}">На главную</a>
+            </li>
+            <li>
+                <a href="{{ path('core_common_catalog') }}">Список сайтов</a>
+            </li>
+            <li class="active">{{ site.name }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container">
+    <div class="content">
+        <div class="col-md-6 md-margin-bottom-50">
+            {% set curImg = (site.webPath) ? site.webPath : '/assets/img/portfolio/01.jpg' %}
+            <a href="{{ site.domain }}">
+                <img src="{{ asset(curImg) }}" alt="" width="100%">
+            </a>
+        </div>
+        <section class="col-md-6 site-desc">
+            <div class="headline margin-bottom-20">
+                <h3>{{ site.name }}</h3>
+            </div>
+            {% if site.description %}
+                <div class="headline">
+                    <h3>Описание</h3>
+                </div>
+                <p>{{ site.description | nl2br}}</p>
+            {% endif %}
+            <div class="headline">
+                <h3>Категории</h3>
+            </div>
+            <ul class="list-styled">
+            {% for category in site.categories %}
+                <li>
+                    <a href="{{ path('core_common_catalog', {slug : category.slug }) }}">{{ category.captionRu }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </section>
+    </div>
+</div>
+{% endblock %}

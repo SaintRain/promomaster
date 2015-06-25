@@ -112,7 +112,7 @@ abstract class GeneralBannerFormType  extends AbstractType
                 }
             }
 
-            if ($data instanceof ImageBanner || $data instanceof FlashBanner) {
+            if (($data instanceof ImageBanner || $data instanceof FlashBanner) && !$data->getId()) {
                 if ($data instanceof ImageBanner) {
                     $this->checkIsFileLoaded($form->get('image'), $form->get('name'));
                 } elseif($data instanceof FlashBanner) {

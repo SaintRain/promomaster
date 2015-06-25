@@ -82,8 +82,6 @@ class FlashBanner extends CommonBanner
         $this->url = $url;
     }
 
-
-
     /**
      * @return mixed
      */
@@ -169,6 +167,11 @@ class FlashBanner extends CommonBanner
      */
     public function isValid(ExecutionContextInterface $context)
     {
+        if (!$this->isGag && !$this->getUrl()) {
+            $context->buildViolation('Необходимо указать')
+                ->atPath('url')
+                ->addViolation();
+        }
 //        if ($this->number && !$this->price) {
 //            $context->buildViolation('Пожалуйста, укажите цену')
 //                        ->atPath('price')

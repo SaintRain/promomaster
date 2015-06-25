@@ -61,3 +61,12 @@ body {
     height: 375px;
     overflow: hidden;
 }
+.modal-body .file-attachment img,
+#form_image img,
+#form_flash img {
+    max-width: 540px;
+}
+.modal-body .col-md-12 {
+    overflow: hidden;
+    position: relative;
+}

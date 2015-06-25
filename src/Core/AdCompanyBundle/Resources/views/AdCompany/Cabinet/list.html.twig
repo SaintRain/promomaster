@@ -73,8 +73,10 @@
                             {% set placement=adcompany.placements.first %}
 
                             {{ placement.adPlace.name }} {{ placement.adPlace.width }}x{{ placement.adPlace.height }}
-                            <br/>
-                            {{ placement.adPlace.site.domain }}
+                            {% if placement.adPlace.site %}
+                                <br/>
+                                {{ placement.adPlace.site.domain }}
+                            {% endif %}
                         {% else %}
                             {% if adcompany.placements.count %}
                                 {{ adcompany.placements.count }} {{ declOfNum(adcompany.placements.count, ['размещение','размещения', 'размещений']) }}

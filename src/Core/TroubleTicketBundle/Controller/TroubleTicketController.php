@@ -87,11 +87,14 @@ class TroubleTicketController extends Controller {
 
                 $em->persist($troubleTicket);
                 $em->flush();
-                $link = $this->getRequest()->getScheme() . '://' . $this->getRequest()->getHttpHost() . $this->generateUrl('trouble_ticket_edit',array('hash' => $troubleTicket->getHash()));
+                $request = $this->get('request_stack')->getCurrentRequest();
+                $link = $request->getScheme() . '://' . $request->getHttpHost() . $this->generateUrl('trouble_ticket_edit',array('hash' => $troubleTicket->getHash()));
+                //$link = $this->getRequest()->getScheme() . '://' . $this->getRequest()->getHttpHost() . $this->generateUrl('trouble_ticket_edit',array('hash' => $troubleTicket->getHash()));
                 $successMes = $this->get('translator')->trans('ticket.success.create',array('%number%' => $troubleTicket->getId(), '%link%' => $link));
                 $this->setFlash('ticket_success', $successMes);
                 $this->get('core_trouble_ticket_log_mailer')->sendCreationMessage($troubleTicket);
-                return new RedirectResponse($this->generateUrl('trouble_ticket_contact'));
+                //return new RedirectResponse($this->generateUrl('trouble_ticket_contact'));
+                return new RedirectResponse($this->generateUrl('core_common_about'));
             }
         }
 

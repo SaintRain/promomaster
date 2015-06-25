@@ -1,0 +1,68 @@
+{% form_theme form 'CoreCommonBundle:Form:choice_widget_with_data_attr.html.twig' %}
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="placement-modal" class="modal fade"
+     style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                {% if placement is defined and placement.id %}
+                    <h4 id="myModalLabel" class="modal-title">Редактирование размещения</h4>
+                {% else %}
+                    <h4 id="myModalLabel" class="modal-title">Добавление нового размещения в систему</h4>
+                {% endif %}
+                <div class="modal-content-wr">
+                    {% if placement is defined and placement.id %}
+                        {% set FormAction = path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.id}) %}
+                        {% else %}
+                        {% set FormAction = '#' %}
+                    {% endif %}
+                    <form style="clear: both" class="sky-form sky-form-other-style" action="{{ FormAction }}" {{ form_enctype(form) }} method="POST">
+                        <div class="modal-body">
+                            <div class="row">
+                                {%
+                                include 'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig'
+                                with {form: form, 'fieldGroupClass': 'col-sm-12'}
+                                %}
+                            </div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button class="btn-u btn-u-primary"type="submit">
+                                {% if placement is defined and placement.id %}Сохранить{% else %}Добавить{% endif %}
+                            </button>&nbsp;&nbsp;
+                            <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#modal-top-placement').off('submit', '#placement-modal form');
+
+    $('#modal-top-placement').on('submit', '#placement-modal form', function(){
+        var $this = $(this),
+                modalBlock = $('#placement-modal'),
+                modalContent = $('.modal-content-wr', modalBlock),
+                postUrl = $this.attr('action');
+        $.ajax({
+            type: 'POST',
+            url: postUrl,
+            data: $this.serialize(),
+            success: function(data) {
+                if (data.result) {
+                    modalBlock.modal('hide');
+                } else {
+                    modalContent.html($(data.data).find('.modal-content-wr').html());
+                }
+            },
+            error: function () {
+                console.log('error');
+            }
+        });
+
+        return false;
+    });
+</script>

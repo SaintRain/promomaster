@@ -33,6 +33,9 @@ class PlacementTransformer implements DataTransformerInterface
 
     public function transform($value)
     {
+        if (!$value) {
+            return null;
+        }
         $d = $value->getStartDateTime();
 
         if ($d) {

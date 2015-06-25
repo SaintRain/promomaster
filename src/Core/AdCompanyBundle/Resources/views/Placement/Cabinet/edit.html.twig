@@ -68,8 +68,11 @@
           action="{% if placement.id %}{{ path('core_cabinet_placement_edit', {id:placement.id}) }}{% else %}{{ path('core_cabinet_placement_create') }}{% endif %}" {{ form_enctype(form) }}
           method="POST">
         <fieldset class="sky-form-other-style">
-
-
+            {%
+            include 'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig' with {
+                'form' :form , 'placement': placement, 'fieldGroupClass': 'col-sm-6'
+            } %}
+            {#
             <div class="row margin-bottom-20">
                 <div class="col-sm-6  {% if form_errors(form.adCompany) %}state-error{% endif %}">
                     <label>Рекламная компания*</label>
@@ -85,7 +88,7 @@
                 </div>
             </div>
 
-            {#
+
             <div class="row margin-bottom-20">
                 <div class="col-sm-6  {% if form_errors(form.placementBannersList) %}state-error{% endif %}">
                     <label>Баннеры</label>
@@ -93,18 +96,18 @@
                     {{ form_errors(form.placementBannersList) }}
                 </div>
             </div>
-            #}
+
             <div class="row margin-bottom-20">
                 <div class="discounts collection-wrapper col-sm-12{% if form_errors(form.placementBannersList) %} state-error{% endif %}">
                     <label>Список баннеров </label>
-                    {#
+
                     <div class="pull-right" style="margin: 0 10px;">
                         <a href="javascript:void(0);" class="btn-u btn-u-xs collection-add">
                             <i class="fa fa-plus-square"></i>
                             <span>&nbsp;Создать баннер</span>
                         </a>
                     </div>
-                    #}
+
                     <div class="pull-right">
                         <a href="{{ path('core_cabinet_banner_create_ajax') }}" class="btn-u btn-u-xs collection-add"
                            data-prototype="{% filter escape %}
@@ -230,7 +233,7 @@
             </div>
 
             {{ form_rest(form) }}
-
+            #}
             <div class="text-right">
                 <button class="btn-u" type="submit">{% if placement.id %}Сохранить{% else %}Добавить{% endif %}</button>
                 &nbsp;&nbsp;
@@ -247,6 +250,7 @@
     </form>
 
     <div id="modal-placement"></div>
+{#
 
     {% block js %}
 
@@ -403,5 +407,5 @@
 
         </script>
     {% endblock %}
-
+#}
 {% endblock %}

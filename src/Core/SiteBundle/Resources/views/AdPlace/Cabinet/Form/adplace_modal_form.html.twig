@@ -1,0 +1,71 @@
+{% form_theme form 'CoreCommonBundle:Form:choice_widget_with_data_attr.html.twig' %}
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="adplace-modal" class="modal fade"
+     style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                {% if adplace.id %}
+                    <h4 id="myModalLabel" class="modal-title">Редактирование настроек вашего рекламного места</h4>
+                {% else %}
+                    <h4 id="myModalLabel" class="modal-title">Добавление нового рекламного места в систему</h4>
+                {% endif %}
+                <div class="modal-content-wr">
+                    <form style="clear: both" class="sky-form sky-form-other-style"
+                          action="{% if adplace.id %}{{ path('core_cabinet_ad_place_edit_ajax') }}{% else %}{{ path('core_cabinet_ad_place_create_ajax') }}{% endif %}" {{ form_enctype(form) }}
+                          method="POST">
+                        <div class="modal-body">
+                            <div class="row">
+                                {%
+                                    include 'CoreSiteBundle:AdPlace\\Cabinet\\Form:adplace_form_inner.html.twig'
+                                    with {'form' :form , 'adplace': adplace, 'fieldGroupClass': 'col-sm-12', 'siteDefined': true}
+                                %}
+                            </div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button class="btn-u btn-u-primary"
+                                    type="submit">{% if adplace.id %}Сохранить{% else %}Добавить{% endif %}</button>&nbsp;&nbsp;
+                            <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#modal-top-placement').off('submit', '#adplace-modal form');
+    $('#modal-top-placement').on('submit', '#adplace-modal form', function(){
+        var $this = $(this),
+            modalBlock = $('#adplace-modal'),
+            modalContent = $('.modal-content-wr', modalBlock),
+            curSite = $('#ad_company_type_site'),
+            adPlaces = $('#ad_company_type_adPlaces'),
+            postUrl = $this.attr('action')+'?siteId=' + curSite.val();
+        $.ajax({
+            type: 'POST',
+            url: postUrl,
+            data: $this.serialize(),
+            success: function(data) {
+                if (data.result) {
+                    modalBlock.modal('hide');
+                    if (adPlaces.val() == data.data.id) {
+                        $('option:selected', adPlaces).text(data.data.name);
+                    } else {
+                        adPlaces.append('<option value="' + data.data.id +'">' + data.data.name +'</option>');
+                        adPlaces.val(data.data.id);
+                    }
+                } else {
+                    modalContent.html($(data.data).find('.modal-content-wr').html());
+                }
+            },
+            error: function () {
+                console.log('error');
+            }
+        });
+
+        return false;
+    });
+</script>

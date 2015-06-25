@@ -30,7 +30,7 @@
                 <div class="modal-content-wr">
                     {% if imageForm %}
                         <form id="form_image"
-                              class="{% if (errorForm and (errorForm != 'imageForm')) %} hidden{% endif %} trigger sky-form sky-form-other-style"
+                              class="{% if (errorForm and (errorForm != 'imageForm')) %}hidden {% endif %} trigger sky-form sky-form-other-style"
                               action="{{ path('core_cabinet_banner_create_ajax') }}" {{ form_enctype(imageForm) }}
                               method="POST">
                             <div class="modal-body">
@@ -192,18 +192,41 @@
                 curForm.show();
             }
         });
-
-        $('body').off('submit', '.trigger');
-        $('body').on('submit', '.trigger', function () {
+        $('body, #responsive').off('submit', '.trigger');
+        $('body, #responsive').on('submit', '.trigger', function () {
             var $this = $(this),
-                    collectionWrapper = $('.collection-wrapper'),
-                    collectionCount = $('.collection-row').length,
-                    newWidget = $('.collection-add').attr('data-prototype'),
-                    answerPlacement = $('#responsive'),
-                    newWidget = newWidget.replace(/__name__/g, collectionCount),
-                    postUrl,
-                    formData = $this.serialize(),
-                    modalBlock = $('#responsive');
+                collectionCount = $('.collection-row').length,
+                answerPlacement = $('#responsive'),
+                /*
+                newWidget = $('.collection-add').attr('data-prototype'),
+                newWidget = $('#placement-modal, #placement-modal-content').length ?
+                        newWidget.replace(/__banner_name__/g, collectionCount)
+                        : newWidget.replace(/__name__/g, collectionCount),
+                */
+                postUrl,
+                newWidget,
+                formData = $this.serialize(),
+                modalBlock = $('#responsive'),
+                collectionWrapper;
+
+            if ($('.collection-wrapper').parents('#placement-modal').length) {
+                collectionWrapper = $('#placement-modal .collection-wrapper');
+                newWidget = $('#placement-modal .collection-add').attr('data-prototype');
+            } else if ($('.collection-wrapper').parents('#placement-modal-content').length) {
+                collectionWrapper = $('#placement-modal-content .collection-wrapper');
+                newWidget = $('#placement-modal-content .collection-add').attr('data-prototype');
+            } else {
+                collectionWrapper = $('.collection-wrapper');
+                newWidget = $('.collection-add').attr('data-prototype');
+            }
+            //console.log(newWidget);
+
+            //return false;
+            newWidget = $('#placement-modal, #placement-modal-content').length ?
+                    newWidget.replace(/__banner_name__/g, collectionCount)
+                    : newWidget.replace(/__name__/g, collectionCount);
+
+            console.log(collectionWrapper);
             {% if subject is defined %}
             postUrl = "{{ path('core_cabinet_banner_edit_ajax') }}";
             formData += '&id={{ subject.id }}';
@@ -223,7 +246,30 @@
                         newWidget = newWidget.replace(/data-id="[0-9]+"/g, 'data-id="' + data.data.id + '"');
                         newWidget = newWidget.replace(/\<span class="inner"\>.+\<\/span\>/g, '<span class="inner">' + data.data.name + '</span>');
                         collectionWrapper.append(newWidget);
-                        collectionWrapper.find('#form_placementBannersList_' + collectionCount + '_banner').val(data.data.id);
+                        if (collectionWrapper.parents('#placement-modal').length) {
+                            console.log('edit');
+                            collectionWrapper.find('#placement_form_placementBannersList_' + collectionCount + '_banner').val(data.data.id);
+                        } else if (collectionWrapper.parents('#placement-modal-content').length) {
+                            var selector = '#ad_company_type_placements_'+
+                                            $('.placements-container').data('index') + '_placementBannersList_' +
+                                            + collectionCount + '_banner';
+                            collectionWrapper.find(selector).val(data.data.id);
+                            console.log('new');
+                        } else {
+                            //collectionWrapper.append(newWidget);
+                            collectionWrapper.find('#form_placementBannersList_' + collectionCount + '_banner').val(data.data.id);
+                        }
+
+                        //console.log(newWidget);
+                        /*
+                        if (collectionWrapper.parents('.row').attr('data-id')) {
+                            collectionWrapper.find(
+                                    '#ad_company_type_placements_'+
+                                    + collectionCount + '_banner'
+                            ).val(data.data.id);
+                        }
+                        */
+
                         {% endif %}
                     } else {
                         $('.modal-content-wr', answerPlacement).remove();

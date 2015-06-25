@@ -45,3 +45,11 @@ services:
     class: Core\AdCompanyBundle\Form\Type\PlacementBannerFormType
     tags:
         - { name: form.type, alias: placement_banner_form }
+
+  core_ad_company:
+      class: Core\AdCompanyBundle\Form\Type\AdCompanyType
+      arguments:
+          - @doctrine.orm.entity_manager
+          - @request_stack
+      tags:
+          - { name: form.type, alias: ad_company_type }
