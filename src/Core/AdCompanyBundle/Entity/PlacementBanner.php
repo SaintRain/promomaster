@@ -54,9 +54,10 @@ class PlacementBanner
     /**
      * Преоритет показа
      * @var int
-     * @ORM\Column(type="bigint", nullable=true)
+     * @Assert\GreaterThan(value = -1)
+     * @ORM\Column(type="bigint", nullable=false)
      */
-    private $preoritet;
+    private $preoritet = 0;
 
 
     /**
@@ -82,7 +83,7 @@ class PlacementBanner
 
     public function __construct()
     {
-      //  $this->defaultCountries = new ArrayCollection();
+        //  $this->defaultCountries = new ArrayCollection();
     }
 
     /**
@@ -132,7 +133,6 @@ class PlacementBanner
     {
         $this->placement = $placement;
     }
-
 
 
     /**

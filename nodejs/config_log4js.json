@@ -3,6 +3,25 @@
   "appenders": [
     {
       "type": "console"
+    },
+    {
+      "type": "logLevelFilter",
+      "level": "ERROR",
+      "appender": {
+        "type": "smtp",
+        "recipients": "promomaster.net@mail.ru",
+        "sender": "promomaster.net@mail.ru",
+        "sendInterval": 1,
+        "transport": {
+          "host": "smtp.mail.ru",
+          "port": 465,
+          "secure": true,
+          "auth": {
+            "user": "promomaster.net@mail.ru",
+            "pass": "ssdhdfl845dfo-43"
+          }
+        }
+      }
     }
   ]
 }
