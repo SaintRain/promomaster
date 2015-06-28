@@ -1,4 +1,5 @@
 {% block FrontendCategory_widget %}
+
     <div class="row">
         <div class="col-sm-6  ">
 
@@ -22,7 +23,7 @@
                                         class="text_input"
                                         type="checkbox"
                                         value="{{ d2.id }}"
-                                        name="form[categories][]"><i></i> {{ d2.captionRu }}
+                                        name="{{ form.vars.full_name }}"><i></i> {{ d2.captionRu }}
                             </label>&nbsp;&nbsp;</div>
                     {% endfor %}
                 </div>
