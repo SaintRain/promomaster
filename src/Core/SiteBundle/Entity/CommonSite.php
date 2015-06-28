@@ -120,6 +120,14 @@ class CommonSite
      */
     protected $snapShot;
 
+
+    /**
+     * Принимать заказа размещения автоматически без баннера
+     * @var string
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isTakeOrdersWithoutBanner;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -306,6 +314,23 @@ class CommonSite
     {
         return $this->snapShot;
     }
+
+    /**
+     * @return string
+     */
+    public function getIsTakeOrdersWithoutBanner()
+    {
+        return $this->isTakeOrdersWithoutBanner;
+    }
+
+    /**
+     * @param string $isTakeOrdersWithoutBanner
+     */
+    public function setIsTakeOrdersWithoutBanner($isTakeOrdersWithoutBanner)
+    {
+        $this->isTakeOrdersWithoutBanner = $isTakeOrdersWithoutBanner;
+    }
+
 
     /**
      * @param mixed $snapShot

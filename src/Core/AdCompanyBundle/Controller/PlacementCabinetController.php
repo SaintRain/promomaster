@@ -239,7 +239,7 @@ class PlacementCabinetController extends Controller
                 'msg'   => $msg
             ];
         } catch (\Exception $e) {
-            $msg = "Невозможно удалить размещение «{$placement->getDomain()}», т.к. оно задействовано в системе на данный момент.";
+            $msg = "Невозможно удалить размещение «#{$placement->getId()}», т.к. оно задействовано в системе на данный момент.";
             $answer = [
                 'result' => false,
                 'msg'   => $msg

@@ -122,9 +122,11 @@ class CommonSubscriber implements EventSubscriber
     {
         foreach ($this->operations as $cur => $operation) {
             foreach ($operation as $key => $table) {
+
                 if (!in_array($key, $this->subcriberTables)) {
                     unset($this->operations[$cur][$key]);
                 }
+
             }
 
         }

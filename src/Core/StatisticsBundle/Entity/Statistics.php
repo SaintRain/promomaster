@@ -49,9 +49,9 @@ class Statistics
 
     /**
      * Баннер размещения
-     * @ORM\ManyToOne(targetEntity="Core\AdCompanyBundle\Entity\PlacementBanner", inversedBy="statistics")
-     * @ORM\JoinColumn(referencedColumnName="id", onDelete="SET NULL")
-     * @Assert\NotBlank()
+     * ORM\ManyToOne(targetEntity="Core\AdCompanyBundle\Entity\PlacementBanner", inversedBy="statistics")
+     * ORM\JoinColumn(referencedColumnName="id", onDelete="SET NULL")
+     * Assert\NotBlank()
      */
     private $placementBanner;
 

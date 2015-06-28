@@ -55,8 +55,13 @@ exports.sendResponse = function (res, options) {
  */
 exports.getAd = function (req, res, adplace_id) {
 
+    //console.log(req.headers('host'));
+
     if (typeof(req.header('Referer')) !== 'undefined') {
+    //if (typeof(req.get('origin') !== 'undefined')) {
+
         var refererInfo = URL.parse(req.header('Referer')),
+        //var refererInfo = URL.parse(req.get('origin')),
             domain = refererInfo.protocol + '//' + refererInfo.hostname;
 
         //проверяем, чтоб домен рефера совпадал с тем, что у нас прописан в базе. Иначе возможна накрутка показов с других площадок
@@ -138,7 +143,7 @@ exports.getAd = function (req, res, adplace_id) {
                     }
 
 
-                    if (placement) {
+                    if (placement && typeof SD.placementbannersByPlacement['_' + placement.id]!=='undefined') { //если есть размещение с баннерами
                         /**
                          Пока берем просто первый баннер. Но нужно сделать:
                          1. Определяем по параметрам баннера, какой баннер нужно отобразить
@@ -147,6 +152,7 @@ exports.getAd = function (req, res, adplace_id) {
                         for (key in SD.placementbannersByPlacement['_' + placement.id]) {
                             placementBanner = SD.placementbannersByPlacement['_' + placement.id][key];
                         }
+                        console.log(SD.placementbannersByPlacement['_' + placement.id]);
                         var banner = SD.banners['_' + placementBanner.banner_id];
 
                         // отдаём баннер
@@ -406,7 +412,7 @@ exports.saveStatistics = function () {
                         clicksQuantity: STclone[adplace_id][placement_id][placement_banner_id][banner_id].clicksQuantity,
                         adplace_id: SD.adplaces[adplace_id].id,
                         placement_id: SD.placements[placement_id].id,
-                        placement_banner_id: SD.placementbanners[placement_banner_id].id,
+                        //placement_banner_id: SD.placementbanners[placement_banner_id].id,
                         banner_id: SD.banners[banner_id].id,
                         finishDateTime: finishDateTime,
                         startDateTime: START_DATE_TIME

@@ -20,6 +20,8 @@ class SiteFormType extends AbstractType
                     'class' => 'Core\CategoryBundle\Entity\SiteCategory',
                     'multiple' => true
                 ])
+            ->add('isTakeOrdersWithoutBanner', null, ['required' => false])
+
         ;
     }
 
