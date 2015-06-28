@@ -76,7 +76,10 @@ class WebSite extends CommonSite
         $this->mirrors = $mirrors;
     }
 
-
+    public function getName()
+    {
+        return str_replace('http://', '', $this->getDomain());
+    }
 
 
     /**

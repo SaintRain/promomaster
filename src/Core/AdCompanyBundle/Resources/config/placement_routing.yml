@@ -35,3 +35,20 @@ core_cabinet_placement_delete:
     defaults:  { _controller: CoreAdCompanyBundle:PlacementCabinet:delete }
     requirements:
       id: \d+
+
+core_cabinet_adplaces_placements:
+    path:      /adplace-placements.json
+    schemes:  [http]
+    defaults:  { _controller: CoreAdCompanyBundle:PlacementCabinet:adPlacesPlacementsAjax }
+
+core_cabinet_adplaces_placements_ajax_remove:
+    path:      /placements/remove.json
+    schemes:  [http]
+    defaults:  { _controller: CoreAdCompanyBundle:PlacementCabinet:deleteAjax }
+
+core_cabinet_adplaces_placements_ajax_edit:
+    path:      /placements/edit/{id}.json
+    schemes:  [http]
+    defaults:  { _controller: CoreAdCompanyBundle:PlacementCabinet:editAjax }
+    requirements:
+          id: \d+

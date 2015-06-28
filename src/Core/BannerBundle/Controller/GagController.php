@@ -229,10 +229,10 @@ class GagController extends Controller
             throw $this->createNotFoundException('Page Not Found');
         }
         if ($subject instanceof ImageBanner) {
-            $imageForm = $this->createForm('image_banner_form', $subject);
+            $imageForm = $this->createForm('image_banner_form', $subject, ['isBanner' => false]);
             $form = $imageForm;
         } elseif ($subject instanceof FlashBanner) {
-            $flashForm = $this->createForm('flash_banner_form', $subject);
+            $flashForm = $this->createForm('flash_banner_form', $subject, ['isBanner' => false]);
             $form = $flashForm;
         } else {
             $codeForm = $this->createForm('code_banner_form', $subject);
@@ -319,7 +319,7 @@ class GagController extends Controller
     {
         $form = $this->createFormBuilder($banner)
             ->add('name', 'text', ['required' => true])
-            ->add('url', 'text', ['required' => true])
+            ->add('url', 'text', ['required' => false])
             ->add('isOpenUrlInNewWindow', null, ['required' => false])
             ->add('image', 'multiupload_file_frontend', array(
                 'required' => true,
@@ -354,7 +354,7 @@ class GagController extends Controller
     {
         $form = $this->createFormBuilder($banner)
             ->add('name', 'text', ['required' => true])
-            ->add('url', 'text', ['required' => true])
+            ->add('url', 'text', ['required' => false])
 //            ->add('isOpenUrlInNewWindow', null, ['required' => false])
             ->add('file', 'multiupload_file_frontend', array(
                 'required' => true,

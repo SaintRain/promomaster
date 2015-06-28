@@ -1,5 +1,123 @@
 {% extends "CoreCommonBundle::main_layout.html.twig" %}
+
 {# SEO - заголовки #}
+{% block title %}PromoMaster.net{% endblock %}
+{% block meta_keywords %}Контакты{% endblock %}
+{% block meta_description %}Контакты{% endblock %}
+
+{% block js_head %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.initSliders();
+            ParallaxSlider.initParallaxSlider();
+        });
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="breadcrumbs">
+        <div class="container">
+            <h1 class="pull-left">О нас</h1>
+            <ul class="pull-right breadcrumb">
+                <li><a href="{ path('core_common_index') }}">Главная</a></li>
+                <li class="active">О нас</li>
+            </ul>
+        </div><!--/container-->
+    </div>
+
+
+    <div class="title-box-v2">
+        <h2>О компании <span class="color-green">PromoMaster</span></h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+
+
+    <div class="parallax-bg parallaxBg1" style="background-position: 50% 91px;">
+        <div class="container content parallax-about">
+            <div class="title-box-v2">
+                <h2>Идея стартапа</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="banner-info light margin-bottom-10">
+                        <i class="rounded-x icon-bell"></i>
+                        <div class="overflow-h">
+                            <h3>Our mission</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tincidunt sit amet dui auctor pellentesque. Nulla ut posuere purus.</p>
+                        </div>
+                    </div>
+                    <div class="banner-info light margin-bottom-10">
+                        <i class="rounded-x fa fa-magic"></i>
+                        <div class="overflow-h">
+                            <h3>Our vision</h3>
+                            <p>Phasellus vitae rhoncus ipsum. Aliquam ultricies, velit sit amet scelerisque tincidunt, dolor neque consequat est, a dictum felis metus eget nulla.</p>
+                        </div>
+                    </div>
+                    <div class="banner-info light margin-bottom-10">
+                        <i class="rounded-x fa fa-thumbs-o-up"></i>
+                        <div class="overflow-h">
+                            <h3>We are good at ...</h3>
+                            <p>Nunc ac ligula ut diam rutrum porttitor. Integer et neque at lacus placerat pretium eu ac dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra.</p>
+                        </div>
+                    </div>
+                    <div class="margin-bottom-20"></div>
+                </div>
+                <div class="col-md-6">
+                    <img class="img-responsive" src="assets/img/mockup/1.png" alt="">
+                </div>
+            </div>
+        </div><!--/container-->
+    </div>
+    <div class="container content">
+        <div class="row">
+            <div class="col-md-9 mb-margin-bottom-30">
+                <div class="headline">
+                    <h2>Задайте нам вопрос</h2>
+                </div>
+                <p>Мы постоянно работаем над качеством сайта, удобством его использования и повышением уровня наших услуг.
+                    Если у вас есть какие-либо предложения, пожелания, комментарии, вопросы или проблемы при использовании
+                    нашего сервиса, заполните, пожалуйста, форму, чтобы связаться с нами.</p>
+                <p>Пожалуйста, для оформления и оплаты заказа ознакомьтесь с разделом <a href="{{path('core_faq_homepage')}}">Помощь</a>.</p>
+                {% for flashMessage in app.session.flashbag.get('ticket_success') %}
+                    <div class="alert alert-success fade in">
+                        {{ flashMessage|trans({}) | raw}}
+                    </div>
+                {% endfor %}
+                {% include 'CoreTroubleTicketBundle:TroubleTicket:form.html.twig' %}
+            </div>
+            <div class="col-md-3">
+                <!-- Contacts -->
+                <div class="headline"><h2>Контакты</h2></div>
+                <ul class="list-unstyled who margin-bottom-30">
+                    {#<li><a href="#"><i class="fa fa-home"></i>5B Streat, City 50987 New Town US</a></li>#}
+                    <li><a href="#"><i class="fa fa-envelope"></i>info@promomaster.net</a></li>
+                    {#<li><a href="#"><i class="fa fa-phone"></i>1(222) 5x86 x97x</a></li>#}
+                    <li><a href="#"><i class="fa fa-globe"></i>http://www.promomaster.net</a></li>
+                </ul>
+                <!-- End Contacts -->
+                <!-- Business Hours -->
+                <div class="headline"><h2>Часы работы</h2></div>
+                <ul class="list-unstyled margin-bottom-30">
+                    <li><strong>Пон.-пят.:</strong> 9.00-18.00</li>
+                    <li><strong>Суббота:</strong> выходной</li>
+                    <li><strong>Воскресенье:</strong> выходной</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+{#
+{% extends "CoreCommonBundle::main_layout.html.twig" %}
 {% block title %}Контакты{% endblock %}
 {% block meta_keywords %}Контакты{% endblock %}
 {% block meta_description %}Контакты{% endblock %}
@@ -34,7 +152,7 @@
             {% endfor %}
             {% include 'CoreTroubleTicketBundle:TroubleTicket:form.html.twig' %}
         </div>
-        {#RIGHT BLOCK#}
+
         <div class="col-md-3">
             <!-- Contacts -->
             <div class="headline"><h2>Contacts</h2></div>
@@ -62,7 +180,8 @@
                 <li><i class="fa fa-check color-green"></i> Eos et accusamus</li>
             </ul>
         </div>
-        {#END RIGHT BLOCK#}
+
     </div>
 </div>
 {% endblock %}
+#}

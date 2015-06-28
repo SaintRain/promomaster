@@ -36,6 +36,28 @@
         </div>
     {% endif %}
 
+
+<form style="clear: both" class="sky-form sky-form-other-style"
+      action="{% if adplace.id %}{{ path('core_cabinet_adplace_edit', {id:adplace.id}) }}{% else %}{{ path('core_cabinet_adplace_create') }}{% endif %}" {{ form_enctype(form) }}
+      method="POST">
+    <fieldset class="sky-form-other-style">
+        {%
+            include 'CoreSiteBundle:AdPlace\\Cabinet\\Form:adplace_form_inner.html.twig'
+            with {'form' :form , 'adplace': adplace, 'fieldGroupClass': 'col-sm-6'}
+        %}
+        <div class="text-right">
+            <button class="btn-u" type="submit">{% if adplace.id %}Сохранить{% else %}Добавить{% endif %}</button>
+            &nbsp;&nbsp;
+            <a href="{{ path('core_cabinet_adplace_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+            {% if adplace.id %}
+                &nbsp;&nbsp; или &nbsp;&nbsp;
+                <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>
+            {% endif %}
+        </div>
+    </fieldset>
+</form>
+
+{#
 {% form_theme form.sections 'CoreSiteBundle:AdPlace/Cabinet/Form:fields_section.html.twig' %}
 {% form_theme form.countryList 'CoreDirectoryBundle:Form/Type:country_form_frontend_widget.html.twig' %}
 <form style="clear: both" class="sky-form sky-form-other-style"
@@ -169,7 +191,6 @@
                             {{ form_widget(price.priceModel,{ 'attr': {'class': 'form-control'} }) }}
                             {{ form_errors(price.priceModel) }}
                         </div>
-                        {# discounts #}
                         <div class="col-sm-12 margin-top-20">
                             <div class="discounts collection-wrapper {% if form_errors(price.discounts) %}state-error{% endif %}">
                                 <label>Скидки</label>
@@ -195,7 +216,6 @@
                                 {% endfor  %}
                             </div>
                         </div>
-                        {# End discounts #}
                     </div>
                 {% endfor  %}
             </div>
@@ -243,15 +263,6 @@
 
 <script>
 
-    /**
-     * Объект для хранения кол-ва колекций
-     */
-    {#
-    var collectionCount = {
-        prices : '{{ form.prices|length }}',
-        discounts : 0
-    };
-    #}
     $(function () {
 
         $('#form_size').change(function () {
@@ -409,8 +420,7 @@
             return count++;
         });
     }
-
 </script>
-
+#}
 
 

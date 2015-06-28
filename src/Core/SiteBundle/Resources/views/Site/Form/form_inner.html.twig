@@ -1,0 +1,86 @@
+<div class="tab-v2">
+    <ul class="nav nav-tabs">
+        <li class="active"><a  href="#tab2" data-toggle="tab">Основное</a></li>
+        <li><a href="#tab3"  data-toggle="tab">Описание</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab2">
+
+            <div class="row margin-bottom-20">
+                <div class="{{ fieldGroupClass }} {% if form_errors(form.domain) %}state-error{% endif %}">
+                    <label>Адрес сайта*</label>
+                    {{ form_widget(form.domain,{ 'attr': {'class': 'form-control'} }) }}
+                    <span class="note">Введите полный адрес вашего сайта начиная с http://</span>
+                    {{ form_errors(form.domain) }}
+                </div>
+            </div>
+            <div class="row margin-bottom-20">
+                <div class="col-lg-12  {% if form_errors(form.categories) %}state-error{% endif %}">
+                    <label>Тематика сайта*</label>
+                    {{ form_widget(form.categories,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.categories) }}
+                </div>
+            </div>
+
+            <div class="row margin-bottom-20">
+                <div class="{{ fieldGroupClass }}  {% if form_errors(form.mirrors) %}state-error{% endif %}">
+                    <label>Зеркала</label>
+                    {{ form_widget(form.mirrors,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.mirrors) }}
+                    <span class="note">Альтернативные адреса вашего сайта.</span>
+                </div>
+            </div>
+
+
+
+
+            <div class="margin-bottom-20 {% if form_errors(form.isTakeOrdersWithoutBanner) %}state-error{% endif %}">
+                <label class="checkbox">
+                    {{ form_widget(form.isTakeOrdersWithoutBanner) }}<i></i> Принимать заказы размещения без проверки баннеры</label>
+                {{ form_errors(form.isTakeOrdersWithoutBanner) }}
+                </label>
+            </div>
+
+        </div>
+        <div class="tab-pane fade in" id="tab3">
+            <div class="row margin-bottom-20">
+                <div class="{{ fieldGroupClass }}  {% if form_errors(form.keywords) %}state-error{% endif %}">
+                    <label>Ключевые слова (каждое с новой строки)</label>
+                    {{ form_widget(form.keywords,{ 'attr': {'class': 'form-control'} }) }}
+                    <span class="note">Ключевые слова используются для повышения релевантности поиска в каталоге системы.</span>
+                    {{ form_errors(form.keywords) }}
+                </div>
+            </div>
+
+            <div class="row margin-bottom-20">
+                <div class="{{ fieldGroupClass }}  {% if form_errors(form.shortDescription) %}state-error{% endif %}">
+                    <label>Краткое описание</label>
+                    {{ form_widget(form.shortDescription,{ 'attr': {'class': 'form-control'} }) }}
+                    <span class="note">Если не заполнять, то будет использован текст из описание длиной 120 символов</span>
+                    {{ form_errors(form.shortDescription) }}
+                </div>
+            </div>
+
+            <div class="row margin-bottom-20">
+                <div class="{{ fieldGroupClass }}  {% if form_errors(form.description) %}state-error{% endif %}">
+                    <label>Требования к рекламным материалам</label>
+                    {{ form_widget(form.description,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.description) }}
+                    <span class="note">Информация из этого поля показывается рекламодателю</span>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="margin-bottom-20">
+        {{ form_rest(form) }}
+    </div>
+</div>
+
+
+
+

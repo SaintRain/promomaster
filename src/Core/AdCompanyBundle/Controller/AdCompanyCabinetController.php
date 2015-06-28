@@ -47,7 +47,7 @@ class AdCompanyCabinetController extends Controller
         $user = $this->container->get('security.context')->getToken()->getUser();
         $adcompany = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:AdCompany')->find($id);
         //$form = $this->getForm($adcompany);
-        $form = $this->createForm(new AdCompanyType(), $adcompany);
+        $form = $this->createForm('ad_company_type', $adcompany);
         //Сохранения изменения
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
@@ -80,6 +80,7 @@ class AdCompanyCabinetController extends Controller
      * Добавление рекламной компании
      * @return \Symfony\Component\HttpFoundation\Response
      */
+    /*
     public function createAction()
     {
 
@@ -109,6 +110,35 @@ class AdCompanyCabinetController extends Controller
         }
 
         
+    }
+    */
+    public function createAction()
+    {
+        $adcompany = new AdCompany();
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $adcompany->setUser($user);
+        //$form = $this->getForm($adcompany);
+        $form = $this->createForm('ad_company_type', $adcompany);
+        $request = $this->get('request');
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($adcompany);
+                $em->flush();
+
+                $this->setFlash('edit_success', 'Рекламная компания добавлена');
+
+                return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $adcompany->getId()]));
+            } else {
+                return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany, 'form' => $form->createView()]);
+            }
+        } else {
+            return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany, 'form' => $form->createView()]);
+        }
     }
 
 

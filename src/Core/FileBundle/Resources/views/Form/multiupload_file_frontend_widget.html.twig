@@ -52,7 +52,7 @@
                                     <a class="file-link"
                                        href="{{ asset(file|getFileWebPath) }}"
                                        target="_blank">Скачать</a></span><br/>
-                                    <div style="margin-top: 5px">
+                                    <div style="margin-top: 5px;overflow:scroll">
                                         <object height="{{ file.height }}" width="{{ file.width }}"
                                                 style="padding-left: 0px"
                                                 type="application/x-shockwave-flash"
@@ -96,7 +96,7 @@
                                 {% endif %}
                                 <br/>
 
-                                    <span class="file-attachment"><a class="file-link"
+                                    <span class="file-attachment" style="overflow:scroll"><a class="file-link"
                                                                      href="{{ asset(file|getFileWebPath) }}"
                                                                      target="_blank"><img
                                                     style="margin-top: 5px;max-height: 200px;"

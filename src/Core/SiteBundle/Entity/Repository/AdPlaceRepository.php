@@ -52,5 +52,30 @@ class AdPlaceRepository extends EntityRepository {
         return $res;
     }
 
+    /**
+     * Return adplaces for site and user
+     * @param $userId
+     * @param $siteId
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findForSite($userId, $siteId)
+    {
+        $res = $this->createQueryBuilder('ap')
+            ->leftJoin('ap.user', 'user')
+            ->leftJoin('ap.site', 'site')
+            ->where('user.id = :userId')
+            ->andWhere('site.id = :siteId')
+            ->setParameters(
+                [':userId' => $userId,
+                 ':siteId' => $siteId
+                ]
+            )
+            ->getQuery()->
+            getResult();
+
+        return $res;
+    }
+
 
 }

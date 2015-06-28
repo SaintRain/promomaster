@@ -97,6 +97,7 @@ class AppKernel extends Kernel
             new Core\SiteBundle\CoreSiteBundle(),
             new Core\AdCompanyBundle\CoreAdCompanyBundle(),
             new Ob\HighchartsBundle\ObHighchartsBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
 
         );
 

@@ -203,7 +203,7 @@ class Placement
 
     public function addPlacementBannersList($placementBanner)
     {
-        if (!$this->placementBannersList->contains($placementBanner)) {
+        if (!$this->placementBannersList->contains($placementBanner) && $placementBanner !== null) {
             $placementBanner->setPlacement($this);
             $this->placementBannersList->add($placementBanner);
         }

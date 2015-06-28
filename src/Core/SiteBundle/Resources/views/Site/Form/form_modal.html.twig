@@ -1,0 +1,67 @@
+{% form_theme form 'CoreCommonBundle:Form:choice_widget_with_data_attr.html.twig' %}
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="site-modal" class="modal fade"
+     style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content" style="max-height: 600px; overflow-y: scroll;">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                {% if site.id %}
+                    <h4 id="myModalLabel" class="modal-title"Редактирование настроек вашей площадки</h4>
+                {% else %}
+                    <h4 id="myModalLabel" class="modal-title">Добавление новой площадки в систему</h4>
+                {% endif %}
+                <div class="modal-content-wr">
+                    <form style="clear: both" class="sky-form sky-form-other-style"
+                          action="{% if site.id %}{{ path('core_cabinet_site_edit_ajax') }}{% else %}{{ path('core_cabinet_site_create_ajax') }}{% endif %}" {{ form_enctype(form) }}
+                          method="POST">
+                        <div class="modal-body">
+                            <div class="row">
+                                {% include 'CoreSiteBundle:Site\\Form:form_inner.html.twig' with {form: form, 'site': site, 'fieldGroupClass': 'col-sm-12'} %}
+                            </div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button class="btn-u btn-u-primary"
+                                    type="submit">{% if site.id %}Сохранить{% else %}Добавить{% endif %}</button>&nbsp;&nbsp;
+                            <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#modal-top-placement').off('submit', '#site-modal form');
+    $('#modal-top-placement').on('submit', '#site-modal form', function(){
+        var $this = $(this),
+                modalBlock = $('#site-modal'),
+                modalContent = $('.modal-content-wr', modalBlock),
+                site = $('#ad_company_type_site'),
+                postUrl = $this.attr('action');
+        $.ajax({
+            type: 'POST',
+            url: postUrl,
+            data: $this.serialize(),
+            success: function(data) {
+                if (data.result) {
+                    modalBlock.modal('hide');
+                    if (site.val() == data.data.id) {
+                        $('option:selected', site).text(data.data.name);
+                    } else {
+                        site.append('<option value="' + data.data.id +'">' + data.data.name +'</option>');
+                        site.val(data.data.id);
+                    }
+                } else {
+                    modalContent.html($(data.data).find('.modal-content-wr').html());
+                }
+            },
+            error: function () {
+                console.log('error');
+            }
+        });
+
+        return false;
+    });
+</script>

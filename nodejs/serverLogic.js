@@ -55,8 +55,13 @@ exports.sendResponse = function (res, options) {
  */
 exports.getAd = function (req, res, adplace_id) {
 
+    //console.log(req.headers('host'));
+
     if (typeof(req.header('Referer')) !== 'undefined') {
+        //if (typeof(req.get('origin') !== 'undefined')) {
+
         var refererInfo = URL.parse(req.header('Referer')),
+        //var refererInfo = URL.parse(req.get('origin')),
             domain = refererInfo.protocol + '//' + refererInfo.hostname;
 
         //проверяем, чтоб домен рефера совпадал с тем, что у нас прописан в базе. Иначе возможна накрутка показов с других площадок
@@ -138,17 +143,50 @@ exports.getAd = function (req, res, adplace_id) {
                     }
 
 
-                    if (placement) {
+                    if (placement && typeof SD.placementbannersByPlacement['_' + placement.id] !== 'undefined') { //если есть размещение с баннерами
                         /**
                          Пока берем просто первый баннер. Но нужно сделать:
                          1. Определяем по параметрам баннера, какой баннер нужно отобразить
                          */
-                        var placementBanner;
-                        for (key in SD.placementbannersByPlacement['_' + placement.id]) {
-                            placementBanner = SD.placementbannersByPlacement['_' + placement.id][key];
-                        }
-                        var banner = SD.banners['_' + placementBanner.banner_id];
+                        var placementBanner, index = 0;
 
+                        for (key in SD.placementbannersByPlacement['_' + placement.id]) {
+                            var preoritet = SD.placementbannersByPlacement['_' + placement.id][key].preoritet;
+
+                            if (typeof SD.placementbannersByPlacementPrioritets['_' + placement.id] === 'undefined') {
+                                SD.placementbannersByPlacementPrioritets['_' + placement.id] = {
+                                    quantity: 0,
+                                    index: index
+                                };
+                            }
+
+                            if (SD.placementbannersByPlacementPrioritets['_' + placement.id].index == index) {
+                                SD.placementbannersByPlacementPrioritets['_' + placement.id].quantity++;
+
+                                if (SD.placementbannersByPlacementPrioritets['_' + placement.id].quantity <= preoritet) {
+                                    placementBanner = SD.placementbannersByPlacement['_' + placement.id][key];
+
+                                    //сдвигаем на следующий баннер
+                                    if (SD.placementbannersByPlacementPrioritets['_' + placement.id].quantity == preoritet) {
+                                        if (index + 1 < this.getObjectCount(SD.placementbannersByPlacement['_' + placement.id])) {
+                                            var nextKey = index + 1;
+                                        }
+                                        else {
+                                            var nextKey = 0;
+                                        }
+
+                                        SD.placementbannersByPlacementPrioritets['_' + placement.id] = {
+                                            quantity: 0,
+                                            index: nextKey
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                            index++;
+                        }
+
+                        var banner = SD.banners['_' + placementBanner.banner_id];
                         // отдаём баннер
                         this.sendBanner(res, banner, placement, placementBanner);
 
@@ -177,7 +215,6 @@ exports.getAd = function (req, res, adplace_id) {
                         this.sendResponse(res, {statusCode: 200, body: ''});
                     }
                 }
-
             }
             else {
                 var msgError = "Placement is not finded.";
@@ -203,6 +240,19 @@ exports.getAd = function (req, res, adplace_id) {
         //отдаём ошибку
         this.sendResponse(res, {statusCode: 400, body: msgError})
     }
+}
+
+
+exports.getObjectCount = function (obj) {
+
+    var count = 0,
+        i;
+    for (i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            count++;
+        }
+    }
+    return count;
 }
 
 
@@ -406,7 +456,7 @@ exports.saveStatistics = function () {
                         clicksQuantity: STclone[adplace_id][placement_id][placement_banner_id][banner_id].clicksQuantity,
                         adplace_id: SD.adplaces[adplace_id].id,
                         placement_id: SD.placements[placement_id].id,
-                        placement_banner_id: SD.placementbanners[placement_banner_id].id,
+                        //placement_banner_id: SD.placementbanners[placement_banner_id].id,
                         banner_id: SD.banners[banner_id].id,
                         finishDateTime: finishDateTime,
                         startDateTime: START_DATE_TIME

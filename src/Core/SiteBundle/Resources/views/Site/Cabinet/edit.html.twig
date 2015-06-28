@@ -84,46 +84,7 @@
           method="POST">
         <fieldset class="sky-form-other-style">
 
-            <div class="row margin-bottom-20">
-                <div class="col-sm-6  {% if form_errors(form.domain) %}state-error{% endif %}">
-                    <label>Адрес сайта*</label>
-                    {{ form_widget(form.domain,{ 'attr': {'class': 'form-control'} }) }}
-                    <span class="note">Введите полный адрес вашего сайта начиная с http://</span>
-                    {{ form_errors(form.domain) }}
-                </div>
-            </div>
-            <div class="row margin-bottom-20">
-                <div class="col-lg-12  {% if form_errors(form.categories) %}state-error{% endif %}">
-                    <label>Тематика сайта*</label>
-                    {{ form_widget(form.categories,{ 'attr': {'class': 'form-control'} }) }}
-                    {{ form_errors(form.categories) }}
-                </div>
-            </div>
-
-            <div class="row margin-bottom-20">
-                <div class="col-sm-6  {% if form_errors(form.mirrors) %}state-error{% endif %}">
-                    <label>Зеркала</label>
-                    {{ form_widget(form.mirrors,{ 'attr': {'class': 'form-control'} }) }}
-                    {{ form_errors(form.mirrors) }}
-                    <span class="note">Альтернативные адреса вашего сайта.</span>
-                </div>
-            </div>
-
-            <div class="row margin-bottom-20">
-                <div class="col-sm-6  {% if form_errors(form.keywords) %}state-error{% endif %}">
-                    <label>Ключевые слова (каждое с новой строки)</label>
-                    {{ form_widget(form.keywords,{ 'attr': {'class': 'form-control'} }) }}
-                    <span class="note">Ключевые слова используются для повышения релевантности поиска в каталоге системы.</span>
-                    {{ form_errors(form.keywords) }}
-                </div>
-            </div>
-
-
-            <div class="margin-bottom-20">
-            </div>
-
-            {{ form_rest(form) }}
-
+            {% include 'CoreSiteBundle:Site\\Form:form_inner.html.twig' with {form: form, 'site': site, 'fieldGroupClass': 'col-sm-6'} %}
             <div class="text-right">
                 <button class="btn-u" type="submit">{% if site.id %}Сохранить{% else %}Добавить{% endif %}</button>
                 &nbsp;&nbsp;
@@ -139,8 +100,6 @@
 
     </form>
 
-
-
     <script>
         $(function () {
 
@@ -152,6 +111,23 @@
                 }
             });
             {% endif %}
+            {#
+                $('#show-image').click(function(){
+                    var $this = $(this),
+                        $image = $('#site_form_domain'),
+                        imgContainer =$('#img-container');
+                    if ($image.val()) {
+                        $.ajax({
+                            url: "{{ path('core_create_site_img') }}",
+                            data: 'site=' + $image.val(),
+                            method: 'POST',
+                            success: function(data) {
+                                imgContainer.html('<img src="data:image/jpg;base64, '+ data.data +'">');
+                            }
+                        })
+                    }
+                });
+            #}
         })
     </script>
 

@@ -60,7 +60,7 @@
 
         <div class="row margin-bottom-20">
             <div class="col-sm-12  {% if form_errors(form.url) %}state-error{% endif %}">
-                <label>URL для перехода *</label>
+                <label>URL для перехода</label>
                 {{ form_widget(form.url,{ 'attr': {'class': 'form-control'} }) }}
                 {{ form_errors(form.url) }}
                 {{ include ('CoreBannerBundle:Banner\\Cabinet\\Forms:flashBannerMsg.html.twig') }}

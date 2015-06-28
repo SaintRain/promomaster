@@ -16,6 +16,7 @@ use Core\SiteBundle\Entity\WebSite;
 use Core\SiteBundle\Entity\AdPlace;
 use Core\DirectoryBundle\Entity\Repository\AdPlaceSizeRepository;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdPlaceCabinetController extends Controller
 {
@@ -144,6 +145,84 @@ class AdPlaceCabinetController extends Controller
     }
 
     /**
+     * Добавление рекламного места (ajax)
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function createAjaxAction(Request $request)
+    {
+
+        if (!$request->isXmlHttpRequest() || !$request->query->get('siteId')) {
+            throw $this->createNotFoundException('Page Not Found');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $siteId = (int)$request->query->get('siteId');
+        $site = $em->getRepository('CoreSiteBundle:CommonSite')->find($siteId);
+        if (!$site) {
+            throw $this->createNotFoundException('Page Not Found');
+        }
+        $adplace = new AdPlace();
+        $adplace->setSite($site);
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $adplace->setUser($user);
+        $form = $this->getForm($adplace);
+
+        $gagsCount = $em->getRepository('CoreBannerBundle:CommonBanner')->getGagsCount($this->getUser()->getId());
+
+        $request = $this->get('request');
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+//            if ($this->checkIsExistSite($site)) {
+//                $this->setFlash('edit_errors', 'Сайт с указанным адресом был добавлен вами ранее.');
+//                $isBadName=true;
+//            }
+//            else {
+//                $isBadName=false;
+//            }
+            //        if (!$isBadName && $form->isValid()) {
+
+            $this->container->get('core_adplace_logic')->setAuthoSize($adplace);
+
+            if ($form->isValid()) {
+                $em->persist($adplace);
+                $em->flush();
+                $answer = [
+                    'data' => ['id' => $adplace->getId(), 'name'=> $adplace->getName()],
+                    'result' => true
+                ];
+            } else {
+                $html = $this->render('CoreSiteBundle:AdPlace\Cabinet\Form:adplace_modal_form.html.twig', [
+                    'adplace' => $adplace,
+                    'form' => $form->createView(),
+                    'gagsCount' => $gagsCount
+                ])->getContent();
+
+                $answer = [
+                    'data' => $html,
+                    'result' => false,
+                ];
+            }
+        } else {
+            $html = $this->render('CoreSiteBundle:AdPlace\Cabinet\Form:adplace_modal_form.html.twig', [
+                'adplace' => $adplace,
+                'form' => $form->createView(),
+                'gagsCount' => $gagsCount
+            ])->getContent();
+
+            $answer = [
+                'data' => $html,
+                'result' => true,
+            ];
+        }
+
+        $response = new Response(json_encode($answer));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    /**
      * Форма рекламного места
      * @param $adplace
      * @return \Symfony\Component\Form\Form
@@ -169,6 +248,7 @@ class AdPlaceCabinetController extends Controller
             ->add('isShowInCatalog', null, ['required' => false])
             ->add('gag', 'entity', [
                 'class' => 'CoreBannerBundle:CommonBanner',
+                'required' => false,
                 'property' => 'name',
                 'empty_value' => 'Необходимо выбрать',
                 'query_builder' => function (EntityRepository $er) {
@@ -308,6 +388,28 @@ class AdPlaceCabinetController extends Controller
             'updated'=>$updated
         ]);
 
+    }
+
+    public function siteAdPlacesAjaxAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest() || !$request->request->get('siteId')) {
+            throw $this->createNotFoundException('Page Not Found');
+        }
+        $em = $this->getDoctrine()->getManager();
+        $siteId = (int)$request->request->get('siteId');
+        $adPlaces = $em->getRepository('CoreSiteBundle:AdPlace')->findForSite($this->getUser()->getId(), $siteId);
+        $answer = [];
+
+        foreach ($adPlaces as $adPlace) {
+            $answer[$adPlace->getId()]['id'] = $adPlace->getId();
+            $answer[$adPlace->getId()]['name'] = $adPlace->getName();
+        }
+
+        $response = new Response(json_encode($answer));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
+        return $response;
     }
 
 

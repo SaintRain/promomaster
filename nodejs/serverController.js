@@ -30,6 +30,7 @@ TRYCATCH(function () {
         sites: {},
         placementbanners: {},
         placementbannersByPlacement: {},
+        placementbannersByPlacementPrioritets: {},
         placements: {},
         placementsByAdPlace: {},
         placementsMatchSections: {},

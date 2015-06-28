@@ -20,7 +20,7 @@ class FlashBannerFormType extends GeneralBannerFormType
     {
         parent::buildForm($builder, $options);
         $builder
-            ->add('url', 'text', ['required' => true, 'label' => 'URL для перехода'])
+            ->add('url', 'text', ['required' => $options['isBanner'], 'label' => 'URL для перехода'])
             ->add('file', 'multiupload_file_frontend', array(
                 'required' => true,
                 "label" => "Flash",
@@ -45,7 +45,8 @@ class FlashBannerFormType extends GeneralBannerFormType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Core\BannerBundle\Entity\FlashBanner'
+            'data_class' => 'Core\BannerBundle\Entity\FlashBanner',
+            'isBanner' => true
         ));
     }
 

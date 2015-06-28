@@ -18,7 +18,7 @@ class ImageBannerFormType  extends GeneralBannerFormType
     {
         parent::buildForm($builder, $options);
         $builder
-            ->add('url', 'text', ['required' => true, 'label' => 'Ссылка перехода'])
+            ->add('url', 'text', ['required' => $options['isBanner'], 'label' => 'Ссылка перехода'])
             ->add('isOpenUrlInNewWindow', null, ['required' => false, 'label' => 'Открывать ссылку перехода в новом окне'])
             ->add('image', 'multiupload_file_frontend', array(
                 'required' => true,
@@ -44,7 +44,8 @@ class ImageBannerFormType  extends GeneralBannerFormType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Core\BannerBundle\Entity\ImageBanner'
+            'data_class' => 'Core\BannerBundle\Entity\ImageBanner',
+            'isBanner' => true
         ));
     }
 

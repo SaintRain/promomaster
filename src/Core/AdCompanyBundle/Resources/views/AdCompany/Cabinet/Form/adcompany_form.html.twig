@@ -1,0 +1,726 @@
+<div class="row">
+    {% if adcompany.id %}
+        <h3>Редактирование рекламной компании</h3>
+    {% else %}
+        <h3>Добавление новой рекламной компании</h3>
+    {% endif %}
+</div>
+
+    {#форма редактирования профиля ЛК#}
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+        <br/>
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+
+            &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_adcompany_create') }}'><i
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще рекламную компанию</a>
+            &nbsp;&nbsp;&nbsp;
+            <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_adcompany_list_first_page') }}'><i
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку рекламных компаний</a>
+
+        </div>
+    {% endfor %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+    {% if form.vars.errors | length %}
+        <br/>
+        <div class="alert alert-danger fade in">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+<form style="clear: both" class="sky-form sky-form-other-style"
+      action="{% if adcompany.id %}{{ path('core_cabinet_adcompany_edit', {id: adcompany.id}) }}{% else %}{{ path('core_cabinet_adcompany_create') }}{% endif %}" {{ form_enctype(form) }}
+      method="POST">
+    <fieldset class="sky-form-other-style">
+        <div class="row margin-bottom-20">
+            <div class="site-container{% if form_errors(form.site) %} state-error{% endif %}">
+                <div class="row">
+                    <div class="col-sm-6">
+                        {{ form_label(form.site) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        {{ form_widget(form.site,{ 'attr': {'class': 'form-control'} }) }}
+                        {{ form_errors(form.site) }}
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="{{ path('core_cabinet_site_create_ajax') }}" class="btn-u site-creation" style="margin-left: -15px">
+                            <i class="fa fa-plus-square" title="Добавить площадку"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row margin-bottom-20">
+            <div class="margin-bottom-20  {% if form_errors(form.adPlaces) %}state-error{% endif %}">
+                <div class="row">
+                    <div class="col-sm-6">
+                    {{ form_label(form.adPlaces) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        {{ form_widget(form.adPlaces,{ 'attr': {'class': 'form-control'} }) }}
+                        {{ form_errors(form.adPlaces) }}
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="{{ path('core_cabinet_ad_place_create_ajax') }}" class="btn-u  ad-place-creation" style="margin-left: -15px">
+                            <i class="fa fa-plus-square" title="Добавить рекламное место"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row margin-bottom-20">
+            <div class="row">
+                <div class="col-lg-6{% if form_errors(form.name) %} state-error{% endif %}">
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.name) }}
+                </div>
+            </div>
+        </div>
+        {#
+        <div class="row margin-bottom-20">
+            <div class="col-lg-6  {% if form_errors(form.placements) %}state-error{% endif %}">
+                {{ form_label(form.placements) }}
+                <div class="pull-right">
+                    <a class="btn-u btn-u-xs country-select" href="javascript:void(0);">
+                        <i class="fa fa-plus-square"></i><span>&nbsp;Добавить размещение</span>
+                    </a>
+                </div>
+                {{ form_widget(form.placements) }}
+                {{ form_errors(form.placements) }}
+            </div>
+        </div>
+        #}
+        <div class="row margin-bottom-20">
+            <div
+                class="placements-container{% if form_errors(form.placements) %} state-error{% endif %}"
+                {% if form.placements.vars.prototype is defined %}
+                    data-prototype="
+                         {% filter escape %}
+                             {{ include(
+                                    'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',
+                                    { 'form': form.placements.vars.prototype, 'fieldGroupClass': 'col-sm-12'}
+                                )
+                            }}
+                         {% endfilter %}"
+                {% endif %}
+            >
+                <div class="row">
+                    <div class="col-sm-6">
+                        {{ form_label(form.placements) }}
+                        <div class="pull-right">
+                            <a class="btn-u btn-u-xs add-placement" href="javascript:void(0);">
+                                <i class="fa fa-plus-square"></i><span>&nbsp;Добавить размещение</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="placements-container-in">
+                {% if form.vars.placements is defined %}
+                {% for placement in form.vars.placements %}
+                    <div class="row collection-row">
+                        <div class="col-sm-4">
+                            <a href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.id}) }}"
+                               style="margin: 8px 0; display: inline-block;" class="edit-placement">
+                                Редактировать &numero;{{ placement.id }}
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="pull-right">
+                            <div style="margin-top: 7px;">
+                                <a data-id="{{ placement.id }}" href="javascript:void(0);" class="btn-u-xs btn-u btn-u-red placement-remove">
+                                    <i class="icon-close"></i>&nbsp;Удалить
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% endif %}
+                {% for placement in form.placements %}
+                    <div class="row collection-row"
+                            {% if not(placement.vars.value.id is defined and placement.vars.value.id) %}
+                                data-id="{{ loop.index }}"
+                            {% endif %}
+                    >
+                        {% if placement.vars.value.id is defined and placement.vars.value.id %}
+                            <div class="col-sm-4">
+                                <a href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.vars.value.id}) }}"
+                                   style="margin: 8px 0; display: inline-block;" class="edit-placement">
+                                    Редактировать &numero;{{ placement.vars.value.id }}
+                                </a>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="pull-right">
+                                <div style="margin-top: 7px;">
+                                    <a data-id="{{ placement.vars.value.id }}" href="javascript:void(0);" class="btn-u-xs btn-u btn-u-red placement-remove">
+                                        <i class="icon-close"></i>&nbsp;Удалить
+                                    </a>
+                                </div>
+                                </div>
+                            </div>
+                            {% do placement.setRendered(true) %}
+                            {% else %}
+                                <div class="row" style="display: none;">
+                                    {{ include(
+                                    'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',
+                                    { 'form': placement, 'fieldGroupClass': 'col-sm-12'}
+                                    )
+                                    }}
+                                </div>
+                                <div class="wrapper">
+                                    <div class="col-sm-4">
+                                        <a class="edit-placement-new" style="margin: 8px 0; display: inline-block;" href="javascript:void(0);">
+                                            Редактировать Новое Размещение &numero;{{ loop.index }}
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div style="margin-top: 7px;">
+                                            <a class="btn-u-xs btn-u btn-u-red placement-remove-new" href="javascript:void(0);" data-id="{{ loop.index }}">
+                                                <i class="icon-close"></i>&nbsp;Удалить
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                {% do form.placements.setRendered(true) %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row margin-bottom-20">
+            <div class="row">
+                <div {% if not form.startDateTime.vars.value %}  style="display: none"  {% endif %}
+                        class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
+                    <label>Дата начала показов</label>
+                    <label class="input">
+                        <i class="icon-append fa fa-calendar"></i>
+                        {{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date'} }) }}
+                    </label>
+
+                    {{ form_errors(form.startDateTime) }}
+                </div>
+
+
+                <div class="col-sm-6">
+                    <label class="dateSettingsStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>
+
+                    <div class="inline-group">
+                        <label class="radio"><input {% if form.startDateTime.vars.value %}  checked=""  {% endif %}
+                                    class="dateSettingsStart" value="1" type="radio" name="dateSettingsStart"><i
+                                    class="rounded-x"></i>По
+                            дате</label>
+                        <label class="radio"><input {% if not form.startDateTime.vars.value %}  checked=""  {% endif %}
+                                    class="dateSettingsStart" value="0" type="radio" name="dateSettingsStart"><i
+                                    class="rounded-x"></i>Начать
+                            показ сразу</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row margin-bottom-20">
+            <div class="row">
+                <div  {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}
+                        class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
+                    <label>Дата окончания показов</label>
+
+                    <label class="input">
+                        <i class="icon-append fa fa-calendar"></i>
+                        {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date'} }) }}
+                    </label>
+
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="dateSettingsFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>
+
+                    <div class="inline-group">
+                        <label class="radio"><input {% if form.finishDateTime.vars.value %}  checked=""  {% endif %}
+                                    class="dateSettingsFinish" value="1" type="radio" name="dateSettingsFinish"><i
+                                    class="rounded-x"></i>По
+                            дате</label>
+                        <label class="radio"><input {% if not form.finishDateTime.vars.value %}  checked=""  {% endif %}
+                                    class="dateSettingsFinish" value="0" type="radio" name="dateSettingsFinish"><i
+                                    class="rounded-x"></i>Показывать бесконечно</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="def-countries" class="row margin-bottom-20 {% if form_errors(form.defaultCountries) %}state-error{% endif %}">
+            <div class="col-sm-6">
+                <div class="row">
+                    <label>Страны</label>
+                    <div class="pull-right">
+                        <a class="btn-u btn-u-xs country-select" href="javascript:void(0);">
+                            <i class="fa fa-plus-square"></i>
+                            <span>&nbsp;Выбрать страны</span>
+                        </a>
+                    </div>
+                    {{ form_widget(form.defaultCountries,{ 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.defaultCountries) }}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label class="checkbox">
+                        {{ form_widget(form.isEnabled) }}<i></i> {{ form.isEnabled.vars.label }}</label>
+                    {{ form_errors(form.isEnabled) }}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="margin-bottom-20">
+        </div>
+
+        {{ form_rest(form) }}
+
+        <div class="text-right">
+            <button class="btn-u" type="submit">{% if adcompany.id %}Сохранить{% else %}Добавить{% endif %}</button>
+            &nbsp;&nbsp;
+            <a href="{{ path('core_cabinet_adcompany_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+            {% if adcompany.id %}
+                &nbsp;&nbsp; или &nbsp;&nbsp;
+                <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>
+            {% endif %}
+
+        </div>
+        <div id="modal-top-placement"></div>
+        <div id="modal-inner-placement"></div>
+    </fieldset>
+</form>
+<div id="placement-modal-container">
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="placement-modal-content" class="modal fade"
+         style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 id="myModalLabel" class="modal-title">Добавление нового размещения в систему</h4>
+                    <div class="modal-content-wr">
+                        <form style="clear: both" class="sky-form sky-form-other-style" action="#" method="POST">
+                            <div class="modal-body">
+                                <div class="row">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn-u btn-u-primary"type="submit">Добавить</button>&nbsp;&nbsp;
+                                <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Отмена</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block js %}
+
+    <script>
+        $(function () {
+
+            $("#datepicker").datepicker();
+            // Date range
+            $('#ad_company_type_startDateTime').datepicker({
+                dateFormat: 'dd-mm-yy',
+                prevText: '<i class="fa fa-angle-left"></i>',
+                nextText: '<i class="fa fa-angle-right"></i>',
+                onSelect: function (selectedDate) {
+                    $('#ad_company_type_finishDateTime').datepicker('option', 'minDate', selectedDate);
+                }
+            });
+            $('#ad_company_type_finishDateTime').datepicker({
+                dateFormat: 'dd-mm-yy',
+                prevText: '<i class="fa fa-angle-left"></i>',
+                nextText: '<i class="fa fa-angle-right"></i>',
+                onSelect: function (selectedDate) {
+                    $('#ad_company_type_startDateTime').datepicker('option', 'maxDate', selectedDate);
+                }
+            });
+
+
+            //$(".date").mask('99-99-9999', {placeholder: '0'});
+
+            {% if adcompany.id %}
+            $('.delete').click(function () {
+                var res = confirm('Вы действительно хотите удалить эту рекламную компанию из системы?');
+                if (res) {
+                    window.location.href = '{{ path('core_cabinet_adcompany_delete', {id:adcompany.id}) }}';
+                }
+            });
+            {% endif %}
+
+
+            $('.dateSettingsStart').change(function () {
+                var value = $('.dateSettingsStart:checked').val();
+                if (value == 1) {
+                    $('#ad_company_type_startDateTime').parents('div.col-sm-6').show();
+                    $('#ad_company_type_startDateTime').val('').focus();
+                    $('#ad_company_type_startDateTime').attr('required', 'required');
+                    $('.dateSettingsStartLabel').html('');
+                }
+                else {
+                    $('#ad_company_type_startDateTime').parents('div.col-sm-6').hide();
+                    $('#ad_company_type_startDateTime').val('');
+                    $('#ad_company_type_startDateTime').removeAttr('required');
+                    $('.dateSettingsStartLabel').html('Дата начала показов');
+                }
+            });
+
+
+            $('.dateSettingsFinish').change(function () {
+                var value = $('.dateSettingsFinish:checked').val();
+                if (value == 1) {
+                    $('#ad_company_type_finishDateTime').parents('div.col-sm-6').show();
+                    $('#ad_company_type_finishDateTime').val('').focus();
+                    $('#ad_company_type_finishDateTime').attr('required', 'required');
+                    $('.dateSettingsFinishLabel').html('');
+                }
+                else {
+                    $('#ad_company_type_finishDateTime').parents('div.col-sm-6').hide();
+                    $('#ad_company_type_finishDateTime').val('');
+                    $('#ad_company_type_finishDateTime').removeAttr('required');
+                    $('.dateSettingsFinishLabel').html('Дата окончания показов');
+                }
+            });
+
+            // adplaces for site
+            $('body').on('change', '#ad_company_type_site', function() {
+                var $this = $(this),
+                    adPlacesContainer = $('#ad_company_type_adPlaces'),
+                    adPlacementContainer = $('.placements-container-in'),
+                    curOption = '<option value="">Необходимо выбрать или добавить</option>';
+                if (!$this.val()) {
+                    return false;
+                }
+                $.ajax({
+                    url: "{{ path('core_cabinet_site_adplaces') }}",
+                    method: 'POST',
+                    data: 'siteId=' + $this.val(),
+                    success: function(data) {
+                        for(var key in data) {
+                            curOption += '<option value="' + data[key].id + '">' + data[key].name + '</option>'
+                        }
+                        adPlacesContainer.html(curOption);
+                        adPlacementContainer.html('');
+                    }
+                })
+            });
+
+            {#
+            // adplacements for adplace
+            $('body').on('change', '#ad_company_type_adPlaces', function() {
+                var $this = $(this),
+                    fullName = '{{ form.placements.vars.full_name }}',
+                    curId = '{{ form.placements.vars.id }}',
+                    adPlacementContainer = $('.placements-container-in'),
+                    curHtml = '';
+                if (!$this.val()) {
+                    return false;
+                }
+                $.ajax({
+                    url: "{{ path('core_cabinet_adplaces_placements') }}",
+                    method: 'POST',
+                    data: 'adPlaceId=' + $this.val(),
+                    success: function(data) {
+
+                        for(var key in data) {
+                            curHtml += '<div class="row collection-row">'+
+                                            '<div class="col-sm-4">'+
+                                                '<a class="edit-placement" style="margin: 8px 0; display: inline-block;" href="' + data[key].route + '">'+
+                                                    'Редактировать №' + data[key].id +
+                                                '</a>'+
+                                            '</div>'+
+                                            '<div class="col-sm-2">'+
+                                                '<div style="margin-top: 7px;">'+
+                                                    '<a class="btn-u-xs btn-u btn-u-red placement-remove" href="javascript:void(0);" data-id="' + data[key].id + '">'+
+                                                        '<i class="icon-close"></i>&nbsp;Удалить'+
+                                                    '</a>'+
+                                                '</div>'+
+                                            '</div>'+
+                                        '</div>';
+                        }
+
+                        adPlacementContainer.html(curHtml);
+                    }
+                });
+            });
+            #}
+            // get ad-place creation template
+            $('.ad-place-creation').click(function() {
+                var $this = $(this),
+                    curSite = $('#ad_company_type_site'),
+                    innerModal = $('#modal-inner-placement'),
+                    placement = $('#modal-top-placement');
+                if (!curSite.val()) {
+                    alert('Необходимо выбрать или добавить площадку');
+                    return false;
+                }
+                $.ajax({
+                    url: $this.attr('href'),
+                    method: 'GET',
+                    data: 'siteId='+curSite.val(),
+                    success: function(data) {
+                        if (data.result) {
+                            placement.html('');
+                            placement.html($(data.data));
+                            innerModal.html('');
+                            $('#adplace-modal', placement).modal('show');
+                        }
+                    }
+                });
+                return false;
+            });
+
+            // get site creation template
+            $('.site-creation').click(function() {
+                var $this = $(this),
+                        innerModal = $('#modal-inner-placement'),
+                        placement = $('#modal-top-placement');
+                $.ajax({
+                    url: $this.attr('href'),
+                    method: 'GET',
+                    success: function(data) {
+                        if (data.result) {
+                            placement.html(data.data);
+                            $('#site-modal').modal('show');
+                        }
+                    }
+                });
+                return false;
+            });
+
+
+
+            // collection manipulation
+            var $addTagLink = $('.add-placement'),
+                $collectionHolder = $('.placements-container');
+
+            $collectionHolder.data('index', $collectionHolder.find('.collection-row').length);
+
+            $addTagLink.on('click', function(e) {
+                addTagForm($collectionHolder);
+
+                return false;
+            });
+
+            function addTagForm($collectionHolder) {
+                var prototype = $collectionHolder.data('prototype'),
+                    index = $collectionHolder.data('index'),
+                    placement = $('#placement-modal-container .modal-body .row'),
+                    modalContainer = $('#placement-modal-content'),
+                    newForm = prototype.replace(/__name__/g, index + 1);
+                $collectionHolder.data('index', index + 1);
+
+                placement.attr('data-id', $collectionHolder.data('index'));
+                placement.html(newForm);
+                //$('.modal', placement).next('script').remove();
+                modalContainer.modal('show');
+                $('#modal-top-placement, #modal-inner-placement').html('');
+                //$collectionHolder.append('<div clas="row collection-row">' + newForm + '</div>');
+
+            }
+
+
+            // remove placement
+            $('body').on('click', '.placement-remove', function(){
+                var $this = $(this),
+                    curRow = $this.parents('.collection-row');
+                $.ajax({
+                    url: "{{ path('core_cabinet_adplaces_placements_ajax_remove') }}",
+                    data: 'id=' + $this.attr('data-id'),
+                    method: 'POST',
+                    success: function(data) {
+                        if (data.result) {
+                            curRow.remove();
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+
+                return false;
+            });
+
+            //edit ajax href
+            $('body').on('click', '.edit-placement', function(){
+                var $this = $(this),
+                    innerModal = $('#modal-inner-placement'),
+                    placement = $('#modal-top-placement');
+                $.ajax({
+                    url: $this.attr('href'),
+                    method: 'GET',
+                    success: function(data) {
+                        if (data.result) {
+                            $('#placement-modal-content .row').html('');
+                            placement.html('');
+                            placement.html($(data.data));
+                            innerModal.html('');
+                            $('#placement-modal').modal('show');
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+
+                return false;
+            });
+
+            // fake placement submit
+            $('#placement-modal-content').on('submit', 'form', function(){
+                var curId = $collectionHolder.data('index'),
+                    placement = $collectionHolder.find(".row.collection-row[data-id='" + curId + "']"),
+                    $html =
+                    '<div class="wrapper"><div class="col-sm-4">'+
+                        '<a class="edit-placement-new" style="margin: 8px 0; display: inline-block;" href="javascript:void(0);">'+
+                            'Редактировать Новое Размещение №' + curId +
+                        '</a>'+
+                    '</div>'+
+                    '<div class="col-sm-2">'+
+                        '<div class="pull-right"><div style="margin-top: 7px;">'+
+                        '<a class="btn-u-xs btn-u btn-u-red placement-remove-new" href="javascript:void(0);" data-id="' + curId + '">'+
+                        '<i class="icon-close"></i>&nbsp;Удалить'+
+                        '</a>'+
+                        '</div></div>'+
+                    '</div></div>';
+
+                if (!placement.length) {
+                    $('.placements-container-in', $collectionHolder).append('<div class="row collection-row" data-id="' + curId + '" />');
+                    placement = $collectionHolder.find(".row.collection-row[data-id='" + curId + "']");
+                }
+                // почему форма со странами тоже иммет row class
+                //formCreation(this);
+                console.log($('.modal-body > .row:first', this));
+                placement.html($('.modal-body > .row:first', this).clone().hide());
+                //console.log($('.modal-body > .row:first select', this).val());
+                //console.log($('select', placement).val());
+                placement.append($html);
+                $('#placement-modal-content').modal('hide');
+
+                return false;
+            });
+
+            $('body').on('change', //'#placement-modal-content .modal-body > .row:first select', function(){
+                        '#placement-modal-content .modal-body > .row:first input[type="checkbox"], ' +
+                        '#placement-modal-content .modal-body > .row:first input[type="radio"], ' +
+                        '#placement-modal-content .modal-body > .row:first select', function(){
+                var $element = $(this),
+                    curValue;
+                if ($element.is('select')) {
+                    var curValue = $element.val();
+                    $('option', $element).removeAttr('selected');
+                    if (curValue) {
+                        $('option[value="' + curValue + '"]', $element).attr('selected', 'selected');
+                    }
+                }
+                else if ($element.is('input[type="radio"]')) {
+                    $element.attr('checked', 'checked');
+                    $('#placement-modal-content input[name="' + $element.attr('name') + '"]')
+                            .filter(':not([value=' + $element.val() + '])')
+                            .removeAttr('checked');
+                } else {
+                    if ($element.prop('checked')) {
+                        $element.attr('checked', 'checked');
+                    } else {
+                        $element.removeAttr('checked');
+                    }
+                }
+            });
+
+            // remove new placement
+            $('.placements-container').on('click', '.placement-remove-new', function(){
+                $(this).parents('.collection-row').remove();
+            });
+
+            //edit new placement
+            $('.placements-container').on('click', '.edit-placement-new', function(){
+                var modalPlacement = $('#placement-modal-container .modal-body .row'),
+                    parentBlock = $(this).parents('.collection-row'),
+                    modalContainer = $('#placement-modal-content'),
+                    curId = parentBlock.attr('data-id');
+                modalPlacement.replaceWith($('> .row', parentBlock).clone().show());
+                modalContainer.modal('show');
+                $('#modal-top-placement, #modal-inner-placement').html('');
+            });
+
+            //applySection();
+        });
+
+        function applySection() {
+            var adPlacesContainer = $('#ad_company_type_adPlaces'),
+                curSite = $('#ad_company_type_site'),
+                adPlaceSelectors = ['option[value=""]'],
+                adPlacementContainer = $('.placements-container-in');
+            if ($('#ad_company_type_adPlaces').val() && !$('.placements-container-in .edit-placement').length) {
+                    $.ajax({
+                        url: "{{ path('core_cabinet_site_adplaces') }}",
+                        method: 'POST',
+                        data: 'siteId=' + curSite.val(),
+                        success: function(data) {
+                            for(var key in data) {
+                                adPlaceSelectors.push('option[value="' + data[key].id + '"]');
+                            }
+                            $(':not(' + adPlaceSelectors.join(', ') + ')' ,adPlacesContainer).remove();
+                            loadPlacements(adPlacesContainer);
+                        }
+                    });
+            }
+        }
+
+        function loadPlacements(adPlace){
+            var adPlacementContainer = $('.placements-container-in');
+            $.ajax({
+                url: "{{ path('core_cabinet_adplaces_placements') }}",
+                method: 'POST',
+                data: 'adPlaceId=' + adPlace.val(),
+                success: function(data) {
+
+                    for(var key in data) {
+                        curHtml += '<div class="row collection-row">'+
+                        '<div class="col-sm-4">'+
+                        '<a class="edit-placement" style="margin: 8px 0; display: inline-block;" href="' + data[key].route + '">'+
+                        'Редактировать №' + data[key].id +
+                        '</a>'+
+                        '</div>'+
+                        '<div class="col-sm-2">'+
+                        '<div style="margin-top: 7px;">'+
+                        '<a class="btn-u-xs btn-u btn-u-red placement-remove" href="javascript:void(0);" data-id="' + data[key].id + '">'+
+                        '<i class="icon-close"></i>&nbsp;Удалить'+
+                        '</a>'+
+                        '</div>'+
+                        '</div>'+
+                        '</div>';
+                    }
+
+                    adPlacementContainer.html(curHtml);
+                }
+            });
+        }
+
+    </script>
+{% endblock %}

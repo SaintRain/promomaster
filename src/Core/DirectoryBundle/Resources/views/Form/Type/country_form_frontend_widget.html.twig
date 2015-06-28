@@ -1,127 +1,337 @@
 {% extends 'form_div_layout.html.twig' %}
 {%- block choice_widget_expanded -%}
-    {%  set modalName = (form.vars.id | lower)  ~ '_country_modal' %}
-    <div class="row">
-        <div class="col-md-12">
-            <div id="selected_country">
-                <ul class="list-style" style="padding-left: 0px">
-                {% if activeChoices | length %}
-                    {% for val in activeChoices %}
-                        <i class="fa fa-check color-green"></i> {{ val }}<br/>
-                    {% endfor %}
-                    {% else %}
+    {% if activeChoices is defined %}
+        {%  set modalName = (form.vars.id | lower)  ~ '_country_modal' %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="selected_country_{{ modalName }}">
+                    <ul class="list-style" style="padding-left: 0px">
+                    {% if activeChoices | length %}
+                        {% for val in activeChoices %}
+                            <i class="fa fa-check color-green"></i> {{ val }}<br/>
+                        {% endfor %}
+                        {% else %}
 
 
-                        <i class="fa fa-check color-green"></i> Активно для всех стран<br/>
-                {% endif %}
-                </ul>
+                            <i class="fa fa-check color-green"></i> Активно для всех стран<br/>
+                    {% endif %}
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="{{ modalName }}" class="modal fade" style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                    <h2>Выбрать страны</h2>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div {{ block('widget_container_attributes') }}>
-                                    {% for key, child in form.vars.views %}
-                                        <ul class="list-unstyled world-section-wr">
-                                            <label>
-                                                <input class="world-section" type="checkbox" name="{{ key }}"{% if child.isChecked %}checked="checked"{% endif %} value="{{ key }}">
-                                                <span  style="color: #72c02c; margin-left: 5px; vertical-align: top; display: inline-block;">{{ key }}</span>
-                                            </label>
-                                            <ul class="list-unstyled world-section-inner">
-                                                {% for inner in child.views %}
-                                                    <li style="margin-left: 15px;">
-                                                        {{- form_widget(inner) -}}
-                                                        {#{{- form_label(inner) -}}#}
-                                                        <label for="{{ inner.vars.id }}" style="margin-left: 5px; vertical-align: middle;">{{ inner.vars.label }}</label>
-                                                    </li>
-                                                {% endfor %}
+        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="{{ modalName }}" class="modal fade" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h2>Выбрать страны</h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div {{ block('widget_container_attributes') }}>
+                                        {% for key, child in form.vars.views %}
+                                            <ul id="world_section_wr_{{ modalName }}" class="list-unstyled world-section-wr">
+                                                <label>
+                                                    <input class="world-section" type="checkbox" name="{{ key }}"{% if child.isChecked %}checked="checked"{% endif %} value="{{ key }}">
+                                                    <span  style="color: #72c02c; margin-left: 5px; vertical-align: top; display: inline-block;">{{ key }}</span>
+                                                </label>
+                                                <ul class="list-unstyled world-section-inner">
+                                                    {% for inner in child.views %}
+                                                        <li style="margin-left: 15px;">
+                                                            {{- form_widget(inner) -}}
+                                                            {#{{- form_label(inner) -}}#}
+                                                            <label for="{{ inner.vars.id }}" style="margin-left: 5px; vertical-align: middle;">{{ inner.vars.label }}</label>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
                                             </ul>
-                                        </ul>
-                                    {% endfor %}
+                                        {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-u btn-u-default" data-dismiss="modal">Отмена</button>
-                    &nbsp;
-                    <button type="button" class="btn-u btn-u-primary" data-dismiss="modal">Сохранить</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-u btn-u-default" data-dismiss="modal">Отмена</button>
+                        &nbsp;
+                        <button type="button" class="btn-u btn-u-primary" data-dismiss="modal">Сохранить</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        (function($){
-            $(function(){
+        <script>
+            (function($){
+                'use strict';
+                $(function(){
+                    var modalContainer = null,
+                        countryModalId = '#{{ modalName }}';
+                    $('.list-unstyled.world-section-wr').parent('div').removeClass('form-control');
 
-                $('.country-select').click(function(){
-                    $('#{{ modalName }}').modal('show');
-                });
+                    function modalShowHide(){
+                        $('body').on('show.bs.modal', countryModalId, function (e) {
+                            if (modalContainer) {
+                                modalContainer.modal('hide');
+                            }
+                        });
 
+                        $('body').on('hidden.bs.modal', countryModalId, function (e) {
+                            if (modalContainer) {
+                                $('#modal-inner-placement ' + countryModalId).remove();
+                                $('#modal-inner-placement').html('');
+                                modalContainer.modal('show');
+                            }
+                        });
+                    }
 
-                $('.world-section').click(function(){
-                    var $this = $(this),
-                        parentBlock = $this.parents('.world-section-wr'),
-                        elements = $('input', parentBlock),
-                        isChecked = $this.prop('checked');
+                    function fakeSubmit() {
+                        $('body').off('click', (countryModalId + ' .btn-u-primary'));
+                        $('body').on('click', (countryModalId + ' .btn-u-primary'), function(){
+                            if (modalContainer) {
+                                $('.modal-body .modal-body', modalContainer).replaceWith($('#modal-inner-placement .modal-body'));
+                            }
 
-                    elements.each(function(index, element){
-                        var $this = $(element);
-                        $this.prop('checked', isChecked);
+                            var placement = $('.selected_country_' + (countryModalId.replace('#', '')) + '> ul'),
+                                    countries =  [];
+                            $('#world_section_wr_' + (countryModalId.replace('#', '')) + ' .world-section-inner input')
+                            .each(function(index, element){
+                                var $this = $(element);
+
+                                if ($(element).prop('checked') && !$(element).parents('.collection-row').length) {
+                                    countries.push($(element).siblings('label').text());
+                                }
+                            });
+                            if (countries.length) {
+                                var $html = '<i class="fa fa-check color-green"></i> ' +
+                                        (countries.join('<br/><i class="fa fa-check color-green"></i> ')) +
+                                        '<br/>';
+                                placement.html($html);
+                            } else {
+                                placement.html('<i class="fa fa-check color-green"></i> Активно для всех стран');
+                            }
+
+                        });
+                    }
+
+                    $('body').on('click', '.world-section', function(){
+                        var $this = $(this),
+                                parentBlock = $this.parents('.world-section-wr'),
+                                elements = $('input', parentBlock),
+                                isChecked = $this.prop('checked');
+
+                        elements.each(function(index, element){
+                            var $this = $(element);
+                            $this.prop('checked', isChecked);
+                        });
                     });
-                });
 
-                $('.world-section-inner input').click(function(){
-                    var $this = $(this),
-                        parent = $this.parents('.world-section-inner'),
-                        mainParent = $this.parents('.world-section-wr'),
-                        sectionInput = $('.world-section', mainParent),
-                        isAllInSameState = true,
-                        siblings = $('input', parent),
-                        curState = $this.prop('checked');
-                    siblings.each(function(index, element) {
-                        $this = $(element);
-                        if (curState != $this.prop('checked')) {
-                            isAllInSameState = false;
-                            return false;
+                    $('body').on('click', '.world-section-inner input', function(){
+                        var $this = $(this),
+                            parent = $this.parents('.world-section-inner'),
+                            mainParent = $this.parents('.world-section-wr'),
+                            sectionInput = $('.world-section', mainParent),
+                            isAllInSameState = true,
+                            siblings = $('input', parent),
+                            curState = $this.prop('checked');
+
+                        siblings.each(function(index, element) {
+                            $this = $(element);
+                            if (curState != $this.prop('checked')) {
+                                isAllInSameState = false;
+                                return false;
+                            }
+                        });
+
+                        if (isAllInSameState) {
+                            sectionInput.prop('checked', curState)
+                        } else {
+                            sectionInput.prop('checked', false);
+                        }
+
+                    });
+
+                    $('body').off('click', '.country-select');
+                    $('body').on('click', '.country-select', function(event){
+                        var $this = $(this),
+                            scriptTag;
+                        if ($this.parents('#modal-top-placement .modal').length) {
+                            modalContainer = $this.parentsUntil('form').parents('.modal');
+                            scriptTag = $('.modal', modalContainer).next('script');
+                            scriptTag.remove();
+                            countryModalId = '#' + $('.modal', modalContainer).attr('id');
+                        } else if ($this.parents('#placement-modal-container .modal-body > .row').length) {
+                            modalContainer = $this.parentsUntil('form').parents('.modal');
+                            countryModalId = '#' + $('.modal', modalContainer).attr('id');
+                            scriptTag = $('.modal', modalContainer).next('script');
+                            scriptTag.remove();
+                        } else {
+                            modalContainer = null;
+                        }
+
+                        modalShowHide();
+                        fakeSubmit();
+                        if (modalContainer) {
+                            $('#modal-inner-placement').html($(countryModalId).clone(true));
+                            $('#modal-inner-placement ' + countryModalId).modal('show');
+                        } else {
+                            countryModalId = '#' + $this.parent('div').siblings('.modal').attr('id');
+                            $(countryModalId).modal('show');
+                        }
+
+                    });
+
+                });
+            })(jQuery);
+        </script>
+        {#
+
+        <script>
+            'use strict';
+            (function($){
+                var parentForCountryLink = null;
+
+                $(function(){
+                    $('.list-unstyled.world-section-wr').parent('div').removeClass('form-control');
+
+                    //$('body').off('click', '.country-select');
+                    //$('.country-select').click(function(){
+                    $('body').on('click', '.country-select', function(event){
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
+                        var $this = $(this),
+                            modalName = '{{ modalName }}';
+
+                        if ($this.parents('#modal-top-placement').length) {
+                            parentForCountryLink = $this.parents('#modal-top-placement > div:first');
+                            modalName = parentForCountryLink.find('.modal .modal').attr('id');
+                        } else if($this.parents('#placement-modal-container').length) {
+                            parentForCountryLink = $('#placement-modal-container > div:first');
+                            modalName = parentForCountryLink.find('.modal .modal').attr('id');
+                        } else {
+                            console.log('outer modal');
+                            parentForCountryLink = null;
+                            $('#modal-top-placement').html('');
+                            $('#modal-inner-placement').html('');
+                            $('#placement-modal-container .modal-body > .row').html('');
+                        }
+
+                        $('#modal-inner-placement .modal').remove();
+                        $('#modal-inner-placement').html('');
+                        if (parentForCountryLink) {
+
+                            $('#modal-inner-placement').html($('#{{ modalName }}').clone(true));
+                            $('#modal-inner-placement #{{ modalName }}').modal('show');
+                        } else {
+                            $('#{{ modalName }}').modal('show');
+                        }
+
+                        //console.log($('#modal-inner-placement'));
+                        //console.log(parentForCountryLink);
+                        //console.log('#{{ modalName }}');
+                        //console.log(parentForCountryLink);
+                        console.log('-----------------');
+
+                    });
+
+                    $('body').on('show.bs.modal', '#{{ modalName }}', function (e) {
+                        if (parentForCountryLink) {
+                            parentForCountryLink.modal('hide');
                         }
                     });
 
-                    if (isAllInSameState) {
-                        sectionInput.prop('checked', curState)
-                    } else {
-                        sectionInput.prop('checked', false);
-                    }
-
-                });
-
-                $('#{{ modalName }} .btn-u-primary').click(function(){
-                    var placement = $('#selected_country ul'),
-                        countries =  [];
-                    $('#{{ modalName }} .world-section-inner input').each(function(index, element){
-                        var $this = $(element);
-                        if ($(element).prop('checked')) {
-                            countries.push($(element).siblings('label').text());
+                    $('body').on('hidden.bs.modal', '#{{ modalName }}', function (e) {
+                        if (parentForCountryLink) {
+                            $('#modal-inner-placement #{{ modalName }}').remove();
+                            $('#modal-inner-placement').html('');
+                            parentForCountryLink.modal('show');
+                            parentForCountryLink = null;
                         }
                     });
-                    if (countries.length) {
-                        placement.html('<i class="fa fa-check color-green"></i> ' + (countries.join('<br/><i class="fa fa-check color-green"></i> ')) + '<br/>' )
-                    } else {
-                        placement.html('<i class="fa fa-check color-green"></i> Активно для всех стран');
-                    }
+
+                    $('.world-section').click(function(){
+                        var $this = $(this),
+                            parentBlock = $this.parents('.world-section-wr'),
+                            elements = $('input', parentBlock),
+                            isChecked = $this.prop('checked');
+
+                        elements.each(function(index, element){
+                            var $this = $(element);
+                            $this.prop('checked', isChecked);
+                        });
+                    });
+
+                    $('.world-section-inner input').click(function(){
+                        var $this = $(this),
+                            parent = $this.parents('.world-section-inner'),
+                            mainParent = $this.parents('.world-section-wr'),
+                            sectionInput = $('.world-section', mainParent),
+                            isAllInSameState = true,
+                            siblings = $('input', parent),
+                            curState = $this.prop('checked');
+                        siblings.each(function(index, element) {
+                            $this = $(element);
+                            if (curState != $this.prop('checked')) {
+                                isAllInSameState = false;
+                                return false;
+                            }
+                        });
+
+                        if (isAllInSameState) {
+                            sectionInput.prop('checked', curState)
+                        } else {
+                            sectionInput.prop('checked', false);
+                        }
+
+                    });
+
+                    $('body').on('click', '#{{ modalName }} .btn-u-primary', function(event){
+                        var modalName = '{{ modalName }}';
+                        event.stopPropagation();
+                        event.stopImmediatePropagation();
+                        if (parentForCountryLink) {
+                            //console.log('save with parent');
+                            //console.log(parentForCountryLink);
+                            $('.modal-body .modal-body', parentForCountryLink).replaceWith($('#modal-inner-placement .modal-body'));
+                            modalName = $('.modal-body .modal-body').closest('.modal').attr('id');
+                            //console.log('#{{ modalName }}');
+                            console.log(modalName);
+                            //console.log($('.modal-body .modal-body'));
+                            //console.log($('#{{ modalName }}'));
+                        }
+
+                        var placement = $('#selected_country_' + modalName + ' ul'),
+                            countries =  [];
+
+                        $('#' + modalName + ' .world-section-inner input').each(function(index, element){
+                            var $this = $(element);
+                            if ($(element).prop('checked')) {
+                                countries.push($(element).siblings('label').text());
+                            }
+                        });
+                        console.log(placement);
+                        console.log(countries);
+
+                        if (countries.length) {
+                            placement.html('<i class="fa fa-check color-green"></i> ' + (countries.join('<br/><i class="fa fa-check color-green"></i> ')) + '<br/>' )
+                        } else {
+                            placement.html('<i class="fa fa-check color-green"></i> Активно для всех стран');
+                        }
+
+                    });
+
 
                 });
-            });
+            })(jQuery)
+        </script>
+        #}
+        {% else %}
+            <div {{ block('widget_container_attributes') }}>
+                {%- for child in form %}
+                <label class="checkbox">
+                    {{- form_widget(child) -}}
+                    <i></i> {{- child.vars.label -}}
 
-
-        })(jQuery)
-    </script>
+                </label>
+                {% endfor -%}
+            </div>
+    {% endif %}
 {%- endblock choice_widget_expanded -%}

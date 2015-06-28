@@ -98,8 +98,35 @@ class CommonSite
      */
     private $adPlaces;
 
+    /**
+     * Описание
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $description;
+
+    /**
+     * Описание
+     * @var string
+     * @ORM\Column(type="string", length=120, nullable=true)
+     * @Assert\Length(
+     *      max = 120
+     * )
+     */
+    protected $shortDescription;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $snapShot;
 
 
+    /**
+     * Принимать заказа размещения автоматически без баннера
+     * @var string
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isTakeOrdersWithoutBanner;
 
     public function __construct()
     {
@@ -114,9 +141,6 @@ class CommonSite
     {
         return $this->id;
     }
-
-
-
 
     /**
      * @return string
@@ -183,8 +207,6 @@ class CommonSite
         $this->indexPosition = $indexPosition;
     }
 
-
-
     public function getCategories()
     {
         return $this->categories;
@@ -193,6 +215,7 @@ class CommonSite
     public function setCategories($categories)
     {
         $this->categories = $categories;
+
         return $this;
     }
 
@@ -247,7 +270,101 @@ class CommonSite
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortDescription()
+    {
+        return ($this->shortDescription) ? $this->shortDescription : substr($this->getDescription(), 0, 120);
+    }
+
+    /**
+     * @param string $shortDescription
+     * @return $this
+     */
+    public function setShortDescription($shortDescription)
+    {
+        $this->shortDescription = $shortDescription;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSnapShot()
+    {
+        return $this->snapShot;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIsTakeOrdersWithoutBanner()
+    {
+        return $this->isTakeOrdersWithoutBanner;
+    }
+
+    /**
+     * @param string $isTakeOrdersWithoutBanner
+     */
+    public function setIsTakeOrdersWithoutBanner($isTakeOrdersWithoutBanner)
+    {
+        $this->isTakeOrdersWithoutBanner = $isTakeOrdersWithoutBanner;
+    }
+
+
+    /**
+     * @param mixed $snapShot
+     */
+    public function setSnapShot($snapShot)
+    {
+        $this->snapShot = $snapShot;
+
+        return $this;
+    }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->snapShot
+            ? null
+            : $this->getUploadRootDir().'/'.$this->snapShot;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->snapShot
+            ? null
+            : $this->getUploadDir() .'/'. $this->getUser()->getId() . '/' . $this->snapShot;
+    }
+
+    public function getUploadRootDir()
+    {
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        return 'uploads/sites';
+    }
 
     /**
      * Дополнительные проверки
@@ -256,7 +373,9 @@ class CommonSite
     {
         $parents = [];
         foreach ($this->getCategories() as $cat) {
-            $parents[$cat->getParent()->getId()] = true;
+            if ($cat->getParent()) {
+                $parents[$cat->getParent()->getId()] = true;
+            }
         }
 
         if (count($parents) > 1) {
