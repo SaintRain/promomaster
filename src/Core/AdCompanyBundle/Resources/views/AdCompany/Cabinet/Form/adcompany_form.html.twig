@@ -6,7 +6,7 @@
     {% endif %}
 </div>
 
-    {#форма редактирования профиля ЛК#}
+{#форма редактирования профиля ЛК#}
     {% for flashMessage in app.session.flashbag.get('edit_success') %}
         <br/>
         <div class="alert alert-success fade in">
@@ -54,7 +54,8 @@
                         {{ form_errors(form.site) }}
                     </div>
                     <div class="col-sm-6">
-                        <a href="{{ path('core_cabinet_site_create_ajax') }}" class="btn-u site-creation" style="margin-left: -15px">
+                        <a href="{{ path('core_cabinet_site_create_ajax') }}" class="btn-u site-creation"
+                           style="margin-left: -15px">
                             <i class="fa fa-plus-square" title="Добавить площадку"></i>
                         </a>
                     </div>
@@ -66,7 +67,7 @@
             <div class="margin-bottom-20  {% if form_errors(form.adPlaces) %}state-error{% endif %}">
                 <div class="row">
                     <div class="col-sm-6">
-                    {{ form_label(form.adPlaces) }}
+                        {{ form_label(form.adPlaces) }}
                     </div>
                 </div>
                 <div class="row">
@@ -75,7 +76,8 @@
                         {{ form_errors(form.adPlaces) }}
                     </div>
                     <div class="col-sm-6">
-                        <a href="{{ path('core_cabinet_ad_place_create_ajax') }}" class="btn-u  ad-place-creation" style="margin-left: -15px">
+                        <a href="{{ path('core_cabinet_ad_place_create_ajax') }}" class="btn-u  ad-place-creation"
+                           style="margin-left: -15px">
                             <i class="fa fa-plus-square" title="Добавить рекламное место"></i>
                         </a>
                     </div>
@@ -108,18 +110,17 @@
         #}
         <div class="row margin-bottom-20">
             <div
-                class="placements-container{% if form_errors(form.placements) %} state-error{% endif %}"
-                {% if form.placements.vars.prototype is defined %}
-                    data-prototype="
+                    class="placements-container{% if form_errors(form.placements) %} state-error{% endif %}"
+                    {% if form.placements.vars.prototype is defined %}
+                        data-prototype="
                          {% filter escape %}
                              {{ include(
-                                    'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',
-                                    { 'form': form.placements.vars.prototype, 'fieldGroupClass': 'col-sm-12'}
-                                )
-                            }}
+                        'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',
+                        { 'form': form.placements.vars.prototype, 'fieldGroupClass': 'col-sm-12'}
+                        ) }}
                          {% endfilter %}"
-                {% endif %}
-            >
+                    {% endif %}
+                    >
                 <div class="row">
                     <div class="col-sm-6">
                         {{ form_label(form.placements) }}
@@ -131,76 +132,79 @@
                     </div>
                 </div>
                 <div class="placements-container-in">
-                {% if form.vars.placements is defined %}
-                {% for placement in form.vars.placements %}
-                    <div class="row collection-row">
-                        <div class="col-sm-4">
-                            <a href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.id}) }}"
-                               style="margin: 8px 0; display: inline-block;" class="edit-placement">
-                                Редактировать &numero;{{ placement.id }}
-                            </a>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="pull-right">
-                            <div style="margin-top: 7px;">
-                                <a data-id="{{ placement.id }}" href="javascript:void(0);" class="btn-u-xs btn-u btn-u-red placement-remove">
-                                    <i class="icon-close"></i>&nbsp;Удалить
-                                </a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-                {% endif %}
-                {% for placement in form.placements %}
-                    <div class="row collection-row"
-                            {% if not(placement.vars.value.id is defined and placement.vars.value.id) %}
-                                data-id="{{ loop.index }}"
-                            {% endif %}
-                    >
-                        {% if placement.vars.value.id is defined and placement.vars.value.id %}
-                            <div class="col-sm-4">
-                                <a href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.vars.value.id}) }}"
-                                   style="margin: 8px 0; display: inline-block;" class="edit-placement">
-                                    Редактировать &numero;{{ placement.vars.value.id }}
-                                </a>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="pull-right">
-                                <div style="margin-top: 7px;">
-                                    <a data-id="{{ placement.vars.value.id }}" href="javascript:void(0);" class="btn-u-xs btn-u btn-u-red placement-remove">
-                                        <i class="icon-close"></i>&nbsp;Удалить
+                    {% if form.vars.placements is defined %}
+                        {% for placement in form.vars.placements %}
+                            <div class="row collection-row">
+                                <div class="col-sm-4">
+                                    <a href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.id}) }}"
+                                       style="margin: 8px 0; display: inline-block;" class="edit-placement">
+                                        Редактировать &numero;{{ placement.id }}
                                     </a>
                                 </div>
-                                </div>
-                            </div>
-                            {% do placement.setRendered(true) %}
-                            {% else %}
-                                <div class="row" style="display: none;">
-                                    {{ include(
-                                    'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',
-                                    { 'form': placement, 'fieldGroupClass': 'col-sm-12'}
-                                    )
-                                    }}
-                                </div>
-                                <div class="wrapper">
-                                    <div class="col-sm-4">
-                                        <a class="edit-placement-new" style="margin: 8px 0; display: inline-block;" href="javascript:void(0);">
-                                            Редактировать Новое Размещение &numero;{{ loop.index }}
-                                        </a>
-                                    </div>
-                                    <div class="col-sm-2">
+                                <div class="col-sm-2">
+                                    <div class="pull-right">
                                         <div style="margin-top: 7px;">
-                                            <a class="btn-u-xs btn-u btn-u-red placement-remove-new" href="javascript:void(0);" data-id="{{ loop.index }}">
+                                            <a data-id="{{ placement.id }}" href="javascript:void(0);"
+                                               class="btn-u-xs btn-u btn-u-red placement-remove">
                                                 <i class="icon-close"></i>&nbsp;Удалить
                                             </a>
                                         </div>
                                     </div>
                                 </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-                {% do form.placements.setRendered(true) %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% for placement in form.placements %}
+                        <div class="row collection-row"
+                                {% if not(placement.vars.value.id is defined and placement.vars.value.id) %}
+                                    data-id="{{ loop.index }}"
+                                {% endif %}
+                                >
+                            {% if placement.vars.value.id is defined and placement.vars.value.id %}
+                                <div class="col-sm-4">
+                                    <a href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.vars.value.id}) }}"
+                                       style="margin: 8px 0; display: inline-block;" class="edit-placement">
+                                        Редактировать &numero;{{ placement.vars.value.id }}
+                                    </a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="pull-right">
+                                        <div style="margin-top: 7px;">
+                                            <a data-id="{{ placement.vars.value.id }}" href="javascript:void(0);"
+                                               class="btn-u-xs btn-u btn-u-red placement-remove">
+                                                <i class="icon-close"></i>&nbsp;Удалить
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% do placement.setRendered(true) %}
+                            {% else %}
+                                <div class="row" style="display: none;">
+                                    {{ include(
+                                    'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',
+                                    { 'form': placement, 'fieldGroupClass': 'col-sm-12'}
+                                    ) }}
+                                </div>
+                                <div class="wrapper">
+                                    <div class="col-sm-4">
+                                        <a class="edit-placement-new" style="margin: 8px 0; display: inline-block;"
+                                           href="javascript:void(0);">
+                                            Редактировать Новое Размещение &numero;{{ loop.index }}
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div style="margin-top: 7px;">
+                                            <a class="btn-u-xs btn-u btn-u-red placement-remove-new"
+                                               href="javascript:void(0);" data-id="{{ loop.index }}">
+                                                <i class="icon-close"></i>&nbsp;Удалить
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    {% do form.placements.setRendered(true) %}
                 </div>
             </div>
         </div>
@@ -212,7 +216,7 @@
                     <label>Дата начала показов</label>
                     <label class="input">
                         <i class="icon-append fa fa-calendar"></i>
-                        {{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date'} }) }}
+                        {{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date startDateTime'} }) }}
                     </label>
 
                     {{ form_errors(form.startDateTime) }}
@@ -245,7 +249,7 @@
 
                     <label class="input">
                         <i class="icon-append fa fa-calendar"></i>
-                        {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date'} }) }}
+                        {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date finishDateTime'} }) }}
                     </label>
 
                 </div>
@@ -266,10 +270,12 @@
             </div>
         </div>
 
-        <div id="def-countries" class="row margin-bottom-20 {% if form_errors(form.defaultCountries) %}state-error{% endif %}">
+        <div id="def-countries"
+             class="row margin-bottom-20 {% if form_errors(form.defaultCountries) %}state-error{% endif %}">
             <div class="col-sm-6">
                 <div class="row">
                     <label>Страны</label>
+
                     <div class="pull-right">
                         <a class="btn-u btn-u-xs country-select" href="javascript:void(0);">
                             <i class="fa fa-plus-square"></i>
@@ -314,13 +320,15 @@
     </fieldset>
 </form>
 <div id="placement-modal-container">
-    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="placement-modal-content" class="modal fade"
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="placement-modal-content"
+         class="modal fade"
          style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
                     <h4 id="myModalLabel" class="modal-title">Добавление нового размещения в систему</h4>
+
                     <div class="modal-content-wr">
                         <form style="clear: both" class="sky-form sky-form-other-style" action="#" method="POST">
                             <div class="modal-body">
@@ -328,7 +336,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn-u btn-u-primary"type="submit">Добавить</button>&nbsp;&nbsp;
+                                <button class="btn-u btn-u-primary" type="submit">Добавить</button>
+                                &nbsp;&nbsp;
                                 <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Отмена</button>
                             </div>
                         </form>
@@ -343,28 +352,7 @@
 
     <script>
         $(function () {
-
-            $("#datepicker").datepicker();
-            // Date range
-            $('#ad_company_type_startDateTime').datepicker({
-                dateFormat: 'dd-mm-yy',
-                prevText: '<i class="fa fa-angle-left"></i>',
-                nextText: '<i class="fa fa-angle-right"></i>',
-                onSelect: function (selectedDate) {
-                    $('#ad_company_type_finishDateTime').datepicker('option', 'minDate', selectedDate);
-                }
-            });
-            $('#ad_company_type_finishDateTime').datepicker({
-                dateFormat: 'dd-mm-yy',
-                prevText: '<i class="fa fa-angle-left"></i>',
-                nextText: '<i class="fa fa-angle-right"></i>',
-                onSelect: function (selectedDate) {
-                    $('#ad_company_type_startDateTime').datepicker('option', 'maxDate', selectedDate);
-                }
-            });
-
-
-            //$(".date").mask('99-99-9999', {placeholder: '0'});
+            initCalendarFromTo('.startDateTime', '.finishDateTime');
 
             {% if adcompany.id %}
             $('.delete').click(function () {
@@ -376,45 +364,12 @@
             {% endif %}
 
 
-            $('.dateSettingsStart').change(function () {
-                var value = $('.dateSettingsStart:checked').val();
-                if (value == 1) {
-                    $('#ad_company_type_startDateTime').parents('div.col-sm-6').show();
-                    $('#ad_company_type_startDateTime').val('').focus();
-                    $('#ad_company_type_startDateTime').attr('required', 'required');
-                    $('.dateSettingsStartLabel').html('');
-                }
-                else {
-                    $('#ad_company_type_startDateTime').parents('div.col-sm-6').hide();
-                    $('#ad_company_type_startDateTime').val('');
-                    $('#ad_company_type_startDateTime').removeAttr('required');
-                    $('.dateSettingsStartLabel').html('Дата начала показов');
-                }
-            });
-
-
-            $('.dateSettingsFinish').change(function () {
-                var value = $('.dateSettingsFinish:checked').val();
-                if (value == 1) {
-                    $('#ad_company_type_finishDateTime').parents('div.col-sm-6').show();
-                    $('#ad_company_type_finishDateTime').val('').focus();
-                    $('#ad_company_type_finishDateTime').attr('required', 'required');
-                    $('.dateSettingsFinishLabel').html('');
-                }
-                else {
-                    $('#ad_company_type_finishDateTime').parents('div.col-sm-6').hide();
-                    $('#ad_company_type_finishDateTime').val('');
-                    $('#ad_company_type_finishDateTime').removeAttr('required');
-                    $('.dateSettingsFinishLabel').html('Дата окончания показов');
-                }
-            });
-
             // adplaces for site
-            $('body').on('change', '#ad_company_type_site', function() {
+            $('body').on('change', '#ad_company_type_site', function () {
                 var $this = $(this),
-                    adPlacesContainer = $('#ad_company_type_adPlaces'),
-                    adPlacementContainer = $('.placements-container-in'),
-                    curOption = '<option value="">Необходимо выбрать или добавить</option>';
+                        adPlacesContainer = $('#ad_company_type_adPlaces'),
+                        adPlacementContainer = $('.placements-container-in'),
+                        curOption = '<option value="">Необходимо выбрать или добавить</option>';
                 if (!$this.val()) {
                     return false;
                 }
@@ -422,8 +377,8 @@
                     url: "{{ path('core_cabinet_site_adplaces') }}",
                     method: 'POST',
                     data: 'siteId=' + $this.val(),
-                    success: function(data) {
-                        for(var key in data) {
+                    success: function (data) {
+                        for (var key in data) {
                             curOption += '<option value="' + data[key].id + '">' + data[key].name + '</option>'
                         }
                         adPlacesContainer.html(curOption);
@@ -472,11 +427,11 @@
             });
             #}
             // get ad-place creation template
-            $('.ad-place-creation').click(function() {
+            $('.ad-place-creation').click(function () {
                 var $this = $(this),
-                    curSite = $('#ad_company_type_site'),
-                    innerModal = $('#modal-inner-placement'),
-                    placement = $('#modal-top-placement');
+                        curSite = $('#ad_company_type_site'),
+                        innerModal = $('#modal-inner-placement'),
+                        placement = $('#modal-top-placement');
                 if (!curSite.val()) {
                     alert('Необходимо выбрать или добавить площадку');
                     return false;
@@ -484,8 +439,8 @@
                 $.ajax({
                     url: $this.attr('href'),
                     method: 'GET',
-                    data: 'siteId='+curSite.val(),
-                    success: function(data) {
+                    data: 'siteId=' + curSite.val(),
+                    success: function (data) {
                         if (data.result) {
                             placement.html('');
                             placement.html($(data.data));
@@ -498,14 +453,14 @@
             });
 
             // get site creation template
-            $('.site-creation').click(function() {
+            $('.site-creation').click(function () {
                 var $this = $(this),
                         innerModal = $('#modal-inner-placement'),
                         placement = $('#modal-top-placement');
                 $.ajax({
                     url: $this.attr('href'),
                     method: 'GET',
-                    success: function(data) {
+                    success: function (data) {
                         if (data.result) {
                             placement.html(data.data);
                             $('#site-modal').modal('show');
@@ -516,14 +471,13 @@
             });
 
 
-
             // collection manipulation
             var $addTagLink = $('.add-placement'),
-                $collectionHolder = $('.placements-container');
+                    $collectionHolder = $('.placements-container');
 
             $collectionHolder.data('index', $collectionHolder.find('.collection-row').length);
 
-            $addTagLink.on('click', function(e) {
+            $addTagLink.on('click', function (e) {
                 addTagForm($collectionHolder);
 
                 return false;
@@ -531,10 +485,10 @@
 
             function addTagForm($collectionHolder) {
                 var prototype = $collectionHolder.data('prototype'),
-                    index = $collectionHolder.data('index'),
-                    placement = $('#placement-modal-container .modal-body .row'),
-                    modalContainer = $('#placement-modal-content'),
-                    newForm = prototype.replace(/__name__/g, index + 1);
+                        index = $collectionHolder.data('index'),
+                        placement = $('#placement-modal-container .modal-body .row'),
+                        modalContainer = $('#placement-modal-content'),
+                        newForm = prototype.replace(/__name__/g, index + 1);
                 $collectionHolder.data('index', index + 1);
 
                 placement.attr('data-id', $collectionHolder.data('index'));
@@ -548,14 +502,14 @@
 
 
             // remove placement
-            $('body').on('click', '.placement-remove', function(){
+            $('body').on('click', '.placement-remove', function () {
                 var $this = $(this),
-                    curRow = $this.parents('.collection-row');
+                        curRow = $this.parents('.collection-row');
                 $.ajax({
                     url: "{{ path('core_cabinet_adplaces_placements_ajax_remove') }}",
                     data: 'id=' + $this.attr('data-id'),
                     method: 'POST',
-                    success: function(data) {
+                    success: function (data) {
                         if (data.result) {
                             curRow.remove();
                         } else {
@@ -568,14 +522,14 @@
             });
 
             //edit ajax href
-            $('body').on('click', '.edit-placement', function(){
+            $('body').on('click', '.edit-placement', function () {
                 var $this = $(this),
-                    innerModal = $('#modal-inner-placement'),
-                    placement = $('#modal-top-placement');
+                        innerModal = $('#modal-inner-placement'),
+                        placement = $('#modal-top-placement');
                 $.ajax({
                     url: $this.attr('href'),
                     method: 'GET',
-                    success: function(data) {
+                    success: function (data) {
                         if (data.result) {
                             $('#placement-modal-content .row').html('');
                             placement.html('');
@@ -592,22 +546,22 @@
             });
 
             // fake placement submit
-            $('#placement-modal-content').on('submit', 'form', function(){
+            $('#placement-modal-content').on('submit', 'form', function () {
                 var curId = $collectionHolder.data('index'),
-                    placement = $collectionHolder.find(".row.collection-row[data-id='" + curId + "']"),
-                    $html =
-                    '<div class="wrapper"><div class="col-sm-4">'+
-                        '<a class="edit-placement-new" style="margin: 8px 0; display: inline-block;" href="javascript:void(0);">'+
-                            'Редактировать Новое Размещение №' + curId +
-                        '</a>'+
-                    '</div>'+
-                    '<div class="col-sm-2">'+
-                        '<div class="pull-right"><div style="margin-top: 7px;">'+
-                        '<a class="btn-u-xs btn-u btn-u-red placement-remove-new" href="javascript:void(0);" data-id="' + curId + '">'+
-                        '<i class="icon-close"></i>&nbsp;Удалить'+
-                        '</a>'+
-                        '</div></div>'+
-                    '</div></div>';
+                        placement = $collectionHolder.find(".row.collection-row[data-id='" + curId + "']"),
+                        $html =
+                                '<div class="wrapper"><div class="col-sm-4">' +
+                                '<a class="edit-placement-new" style="margin: 8px 0; display: inline-block;" href="javascript:void(0);">' +
+                                'Редактировать Новое Размещение №' + curId +
+                                '</a>' +
+                                '</div>' +
+                                '<div class="col-sm-2">' +
+                                '<div class="pull-right"><div style="margin-top: 7px;">' +
+                                '<a class="btn-u-xs btn-u btn-u-red placement-remove-new" href="javascript:void(0);" data-id="' + curId + '">' +
+                                '<i class="icon-close"></i>&nbsp;Удалить' +
+                                '</a>' +
+                                '</div></div>' +
+                                '</div></div>';
 
                 if (!placement.length) {
                     $('.placements-container-in', $collectionHolder).append('<div class="row collection-row" data-id="' + curId + '" />');
@@ -626,43 +580,43 @@
             });
 
             $('body').on('change', //'#placement-modal-content .modal-body > .row:first select', function(){
-                        '#placement-modal-content .modal-body > .row:first input[type="checkbox"], ' +
-                        '#placement-modal-content .modal-body > .row:first input[type="radio"], ' +
-                        '#placement-modal-content .modal-body > .row:first select', function(){
-                var $element = $(this),
-                    curValue;
-                if ($element.is('select')) {
-                    var curValue = $element.val();
-                    $('option', $element).removeAttr('selected');
-                    if (curValue) {
-                        $('option[value="' + curValue + '"]', $element).attr('selected', 'selected');
-                    }
-                }
-                else if ($element.is('input[type="radio"]')) {
-                    $element.attr('checked', 'checked');
-                    $('#placement-modal-content input[name="' + $element.attr('name') + '"]')
-                            .filter(':not([value=' + $element.val() + '])')
-                            .removeAttr('checked');
-                } else {
-                    if ($element.prop('checked')) {
-                        $element.attr('checked', 'checked');
-                    } else {
-                        $element.removeAttr('checked');
-                    }
-                }
-            });
+                    '#placement-modal-content .modal-body > .row:first input[type="checkbox"], ' +
+                    '#placement-modal-content .modal-body > .row:first input[type="radio"], ' +
+                    '#placement-modal-content .modal-body > .row:first select', function () {
+                        var $element = $(this),
+                                curValue;
+                        if ($element.is('select')) {
+                            var curValue = $element.val();
+                            $('option', $element).removeAttr('selected');
+                            if (curValue) {
+                                $('option[value="' + curValue + '"]', $element).attr('selected', 'selected');
+                            }
+                        }
+                        else if ($element.is('input[type="radio"]')) {
+                            $element.attr('checked', 'checked');
+                            $('#placement-modal-content input[name="' + $element.attr('name') + '"]')
+                                    .filter(':not([value=' + $element.val() + '])')
+                                    .removeAttr('checked');
+                        } else {
+                            if ($element.prop('checked')) {
+                                $element.attr('checked', 'checked');
+                            } else {
+                                $element.removeAttr('checked');
+                            }
+                        }
+                    });
 
             // remove new placement
-            $('.placements-container').on('click', '.placement-remove-new', function(){
+            $('.placements-container').on('click', '.placement-remove-new', function () {
                 $(this).parents('.collection-row').remove();
             });
 
             //edit new placement
-            $('.placements-container').on('click', '.edit-placement-new', function(){
+            $('.placements-container').on('click', '.edit-placement-new', function () {
                 var modalPlacement = $('#placement-modal-container .modal-body .row'),
-                    parentBlock = $(this).parents('.collection-row'),
-                    modalContainer = $('#placement-modal-content'),
-                    curId = parentBlock.attr('data-id');
+                        parentBlock = $(this).parents('.collection-row'),
+                        modalContainer = $('#placement-modal-content'),
+                        curId = parentBlock.attr('data-id');
                 modalPlacement.replaceWith($('> .row', parentBlock).clone().show());
                 modalContainer.modal('show');
                 $('#modal-top-placement, #modal-inner-placement').html('');
@@ -673,47 +627,47 @@
 
         function applySection() {
             var adPlacesContainer = $('#ad_company_type_adPlaces'),
-                curSite = $('#ad_company_type_site'),
-                adPlaceSelectors = ['option[value=""]'],
-                adPlacementContainer = $('.placements-container-in');
+                    curSite = $('#ad_company_type_site'),
+                    adPlaceSelectors = ['option[value=""]'],
+                    adPlacementContainer = $('.placements-container-in');
             if ($('#ad_company_type_adPlaces').val() && !$('.placements-container-in .edit-placement').length) {
-                    $.ajax({
-                        url: "{{ path('core_cabinet_site_adplaces') }}",
-                        method: 'POST',
-                        data: 'siteId=' + curSite.val(),
-                        success: function(data) {
-                            for(var key in data) {
-                                adPlaceSelectors.push('option[value="' + data[key].id + '"]');
-                            }
-                            $(':not(' + adPlaceSelectors.join(', ') + ')' ,adPlacesContainer).remove();
-                            loadPlacements(adPlacesContainer);
+                $.ajax({
+                    url: "{{ path('core_cabinet_site_adplaces') }}",
+                    method: 'POST',
+                    data: 'siteId=' + curSite.val(),
+                    success: function (data) {
+                        for (var key in data) {
+                            adPlaceSelectors.push('option[value="' + data[key].id + '"]');
                         }
-                    });
+                        $(':not(' + adPlaceSelectors.join(', ') + ')', adPlacesContainer).remove();
+                        loadPlacements(adPlacesContainer);
+                    }
+                });
             }
         }
 
-        function loadPlacements(adPlace){
+        function loadPlacements(adPlace) {
             var adPlacementContainer = $('.placements-container-in');
             $.ajax({
                 url: "{{ path('core_cabinet_adplaces_placements') }}",
                 method: 'POST',
                 data: 'adPlaceId=' + adPlace.val(),
-                success: function(data) {
+                success: function (data) {
 
-                    for(var key in data) {
-                        curHtml += '<div class="row collection-row">'+
-                        '<div class="col-sm-4">'+
-                        '<a class="edit-placement" style="margin: 8px 0; display: inline-block;" href="' + data[key].route + '">'+
+                    for (var key in data) {
+                        curHtml += '<div class="row collection-row">' +
+                        '<div class="col-sm-4">' +
+                        '<a class="edit-placement" style="margin: 8px 0; display: inline-block;" href="' + data[key].route + '">' +
                         'Редактировать №' + data[key].id +
-                        '</a>'+
-                        '</div>'+
-                        '<div class="col-sm-2">'+
-                        '<div style="margin-top: 7px;">'+
-                        '<a class="btn-u-xs btn-u btn-u-red placement-remove" href="javascript:void(0);" data-id="' + data[key].id + '">'+
-                        '<i class="icon-close"></i>&nbsp;Удалить'+
-                        '</a>'+
-                        '</div>'+
-                        '</div>'+
+                        '</a>' +
+                        '</div>' +
+                        '<div class="col-sm-2">' +
+                        '<div style="margin-top: 7px;">' +
+                        '<a class="btn-u-xs btn-u btn-u-red placement-remove" href="javascript:void(0);" data-id="' + data[key].id + '">' +
+                        '<i class="icon-close"></i>&nbsp;Удалить' +
+                        '</a>' +
+                        '</div>' +
+                        '</div>' +
                         '</div>';
                     }
 
