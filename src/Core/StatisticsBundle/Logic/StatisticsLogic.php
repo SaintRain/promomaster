@@ -70,7 +70,12 @@ class StatisticsLogic
 
         $statistics['generalClicks'] = $clicks;
         $statistics['generalShows'] = $shows;
-        $statistics['generalCTR'] = round($clicks / ($shows / 100), 2);
+        if ($shows) {
+            $statistics['generalCTR'] = round($clicks / ($shows / 100), 2);
+        }
+        else {
+            $statistics['generalCTR'] = 0;
+        }
 
 
         return $statistics;
