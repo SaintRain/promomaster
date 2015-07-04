@@ -42,19 +42,6 @@ class AdCompanyType  extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $siteAdPlace = new \StdClass();
-        $siteAdPlace->valid = false;
-        /*
-        $builder
-            ->add('name', 'text', ['label' => 'Название*'])
-            ->add('placements', null, ['label' => 'Размещения', 'property'=>'adPlace.name'])
-            ->add('defaultCountries', null, ['required' => false])
-            ->add('startDateTime', 'text', ['required' => false , 'read_only'=>true])
-            ->add('finishDateTime', 'text', ['required' => false, 'read_only'=>true])
-            ->add('isEnabled', null, ['label' => 'Рекламная компания активна'])
-            ->addModelTransformer(new AdCompanyTransformer())       //трансформер дат
-        ;
-        */
         $builder
             ->add('name', 'text', ['label' => 'Название*'])
             ->add('defaultCountries', null,[
@@ -76,30 +63,15 @@ class AdCompanyType  extends AbstractType
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
-            $this->addSite($event);
-            $this->addPlaces($event);
             $this->addPlacements($event);
         });
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($siteAdPlace) {
+        $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
             $data = $event->getData();
-            if (isset($data['adPlaces']) && isset($data['site'])) {
-                $siteAdPlace->adPlace = $this->em->getReference('CoreSiteBundle:AdPlace', (int)$data['adPlaces']);
-                $siteAdPlace->site = $this->em->getReference('CoreSiteBundle:CommonSite', (int)$data['site']);
-                $siteAdPlace->valid = true;
+
+            foreach ($data->getPlacements() as $placement) {
+                $placement->setAdCompany($data);
             }
-        });
-
-        $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) use ($siteAdPlace) {
-            $data = $event->getData();
-            if ($siteAdPlace->valid) {
-
-                foreach ($data->getPlacements() as $placement) {
-                    $placement->setAdCompany($data);
-                    $placement->setAdPlace($siteAdPlace->adPlace);
-                }
-            }
-
         });
 
         //ldd($builder->getForm()->get('placements')->getData());
@@ -116,53 +88,6 @@ class AdCompanyType  extends AbstractType
     public function getName()
     {
         return 'ad_company_type';
-    }
-
-    private function addPlaces(FormEvent $event)
-    {
-        $form = $event->getForm();
-        $data = $event->getData();
-
-        $site = ($data && $data->getId() && count($data->getPlacements())) ?
-                    $data->getPlacements()->first()->getAdPlace()->getSite() : null;
-
-        $adPlace = ($data && $data->getId() && count($data->getPlacements())) ?
-            $data->getPlacements()->first()->getAdPlace() : null;
-
-        $site = ($site) ? $site : $this->getRequestData($form->getName(), 'site', 'CoreSiteBundle:CommonSite');
-
-        if ($site) {
-            $form->add('adPlaces','entity', [
-                'label' => 'Рекламные места',
-                'required' => true,
-                'mapped' => false,
-                'class' => 'CoreSiteBundle:AdPlace',
-                'property' => 'name',
-                'data' => $adPlace,
-                'empty_value' => 'Необходимо выбрать или добавить',
-                'constraints' => array(new NotBlank()),
-                'query_builder' => function (EntityRepository $er) use ($site) {
-                    return $er->createQueryBuilder('ap')
-                        ->leftJoin('ap.site', 'site')
-                        ->where('site.id = :siteId')
-                        ->setParameters([
-                            ':siteId' => $site->getId()
-                        ])
-                        ;
-                }
-            ]);
-        } else {
-            $form->add('adPlaces','entity', [
-                'label' => 'Рекламные места',
-                'required' => true,
-                'mapped' => false,
-                'choices' => new ArrayCollection(),
-                'class' => 'CoreSiteBundle:AdPlace',
-                'property' => 'name',
-                'empty_value' => 'Необходимо выбрать или добавить',
-                'constraints' => array(new NotBlank()),
-            ]);
-        }
     }
 
     /**
@@ -182,8 +107,10 @@ class AdCompanyType  extends AbstractType
             //'prototype' => '__placement_name__',
             'options'  => array(
                 'adCompanyField' => false,
-                'adPlaceField' => false,
+                'adPlaceField' => true,
+                'adPlaceAllowNew' => true,
                 'required'  => false,
+                'site'      => true,
                 'attr'      => array('class' => 'email-box')
             ),
         ]);
@@ -254,29 +181,6 @@ class AdCompanyType  extends AbstractType
         }
     }
 
-
-    /**
-     * @param FormEvent $event
-     */
-    private function addSite(FormEvent $event)
-    {
-        $data = $event->getData();
-        $form = $event->getForm();
-        $adPlace = ($data && $data->getId() && count($data->getPlacements())) ? $data->getPlacements()->first()->getAdPlace() : null;
-        $site = ($adPlace) ? $adPlace->getSite() : null;
-        $form
-            ->add('site', 'entity', [
-                'label' => 'Площадки',
-                'mapped' => false,
-                'required' => true,
-                'data' => $site,
-                'class' => 'CoreSiteBundle:CommonSite',
-                'property' => 'name',
-                'empty_value' => 'Необходимо выбрать или добавить',
-                'constraints' => array(new NotBlank())
-            ])
-        ;
-    }
 
     /**
      * @param $formName

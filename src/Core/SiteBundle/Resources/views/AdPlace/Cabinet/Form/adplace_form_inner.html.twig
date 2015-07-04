@@ -188,8 +188,8 @@
     };
     #}
     $(function () {
-        var topModal = $('#modal-top-placement #adplace-modal'),
-            isTopModal = $('#modal-top-placement').length;
+        var topModal = $('#modal-inner-placement #adplace-modal'),
+            isTopModal = $('#modal-inner-placement').length;
 
         /*
         // topmodal show
@@ -210,7 +210,11 @@
         */
 
         $('body').on('hidden.bs.modal', '#banner-modal', function (e) {
-            $('#modal-top-placement #adplace-modal').modal('show');
+            $('#modal-inner-placement #adplace-modal').modal('show');
+        });
+
+        $('body').on('show.bs.modal', '#banner-modal', function (e) {
+            $('#modal-inner-placement #adplace-modal').modal('hide');
         });
 
         $('#form_size').change(function () {
@@ -241,7 +245,8 @@
         // форма добавления загушки
         $('.gag-create').click(function(e) {
             var $this = $(this),
-                modalPlacement = $('#modal-inner-placement').length ? $('#modal-inner-placement') : $('#gag-placement');
+                modalPlacement = $('#modal-inner-inner-placement').length
+                        ? $('#modal-inner-inner-placement') : $('#gag-placement');
             modalPlacement.find('#banner-modal').remove();
             modalPlacement.html('');
             $.ajax({
@@ -287,7 +292,7 @@
         });
 
         // сохранение загулшки
-        $('#gag-placement, #modal-inner-placement').on('submit', 'form.trigger', function() {
+        $('#gag-placement, #modal-inner-inner-placement').on('submit', 'form.trigger', function() {
             var $this = $(this),
                     collectionWrapper = $('.collection-wrapper'),
                     curId = $this.attr('data-id') * 1,
@@ -335,7 +340,8 @@
         $('.gag-edit').click(function() {
             var $this = $(this),
                     gagsList = $('#form_gag'),
-                    modalPlacement = $('#modal-inner-placement').length ? $('#modal-inner-placement') : $('#gag-placement'),
+                    modalPlacement = $('#modal-inner-inner-placement').length
+                            ? $('#modal-inner-inner-placement') : $('#gag-placement'),
                     curId = gagsList.val() || $this.attr('data-id');
 
             if (!(curId*1)) {

@@ -11,6 +11,8 @@ namespace Core\AdCompanyBundle\Form\Type;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
@@ -31,7 +33,6 @@ class PlacementFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //ldd($builder->getData());
         $builder
 //            ->add('placementBannersList', 'entity', [
 //                'class'     => 'Core\AdCompanyBundle\Entity\PlacementBanner',
@@ -76,9 +77,32 @@ class PlacementFormType extends AbstractType
             $builder->add('adCompany', null, ['required' => true, 'property' => 'name']);
         }
         if ($options['adPlaceField']) {
-            $builder->add('adPlace', null, ['required' => true, 'property' => 'name']);
+            $builder->add('adPlace', null, [
+                'required' => true,
+                'property' => 'name',
+                'empty_value' => 'Необходимо выбрать'
+            ]);
+        }
+        if ($options['site']) {
+            $builder->add('site', 'entity', [
+                'empty_value' => 'Необходимо выбрать',
+                'class'     => 'CoreSiteBundle:CommonSite',
+                'required'  => true,
+                'property'  => 'name',
+                'label'     => 'Площадка',
+                'mapped'    => false
+            ]);
         }
     }
+
+    /**
+     * {@inherit}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['adPlaceAllowNew'] = $options['adPlaceAllowNew'];
+    }
+
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -87,6 +111,8 @@ class PlacementFormType extends AbstractType
            'cascade_validation' => true,
            'adCompanyField' => true,
            'adPlaceField' => true,
+           'adPlaceAllowNew' => false,
+            'site' => false
         ]);
     }
 
