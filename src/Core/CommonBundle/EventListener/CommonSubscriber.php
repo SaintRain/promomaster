@@ -87,21 +87,25 @@ class CommonSubscriber implements EventSubscriber
                         $this->operations = array_merge_recursive($this->operations, $this->makeManyToMany($entity, $method, $map));
                     } elseif (ClassMetadata::MANY_TO_ONE == $map['type']) {
                         $this->operations = array_merge_recursive($this->operations, $this->makeManyToONe($entity, $method, $meta));
-                    }
-                    // нужен ли этот кусок?
-                    /*elseif (ClassMetadata::ONE_TO_MANY == $map['type']) {
-                        continue;
-                        // todo
-                        // работает ли эта сторона
+                    } elseif (ClassMetadata::ONE_TO_MANY == $map['type']) {
+                        $this->operations = array_merge_recursive(
+                            $this->operations,
+                            $this->makeOneToMany($entity, $method, $map['targetEntity'], $em)
+                        );
+                        /*
+                        ldd($this->operations);
+                        $diff = [];
                         foreach($entity['old']->$method() as $val) {
-                            ldd('here');
                             $diff['oldTomany'][$val->getId()] = $val->getId();
                         }
 
                         foreach($entity['new']->$method() as $val) {
                             $diff['newTomany'][$val->getId()] = $val->getId();
                         }
-                    }*/
+
+                        ld($diff);
+                        */
+                    }
                 }
             }
         }
@@ -206,16 +210,17 @@ class CommonSubscriber implements EventSubscriber
                 }
                 if (ClassMetadata::MANY_TO_MANY == $map['type']) {
                     foreach ($entity->$method() as $val) {
-                        $this->operations[$operation][$map['joinTable']['name']][] =
-                            array(
-                                $map['joinTable']['inverseJoinColumns'][0]['name'] => $val->getId(),
-                                $map['joinTable']['joinColumns'][0]['name'] => ($entity->getId()) ? $entity->getId() : $entity
-                            );
+                        if (isset($map['joinTable']['name'])) {
+                            $this->operations[$operation][$map['joinTable']['name']][] =
+                                array(
+                                    $map['joinTable']['inverseJoinColumns'][0]['name'] => (int)$val->getId(),
+                                    $map['joinTable']['joinColumns'][0]['name'] => ($entity->getId()) ? (int)$entity->getId() : $entity
+                                );
+                        }
                     }
                 }
             }
-
-            $this->operations[$operation][$meta->table['name']][] = ($entity->getId()) ? $entity->getId() : $entity;
+            $this->operations[$operation][$meta->table['name']][] = ($entity->getId()) ? (int)$entity->getId() : $entity;
         }
     }
 
@@ -239,8 +244,39 @@ class CommonSubscriber implements EventSubscriber
         elseif (!$entity['old']->$method() || $entity['new']->$method()->getId() != $entity['old']->$method()->getId()) {
             $operations['update'][$meta->table['name']][$entity['new']->$method()->getId()] = $entity['new']->$method()->getId();
         }
-
         return $operations;
     }
 
+    /**
+     * @param $entity
+     * @param $method
+     * @param $className
+     * @param $em
+     * @return array
+     */
+    private function makeOneToMany($entity, $method, $className, $em)
+    {
+        $operations = [];
+        $meta = $em->getClassMetadata($className);
+
+        foreach($entity['old']->$method() as $val) {
+            $operations['delete'][$meta->table['name']][$val->getId()] = (int)$val->getId();
+        }
+
+        if (isset($this->operations['delete'][$meta->table['name']])) {
+            foreach($this->operations['delete'][$meta->table['name']] as $val) {
+                if(isset($operations['delete'][$meta->table['name']][$val])) {
+                    unset($operations['delete'][$meta->table['name']][$val]);
+                }
+            }
+        }
+
+        foreach($entity['new']->$method() as $val) {
+            if (isset($operations['delete'][$meta->table['name']][$val->getId()])) {
+                unset($operations['delete'][$meta->table['name']][$val->getId()]);
+            }
+        }
+
+        return $operations;
+    }
 }

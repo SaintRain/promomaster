@@ -41,49 +41,6 @@
       action="{% if adcompany.id %}{{ path('core_cabinet_adcompany_edit', {id: adcompany.id}) }}{% else %}{{ path('core_cabinet_adcompany_create') }}{% endif %}" {{ form_enctype(form) }}
       method="POST">
     <fieldset class="sky-form-other-style">
-        <div class="row margin-bottom-20">
-            <div class="site-container{% if form_errors(form.site) %} state-error{% endif %}">
-                <div class="row">
-                    <div class="col-sm-6">
-                        {{ form_label(form.site) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        {{ form_widget(form.site,{ 'attr': {'class': 'form-control'} }) }}
-                        {{ form_errors(form.site) }}
-                    </div>
-                    <div class="col-sm-6">
-                        <a href="{{ path('core_cabinet_site_create_ajax') }}" class="btn-u site-creation"
-                           style="margin-left: -15px">
-                            <i class="fa fa-plus-square" title="Добавить площадку"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row margin-bottom-20">
-            <div class="margin-bottom-20  {% if form_errors(form.adPlaces) %}state-error{% endif %}">
-                <div class="row">
-                    <div class="col-sm-6">
-                        {{ form_label(form.adPlaces) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        {{ form_widget(form.adPlaces,{ 'attr': {'class': 'form-control'} }) }}
-                        {{ form_errors(form.adPlaces) }}
-                    </div>
-                    <div class="col-sm-6">
-                        <a href="{{ path('core_cabinet_ad_place_create_ajax') }}" class="btn-u  ad-place-creation"
-                           style="margin-left: -15px">
-                            <i class="fa fa-plus-square" title="Добавить рекламное место"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="row margin-bottom-20">
             <div class="row">
@@ -94,33 +51,19 @@
                 </div>
             </div>
         </div>
-        {#
-        <div class="row margin-bottom-20">
-            <div class="col-lg-6  {% if form_errors(form.placements) %}state-error{% endif %}">
-                {{ form_label(form.placements) }}
-                <div class="pull-right">
-                    <a class="btn-u btn-u-xs country-select" href="javascript:void(0);">
-                        <i class="fa fa-plus-square"></i><span>&nbsp;Добавить размещение</span>
-                    </a>
-                </div>
-                {{ form_widget(form.placements) }}
-                {{ form_errors(form.placements) }}
-            </div>
-        </div>
-        #}
         <div class="row margin-bottom-20">
             <div
-                    class="placements-container{% if form_errors(form.placements) %} state-error{% endif %}"
-                    {% if form.placements.vars.prototype is defined %}
-                        data-prototype="
-                         {% filter escape %}
-                             {{ include(
-                        'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',
-                        { 'form': form.placements.vars.prototype, 'fieldGroupClass': 'col-sm-12'}
-                        ) }}
-                         {% endfilter %}"
-                    {% endif %}
-                    >
+                class="placements-container{% if form_errors(form.placements) %} state-error{% endif %}"
+                {% if form.placements.vars.prototype is defined %}
+                    data-prototype="
+                     {% filter escape %}
+                         {{ include(
+                    'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',
+                    { 'form': form.placements.vars.prototype, 'fieldGroupClass': 'col-sm-12'}
+                    ) }}
+                     {% endfilter %}"
+                {% endif %}
+            >
                 <div class="row">
                     <div class="col-sm-6">
                         {{ form_label(form.placements) }}
@@ -317,6 +260,7 @@
         </div>
         <div id="modal-top-placement"></div>
         <div id="modal-inner-placement"></div>
+        <div id="modal-inner-inner-placement"></div>
     </fieldset>
 </form>
 <div id="placement-modal-container">
@@ -363,30 +307,6 @@
             });
             {% endif %}
 
-
-            // adplaces for site
-            $('body').on('change', '#ad_company_type_site', function () {
-                var $this = $(this),
-                        adPlacesContainer = $('#ad_company_type_adPlaces'),
-                        adPlacementContainer = $('.placements-container-in'),
-                        curOption = '<option value="">Необходимо выбрать или добавить</option>';
-                if (!$this.val()) {
-                    return false;
-                }
-                $.ajax({
-                    url: "{{ path('core_cabinet_site_adplaces') }}",
-                    method: 'POST',
-                    data: 'siteId=' + $this.val(),
-                    success: function (data) {
-                        for (var key in data) {
-                            curOption += '<option value="' + data[key].id + '">' + data[key].name + '</option>'
-                        }
-                        adPlacesContainer.html(curOption);
-                        adPlacementContainer.html('');
-                    }
-                })
-            });
-
             {#
             // adplacements for adplace
             $('body').on('change', '#ad_company_type_adPlaces', function() {
@@ -426,54 +346,11 @@
                 });
             });
             #}
-            // get ad-place creation template
-            $('.ad-place-creation').click(function () {
-                var $this = $(this),
-                        curSite = $('#ad_company_type_site'),
-                        innerModal = $('#modal-inner-placement'),
-                        placement = $('#modal-top-placement');
-                if (!curSite.val()) {
-                    alert('Необходимо выбрать или добавить площадку');
-                    return false;
-                }
-                $.ajax({
-                    url: $this.attr('href'),
-                    method: 'GET',
-                    data: 'siteId=' + curSite.val(),
-                    success: function (data) {
-                        if (data.result) {
-                            placement.html('');
-                            placement.html($(data.data));
-                            innerModal.html('');
-                            $('#adplace-modal', placement).modal('show');
-                        }
-                    }
-                });
-                return false;
-            });
-
-            // get site creation template
-            $('.site-creation').click(function () {
-                var $this = $(this),
-                        innerModal = $('#modal-inner-placement'),
-                        placement = $('#modal-top-placement');
-                $.ajax({
-                    url: $this.attr('href'),
-                    method: 'GET',
-                    success: function (data) {
-                        if (data.result) {
-                            placement.html(data.data);
-                            $('#site-modal').modal('show');
-                        }
-                    }
-                });
-                return false;
-            });
 
 
             // collection manipulation
             var $addTagLink = $('.add-placement'),
-                    $collectionHolder = $('.placements-container');
+                $collectionHolder = $('.placements-container');
 
             $collectionHolder.data('index', $collectionHolder.find('.collection-row').length);
 

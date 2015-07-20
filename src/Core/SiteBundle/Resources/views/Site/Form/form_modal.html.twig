@@ -33,13 +33,14 @@
     </div>
 </div>
 <script>
-    $('#modal-top-placement').off('submit', '#site-modal form');
-    $('#modal-top-placement').on('submit', '#site-modal form', function(){
+    $('#modal-inner-placement').off('submit', '#site-modal form');
+    $('#modal-inner-placement').on('submit', '#site-modal form', function(){
         var $this = $(this),
-                modalBlock = $('#site-modal'),
-                modalContent = $('.modal-content-wr', modalBlock),
-                site = $('#ad_company_type_site'),
-                postUrl = $this.attr('action');
+            modalBlock = $('#site-modal'),
+            modalContent = $('.modal-content-wr', modalBlock),
+            site = $('#placement-modal-content select[id$="_site"]'),
+            postUrl = $this.attr('action');
+
         $.ajax({
             type: 'POST',
             url: postUrl,
