@@ -1,10 +1,9 @@
-<div class="row">
-    {% if adcompany.id %}
-        <h3>Редактирование рекламной компании</h3>
-    {% else %}
-        <h3>Добавление новой рекламной компании</h3>
-    {% endif %}
-</div>
+{% if adcompany.id %}
+    <h3>Редактирование рекламной компании</h3>
+{% else %}
+    <h3>Добавление новой рекламной компании</h3>
+{% endif %}
+
 
 {#форма редактирования профиля ЛК#}
     {% for flashMessage in app.session.flashbag.get('edit_success') %}
@@ -37,33 +36,32 @@
         </div>
     {% endif %}
 
+
 <form style="clear: both" class="sky-form sky-form-other-style"
       action="{% if adcompany.id %}{{ path('core_cabinet_adcompany_edit', {id: adcompany.id}) }}{% else %}{{ path('core_cabinet_adcompany_create') }}{% endif %}" {{ form_enctype(form) }}
       method="POST">
     <fieldset class="sky-form-other-style">
 
         <div class="row margin-bottom-20">
-            <div class="row">
                 <div class="col-lg-6{% if form_errors(form.name) %} state-error{% endif %}">
                     {{ form_label(form.name) }}
                     {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.name) }}
                 </div>
-            </div>
         </div>
-        <div class="row margin-bottom-20">
+        <div class=" margin-bottom-20">
             <div
-                class="placements-container{% if form_errors(form.placements) %} state-error{% endif %}"
-                {% if form.placements.vars.prototype is defined %}
-                    data-prototype="
+                    class="placements-container{% if form_errors(form.placements) %} state-error{% endif %}"
+                    {% if form.placements.vars.prototype is defined %}
+                        data-prototype="
                      {% filter escape %}
                          {{ include(
-                    'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',
-                    { 'form': form.placements.vars.prototype, 'fieldGroupClass': 'col-sm-12'}
-                    ) }}
+                        'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',
+                        { 'form': form.placements.vars.prototype, 'fieldGroupClass': 'col-sm-12'}
+                        ) }}
                      {% endfilter %}"
-                {% endif %}
-            >
+                    {% endif %}
+                    >
                 <div class="row">
                     <div class="col-sm-6">
                         {{ form_label(form.placements) }}
@@ -153,7 +151,6 @@
         </div>
 
         <div class="row margin-bottom-20">
-            <div class="row">
                 <div {% if not form.startDateTime.vars.value %}  style="display: none"  {% endif %}
                         class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
                     <label>Дата начала показов</label>
@@ -167,25 +164,23 @@
 
 
                 <div class="col-sm-6">
-                    <label class="dateSettingsStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>
+                    <label class="startDateTimeStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>
 
                     <div class="inline-group">
                         <label class="radio"><input {% if form.startDateTime.vars.value %}  checked=""  {% endif %}
-                                    class="dateSettingsStart" value="1" type="radio" name="dateSettingsStart"><i
+                                    class="startDateTimeStart" value="1" type="radio" name="dateSettingsStart"><i
                                     class="rounded-x"></i>По
                             дате</label>
                         <label class="radio"><input {% if not form.startDateTime.vars.value %}  checked=""  {% endif %}
-                                    class="dateSettingsStart" value="0" type="radio" name="dateSettingsStart"><i
+                                    class="startDateTimeStart" value="0" type="radio" name="dateSettingsStart"><i
                                     class="rounded-x"></i>Начать
                             показ сразу</label>
                     </div>
                 </div>
-            </div>
         </div>
 
 
         <div class="row margin-bottom-20">
-            <div class="row">
                 <div  {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}
                         class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
                     <label>Дата окончания показов</label>
@@ -198,25 +193,24 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <label class="dateSettingsFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>
+                    <label class="finishDateTimeFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>
 
                     <div class="inline-group">
                         <label class="radio"><input {% if form.finishDateTime.vars.value %}  checked=""  {% endif %}
-                                    class="dateSettingsFinish" value="1" type="radio" name="dateSettingsFinish"><i
+                                    class="finishDateTimeFinish" value="1" type="radio" name="dateSettingsFinish"><i
                                     class="rounded-x"></i>По
                             дате</label>
                         <label class="radio"><input {% if not form.finishDateTime.vars.value %}  checked=""  {% endif %}
-                                    class="dateSettingsFinish" value="0" type="radio" name="dateSettingsFinish"><i
+                                    class="finishDateTimeFinish" value="0" type="radio" name="dateSettingsFinish"><i
                                     class="rounded-x"></i>Показывать бесконечно</label>
                     </div>
                 </div>
-            </div>
         </div>
 
         <div id="def-countries"
              class="row margin-bottom-20 {% if form_errors(form.defaultCountries) %}state-error{% endif %}">
             <div class="col-sm-6">
-                <div class="row">
+
                     <label>Страны</label>
 
                     <div class="pull-right">
@@ -227,20 +221,18 @@
                     </div>
                     {{ form_widget(form.defaultCountries,{ 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.defaultCountries) }}
-                </div>
+
             </div>
         </div>
 
 
         <div class="row margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
-            <div class="row">
                 <div class="col-sm-6">
                     <label class="checkbox">
                         {{ form_widget(form.isEnabled) }}<i></i> {{ form.isEnabled.vars.label }}</label>
                     {{ form_errors(form.isEnabled) }}
                     </label>
                 </div>
-            </div>
         </div>
 
         <div class="margin-bottom-20">
@@ -263,6 +255,7 @@
         <div id="modal-inner-inner-placement"></div>
     </fieldset>
 </form>
+
 <div id="placement-modal-container">
     <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="placement-modal-content"
          class="modal fade"
@@ -296,7 +289,7 @@
 
     <script>
         $(function () {
-            initCalendarFromTo('.startDateTime', '.finishDateTime');
+            initCalendarFromTo('startDateTime', 'finishDateTime');
 
             {% if adcompany.id %}
             $('.delete').click(function () {
@@ -350,7 +343,7 @@
 
             // collection manipulation
             var $addTagLink = $('.add-placement'),
-                $collectionHolder = $('.placements-container');
+                    $collectionHolder = $('.placements-container');
 
             $collectionHolder.data('index', $collectionHolder.find('.collection-row').length);
 

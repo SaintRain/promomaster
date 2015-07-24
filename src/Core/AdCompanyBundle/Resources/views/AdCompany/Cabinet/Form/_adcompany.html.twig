@@ -29,7 +29,7 @@
     {% endfor %}
 
 
-    {% if form.vars.errors | length %}
+    {% if form.vars.errors | length %}class="row"
         <br/>
         <div class="alert alert-danger fade in">
             {{ form_errors(form) }}
