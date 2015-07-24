@@ -25,7 +25,7 @@ class StatisticsCabinetController extends Controller
         $adcompany = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:AdCompany')->find($id);
 
         $statistics = $this->get('core_statistics_logic')->getAdCompanyChartStats($adcompany);
-
+//ldd($statistics);
         return $this->render('CoreStatisticsBundle:AdCompany\Cabinet:edit.html.twig',
             [
                 'statistics' => $statistics,

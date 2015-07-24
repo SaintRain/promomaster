@@ -64,7 +64,6 @@ class StatisticsLogic
 
                 $clicks += $pClicks;
                 $shows += $pShows;
-
             }
 
 
