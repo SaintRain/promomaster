@@ -1,11 +1,11 @@
 {% if  form.adCompany is defined %}
-<div class="row margin-bottom-20">
-    <div class="{{ fieldGroupClass }}  {% if form_errors(form.adCompany) %}state-error{% endif %}">
-        <label>Рекламная компания*</label>
-        {{ form_widget(form.adCompany,{ 'attr': {'class': 'form-control'} }) }}
-        {{ form_errors(form.adCompany) }}
+    <div class="row margin-bottom-20">
+        <div class="{{ fieldGroupClass }}  {% if form_errors(form.adCompany) %}state-error{% endif %}">
+            <label>Рекламная компания*</label>
+            {{ form_widget(form.adCompany,{ 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.adCompany) }}
+        </div>
     </div>
-</div>
 {% endif %}
 
 {% if  form.site is defined and form.site %}
@@ -22,7 +22,8 @@
                     {{ form_errors(form.site) }}
                 </div>
                 <div class="col-sm-2">
-                    <a href="{{ path('core_cabinet_site_create_ajax') }}" class="btn-u site-creation" style="margin-left: -15px">
+                    <a href="{{ path('core_cabinet_site_create_ajax') }}" class="btn-u site-creation"
+                       style="margin-left: -15px">
                         <i class="fa fa-plus-square" title="Добавить площадку"></i>
                     </a>
                 </div>
@@ -31,280 +32,307 @@
     </div>
 {% endif %}
 
-{%  if (form.adPlace is defined) and (form.vars.adPlaceAllowNew is defined) and form.vars.adPlaceAllowNew %}
-    <div class="row margin-bottom-20">
-        <div class="margin-bottom-20  {% if form_errors(form.adPlace) %}state-error{% endif %}">
-            <div>
-                <div class="col-sm-10">
-                    <label>Место размещения*</label>
-                </div>
-            </div>
-            <div>
-                <div class="col-sm-10">
-                    {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
-                    {{ form_errors(form.adPlace) }}
-                </div>
-                <div class="col-sm-2">
-                    <a href="{{ path('core_cabinet_ad_place_create_ajax') }}" class="btn-u  ad-place-creation" style="margin-left: -15px">
-                        <i class="fa fa-plus-square" title="Добавить рекламное место"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% elseif  form.adPlace is defined %}
-        <div class="row margin-bottom-20">
-            <div class="{{ fieldGroupClass }}{% if form_errors(form.adPlace) %} state-error{% endif %}">
-            <label>Место размещения*</label>
-            {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
-            {{ form_errors(form.adPlace) }}
-        </div>
-{% endif %}
-{#
+{% if (form.adPlace is defined) and (form.vars.adPlaceAllowNew is defined) and form.vars.adPlaceAllowNew %}
 <div class="row margin-bottom-20">
-    <div class="{{ fieldGroupClass }}  {% if form_errors(form.placementBannersList) %}state-error{% endif %}">
-        <label>Баннеры</label>
-        {{ form_widget(form.placementBannersList,{ 'attr': {'class': 'form-control'} }) }}
-        {{ form_errors(form.placementBannersList) }}
+    <div class="margin-bottom-20  {% if form_errors(form.adPlace) %}state-error{% endif %}">
+        <div>
+            <div class="col-sm-10">
+                <label>Место размещения*</label>
+            </div>
+        </div>
+        <div>
+            <div class="col-sm-10">
+                {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.adPlace) }}
+            </div>
+            <div class="col-sm-2">
+                <a href="{{ path('core_cabinet_ad_place_create_ajax') }}" class="btn-u  ad-place-creation"
+                   style="margin-left: -15px">
+                    <i class="fa fa-plus-square" title="Добавить рекламное место"></i>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
-#}
+{% elseif  form.adPlace is defined %}
 <div class="row margin-bottom-20">
-    <div class="discounts collection-wrapper col-sm-12{% if form_errors(form.placementBannersList) %} state-error{% endif %}">
-        <label>Список баннеров </label>
-        {#
-        <div class="pull-right" style="margin: 0 10px;">
-            <a href="javascript:void(0);" class="btn-u btn-u-xs collection-add">
-                <i class="fa fa-plus-square"></i>
-                <span>&nbsp;Создать баннер</span>
-            </a>
+    <div class="{{ fieldGroupClass }}{% if form_errors(form.adPlace) %} state-error{% endif %}">
+        <label>Место размещения*</label>
+        {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
+        {{ form_errors(form.adPlace) }}
+    </div>
+</div>
+    {% endif %}
+    {#
+    <div class="row margin-bottom-20">
+        <div class="{{ fieldGroupClass }}  {% if form_errors(form.placementBannersList) %}state-error{% endif %}">
+            <label>Баннеры</label>
+            {{ form_widget(form.placementBannersList,{ 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.placementBannersList) }}
         </div>
-        #}
-        <div class="pull-right">
-            <a href="{{ path('core_cabinet_banner_create_ajax') }}" class="btn-u btn-u-xs collection-add"
-               {% if form.placementBannersList.vars.prototype is defined %}
-               data-prototype="{% filter escape %}
-                                {%  include 'CoreAdCompanyBundle:Placement\\Cabinet\\Form:placement_banner.html.twig' with { 'form': form.placementBannersList.vars.prototype } %}
+    </div>
+    #}
+
+    <div class="row margin-bottom-20">
+        <div class="discounts collection-wrapper col-sm-12{% if form_errors(form.placementBannersList) %} state-error{% endif %}">
+            <label>Список баннеров </label>
+            {#
+            <div class="pull-right" style="margin: 0 10px;">
+                <a href="javascript:void(0);" class="btn-u btn-u-xs collection-add">
+                    <i class="fa fa-plus-square"></i>
+                    <span>&nbsp;Создать баннер</span>
+                </a>
+            </div>
+            #}
+            <div class="pull-right">
+                <a href="{{ path('core_cabinet_banner_create_ajax') }}" class="btn-u btn-u-xs collection-add"
+                        {% if form.placementBannersList.vars.prototype is defined %}
+                    data-prototype="{% filter escape %}
+                                {% include 'CoreAdCompanyBundle:Placement\\Cabinet\\Form:placement_banner.html.twig' with { 'form': form.placementBannersList.vars.prototype } %}
                             {% endfilter %}
                             " {% endif %}>
-                <i class="fa fa-plus-square"></i>
-                <span>&nbsp;Добавить баннер</span>
-            </a>
+                    <i class="fa fa-plus-square"></i>
+                    <span>&nbsp;Добавить баннер</span>
+                </a>
+            </div>
+
+
+            {% for placementBanner in form.placementBannersList %}
+                {{ include('CoreAdCompanyBundle:Placement\\Cabinet\\Form:placement_banner.html.twig', { 'form': placementBanner }) }}
+            {% endfor %}
+
+            {% do form.placementBannersList.setRendered %}
+
         </div>
-
-
-        {% for placementBanner in form.placementBannersList %}
-            {{ include('CoreAdCompanyBundle:Placement\\Cabinet\\Form:placement_banner.html.twig', { 'form': placementBanner }) }}
-        {% endfor %}
-
-        {% do form.placementBannersList.setRendered %}
-
     </div>
-</div>
 
-<div class="row margin-bottom-20">
-    <div class="{{ fieldGroupClass }}{% if form_errors(form.quantity) %} state-error{% endif %}">
-        <label>Количество</label>
-        {{ form_widget(form.quantity,{ 'attr': {'class': 'form-control'} }) }}
-        {{ form_errors(form.quantity) }}
-        <span class="note">Вы можете указать точное количество показов или кликов. Если вы хотите установить показы независимо от количества показов/кликов , то
+
+    <div class="row margin-bottom-20">
+        <div class="{{ fieldGroupClass }}{% if form_errors(form.quantity) %} state-error{% endif %}">
+            <label>Количество</label>
+            {{ form_widget(form.quantity,{ 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.quantity) }}
+            <span class="note">Вы можете указать точное количество показов или кликов. Если вы хотите установить показы независимо от количества показов/кликов , то
                     оставте это поле пустым и укажите дату начала и дату окончания показов ниже.</span>
-    </div>
-
-    <div class="{{ fieldGroupClass }}{% if form_errors(form.quantityModel) %} state-error{% endif %}">
-        <label>В чем указано количество</label>
-        {{ form_widget(form.quantityModel,{ 'attr': {'class': 'form-control'} }) }}
-        {{ form_errors(form.quantityModel) }}
-    </div>
-
-</div>
-
-
-{#<div class="row margin-bottom-20">#}
-    {#<div {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  style="display: none"  {% endif %}#}
-            {#class="start-date {{ fieldGroupClass }}{% if form_errors(form.startDateTime) %} state-error{% endif %}">#}
-        {#<label>Дата начала показов</label>#}
-        {#<label class="input">#}
-            {#<i class="icon-append fa fa-calendar"></i>#}
-            {#{{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date'} }) }}#}
-        {#</label>#}
-
-        {#{{ form_errors(form.startDateTime) }}#}
-    {#</div>#}
-
-
-    {#<div class="{{ fieldGroupClass }}">#}
-        {#<label class="dateSettingsStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>#}
-
-        {#<div class="inline-group">#}
-            {#<label class="radio"><input {% if form.startDateTime.vars.value or form.startDateTime.vars.errors|length %}  checked=""  {% endif %}#}
-                        {#class="dateSettingsStart" value="1" type="radio" name="dateSettingsStart"><i#}
-                        {#class="rounded-x"></i>По#}
-                {#дате</label>#}
-            {#<label class="radio"><input {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  checked=""  {% endif %}#}
-                        {#class="dateSettingsStart" value="0" type="radio" name="dateSettingsStart"><i#}
-                        {#class="rounded-x"></i>Начать#}
-                {#показ сразу</label>#}
-        {#</div>#}
-    {#</div>#}
-{#</div>#}
-
-
-{#<div class="row margin-bottom-20">#}
-    {#<div  {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length %}  style="display: none"  {% endif %}#}
-            {#class="end-date {{ fieldGroupClass }}{% if form_errors(form.finishDateTime) %} state-error{% endif %}">#}
-        {#<label>Дата окончания показов</label>#}
-
-        {#<label class="input">#}
-            {#<i class="icon-append fa fa-calendar"></i>#}
-            {#{{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date'} }) }}#}
-        {#</label>#}
-        {#{{ form_errors(form.finishDateTime) }}#}
-
-    {#</div>#}
-
-    {#<div class="{{ fieldGroupClass }}">#}
-        {#<label class="dateSettingsFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>#}
-
-        {#<div class="inline-group">#}
-            {#<label class="radio"><input {% if form.finishDateTime.vars.value or form.finishDateTime.vars.errors|length %}  checked=""  {% endif %}#}
-                        {#class="dateSettingsFinish" value="1" type="radio" name="dateSettingsFinish"><i#}
-                        {#class="rounded-x"></i>По#}
-                {#дате</label>#}
-            {#<label class="radio"><input {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length %}  checked=""  {% endif %}#}
-                        {#class="dateSettingsFinish" value="0" type="radio" name="dateSettingsFinish"><i#}
-                        {#class="rounded-x"></i>Показывать бесконечно</label>#}
-        {#</div>#}
-    {#</div>#}
-{#</div>#}
-
-
-            <div class="row margin-bottom-20">
-                    <div {% if not form.startDateTime.vars.value %}  style="display: none"  {% endif %}
-                            class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
-                        <label>Дата начала показов</label>
-                        <label class="input">
-                            <i class="icon-append fa fa-calendar"></i>
-                            {{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date startDateTimePlacement'} }) }}
-                        </label>
-
-                        {{ form_errors(form.startDateTime) }}
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label class="startDateTimePlacementStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>
-                        <div class="inline-group">
-                            <label class="radio"><input {% if form.startDateTime.vars.value %}  checked=""  {% endif %}
-                                        class="startDateTimePlacementStart" value="1" type="radio" name="dateSettingsStart"><i
-                                        class="rounded-x"></i>По
-                                дате</label>
-                            <label class="radio"><input {% if not form.startDateTime.vars.value %}  checked=""  {% endif %}
-                                        class="startDateTimePlacementStart" value="0" type="radio" name="dateSettingsStart"><i
-                                        class="rounded-x"></i>Начать
-                                показ сразу</label>
-                        </div>
-                    </div>
-            </div>
-
-
-            <div class="row margin-bottom-20">
-
-                    <div  {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}
-                            class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
-                        <label>Дата окончания показов</label>
-
-                        <label class="input">
-                            <i class="icon-append fa fa-calendar"></i>
-                            {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date finishDateTimePlacement'} }) }}
-                        </label>
-
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label class="finishDateTimePlacementFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>
-
-                        <div class="inline-group">
-                            <label class="radio"><input {% if form.finishDateTime.vars.value %}  checked=""  {% endif %}
-                                        class="finishDateTimePlacementFinish" value="1" type="radio" name="dateSettingsFinish"><i
-                                        class="rounded-x"></i>По
-                                дате</label>
-                            <label class="radio"><input {% if not form.finishDateTime.vars.value %}  checked=""  {% endif %}
-                                        class="finishDateTimePlacementFinish" value="0" type="radio" name="dateSettingsFinish"><i
-                                        class="rounded-x"></i>Показывать бесконечно</label>
-                        </div>
-                    </div>
-            </div>
-
-<div class="row margin-bottom-20">
-    <div class="{{ fieldGroupClass }}{% if form_errors(form.defaultCountries) %} state-error{% endif %}">
-        <label>Страны</label>
-
-        <div class="pull-right">
-            <a href="javascript:void(0);" class="btn-u btn-u-xs country-select">
-                <i class="fa fa-plus-square"></i>
-                <span>&nbsp;Выбрать страны</span>
-            </a>
         </div>
-        {{ form_widget(form.defaultCountries) }}
-        {{ form_errors(form.defaultCountries) }}
+
+        <div class="{{ fieldGroupClass }}{% if form_errors(form.quantityModel) %} state-error{% endif %}">
+            <label>В чем указано количество</label>
+            {{ form_widget(form.quantityModel,{ 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.quantityModel) }}
+        </div>
+
     </div>
-</div>
 
 
-<div class="margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
-    <label class="checkbox">
-        {{ form_widget(form.isEnabled) }}<i></i> Размещение активно</label>
-    {{ form_errors(form.isEnabled) }}
-    </label>
+    {#<div class="row margin-bottom-20">#}
+    {#<div {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  style="display: none"  {% endif %}#}
+    {#class="start-date {{ fieldGroupClass }}{% if form_errors(form.startDateTime) %} state-error{% endif %}">#}
+    {#<label>Дата начала показов</label>#}
+    {#<label class="input">#}
+    {#<i class="icon-append fa fa-calendar"></i>#}
+    {#{{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date'} }) }}#}
+    {#</label>#}
 
-</div>
+    {#{{ form_errors(form.startDateTime) }}#}
+    {#</div>#}
 
 
-<div class="margin-bottom-20">
-</div>
+    {#<div class="{{ fieldGroupClass }}">#}
+    {#<label class="dateSettingsStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>#}
 
-{{ form_rest(form) }}
+    {#<div class="inline-group">#}
+    {#<label class="radio"><input {% if form.startDateTime.vars.value or form.startDateTime.vars.errors|length %}  checked=""  {% endif %}#}
+    {#class="dateSettingsStart" value="1" type="radio" name="dateSettingsStart"><i#}
+    {#class="rounded-x"></i>По#}
+    {#дате</label>#}
+    {#<label class="radio"><input {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  checked=""  {% endif %}#}
+    {#class="dateSettingsStart" value="0" type="radio" name="dateSettingsStart"><i#}
+    {#class="rounded-x"></i>Начать#}
+    {#показ сразу</label>#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
 
-<script type="text/javascript">
-    initCalendarFromTo('startDateTimePlacement', 'finishDateTimePlacement');
 
-    var collectionCount = '{{ form.placementBannersList | length }}',
-        topModal = $('#modal-top-placement #placement-modal, #placement-modal-content'),
-        isTopModal = $('#modal-top-placement').length;
+    {#<div class="row margin-bottom-20">#}
+    {#<div  {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length %}  style="display: none"  {% endif %}#}
+    {#class="end-date {{ fieldGroupClass }}{% if form_errors(form.finishDateTime) %} state-error{% endif %}">#}
+    {#<label>Дата окончания показов</label>#}
 
-    $(function () {
+    {#<label class="input">#}
+    {#<i class="icon-append fa fa-calendar"></i>#}
+    {#{{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date'} }) }}#}
+    {#</label>#}
+    {#{{ form_errors(form.finishDateTime) }}#}
 
-        $('body').on('hidden.bs.modal', '#responsive', function (e) {
-            if ($('#placement-modal-content .row').html()) {
-                $('#placement-modal-content').modal('show')
-            } else if ($('#modal-top-placement #placement-modal').length) {
-                $('#modal-top-placement #placement-modal').modal('show');
-            }
+    {#</div>#}
 
-        });
+    {#<div class="{{ fieldGroupClass }}">#}
+    {#<label class="dateSettingsFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>#}
 
-        $('body').on('show.bs.modal', '#responsive', function (e) {
-            $('#modal-top-placement #placement-modal, #placement-modal-content').modal('hide');
-        });
+    {#<div class="inline-group">#}
+    {#<label class="radio"><input {% if form.finishDateTime.vars.value or form.finishDateTime.vars.errors|length %}  checked=""  {% endif %}#}
+    {#class="dateSettingsFinish" value="1" type="radio" name="dateSettingsFinish"><i#}
+    {#class="rounded-x"></i>По#}
+    {#дате</label>#}
+    {#<label class="radio"><input {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length %}  checked=""  {% endif %}#}
+    {#class="dateSettingsFinish" value="0" type="radio" name="dateSettingsFinish"><i#}
+    {#class="rounded-x"></i>Показывать бесконечно</label>#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
 
-        manipulateCollection(collectionCount);
 
-        $("#datepicker").datepicker();
+    <div class="row margin-bottom-20">
+        <div {% if not form.startDateTime.vars.value %}  style="display: none"  {% endif %}
+                class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
+            <label>Дата начала показов</label>
+            <label class="input">
+                <i class="icon-append fa fa-calendar"></i>
+                {{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date startDateTimePlacement'} }) }}
+            </label>
 
-        // Date range
-        $('body').on('load', '.start-date input', function(){
-            $(this).datepicker({
+            {{ form_errors(form.startDateTime) }}
+        </div>
+
+        <div class="col-sm-6">
+            <label class="startDateTimePlacementStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>
+
+            <div class="inline-group">
+                <label class="radio"><input {% if form.startDateTime.vars.value %}  checked=""  {% endif %}
+                            class="startDateTimePlacementStart" value="1" type="radio" name="dateSettingsStart"><i
+                            class="rounded-x"></i>По
+                    дате</label>
+                <label class="radio"><input {% if not form.startDateTime.vars.value %}  checked=""  {% endif %}
+                            class="startDateTimePlacementStart" value="0" type="radio" name="dateSettingsStart"><i
+                            class="rounded-x"></i>Начать
+                    показ сразу</label>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row margin-bottom-20">
+
+        <div  {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}
+                class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
+            <label>Дата окончания показов</label>
+
+            <label class="input">
+                <i class="icon-append fa fa-calendar"></i>
+                {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date finishDateTimePlacement'} }) }}
+            </label>
+
+        </div>
+
+        <div class="col-sm-6">
+            <label class="finishDateTimePlacementFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>
+
+            <div class="inline-group">
+                <label class="radio"><input {% if form.finishDateTime.vars.value %}  checked=""  {% endif %}
+                            class="finishDateTimePlacementFinish" value="1" type="radio" name="dateSettingsFinish"><i
+                            class="rounded-x"></i>По
+                    дате</label>
+                <label class="radio"><input {% if not form.finishDateTime.vars.value %}  checked=""  {% endif %}
+                            class="finishDateTimePlacementFinish" value="0" type="radio" name="dateSettingsFinish"><i
+                            class="rounded-x"></i>Показывать бесконечно</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row margin-bottom-20">
+        <div class="{{ fieldGroupClass }}{% if form_errors(form.defaultCountries) %} state-error{% endif %}">
+            <label>Страны</label>
+
+            <div class="pull-right">
+                <a href="javascript:void(0);" class="btn-u btn-u-xs country-select">
+                    <i class="fa fa-plus-square"></i>
+                    <span>&nbsp;Выбрать страны</span>
+                </a>
+            </div>
+            {{ form_widget(form.defaultCountries) }}
+            {{ form_errors(form.defaultCountries) }}
+        </div>
+    </div>
+
+
+    <div class="margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
+        <label class="checkbox">
+            {{ form_widget(form.isEnabled) }}<i></i> Размещение активно</label>
+        {{ form_errors(form.isEnabled) }}
+        </label>
+
+    </div>
+
+
+    <div class="margin-bottom-20">
+    </div>
+
+    {{ form_rest(form) }}
+
+    <script type="text/javascript">
+        initCalendarFromTo('startDateTimePlacement', 'finishDateTimePlacement');
+
+        var collectionCount = '{{ form.placementBannersList | length }}',
+                topModal = $('#modal-top-placement #placement-modal, #placement-modal-content'),
+                isTopModal = $('#modal-top-placement').length;
+
+        $(function () {
+
+            $('body').on('hidden.bs.modal', '#responsive', function (e) {
+                if ($('#placement-modal-content .row').html()) {
+                    $('#placement-modal-content').modal('show')
+                } else if ($('#modal-top-placement #placement-modal').length) {
+                    $('#modal-top-placement #placement-modal').modal('show');
+                }
+
+            });
+
+            $('body').on('show.bs.modal', '#responsive', function (e) {
+                $('#modal-top-placement #placement-modal, #placement-modal-content').modal('hide');
+            });
+
+            manipulateCollection(collectionCount);
+
+            $("#datepicker").datepicker();
+
+            // Date range
+            $('body').on('load', '.start-date input', function () {
+                $(this).datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    prevText: '<i class="fa fa-angle-left"></i>',
+                    nextText: '<i class="fa fa-angle-right"></i>',
+                    onSelect: function (selectedDate) {
+                        $('.end-date input').datepicker('option', 'minDate', selectedDate);
+                    }
+                })
+            });
+
+            $('body').on('load', '.end-date input', function () {
+                $(this).datepicker({
+                    dateFormat: 'dd-mm-yy',
+                    prevText: '<i class="fa fa-angle-left"></i>',
+                    nextText: '<i class="fa fa-angle-right"></i>',
+                    onSelect: function (selectedDate) {
+                        $('.start-date input').datepicker('option', 'maxDate', selectedDate);
+                    }
+                });
+            });
+
+            {#
+            //old style logic
+            // may be need it
+            $('.start-date input').datepicker({
                 dateFormat: 'dd-mm-yy',
                 prevText: '<i class="fa fa-angle-left"></i>',
                 nextText: '<i class="fa fa-angle-right"></i>',
                 onSelect: function (selectedDate) {
                     $('.end-date input').datepicker('option', 'minDate', selectedDate);
                 }
-            })
-        });
+            });
 
-        $('body').on('load', '.end-date input', function(){
-            $(this).datepicker({
+            $('.end-date input').datepicker({
                 dateFormat: 'dd-mm-yy',
                 prevText: '<i class="fa fa-angle-left"></i>',
                 nextText: '<i class="fa fa-angle-right"></i>',
@@ -312,225 +340,203 @@
                     $('.start-date input').datepicker('option', 'maxDate', selectedDate);
                 }
             });
-        });
+            #}
 
-        {#
-        //old style logic
-        // may be need it
-        $('.start-date input').datepicker({
-            dateFormat: 'dd-mm-yy',
-            prevText: '<i class="fa fa-angle-left"></i>',
-            nextText: '<i class="fa fa-angle-right"></i>',
-            onSelect: function (selectedDate) {
-                $('.end-date input').datepicker('option', 'minDate', selectedDate);
-            }
-        });
-
-        $('.end-date input').datepicker({
-            dateFormat: 'dd-mm-yy',
-            prevText: '<i class="fa fa-angle-left"></i>',
-            nextText: '<i class="fa fa-angle-right"></i>',
-            onSelect: function (selectedDate) {
-                $('.start-date input').datepicker('option', 'maxDate', selectedDate);
-            }
-        });
-        #}
-
-        //      $(".date").mask('99-99-9999', {placeholder: '0'});
+            //      $(".date").mask('99-99-9999', {placeholder: '0'});
 
 
-        {% if placement is defined and placement.id %}
-        $('.delete').click(function () {
-            var res = confirm('Вы действительно хотите удалить это размещение из системы?');
-            if (res) {
-                window.location.href = '{{ path('core_cabinet_placement_delete', {id:placement.id}) }}';
-            }
-        });
-        {% endif %}
+            {% if placement is defined and placement.id %}
+            $('.delete').click(function () {
+                var res = confirm('Вы действительно хотите удалить это размещение из системы?');
+                if (res) {
+                    window.location.href = '{{ path('core_cabinet_placement_delete', {id:placement.id}) }}';
+                }
+            });
+            {% endif %}
 
 
-        $('body').on('change' , '.dateSettingsStart', function () {
-            var value = $(this).val();
-            if (value == 1) {
-                $('.start-date').show();
-                $('.start-date input').val('').focus();
-                $('.start-date input').attr('required', 'required');
-                $('.dateSettingsStartLabel').html('');
-            }
-            else {
-                $('.start-date').hide();
-                $('.start-date input').val('');
-                $('.start-date input').removeAttr('required');
-                $('.dateSettingsStartLabel').html('Дата начала показов');
-            }
-        });
-
-
-        $('body').on('change', '.dateSettingsFinish', function () {
-            var value = $(this).val();
-
-            if (value == 1) {
-                $('.end-date').show();
-                $('.end-date input').val('').focus();
-                $('.end-date input').attr('required', 'required');
-                $('.dateSettingsFinishLabel').html('');
-            }
-            else {
-                $('.end-date').hide();
-                $('.end-date input').val('');
-                $('.end-date input').removeAttr('required');
-                $('.dateSettingsFinishLabel').html('Дата окончания показов');
-            }
-        });
-
-        $('body').off('click', '.entity-desc');
-        // редактирование банера
-        $('body').on('click', '.entity-desc', function () {
-            var $this = $(this),
-                    modalPlacement = $('#modal-inner-placement').length ? $('#modal-inner-placement') : $('#modal-placement'),
-                    curId = $this.attr('data-id');
-            modalPlacement.find('#responsive').remove();
-            modalPlacement.html('');
-            $.ajax({
-                type: 'POST',
-                url: '{{ path('core_cabinet_banner_edit_ajax') }}',
-                data: 'id=' + curId,
-                success: function (data) {
-                    if (data.result) {
-                        modalPlacement.html(data.data);
-                        $('#responsive').modal('show');
-                    }
-                },
-                error: function () {
-                    console.log('error');
+            $('body').on('change', '.dateSettingsStart', function () {
+                var value = $(this).val();
+                if (value == 1) {
+                    $('.start-date').show();
+                    $('.start-date input').val('').focus();
+                    $('.start-date input').attr('required', 'required');
+                    $('.dateSettingsStartLabel').html('');
+                }
+                else {
+                    $('.start-date').hide();
+                    $('.start-date input').val('');
+                    $('.start-date input').removeAttr('required');
+                    $('.dateSettingsStartLabel').html('Дата начала показов');
                 }
             });
 
-            return false;
-        });
 
-        // get ad-place creation template
-        $('body').on('click', '.ad-place-creation', function () {
-            var $this = $(this),
-                curSite = $('#placement-modal-content select[id$="_site"]'),
-                innerModal = $('#modal-inner-placement'),
-                placement = $('#modal-top-placement');
-            if (!curSite.val()) {
-                alert('Необходимо выбрать или добавить площадку');
+            $('body').on('change', '.dateSettingsFinish', function () {
+                var value = $(this).val();
+
+                if (value == 1) {
+                    $('.end-date').show();
+                    $('.end-date input').val('').focus();
+                    $('.end-date input').attr('required', 'required');
+                    $('.dateSettingsFinishLabel').html('');
+                }
+                else {
+                    $('.end-date').hide();
+                    $('.end-date input').val('');
+                    $('.end-date input').removeAttr('required');
+                    $('.dateSettingsFinishLabel').html('Дата окончания показов');
+                }
+            });
+
+            $('body').off('click', '.entity-desc');
+            // редактирование банера
+            $('body').on('click', '.entity-desc', function () {
+                var $this = $(this),
+                        modalPlacement = $('#modal-inner-placement').length ? $('#modal-inner-placement') : $('#modal-placement'),
+                        curId = $this.attr('data-id');
+                modalPlacement.find('#responsive').remove();
+                modalPlacement.html('');
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('core_cabinet_banner_edit_ajax') }}',
+                    data: 'id=' + curId,
+                    success: function (data) {
+                        if (data.result) {
+                            modalPlacement.html(data.data);
+                            $('#responsive').modal('show');
+                        }
+                    },
+                    error: function () {
+                        console.log('error');
+                    }
+                });
+
                 return false;
-            }
-            $.ajax({
-                url: $this.attr('href'),
-                method: 'GET',
-                data: 'siteId=' + curSite.val(),
-                success: function (data) {
-                    if (data.result) {
-                        innerModal.html($(data.data));
-                        $('#adplace-modal', innerModal).modal('show');
-                    }
-                }
             });
-            return false;
-        });
 
-        // adplaces for site
-        $('body').on('change', '#placement-modal-content select[id$="_site"]', function () {
-            var $this = $(this),
-                    adPlacesContainer = $('#placement-modal-content select[id$="_adPlace"]'),
-                    curOption = '<option value="">Необходимо выбрать или добавить</option>';
-            if (!$this.val()) {
+            // get ad-place creation template
+            $('body').on('click', '.ad-place-creation', function () {
+                var $this = $(this),
+                        curSite = $('#placement-modal-content select[id$="_site"]'),
+                        innerModal = $('#modal-inner-placement'),
+                        placement = $('#modal-top-placement');
+                if (!curSite.val()) {
+                    alert('Необходимо выбрать или добавить площадку');
+                    return false;
+                }
+                $.ajax({
+                    url: $this.attr('href'),
+                    method: 'GET',
+                    data: 'siteId=' + curSite.val(),
+                    success: function (data) {
+                        if (data.result) {
+                            innerModal.html($(data.data));
+                            $('#adplace-modal', innerModal).modal('show');
+                        }
+                    }
+                });
                 return false;
-            }
-            $.ajax({
-                url: "{{ path('core_cabinet_site_adplaces') }}",
-                method: 'POST',
-                data: 'siteId=' + $this.val(),
-                success: function (data) {
-                    for (var key in data) {
-                        curOption += '<option value="' + data[key].id + '">' + data[key].name + '</option>'
-                    }
-                    adPlacesContainer.html(curOption);
-                }
-            })
-        });
-
-        // get site creation template
-        $('body').on('click', '.site-creation', function () {
-            var $this = $(this),
-                    innerModal = $('#modal-inner-placement'),
-                    placement = $('#modal-top-placement');
-            $.ajax({
-                url: $this.attr('href'),
-                method: 'GET',
-                success: function (data) {
-                    if (data.result) {
-                        innerModal.html(data.data);
-                        $('#site-modal').modal('show');
-                    }
-                }
             });
-            return false;
-        });
 
-        $('body').on('show.bs.modal', '#site-modal, #adplace-modal', function(){
-            $('#placement-modal-content').modal('hide');
-        });
-
-        $('body').on('hidden.bs.modal', '#site-modal, #adplace-modal', function(){
-            if (!$('#banner-modal:visible').length) {
-                $('#placement-modal-content').modal('show');
-            }
-        });
-
-    });
-
-
-    function manipulateCollection(collectionCount) {
-        /*
-         // добавление коллекции
-         $('.collection-add').click(function(e) {
-         e.preventDefault();
-         var $this = $(this),
-         parentWrapper = $this.parents('.collection-wrapper'),
-         newWidget = $this.attr('data-prototype');
-         newWidget = newWidget.replace(/__name__/g, collectionCount);
-         parentWrapper.append(newWidget)
-
-         return false;
-         });
-         */
-        $('body').off('click','.collection-add');
-        $('body').on('click','.collection-add', function (e) {
-
-            var $this = $(this),
-                modalPlacement = $('#modal-inner-placement').length ? $('#modal-inner-placement') : $('#modal-placement');
-            modalPlacement.find('#responsive').remove();
-            modalPlacement.html('');
-            $.ajax({
-                type: 'POST',
-                url: $this.attr('href'),
-                success: function (data) {
-                    if (data.result) {
-                        modalPlacement.html(data.data);
-                        $('#responsive').modal('show');
+            // adplaces for site
+            $('body').on('change', '#placement-modal-content select[id$="_site"]', function () {
+                var $this = $(this),
+                        adPlacesContainer = $('#placement-modal-content select[id$="_adPlace"]'),
+                        curOption = '<option value="">Необходимо выбрать или добавить</option>';
+                if (!$this.val()) {
+                    return false;
+                }
+                $.ajax({
+                    url: "{{ path('core_cabinet_site_adplaces') }}",
+                    method: 'POST',
+                    data: 'siteId=' + $this.val(),
+                    success: function (data) {
+                        for (var key in data) {
+                            curOption += '<option value="' + data[key].id + '">' + data[key].name + '</option>'
+                        }
+                        adPlacesContainer.html(curOption);
                     }
-                },
-                error: function () {
-                    console.log('error');
+                })
+            });
+
+            // get site creation template
+            $('body').on('click', '.site-creation', function () {
+                var $this = $(this),
+                        innerModal = $('#modal-inner-placement'),
+                        placement = $('#modal-top-placement');
+                $.ajax({
+                    url: $this.attr('href'),
+                    method: 'GET',
+                    success: function (data) {
+                        if (data.result) {
+                            innerModal.html(data.data);
+                            $('#site-modal').modal('show');
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $('body').on('show.bs.modal', '#site-modal, #adplace-modal', function () {
+                $('#placement-modal-content').modal('hide');
+            });
+
+            $('body').on('hidden.bs.modal', '#site-modal, #adplace-modal', function () {
+                if (!$('#banner-modal:visible').length) {
+                    $('#placement-modal-content').modal('show');
                 }
             });
 
-            return false;
         });
 
-        // удаление коллекции
-        $('body').on('click', '.collection-row-remove', function (e) {
-            var $this = $(this),
-                    curRow = $this.parents('.collection-row');
 
-            curRow.remove();
-            return false;
-        });
-    }
+        function manipulateCollection(collectionCount) {
+            /*
+             // добавление коллекции
+             $('.collection-add').click(function(e) {
+             e.preventDefault();
+             var $this = $(this),
+             parentWrapper = $this.parents('.collection-wrapper'),
+             newWidget = $this.attr('data-prototype');
+             newWidget = newWidget.replace(/__name__/g, collectionCount);
+             parentWrapper.append(newWidget)
 
-</script>
+             return false;
+             });
+             */
+            $('body').off('click', '.collection-add');
+            $('body').on('click', '.collection-add', function (e) {
+
+                var $this = $(this),
+                        modalPlacement = $('#modal-inner-placement').length ? $('#modal-inner-placement') : $('#modal-placement');
+                modalPlacement.find('#responsive').remove();
+                modalPlacement.html('');
+                $.ajax({
+                    type: 'POST',
+                    url: $this.attr('href'),
+                    success: function (data) {
+                        if (data.result) {
+                            modalPlacement.html(data.data);
+                            $('#responsive').modal('show');
+                        }
+                    },
+                    error: function () {
+                        console.log('error');
+                    }
+                });
+
+                return false;
+            });
+
+            // удаление коллекции
+            $('body').on('click', '.collection-row-remove', function (e) {
+                var $this = $(this),
+                        curRow = $this.parents('.collection-row');
+
+                curRow.remove();
+                return false;
+            });
+        }
+
+    </script>

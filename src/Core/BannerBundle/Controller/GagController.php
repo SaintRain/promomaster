@@ -90,7 +90,7 @@ class GagController extends Controller
                 $banner->setFile($file);
             }
 
-            if ($this->checkIsExistSite($banner)) {
+            if ($this->checkIsExistBanner($banner)) {
                 $this->setFlash('edit_errors', 'Заглушка с указанным названием был добавлен вами ранее. Придумайте другое уникальное название.');
                 $isBadName=true;
             }
@@ -172,7 +172,7 @@ class GagController extends Controller
             $form->handleRequest($request);
 
 
-            if ($this->checkIsExistSite($banner)) {
+            if ($this->checkIsExistBanner($banner)) {
                 $this->setFlash('edit_errors', 'Заглушка с указанным названием был добавлен вами ранее. Придумайте другое уникальное название.');
                 $isBadName=true;
             }
@@ -411,7 +411,7 @@ class GagController extends Controller
      * @param $domain
      * @return mixed
      */
-    private function checkIsExistSite($banner) {
+    private function checkIsExistBanner($banner) {
 
         $user = $this->container->get('security.context')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();

@@ -77,6 +77,11 @@ class CommonBannerRepository extends EntityRepository
             $query->andWhere('b.name=:name')->setParameter('name', $options['name']);
         }
 
+        if (isset($options['isRemoved'])) {
+            $query->andWhere('b.isRemoved=:isRemoved')->setParameter('isRemoved', $options['isRemoved']);
+        }
+
+
         $res = $query->getQuery()->getOneOrNullResult();
 
         return $res;

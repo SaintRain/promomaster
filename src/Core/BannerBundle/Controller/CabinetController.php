@@ -89,14 +89,14 @@ class CabinetController extends Controller
                 $banner->setFile($file);
             }
 
-            if ($this->checkIsExistSite($banner)) {
-                $this->setFlash('edit_errors', 'Баннер с указанным названием был добавлен вами ранее. Придумайте другое уникальное название.');
-                $isBadName=true;
-            }
-            else {
-                $isBadName=false;
-            }
-
+//            if ($this->checkIsExistBanner($banner)) {
+//                $this->setFlash('edit_errors', 'Баннер с указанным названием был добавлен вами ранее. Придумайте другое уникальное название.');
+//                $isBadName=true;
+//            }
+//            else {
+//                $isBadName=false;
+//            }
+            $isBadName=false;
             if (!$isBadName && $isValidFile && $form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
@@ -167,13 +167,14 @@ class CabinetController extends Controller
             $form->handleRequest($request);
 
 
-            if ($this->checkIsExistSite($banner)) {
-                $this->setFlash('edit_errors', 'Баннер с указанным названием был добавлен вами ранее. Придумайте другое уникальное название.');
-                $isBadName=true;
-            }
-            else {
-                $isBadName=false;
-            }
+//            if ($this->checkIsExistBanner($banner)) {
+//                $this->setFlash('edit_errors', 'Баннер с указанным названием был добавлен вами ранее. Придумайте другое уникальное название.');
+//                $isBadName=true;
+//            }
+//            else {
+//                $isBadName=false;
+//            }
+            $isBadName=false;
 
             if (!$isBadName && $isValidFile && $form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
@@ -495,19 +496,19 @@ class CabinetController extends Controller
      * @param $domain
      * @return mixed
      */
-    private function checkIsExistSite($banner) {
-
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        $em = $this->getDoctrine()->getManager();
-        $res=$em->getRepository('CoreBannerBundle:CommonBanner')->findQuantityByOptions(['id'=>$banner->getId(), 'user' => $user, 'name' => $banner->getName()]);
-
-        if ($res['quantity']) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+//    private function checkIsExistBanner($banner) {
+//
+//        $user = $this->container->get('security.context')->getToken()->getUser();
+//        $em = $this->getDoctrine()->getManager();
+//        $res=$em->getRepository('CoreBannerBundle:CommonBanner')->findQuantityByOptions(['id'=>$banner->getId(), 'user' => $user, 'name' => $banner->getName(), 'isRemoved'=>false]);
+//
+//        if ($res['quantity']) {
+//            return true;
+//        }
+//        else {
+//            return false;
+//        }
+//    }
 
     /**
      * Проверяет был ли загружен файл

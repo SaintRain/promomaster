@@ -66,9 +66,9 @@
 
 
 
-        <li class="list-group-item">
-            <a href="#"><i class="fa  fa-comments-o"></i> &nbsp;Сообщения</a>
-        </li>
+        {#<li class="list-group-item">#}
+            {#<a href="#"><i class="fa  fa-comments-o"></i> &nbsp;Сообщения</a>#}
+        {#</li>#}
 
         <li class="list-group-item
         {% if app.request.attributes.get('_route') == 'trouble_ticket_edit'
@@ -79,9 +79,9 @@
             <a href="{{app.user ? path('trouble_ticket_index_auth') : path('trouble_ticket_index',{'owner':ticket.owner})}}"><i class="fa fa-twitch"></i> &nbsp;Техподдержка</a>
         </li>
 
-        <li class="list-group-item">
-            <a href="#"><i class="fa fa-bar-chart-o"></i> &nbsp;Статистика</a>
-        </li>
+        {#<li class="list-group-item">#}
+            {#<a href="#"><i class="fa fa-bar-chart-o"></i> &nbsp;Статистика</a>#}
+        {#</li>#}
 
         <li class="list-group-item">
             <a href="profile_settings.html"><i class="fa fa-sign-out"></i> &nbsp;Выйти</a>
