@@ -5,34 +5,14 @@
             <div class="row">
                 <!-- About -->
                 <div class="col-md-3 md-margin-bottom-40">
-                    <a href="index.html"><img id="logo-footer" class="footer-logo" src="/assets/img/logo2-default.png" alt=""></a>
+                    {#<a href="index.html"><img id="logo-footer" class="footer-logo" src="/assets/img/logo-default.jpg" alt=""></a>#}
+
+                    <br/><br/>
                     <p>Promomaster – это мощная система управления рекламой на сайтах,
                         которой очень легко начать пользоваться прямо сейчас, и которая дает практически
                         неограниченные возможности в будущем.</p>
                 </div><!--/col-md-3-->
                 <!-- End About -->
-
-                <!-- Latest -->
-                <div class="col-md-3 md-margin-bottom-40">
-                    <div class="posts">
-                        <div class="headline"><h2>Latest Posts</h2></div>
-                        <ul class="list-unstyled latest-list">
-                            <li>
-                                <a href="#">Incredible content</a>
-                                <small>May 8, 2014</small>
-                            </li>
-                            <li>
-                                <a href="#">Best shoots</a>
-                                <small>June 23, 2014</small>
-                            </li>
-                            <li>
-                                <a href="#">New Terms and Conditions</a>
-                                <small>September 15, 2014</small>
-                            </li>
-                        </ul>
-                    </div>
-                </div><!--/col-md-3-->
-                <!-- End Latest -->
 
                 <!-- Link List -->
                 <div class="col-md-3 md-margin-bottom-40">
@@ -48,14 +28,37 @@
                 <!-- End Link List -->
 
                 <!-- Address -->
+                <div class="col-md-3 md-margin-bottom-40">
+                    <div class="headline"><h2>Часы работы</h2></div>
+                    <address class="md-margin-bottom-40">
+                        Пон.-пят.: 9.00-18.00<br />
+                        Суббота: выходной<br />
+                        Воскресенье: выходной<br />
+                    </address>
+                </div><!--/col-md-3-->
+
+
+                <!-- Address -->
                 <div class="col-md-3 map-img md-margin-bottom-40">
                     <div class="headline"><h2>Наши контакты</h2></div>
                     <address class="md-margin-bottom-40">
-                        25, Lorem Lis Street, Orange <br />
-                        California, US <br />
-                        Phone: 800 123 3456 <br />
-                        Fax: 800 123 3456 <br />
-                        Email: <a href="mailto:info@anybiz.com" class="">info@anybiz.com</a>
+                        Email:
+                        <script type="text/javascript">
+                            <!--
+                            var title = "info"+"@"+"promomaster.net";
+                            var email = "info";
+                            var emailHost = "promomaster.net";
+                            document.write("<a href=" + "mail" + "to:" + email + "@" + emailHost+ ">" + title + "</a>");
+                            //-->
+                        </script>
+                        <br/>
+                        Skype: promomaster.net<br/>
+                        <br/>
+                        <br/>
+                        <br/>
+
+
+
                     </address>
                 </div><!--/col-md-3-->
                 <!-- End Address -->
@@ -66,53 +69,53 @@
     <div class="copyright">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <p>
-                        2014 &copy; All Rights Reserved.
-                        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                        {{ "now"|date("Y") }} &copy; Все права защищены.
+                        <a href="#">Политики конфиденциальности</a> | <a href="{{ path('core_common_terms') }}">Правила использования сервиса</a>
                     </p>
                 </div>
 
                 <!-- Social Links -->
-                <div class="col-md-6">
-                    <ul class="footer-socials list-inline">
-                        <li>
-                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook">
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Skype">
-                                <i class="fa fa-skype"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Google Plus">
-                                <i class="fa fa-google-plus"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Linkedin">
-                                <i class="fa fa-linkedin"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Pinterest">
-                                <i class="fa fa-pinterest"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Dribbble">
-                                <i class="fa fa-dribbble"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                {#<div class="col-md-6">#}
+                    {#<ul class="footer-socials list-inline">#}
+                        {#<li>#}
+                            {#<a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook">#}
+                                {#<i class="fa fa-facebook"></i>#}
+                            {#</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Skype">#}
+                                {#<i class="fa fa-skype"></i>#}
+                            {#</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Google Plus">#}
+                                {#<i class="fa fa-google-plus"></i>#}
+                            {#</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Linkedin">#}
+                                {#<i class="fa fa-linkedin"></i>#}
+                            {#</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Pinterest">#}
+                                {#<i class="fa fa-pinterest"></i>#}
+                            {#</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">#}
+                                {#<i class="fa fa-twitter"></i>#}
+                            {#</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="#" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Dribbble">#}
+                                {#<i class="fa fa-dribbble"></i>#}
+                            {#</a>#}
+                        {#</li>#}
+                    {#</ul>#}
+                {#</div>#}
                 <!-- End Social Links -->
             </div>
         </div>

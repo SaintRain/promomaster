@@ -29,9 +29,20 @@
                 <div class="headline"><h2>Контакты</h2></div>
                 <ul class="list-unstyled who margin-bottom-30">
                     {#<li><a href="#"><i class="fa fa-home"></i>5B Streat, City 50987 New Town US</a></li>#}
-                    <li><a href="#"><i class="fa fa-envelope"></i>info@promomaster.net</a></li>
+                    <li>
+                        <script type="text/javascript">
+                            <!--
+                            var title = "info"+"@"+"promomaster.net";
+                            var email = "info";
+                            var emailHost = "promomaster.net";
+                            document.write("<a href=" + "mail" + "to:" + email + "@" + emailHost+ "><i class='fa fa-envelope'></i>" + title + "</a>");
+                            //-->
+                        </script>
+                    </li>
                     {#<li><a href="#"><i class="fa fa-phone"></i>1(222) 5x86 x97x</a></li>#}
                     <li><a href="#"><i class="fa fa-globe"></i>http://www.promomaster.net</a></li>
+                    <li><a href="#"><i class="fa fa-skype"></i>promomaster.net</a></li>
+
                 </ul>
                 <!-- End Contacts -->
                 <!-- Business Hours -->
@@ -43,51 +54,10 @@
                 </ul>
                 <!-- End Business Hours -->
 
-                <!-- Info Block -->
-                {#<div class="headline"><h2>Why we are?</h2></div>#}
-                {#<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>#}
-                {#<ul class="list-unstyled margin-bottom-30">#}
-                    {#<li><i class="fa fa-check color-green"></i> Odio dignissimos ducimus</li>#}
-                    {#<li><i class="fa fa-check color-green"></i> Blanditiis praesentium volup</li>#}
-                    {#<li><i class="fa fa-check color-green"></i> Eos et accusamus</li>#}
-                {#</ul>#}
-                <!-- End Info Block -->
-
-                <!-- Social -->
-                {#<div class="magazine-sb-social margin-bottom-20">#}
-                    {#<div class="headline headline-md"><h2>Social Icons</h2></div>#}
-                    {#<ul class="social-icons social-icons-color">#}
-                        {#<li><a class="social_rss" data-original-title="Feed" href="#"></a></li>#}
-                        {#<li><a class="social_facebook" data-original-title="Facebook" href="#"></a></li>#}
-                        {#<li><a class="social_twitter" data-original-title="Twitter" href="#"></a></li>#}
-                        {#<li><a class="social_vimeo" data-original-title="Vimeo" href="#"></a></li>#}
-                        {#<li><a class="social_googleplus" data-original-title="Goole Plus" href="#"></a></li>#}
-                        {#<li><a class="social_pintrest" data-original-title="Pinterest" href="#"></a></li>#}
-                        {#<li><a class="social_linkedin" data-original-title="Linkedin" href="#"></a></li>#}
-                        {#<li><a class="social_dropbox" data-original-title="Dropbox" href="#"></a></li>#}
-                        {#<li><a class="social_picasa" data-original-title="Picasa" href="#"></a></li>#}
-                        {#<li><a class="social_spotify" data-original-title="Spotify" href="#"></a></li>#}
-                        {#<li><a class="social_jolicloud" data-original-title="Jolicloud" href="#"></a></li>#}
-                        {#<li><a class="social_wordpress" data-original-title="Wordpress" href="#"></a></li>#}
-                        {#<li><a class="social_github" data-original-title="Github" href="#"></a></li>#}
-                        {#<li><a class="social_xing" data-original-title="Xing" href="#"></a></li>#}
-                    {#</ul>#}
-                    {#<div class="clearfix"></div>#}
-                {#</div>#}
-                <!-- End Social -->
             </div>
             {# End Right Block #}
         </div>
     </div>
-    {#
-    <div role="main" class="contacts_page info_page" id="content">
-        <div class="main_col">
-            <div class="main_col_pad">
-                {% block main_content %}{% endblock %}
-            </div>
-        </div>
 
-    </div>
-    #}
 {% endblock %}
 
