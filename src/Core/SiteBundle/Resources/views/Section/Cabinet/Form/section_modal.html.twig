@@ -32,14 +32,44 @@
                                     <div class="col-sm-12  {% if form_errors(form.name) %}state-error{% endif %}">
                                         <label>Шаблон*</label>
                                         {{ form_widget(form.urlTemplate,{ 'attr': {'class': 'form-control'} }) }}
-
                                         {{ form_errors(form.urlTemplate) }}
+
+
+                                        <div>
+                                            <div><a
+                                                        href="#collapse-1" data-parent="#accordion" data-toggle="collapse"
+                                                        class="accordion-toggle"><u>Смотреть правила написания шаблона</u>
+                                                </a></div>
+                                            <div class="panel-collapse collapse" id="collapse-1">
+                                                <div >
+                                                    <br/>
+                                                    Шаблон нужен, чтобы система могла отнести определенную страницу сайта к какому-либо разделу.
+                                                    Шаблон задается подстрокой или регулярным выражением. В простейшем случае, если адрес страницы содержит шаблон раздела, то такая страница будет отнесена к этому разделу.
+                                                    <br/><br/>
+<pre>
+Например, есть страница http://www.test.com/news.php?id=2
+Наш шаблон: news.php
+В этом случае эта страница будет отнесена к разделу.
+</pre>
+
+                                                    <b>Если в шаблоне регулярное выражение</b><br/>
+                                                    Если в шаблоне содержится регулярное выражение, тогда происходит проверка адреса страницы по указанному выражению.
+                                                    Например:
+                                                    <br/><br/>
+<pre>
+/news.php[a-z0-9-]+/
+</pre>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
+
                                 </div>
 
                                 <div class="margin-bottom-20 {% if form_errors(form.isRegExpInUrlTemplate) %}state-error{% endif %}">
                                     <label class="checkbox">
-                                        {{ form_widget(form.isRegExpInUrlTemplate) }}<i></i> Регулярное выражение</label>
+                                        {{ form_widget(form.isRegExpInUrlTemplate) }}<i></i> В шаблоне регулярное выражение</label>
                                     {{ form_errors(form.isRegExpInUrlTemplate) }}
                                     </label>
                                 </div>

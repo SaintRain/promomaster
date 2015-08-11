@@ -1,11 +1,11 @@
 {#форма редактирования раздела рекламного места ЛК#}
 
 {% if subject.id %}
-    <h3>Редактирование цены для  рекламного места «{{ adplace.name }}»</h3>
+    <h3>Редактирование цены для  рекламного места</h3>
 {% else %}
-    <h3>Добавление цены для  рекламного места «{{ adplace.name }}»</h3>
+    <h3>Добавление цены для  рекламного места</h3>
 {% endif %}
-
+<br/>
 
     {% for flashMessage in app.session.flashbag.get('edit_success') %}
         <br/>
@@ -48,39 +48,47 @@
         </div>
     </div>
     {% endif %}
+
     <div class="row margin-bottom-20 form_urlTemplate">
-        <div class="col-sm-12  {% if form_errors(form.priceModel) %}state-error{% endif %}">
+        <div class="col-sm-6  {% if form_errors(form.cost) %}state-error{% endif %}">
+            <label>{{ form.cost.vars.label }}*</label>
+            {{ form_widget(form.cost,{ 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.cost) }}
+            <span class="note">Например, 0.05</span>
+        </div>
+        <div class="col-sm-6  {% if form_errors(form.priceModel) %}state-error{% endif %}">
             <label>{{ form.priceModel.vars.label }}*</label>
             {{ form_widget(form.priceModel,{ 'attr': {'class': 'form-control'} }) }}
             {{ form_errors(form.priceModel) }}
         </div>
     </div>
 
+
     <div class="row margin-bottom-20 form_urlTemplate">
-        <div class="col-sm-12  {% if form_errors(form.cost) %}state-error{% endif %}">
-            <label>{{ form.cost.vars.label }}*</label>
-            {{ form_widget(form.cost,{ 'attr': {'class': 'form-control'} }) }}
-            {{ form_errors(form.cost) }}
-        </div>
+
     </div>
+
 
     <div class="row margin-bottom-20">
         <div class="discounts collection-wrapper col-sm-12{% if form_errors(form.discounts) %} state-error{% endif %}">
-            <label>{{ form.discounts.vars.label }}</label>
-            <div class="pull-right">
+
+            <div class="pull-left">
                 <a href="javascript:void(0);" class="btn-u btn-u-xs collection-add" data-prototype="{% filter escape %}{{ include('CoreSiteBundle:AdPlacePrice/Cabinet/Form:discount.html.twig', { 'form': form.discounts.vars.prototype }) }}{% endfilter %}">
                     <i class="fa fa-plus-square"></i>
-                    <span>&nbsp;Добавить скидку</span>
+                    <span>&nbsp;Добавить оптовую скидку</span>
                 </a>
             </div>
+            <br/><br/>
+            <label class="discountLabel" {% if not form.discounts.count %} style="display: none" {% endif %} >{{ form.discounts.vars.label }}</label>
+
             {% for discount in form.discounts %}
-                <div class="collection-row row margin-bottom-20">
-                    <div class="col-sm-5  {% if form_errors(discount.amount) %}state-error{% endif %}">
+                <div class="collection-row row margin-bottom-20 col-sm-12">
+                    <div class="col-sm-6  {% if form_errors(discount.amount) %}state-error{% endif %}">
                         <label>{{ discount.amount.vars.label }}</label>
                         {{ form_widget(discount.amount,{ 'attr': {'class': 'form-control'} }) }}
                         {{ form_errors(discount.amount) }}
                     </div>
-                    <div class="col-sm-5  {% if form_errors(discount.rate) %}state-error{% endif %}">
+                    <div class="col-sm-6  {% if form_errors(discount.rate) %}state-error{% endif %}">
                         <label>{{ discount.rate.vars.label }}</label>
                         {{ form_widget(discount.rate,{ 'attr': {'class': 'form-control'} }) }}
                         {{ form_errors(discount.rate) }}
@@ -104,7 +112,7 @@
     <div class="text-right">
         <button class="btn-u" type="submit">{% if subject.id %}Сохранить{% else %}Добавить{% endif %}</button>
         &nbsp;&nbsp;
-        <a href="{{ path('core_cabinet_site_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
+        <a href="{{ path('core_cabinet_adplace_list_first_page') }}" class="btn-u btn-u-default">Отмена</a>
         {% if subject.id %}
             &nbsp;&nbsp; или &nbsp;&nbsp;
             <a href="javascript:void(0);" class="delete btn-u btn-u-red">Удалить</a>
@@ -139,6 +147,8 @@
             newWidget = newWidget.replace(/__name__/g, collectionCount);
             parentWrapper.append(newWidget)
 
+    $('.discountLabel').show();
+
             return false;
         });
         // удаление коллекции
@@ -148,6 +158,9 @@
                 curRow = $this.parents('.collection-row');
 
             curRow.remove();
+            if (!$('.collection-row').length) {
+                $('.discountLabel').hide();
+            }
 
             return false;
         });

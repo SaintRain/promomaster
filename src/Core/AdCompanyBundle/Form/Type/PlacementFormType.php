@@ -89,7 +89,8 @@ class PlacementFormType extends AbstractType
                 'class'     => 'CoreSiteBundle:CommonSite',
                 'required'  => true,
                 'property'  => 'name',
-                'label'     => 'Площадка',
+                'label'     => 'Площадка*',
+                'required'=>true,
                 'mapped'    => false
             ]);
         }

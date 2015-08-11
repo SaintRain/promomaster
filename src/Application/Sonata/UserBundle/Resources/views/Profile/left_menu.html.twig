@@ -22,6 +22,13 @@
         or app.request.attributes.get('_route') == 'core_cabinet_adplace_list'
         or app.request.attributes.get('_route') == 'core_cabinet_adplace_edit'
         or app.request.attributes.get('_route') == 'core_cabinet_adplace_create'
+
+        or app.request.attributes.get('_route') == 'core_cabinet_adplace_section_edit'
+        or app.request.attributes.get('_route') == 'core_cabinet_ad_place_price_first_page'
+        or app.request.attributes.get('_route') == 'core_cabinet_adplace_getcode'
+        or app.request.attributes.get('_route') == 'core_cabinet_ad_place_price_create'
+        or app.request.attributes.get('_route') == 'core_cabinet_ad_place_price_edit'
+
         %} active{% endif %}
         ">
             <a href="{{ path('core_cabinet_adplace_list_first_page') }}"><i class="fa  fa-desktop   "></i> &nbsp;Рекламные места</a>
@@ -31,7 +38,7 @@
         or app.request.attributes.get('_route') == 'core_cabinet_gag_list'
         or app.request.attributes.get('_route') == 'core_cabinet_gag_edit'
         or app.request.attributes.get('_route') == 'core_cabinet_gag_create'
-        or app.request.attributes.get('_route') == 'core_cabinet_adplace_getcode'
+
 
 
         %} active{% endif %}">

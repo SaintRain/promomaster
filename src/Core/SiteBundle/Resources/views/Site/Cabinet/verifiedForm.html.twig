@@ -39,7 +39,7 @@
     </div>
 
     <div id="errorContent" class="alert alert-warning fade in" style="display: none">
-        <strong>Ошибка подтверждения.</strong> Не удалсоь найти meta-тег или html-файл подтверждения
+        <strong>Ошибка подтверждения.</strong> Не удалсоь найти meta-тег или html-файл подтверждения.
     </div>
 
     {% if  not site.isVerified %}
@@ -57,7 +57,7 @@
                 <div class="tab-pane fade in active" id="metatag">
                     <p>Разместить мета-тэг</p>
 
-                    <p>1. Добавьте в код главной страницы вашего сайта (в раздел head) мета-тэг</p>
+                    <p>1. Добавьте в код главной страницы вашего сайта (в раздел head) мета-тэг:</p>
 
                     <p><b>&lt;meta name='promomaster-verification' content='{{ site.verifiedCode }}' /&gt;</b></p>
 
@@ -65,22 +65,22 @@
                         большинстве браузеров это можно сделать выбрав пункт "Исходный код страницы" в контекстном меню.
                         На некоторых сайтах обновление мета-тэгов может занимать несколько минут!</p>
 
-                    <p>3. Нажмите на кнопку «Проверить»</p>
+                    <p>3. Нажмите на кнопку «Проверить», расположенную ниже.</p>
                 </div>
                 <div class="tab-pane fade in" id="htmlfile">
-                    <p>Разместить HTML-файл</p>
+                    <p>Разместить html-файл</p>
 
                     <p>1. Создайте пустой html-файл с именем <b>promomaster_{{ site.verifiedCode }}.html</b> или <a
                                 href="{{ path('core_cabinet_site_get_file_for_verify', {id:site.id}) }}">скачайте
-                            его</a></p>
+                            его.</a></p>
 
-                    <p>2. Загрузите его в корневой каталог вашего сайта</p>
+                    <p>2. Загрузите его в корневой каталог вашего сайта.</p>
 
                     <p>3. Убедитесь, что загруженный файл открывается по адресу
                         <a target="_blank"
                            href="{{ site.domain }}/promomaster_{{ site.verifiedCode }}.html">{{ site.domain~'/promomaster_'~site.verifiedCode~'.html' }}</a></p>
 
-                    <p>4. Нажмите на кнопку «Проверить»</p>
+                    <p>4. Нажмите на кнопку «Проверить», расположенную ниже.</p>
                 </div>
 
             </div>

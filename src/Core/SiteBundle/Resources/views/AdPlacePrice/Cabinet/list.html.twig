@@ -11,7 +11,7 @@
         <!--=== Breadcrumbs ===-->
         <div class="breadcrumbs">
             <div class="container">
-                <h1 class="pull-left">Стоимость для «{{ adplace.name }}»</h1>
+                <h1 class="pull-left">Настроить стоимость</h1>
                 <ul class="pull-right breadcrumb">
                     <li><a href="{{ path('core_common_index') }}">На главную</a></li>
                     <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
@@ -19,7 +19,7 @@
                         <a href="{{ path('core_cabinet_adplace_edit', {id : adplace.id}) }}">Редактирование настроек
                             рекламного места «{{ adplace.name }}»</a>
                     </li>
-                    <li class="active">Список цен для рекламного места «{{ adplace.name }}»</li>
+                    <li class="active">Список цен для рекламного места</li>
                 </ul>
             </div>
         </div>
@@ -46,26 +46,30 @@
 
     {% if  subjects |length %}
 
-            <h3>Список цен для рекламного места «{{ adplace.name }}»</h3>
-        <br/>
-        <div class="pull-right">
-            <a style="margin-top: -30px; clear:both" href="{{ path('core_cabinet_ad_place_price_create', {id: adplace.id}) }}"  class="btn-u  "><i class="fa fa-plus-square"></i> &nbsp;Добавить цену для рекламного места</a>
-        </div>
+            <h3>Список цен за рекламное место</h3>
+
+
+        <a style="margin-top: -30px" href="{{ path('core_cabinet_ad_place_price_create', {id: adplace.id}) }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить цену</a>
+
+        {#<div class="pull-right">#}
+            {#<a style="margin-top: -30px; clear:both" href="{{ path('core_cabinet_ad_place_price_create', {id: adplace.id}) }}"  class="btn-u  "><i class="fa fa-plus-square"></i> &nbsp;Добавить цену для рекламного места</a>#}
+        {#</div>#}
 
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>#</th>
                 {#<th>Рекламное место</th>#}
-                <th>Тип подсчета</th>
                 <th>Стоимость</th>
+                <th>Тип подсчета</th>
+
                 <th></th>
             </tr>
             </thead>
             <tbody>
             {% for subject in subjects %}
                 <tr>
-                    <td height="53px">
+                    <td >
                             {{ loop.index }}
                     </td>
                     {#<td>#}
@@ -75,14 +79,27 @@
 
 
                     {#</td>#}
-                    <td>
-                        <b>{{ subject.priceModel.captionRu }}</b>
-                    </td>
-                    <td>
-                        <b>{{ subject.cost }}</b>
-                    </td>
 
                     <td>
+                        {{ subject.cost }} руб.
+                    </td>
+                    <td>
+                        {% if subject.priceModel.name=='clicksquantity' %}
+                            за 1 клик
+                            {% endif %}
+
+                        {% if subject.priceModel.name=='showsquantity' %}
+                            за 1 показ
+                        {% endif %}
+
+                        {% if subject.priceModel.name=='daysquantity' %}
+                            за 1 день
+                        {% endif %}
+
+                    </td>
+
+
+                    <td style="width:144px">
                         <a href="{{ path('core_cabinet_ad_place_price_edit', {id:subject.id}) }}" class="btn-u btn-u-sm">Редактировать</a>
                     </td>
                 </tr>

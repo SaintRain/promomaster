@@ -17,7 +17,7 @@ class AdPlacePriceDiscountFormType extends AbstractType
     {
         $builder
             ->add('amount', null, ['label' => 'Свыше']) // , 'help' => 'Скидка действует при указанном количестве'
-            ->add('rate', null, ['label' => 'Размер скидки (%)'])
+            ->add('rate', null, ['label' => 'Процент скидки'])
         ;
     }
     

@@ -1,5 +1,8 @@
 <h3>Настройка разделов фильтрации для рекламного места</h3>
 
+<a style="margin-top: -30px" href="{{ path('core_cabinet_section_create_ajax') }}" class="btn-u pull-right section-create"><i class="fa fa-plus-square"></i> &nbsp;Добавить раздел</a>
+
+<br/>
 {#форма редактирования разделов  рекламного места#}
 
 {% if updated %}
@@ -43,17 +46,19 @@
 
         <div class="row margin-bottom-20">
             <div class="col-sm-12  {% if form_errors(form.sections) %}state-error{% endif %}">
-                <div class="pull-right">
-                    <a href="{{ path('core_cabinet_section_create_ajax') }}" class="btn-u section-create">
-                        <i class="fa fa-plus-square"></i>
-                        <span>&nbsp;Добавить раздел</span>
-                    </a>
-                </div>
-                <br/>
-                <br/>
+                {#<div class="pull-right">#}
+                    {#<a href="{{ path('core_cabinet_section_create_ajax') }}" class="btn-u section-create">#}
+                        {#<i class="fa fa-plus-square"></i>#}
+                        {#<span>&nbsp;Добавить раздел</span>#}
+                    {#</a>#}
+                {#</div>#}
+                {#<br/>#}
+                {#<br/>#}
+
                 {{ form_widget(form.sections) }}
                 {{ form_errors(form.sections) }}
             </div>
+
         </div>
 
 

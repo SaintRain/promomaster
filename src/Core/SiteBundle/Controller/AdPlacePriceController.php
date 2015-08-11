@@ -56,7 +56,7 @@ class AdPlacePriceController extends Controller
             if ($form->isValid()) {
                 $em->persist($subject);
                 $em->flush();
-                $this->setFlash('edit_success', 'Новая цена добавлена');
+                $this->setFlash('edit_success', 'Новая цена добавлена.');
                 return new RedirectResponse($this->generateUrl('core_cabinet_ad_place_price_list', ['id' => $adPlace->getId()]));
             }
             $this->setFlash('edit_errors', 'При добавлении цены произошли ошибки');

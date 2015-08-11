@@ -244,7 +244,7 @@
                         $(".entity-desc[data-id='" + data.data.id + "']").find('.inner').html(data.data.name);
                         {% else %}
                         newWidget = newWidget.replace(/data-id="[0-9]+"/g, 'data-id="' + data.data.id + '"');
-                        newWidget = newWidget.replace(/\<span class="inner"\>.+\<\/span\>/g, '<span class="inner">' + data.data.name + '</span>');
+                        newWidget = newWidget.replace(/\<span class="inner"\>.+\<\/span\>/g, '<span class="inner"><u>' + data.data.name + '<u/></span>');
                         collectionWrapper.append(newWidget);
                         if (collectionWrapper.parents('#placement-modal').length) {
                             console.log('edit');

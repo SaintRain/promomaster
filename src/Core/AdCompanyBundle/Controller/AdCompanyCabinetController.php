@@ -46,6 +46,8 @@ class AdCompanyCabinetController extends Controller
 
         $user = $this->container->get('security.context')->getToken()->getUser();
         $adcompany = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:AdCompany')->find($id);
+
+
         //$form = $this->getForm($adcompany);
         $form = $this->createForm('ad_company_type', $adcompany);
         //Сохранения изменения

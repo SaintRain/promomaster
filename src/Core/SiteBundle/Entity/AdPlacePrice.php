@@ -52,7 +52,7 @@ class AdPlacePrice
     /**
      * @var string
      *
-     * @ORM\Column(name="cost", type="decimal", scale=2)
+     * @ORM\Column(name="cost", type="decimal", precision=11, scale=5)
      * @Assert\NotBlank()
      * @Assert\GreaterThanOrEqual(value = 0)
      */

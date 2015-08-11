@@ -43,11 +43,11 @@
     <fieldset class="sky-form-other-style">
 
         <div class="row margin-bottom-20">
-                <div class="col-lg-6{% if form_errors(form.name) %} state-error{% endif %}">
-                    {{ form_label(form.name) }}
-                    {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
-                    {{ form_errors(form.name) }}
-                </div>
+            <div class="col-lg-6{% if form_errors(form.name) %} state-error{% endif %}">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.name) }}
+            </div>
         </div>
         <div class=" margin-bottom-20">
             <div
@@ -151,88 +151,88 @@
         </div>
 
         <div class="row margin-bottom-20">
-                <div {% if not form.startDateTime.vars.value %}  style="display: none"  {% endif %}
-                        class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
-                    <label>Дата начала показов</label>
-                    <label class="input">
-                        <i class="icon-append fa fa-calendar"></i>
-                        {{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date startDateTime'} }) }}
-                    </label>
+            <div {% if not form.startDateTime.vars.value %}  style="display: none"  {% endif %}
+                    class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">
+                <label>Дата начала показов</label>
+                <label class="input">
+                    <i class="icon-append fa fa-calendar"></i>
+                    {{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date startDateTime'} }) }}
+                </label>
 
-                    {{ form_errors(form.startDateTime) }}
+                {{ form_errors(form.startDateTime) }}
+            </div>
+
+
+            <div class="col-sm-6">
+                <label class="startDateTimeStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>
+
+                <div class="inline-group">
+                    <label class="radio"><input {% if form.startDateTime.vars.value %}  checked=""  {% endif %}
+                                class="startDateTimeStart" value="1" type="radio" name="dateSettingsStart"><i
+                                class="rounded-x"></i>По
+                        дате</label>
+                    <label class="radio"><input {% if not form.startDateTime.vars.value %}  checked=""  {% endif %}
+                                class="startDateTimeStart" value="0" type="radio" name="dateSettingsStart"><i
+                                class="rounded-x"></i>Начать
+                        показ сразу</label>
                 </div>
-
-
-                <div class="col-sm-6">
-                    <label class="startDateTimeStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>
-
-                    <div class="inline-group">
-                        <label class="radio"><input {% if form.startDateTime.vars.value %}  checked=""  {% endif %}
-                                    class="startDateTimeStart" value="1" type="radio" name="dateSettingsStart"><i
-                                    class="rounded-x"></i>По
-                            дате</label>
-                        <label class="radio"><input {% if not form.startDateTime.vars.value %}  checked=""  {% endif %}
-                                    class="startDateTimeStart" value="0" type="radio" name="dateSettingsStart"><i
-                                    class="rounded-x"></i>Начать
-                            показ сразу</label>
-                    </div>
-                </div>
+            </div>
         </div>
 
 
         <div class="row margin-bottom-20">
-                <div  {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}
-                        class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
-                    <label>Дата окончания показов</label>
+            <div  {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}
+                    class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
+                <label>Дата окончания показов</label>
 
-                    <label class="input">
-                        <i class="icon-append fa fa-calendar"></i>
-                        {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date finishDateTime'} }) }}
-                    </label>
+                <label class="input">
+                    <i class="icon-append fa fa-calendar"></i>
+                    {{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date finishDateTime'} }) }}
+                </label>
 
+            </div>
+
+            <div class="col-sm-6">
+                <label class="finishDateTimeFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>
+
+                <div class="inline-group">
+                    <label class="radio"><input {% if form.finishDateTime.vars.value %}  checked=""  {% endif %}
+                                class="finishDateTimeFinish" value="1" type="radio" name="dateSettingsFinish"><i
+                                class="rounded-x"></i>По
+                        дате</label>
+                    <label class="radio"><input {% if not form.finishDateTime.vars.value %}  checked=""  {% endif %}
+                                class="finishDateTimeFinish" value="0" type="radio" name="dateSettingsFinish"><i
+                                class="rounded-x"></i>Показывать бесконечно</label>
                 </div>
-
-                <div class="col-sm-6">
-                    <label class="finishDateTimeFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>
-
-                    <div class="inline-group">
-                        <label class="radio"><input {% if form.finishDateTime.vars.value %}  checked=""  {% endif %}
-                                    class="finishDateTimeFinish" value="1" type="radio" name="dateSettingsFinish"><i
-                                    class="rounded-x"></i>По
-                            дате</label>
-                        <label class="radio"><input {% if not form.finishDateTime.vars.value %}  checked=""  {% endif %}
-                                    class="finishDateTimeFinish" value="0" type="radio" name="dateSettingsFinish"><i
-                                    class="rounded-x"></i>Показывать бесконечно</label>
-                    </div>
-                </div>
+            </div>
         </div>
 
         <div id="def-countries"
              class="row margin-bottom-20 {% if form_errors(form.defaultCountries) %}state-error{% endif %}">
             <div class="col-sm-6">
 
-                    <label>Страны</label>
+                <label>Страны</label>
 
-                    <div class="pull-right">
-                        <a class="btn-u btn-u-xs country-select" href="javascript:void(0);">
-                            <i class="fa fa-plus-square"></i>
-                            <span>&nbsp;Выбрать страны</span>
-                        </a>
-                    </div>
-                    {{ form_widget(form.defaultCountries,{ 'attr': {'class': 'form-control'} }) }}
-                    {{ form_errors(form.defaultCountries) }}
+                <div class="pull-right">
+                    <a class="btn-u btn-u-xs country-select" href="javascript:void(0);">
+                        <i class="fa fa-plus-square"></i>
+                        <span>&nbsp;Выбрать страны</span>
+                    </a>
+                </div>
+                {{ form_widget(form.defaultCountries,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.defaultCountries) }}
 
             </div>
         </div>
 
 
         <div class="row margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
-                <div class="col-sm-6">
-                    <label class="checkbox">
-                        {{ form_widget(form.isEnabled) }}<i></i> {{ form.isEnabled.vars.label }}</label>
-                    {{ form_errors(form.isEnabled) }}
-                    </label>
-                </div>
+            <div class="col-sm-6">
+                <label class="checkbox">
+                    {{ form_widget(form.isEnabled) }}<i></i> {{ form.isEnabled.vars.label }}</label>
+                {{ form_errors(form.isEnabled) }}
+                </label>
+            </div>
         </div>
 
         <div class="margin-bottom-20">
@@ -548,3 +548,5 @@
 
     </script>
 {% endblock %}
+
+

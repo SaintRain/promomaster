@@ -1,16 +1,121 @@
-<div class="collection-row row margin-bottom-20">
-    <div class="col-sm-4  {% if form_errors(form.banner) %}state-error{% endif %}">
+<tr class="collection-row">
+
+    <td class="col-sm-3  {% if form_errors(form.banner) %}state-error{% endif %}">
         {#<label>{{ form.banner.vars.label }}</label>#}
-        {{ form_widget(form.banner,{ 'attr': {'class': 'form-control'} }) }}
+        {{ form_widget(form.banner,{ 'attr': {'class': ''} }) }}
         {{ form_errors(form.banner) }}
-    </div>
-    <div class="col-sm-2  {% if form_errors(form.banner) %}state-error{% endif %}">
+    </td >
+
+    {% if form.vars.value.banner is defined %}
+
+        {% set banner = form.vars.value.banner  %}
+    {% else %}
+        {% set banner = null  %}
+    {% endif %}
+
+    <td class="col-sm-3" >
+        <div  style="margin-top: 7px;">
+            {% if banner.image is defined %}
+                Изображение
+            {% endif %}
+
+            {% if banner.code is defined %}
+                HTML / Сторонний
+            {% endif %}
+
+            {% if banner.file is defined %}
+                Flash
+            {% endif %}
+
+
+            {% if banner.image is defined %}
+                {% if banner.image[0].width  is defined %}
+                    {{ banner.image[0].height }}x{{ banner.image[0].width }}
+                {% endif %}
+            {% else %}
+                {% if banner.file[0].width is defined %}
+                    {% if banner.file[0].width is defined %}
+                        {{ banner.file[0].height }}x{{ banner.file[0].width }}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div >
+    </td >
+
+
+
+    <td  class="col-sm-3  {% if form_errors(form.banner) %}state-error{% endif %}">
         {{ form_widget(form.preoritet,{ 'attr': {'class': 'form-control'} }) }}
         {{ form_errors(form.preoritet) }}
-    </div>
-    <div class="col-sm-2">
-        <div style="margin-top: 7px;">
-            <a class="btn-u-xs btn-u btn-u-red collection-row-remove" href="javascript:void(0)"><i class="icon-close"></i>&nbsp;Удалить</a>
-        </div>
-    </div>
-</div>
+    </td >
+
+    <td  class="col-sm-1">
+        <div  style="margin-top: 7px;">
+            <a class="collection-row-remove" href="javascript:void(0);"><i class="icon-trash" aria-hidden="true"></i></a>
+        </div >
+        {#<div style="margin-top: 7px;">#}
+        {#<a class="btn-u-xs btn-u btn-u-red collection-row-remove" href="javascript:void(0)"><i class="icon-close"></i>&nbsp;Удалить</a>#}
+        {#</div>#}
+    </td >
+</tr>
+
+
+{#<div class="collection-row row  margin-bottom-20" >#}
+    {#<div class="col-sm-3  {% if form_errors(form.banner) %}state-error{% endif %}">#}
+        {#&#123;&#35;<label>{{ form.banner.vars.label }}</label>&#35;&#125;#}
+        {#{{ form_widget(form.banner,{ 'attr': {'class': ''} }) }}#}
+        {#{{ form_errors(form.banner) }}#}
+    {#</div>#}
+
+    {#{% if form.vars.value.banner is defined %}#}
+
+        {#{% set banner = form.vars.value.banner  %}#}
+        {#{% else %}#}
+            {#{% set banner = null  %}#}
+    {#{% endif %}#}
+
+    {#<div class="col-sm-3" >#}
+        {#<div style="margin-top: 7px;">#}
+        {#{% if banner.image is defined %}#}
+            {#Изображение#}
+        {#{% endif %}#}
+
+        {#{% if banner.code is defined %}#}
+            {#HTML / Сторонний#}
+        {#{% endif %}#}
+
+        {#{% if banner.file is defined %}#}
+            {#Flash#}
+        {#{% endif %}#}
+
+
+        {#{% if banner.image is defined %}#}
+            {#{% if banner.image[0].width  is defined %}#}
+                {#{{ banner.image[0].height }}x{{ banner.image[0].width }}#}
+            {#{% endif %}#}
+        {#{% else %}#}
+            {#{% if banner.file[0].width is defined %}#}
+                {#{% if banner.file[0].width is defined %}#}
+                    {#{{ banner.file[0].height }}x{{ banner.file[0].width }}#}
+                {#{% endif %}#}
+            {#{% endif %}#}
+        {#{% endif %}#}
+        {#</div>#}
+    {#</div>#}
+
+
+
+    {#<div class="col-sm-3  {% if form_errors(form.banner) %}state-error{% endif %}">#}
+        {#{{ form_widget(form.preoritet,{ 'attr': {'class': 'form-control'} }) }}#}
+        {#{{ form_errors(form.preoritet) }}#}
+    {#</div>#}
+
+    {#<div class="col-sm-1">#}
+        {#<div style="margin-top: 7px;">#}
+        {#<a class="collection-row-remove" href="javascript:void(0);"><i class="icon-trash" aria-hidden="true"></i></a>#}
+        {#</div>#}
+        {#&#123;&#35;<div style="margin-top: 7px;">&#35;&#125;#}
+            {#&#123;&#35;<a class="btn-u-xs btn-u btn-u-red collection-row-remove" href="javascript:void(0)"><i class="icon-close"></i>&nbsp;Удалить</a>&#35;&#125;#}
+        {#&#123;&#35;</div>&#35;&#125;#}
+    {#</div>#}
+{#</div>#}

@@ -56,7 +56,8 @@
                 <div class="{{ fieldGroupClass }}  {% if form_errors(form.shortDescription) %}state-error{% endif %}">
                     <label>Краткое описание</label>
                     {{ form_widget(form.shortDescription,{ 'attr': {'class': 'form-control'} }) }}
-                    <span class="note">Если не заполнять, то будет использован текст из описание длиной 120 символов</span>
+                    <span class="note">Выводится в каталоге системы. Максимум 120 символов.</span>
+                    {#<span class="note">Если не заполнять, то будет использован текст из описания длиной 120 символов</span>#}
                     {{ form_errors(form.shortDescription) }}
                 </div>
             </div>
@@ -66,7 +67,7 @@
                     <label>Требования к рекламным материалам</label>
                     {{ form_widget(form.description,{ 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.description) }}
-                    <span class="note">Информация из этого поля показывается рекламодателю</span>
+                    <span class="note">Информация из этого поля показывается рекламодателю.</span>
                 </div>
             </div>
 

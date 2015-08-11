@@ -53,7 +53,7 @@
                 <th>Домен</th>
                 <th>Тематика</th>
                 <th>Добавлен</th>
-                <th>Статистика</th>
+                {#<th>Статистика</th>#}
                 <th>Подтверждение прав</th>
             </tr>
             </thead>
@@ -68,9 +68,9 @@
                         {% endfor %}
                     </td>
                     <td>{{ site.createdDateTime|date("d-m-Y H:i:s", default_timezone) }}</td>
-                    <td></td>
+                    {#<td></td>#}
                     <td>{% if site.isVerified %}<span class="label label-u">Подтверждено</span>{% else %}
-                            <a  href="{{ path('core_cabinet_site_verified_form', {id:site.id}) }}" class="btn-u btn-u-sm btn-u-orange">Пройти подтверждение</a>
+                            <a  href="{{ path('core_cabinet_site_verified_form', {id:site.id}) }}" class="btn-u btn-u-xs btn-u-orange">Пройти подтверждение</a>
                         {% endif %}
                     </td>
                 </tr>

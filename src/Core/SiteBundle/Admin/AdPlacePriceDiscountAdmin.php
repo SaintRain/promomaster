@@ -62,7 +62,7 @@ class AdPlacePriceDiscountAdmin extends Admin
             ->with('Основное')
             //->add('adPlacePrice', null, ['label' => 'Рекламное место', 'property' => 'id'])
             ->add('amount', null, ['label' => 'Свыше', 'help' => 'Скидка действует при указанном количестве'])
-            ->add('rate', null, ['label' => 'Размер скидки (%)'])
+            ->add('rate', null, ['label' => 'Процент скидки'])
             ->end()
         ;
     }

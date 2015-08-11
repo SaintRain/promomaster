@@ -28,7 +28,7 @@ class AdCompanySubscriber implements EventSubscriber
     {
         $object = $args->getEntity();
         if ($object instanceof AdCompany) {
-            $object->setToken(uniqid($object->getName()));
+            $object->setToken(uniqid(rand(1000, 10000)));
         }
     }
 
