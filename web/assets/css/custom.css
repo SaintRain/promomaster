@@ -19,6 +19,21 @@
 div.state-error >input {
     background: #fff0f0;
 }
+
+div.state-error > ul {
+    padding: 0px;
+    margin: 0px;
+    padding: 2px;
+}
+
+div.state-error > ul > li {
+    color: #ab4141;
+     list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+
+}
+
 .form_field_error_txt {
     color:#AB4141;
 }

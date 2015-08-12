@@ -1,4 +1,4 @@
-{% extends "ApplicationSonataUserBundle::layout.html.twig" %}
+{% extends "CoreCommonBundle::main_layout.html.twig" %}
 
 {# SEO - заголовки #}
 {% block title %}Изменение пароля{% endblock %}
@@ -6,26 +6,61 @@
 {% block meta_description %}Изменение пароля пользователя.{% endblock %}
 
 {% block content %}
-<div id="page_path">
-        <ul class="page_path_links">
-                <li class="page_path_link"><a href="{{path('core_common_index')}}">OliKids</a></li>
-                <li class="page_path_link">
-                    <strong>Восстановление пароля</strong>
-                </li>
-        </ul>
-    </div>
-    <div role="main" class="login_page" id="content">
-        <div class="page_pad">
-            <h1>Восстановление пароля</h1>
-            {% if invalid_username is defined %}
-                <div class="attention_box">
-                    {{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}
-                </div>
-
-            {% endif %}
-            <div class="box brown_gradient_box">
-                {% include "ApplicationSonataUserBundle:Resetting:reset_content.html.twig" %}
-            </div>
+    <!--=== Breadcrumbs ===-->
+    <div class="breadcrumbs">
+        <div class="container">
+            <h1 class="pull-left">Изменение пароля</h1>
+            <ul class="pull-right breadcrumb">
+                <li><a href="{{ path('core_common_index') }}">На главную</a></li>
+                <li class="active">Изменение пароля</li>
+            </ul>
         </div>
-    </div>
+        <!--/container-->
+    </div><!--/breadcrumbs-->
+    <!--=== End Breadcrumbs ===-->
+
+
+    <!--=== Content Part ===-->
+    <div class="container content">
+
+        {% include "ApplicationSonataUserBundle:Resetting:reset_content.html.twig" %}
+        <!--/row-->
+    </div><!--/container-->
+    <!--=== End Content Part ===-->
+
 {% endblock %}
+
+
+
+
+{#{% extends "ApplicationSonataUserBundle::layout.html.twig" %}#}
+
+{#&#123;&#35; SEO - заголовки &#35;&#125;#}
+{#{% block title %}Изменение пароля{% endblock %}#}
+{#{% block meta_keywords %}Изменение пароля, вспомнить пароль{% endblock %}#}
+{#{% block meta_description %}Изменение пароля пользователя.{% endblock %}#}
+
+{#{% block content %}#}
+{#<div id="page_path">#}
+        {#<ul class="page_path_links">#}
+                {#<li class="page_path_link"><a href="{{path('core_common_index')}}">OliKids</a></li>#}
+                {#<li class="page_path_link">#}
+                    {#<strong>Восстановление пароля</strong>#}
+                {#</li>#}
+        {#</ul>#}
+    {#</div>#}
+    {#<div role="main" class="login_page" id="content">#}
+        {#<div class="page_pad">#}
+            {#<h1>Восстановление пароля</h1>#}
+            {#{% if invalid_username is defined %}#}
+                {#<div class="attention_box">#}
+                    {#{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}#}
+                {#</div>#}
+
+            {#{% endif %}#}
+            {#<div class="box brown_gradient_box">#}
+                {#{% include "ApplicationSonataUserBundle:Resetting:reset_content.html.twig" %}#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+{#{% endblock %}#}
