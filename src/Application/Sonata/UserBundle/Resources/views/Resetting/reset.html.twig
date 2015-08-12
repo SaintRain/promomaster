@@ -21,6 +21,7 @@
                 <div class="attention_box">
                     {{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}
                 </div>
+
             {% endif %}
             <div class="box brown_gradient_box">
                 {% include "ApplicationSonataUserBundle:Resetting:reset_content.html.twig" %}
