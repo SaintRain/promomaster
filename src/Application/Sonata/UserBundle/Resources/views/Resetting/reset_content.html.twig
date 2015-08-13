@@ -43,16 +43,3 @@
 </div>
 
 
-{#<form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="auto_size">#}
-    {#<fieldset class="form_fieldset">#}
-        {#{{form_row(form.new.first, {'attr':{ 'class': 'text_input','size':40} })}}#}
-        {#{{form_row(form.new.second, {'attr':{ 'class': 'text_input','size':40} })}}#}
-        {#{{form_rest(form)}}#}
-    {#</fieldset>#}
-    {#<div class="form_row form_padding_group">#}
-        {#<button type="submit" class="common_button big">#}
-            {#<span>{{ 'resetting.reset.submit'|trans({}, 'FOSUserBundle') }}</span>#}
-        {#</button> или#}
-        {#<a href="{{path('core_common_index')}}">Отменить</a>#}
-    {#</div>#}
-{#</form>#}

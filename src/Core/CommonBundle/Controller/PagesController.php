@@ -97,14 +97,14 @@ class PagesController extends Controller
         }
         return null;
     }
-//    /**
-//     * 404 ошибка, метод используется для внутреннего перенаправления
-//     * @return type
-//     */
-//    public function error404Action(Request $request)
-//    {
-//        $res = $this->render('CoreCommonBundle:Pages:error404.html.twig', ['request'=>$request]);
-//    }
+    /**
+     * 404 ошибка, метод используется для внутреннего перенаправления
+     * @return type
+     */
+    public function error404Action(Request $request)
+    {
+        return  $this->render('TwigBundle:Exception:error404.html.twig', ['request'=>$request]);
+    }
 //
 //    /**
 //     * 504 ошибка, метод используется для внутреннего перенаправления

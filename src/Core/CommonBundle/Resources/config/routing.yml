@@ -53,10 +53,10 @@ core_common_test:
     defaults: { _controller: CoreCommonBundle:Pages:test }
 
 #экранируем, чтобы по прямой ссылке страницы не были доступны
-#core_common_error404:
-#    pattern:  /error404.html
-#    defaults: { _controller: CoreCommonBundle:Pages:error404 }
-#
+core_common_error404:
+    pattern:  /error404.html
+    defaults: { _controller: CoreCommonBundle:Pages:error404 }
+
 #core_common_error503:
 #    pattern:  /error503.html
 #    defaults: { _controller: CoreCommonBundle:Pages:error503 }
