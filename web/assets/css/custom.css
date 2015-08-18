@@ -85,3 +85,8 @@ body {
     overflow: hidden;
     position: relative;
 }
+
+.service .service-icon {
+    width:70px;
+}
+
