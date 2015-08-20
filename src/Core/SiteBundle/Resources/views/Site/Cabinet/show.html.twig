@@ -24,10 +24,8 @@
         }
         .site-desc li{
             background: none repeat scroll 0 0 #f8f8f8;
-            border: 2px solid #dedede;
             color: #dedede;
             display: block;
-            float: left;
             font-size: 24px;
             height: 30px;
             font-size: 15px;
@@ -84,6 +82,7 @@
             <ul class="list-styled">
             {% for category in site.categories %}
                 <li>
+                    <i class="fa fa-check color-green"></i>&nbsp;
                     <a href="{{ path('core_common_catalog', {slug : category.slug }) }}">{{ category.captionRu }}</a>
                 </li>
             {% endfor %}

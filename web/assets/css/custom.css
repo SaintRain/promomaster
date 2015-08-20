@@ -89,4 +89,6 @@ body {
 .service .service-icon {
     width:70px;
 }
-
+.navbar-brand.logo {
+    margin-top: -25px;
+}
