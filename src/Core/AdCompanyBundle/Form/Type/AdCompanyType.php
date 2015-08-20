@@ -170,15 +170,23 @@ class AdCompanyType  extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $site = $this->getRequestData($form->getName(), 'site', 'CoreSiteBundle:AdPlace');
-        $adPlace = $this->getRequestData($form->getName(), 'adPlaces', 'CoreSiteBundle:AdPlace');
-
-        if ($site && $adPlace) {
-            $placements = $this->em->getRepository('CoreAdCompanyBundle:Placement')->findBy(['adPlace' => $adPlace]);
+        if ($form->getData() && $form->isSubmitted()) {
+            $placements = $this->em->getRepository('CoreAdCompanyBundle:Placement')
+                                        ->findBy(['adCompany' => $form->getData()]);
             foreach($placements as $placement) {
                 $view->vars['placements'][] = $placement;
             }
         }
+
+//        $site = $this->getRequestData($form->getName(), 'site', 'CoreSiteBundle:AdPlace');
+//        $adPlace = $this->getRequestData($form->getName(), 'adPlaces', 'CoreSiteBundle:AdPlace');
+//
+//        if ($site && $adPlace) {
+//            $placements = $this->em->getRepository('CoreAdCompanyBundle:Placement')->findBy(['adPlace' => $adPlace]);
+//            foreach($placements as $placement) {
+//                $view->vars['placements'][] = $placement;
+//            }
+//        }
     }
 
 
