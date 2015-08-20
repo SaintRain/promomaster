@@ -72,10 +72,12 @@
                         {% if adcompany.placements.count==1 %}
                             {% set placement=adcompany.placements.first %}
 
-                            {{ placement.adPlace.name }} {{ placement.adPlace.width }}x{{ placement.adPlace.height }}
-                            {% if placement.adPlace.site %}
-                                <br/>
-                                {{ placement.adPlace.site.domain }}
+                            {% if placement.adPlace %}
+                                {{ placement.adPlace.name }} {{ placement.adPlace.width }}x{{ placement.adPlace.height }}
+                                {% if placement.adPlace.site %}
+                                    <br/>
+                                    {{ placement.adPlace.site.domain }}
+                                {% endif %}
                             {% endif %}
                         {% else %}
                             {% if adcompany.placements.count %}

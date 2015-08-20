@@ -74,24 +74,34 @@ class PlacementFormType extends AbstractType
             ->addModelTransformer(new PlacementTransformer())       //трансформер дат
         ;
         if ($options['adCompanyField']) {
-            $builder->add('adCompany', null, ['required' => true, 'property' => 'name']);
+            $builder->add(
+                'adCompany',
+                null,
+                ['required' => true, 'property' => 'name']
+            );
         }
         if ($options['adPlaceField']) {
             $builder->add('adPlace', null, [
-                'required' => true,
-                'property' => 'name',
-                'empty_value' => 'Необходимо выбрать'
+                'required'      => true,
+                'property'      => 'name',
+                'empty_value'   => 'Необходимо выбрать',
+                'disabled'      => $options['adPlaceFieldReadonly']
             ]);
         }
         if ($options['site']) {
+            $site = ($builder->getData() && $builder->getData()->getAdPlace())
+                    ? $builder->getData()->getAdPlace()->getSite() : null;
+
             $builder->add('site', 'entity', [
-                'empty_value' => 'Необходимо выбрать',
-                'class'     => 'CoreSiteBundle:CommonSite',
-                'required'  => true,
-                'property'  => 'name',
-                'label'     => 'Площадка*',
-                'required'=>true,
-                'mapped'    => false
+                'empty_value'   => 'Необходимо выбрать',
+                'class'         => 'CoreSiteBundle:CommonSite',
+                'required'      => true,
+                'property'      => 'name',
+                'label'         => 'Площадка*',
+                'required'      => true,
+                'mapped'        => false,
+                'data'          => $site,
+                'disabled'      => $options['siteFieldReadonly']
             ]);
         }
     }
@@ -113,7 +123,9 @@ class PlacementFormType extends AbstractType
            'adCompanyField' => true,
            'adPlaceField' => true,
            'adPlaceAllowNew' => false,
-            'site' => false
+           'site' => false,
+           'siteFieldReadonly' => false,
+           'adPlaceFieldReadonly' => false
         ]);
     }
 

@@ -267,7 +267,7 @@ class PlacementCabinetController extends Controller
         $form = $this->createForm(
             new PlacementFormType(),
             $placement,
-            ['adCompanyField' => false, 'adPlaceField' => false]
+            ['adCompanyField' => false, 'adPlaceFieldReadonly' => true, 'siteFieldReadonly' => true, 'site' => true]
         );
 
         if ($request->getMethod() == 'POST') {
