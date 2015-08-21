@@ -92,3 +92,14 @@ body {
 .navbar-brand.logo {
     margin-top: -25px;
 }
+
+a.fromIndexBlock:hover {
+text-decoration: none;
+}
+
+/*a:hover > .fa-user {*/
+    /**/
+/*}*/
+
+
+

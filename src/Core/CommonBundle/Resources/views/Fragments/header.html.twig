@@ -8,19 +8,17 @@
             <ul class="loginbar pull-right">
                 {#<li><a href="{{ path('core_faq_homepage') }}">Помощь</a></li>#}
                 <li><a href="{{ path('core_faq_homepage') }}">Помощь</a></li>
-
                 <li class="topbar-devider"></li>
-
-                {% if not  app.user %}
+                {%- if not  app.user -%}
                 <li><a href="{{ path('fos_user_security_login') }}">Авторизация</a></li>
-                {% else %}
-
-                <li><a href="{{ path('sonata_user_profile_show') }}"><i class="fa fa-user"></i>&nbsp;<strong>{% if app.user.firstname or app.user.lastname %}{{ app.user.lastname ~ ' ' ~ app.user.firstname }}{% else %}{{ app.user.username }}{% endif %}</strong></a></li>
+                {%- else -%}
+                <li><a href="{{ path('sonata_user_profile_show') }}"><i class="fa fa-user"></i><strong style="margin-left: 5px">{% if app.user.firstname or app.user.lastname %}{{ app.user.lastname ~ ' ' ~ app.user.firstname }}{% else %}{{ app.user.username }}{% endif %}</strong></a></li>
                     <li class="topbar-devider"></li>
                     <li><a href="{{ path('_logout') }}">Выйти</a></li>
-
-                {% endif %}
+                {%- endif -%}
             </ul>
+
+
             <!-- End Topbar Navigation -->
         </div>
     </div>

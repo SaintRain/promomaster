@@ -3,7 +3,7 @@
 {% set contactsLink = 'http://' ~ base_url ~ path('trouble_ticket_contact') %}
 #}
 <h3>Уважаемый(ая) {{ticket.authorName ? ticket.authorName : ticket.authorEmail}}!</h3>
-<p>В интернет магазине PromoMaster.net на Ваше сообщение №{{ticket.id}} пришел ответ.</p>
+<p>В сервисе PromoMaster.net на Ваше сообщение №{{ticket.id}} пришел ответ.</p>
 <p>Прочитать ответ, а также посмотреть всю историю сообщений Вы можете по данной ссылке:</p>
 <a href="{{ticketLink}}">{{ticketLink}}</a>
 
@@ -17,9 +17,9 @@
 
 <p>С уважением и наилучшими пожеланиями,</p>
 <p>команда {{base_url}}</p>
-{% set phonesKeys = {'rostov': 'phones.simple.rostov', 'msk' : 'phones.simple.msk', 'spb' : 'phones.simple.spb'} %}
-{% set phones = ServiceContainer.get('core_config_logic').get('phones') %}
-{% for key, phone in phones %}
-    <p>{{phonesKeys[key] | trans()}}&nbsp;{{phone}}</p>
-{% endfor %}
-<p>{{base_url}}</p>
+{#{% set phonesKeys = {'rostov': 'phones.simple.rostov', 'msk' : 'phones.simple.msk', 'spb' : 'phones.simple.spb'} %}#}
+{#{% set phones = ServiceContainer.get('core_config_logic').get('phones') %}#}
+{#{% for key, phone in phones %}#}
+    {#<p>{{phonesKeys[key] | trans()}}&nbsp;{{phone}}</p>#}
+{#{% endfor %}#}
+{#<p>{{base_url}}</p>#}
