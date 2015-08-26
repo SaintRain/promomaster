@@ -17,7 +17,7 @@ class __TwigTemplate_ace327f580c992442d778f47e53278ae19830a20c41e27f95ea6939f193
     {
         // line 7
         echo "
-На сайте olikids.ru поступила заявка <a href=\"";
+На сайте PromoMaster.net поступила заявка <a href=\"";
         // line 8
         echo twig_escape_filter($this->env, (isset($context["preOrderLink"]) ? $context["preOrderLink"] : null), "html", null, true);
         echo "\">#";

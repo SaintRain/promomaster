@@ -41,7 +41,7 @@ class __TwigTemplate_46b3797714ea8a376e0233f794393d12f060edcd8765412d9193faa50df
     {
         echo "Редактирование контрагента ";
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["contragent"]) ? $context["contragent"] : null), "listName", array()), "html");
-        echo " | OliKids.ru";
+        echo " | PromoMaster.net";
     }
 
     // line 5

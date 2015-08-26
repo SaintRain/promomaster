@@ -40,7 +40,7 @@ class __TwigTemplate_03642572215434ca0fe47ed984cc0abbf3f3d27affbf4589d4b4f3cc9c1
     {
         echo "Помощь и наиболее часто задаваемые вопросы - поиск по запросу &quot;";
         echo twig_escape_filter($this->env, (isset($context["searchString"]) ? $context["searchString"] : null), "html", null, true);
-        echo "&quot; | OliKids.ru";
+        echo "&quot; | PromoMaster.net";
     }
 
     // line 3

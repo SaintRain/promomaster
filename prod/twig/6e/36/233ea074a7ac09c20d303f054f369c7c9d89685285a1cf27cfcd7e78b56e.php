@@ -64,7 +64,7 @@ class __TwigTemplate_6e36233ea074a7ac09c20d303f054f369c7c9d89685285a1cf27cfcd7e7
     // line 13
     public function block_title($context, array $blocks = array())
     {
-        echo "Оформление заказа - способ доставки | OliKids.ru";
+        echo "Оформление заказа - способ доставки | PromoMaster.net";
     }
 
     // line 14

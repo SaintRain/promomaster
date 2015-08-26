@@ -104,7 +104,7 @@ class __TwigTemplate_87f0bb3fba0f807a4d8a2abde0be16cb9e0d87a61198792e955a656ede8
     // line 26
     public function block_title($context, array $blocks = array())
     {
-        echo "Оформление заказа - данные о покупателе | OliKids.ru";
+        echo "Оформление заказа - данные о покупателе | PromoMaster.net";
     }
 
     // line 27

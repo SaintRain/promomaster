@@ -38,7 +38,7 @@ class __TwigTemplate_680dbb7247cbadc6dc17f1bfa67f4c71831728712ab662ad9bf5746f38b
     // line 4
     public function block_title($context, array $blocks = array())
     {
-        echo "Обращения и жалобы | OliKids.ru";
+        echo "Обращения и жалобы | PromoMaster.net";
     }
 
     // line 5

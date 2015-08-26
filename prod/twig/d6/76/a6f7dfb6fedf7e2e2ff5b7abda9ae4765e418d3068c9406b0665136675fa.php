@@ -43,7 +43,7 @@ class __TwigTemplate_d676a6f7dfb6fedf7e2e2ff5b7abda9ae4765e418d3068c9406b0665136
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["ticket"]) ? $context["ticket"] : null), "id", array()), "html", null, true);
         echo " от ";
         echo twig_escape_filter($this->env, twig_date_format_filter($this->env, $this->getAttribute((isset($context["ticket"]) ? $context["ticket"] : null), "createdDateTime", array()), "d.m.Y, H:i", (isset($context["default_timezone"]) ? $context["default_timezone"] : null)), "html", null, true);
-        echo " | OliKids.ru";
+        echo " | PromoMaster.net";
     }
 
     // line 5

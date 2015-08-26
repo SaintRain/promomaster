@@ -54,56 +54,63 @@ class PagesController extends Controller
      * @param $slug
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function siteCatalogAction($slug, Request $request)
+    public function siteCatalogAction(Request $request, $page = 1)
     {
+        $paxPerPage = 10;
+
         if ($request->query->get('page') && $request->query->get('page') == 1) {
-            return new RedirectResponse($this->generateUrl('core_common_catalog', ['slug' => $slug]));
+            return new RedirectResponse($this->generateUrl('core_common_catalog_first_page'));
         }
         $em = $this->getDoctrine()->getManager();
-
         $categories = $em->getRepository('CoreCategoryBundle:SiteCategory')->getBuildTree();
-        if ($slug) {
-            $curCategory = $em->getRepository('CoreCategoryBundle:SiteCategory')->findOneBy(['slug' => $slug]);
-            $query = $em->getRepository('CoreSiteBundle:CommonSite')->findForCategory($slug);
-        } else {
-            $query = $em->getRepository('CoreSiteBundle:CommonSite')->findBy(['isVerified' => true]);
-        }
+        //здесь нужна обработка по фильтрам
+//        $slug='';
+//        if ($slug) {
+//            $curCategory = $em->getRepository('CoreCategoryBundle:SiteCategory')->findOneBy(['slug' => $slug]);
+//            $query = $em->getRepository('CoreSiteBundle:CommonSite')->findForCategory($slug);
+//        } else {
+//
+//        }
 
+
+        $query = $em->getRepository('CoreSiteBundle:CommonSite')->findBy(['isVerified' => true]);
         $sites = $this->get('knp_paginator')->paginate(
             $query,
-            $request->query->get('page', 1),
-            15
+            $request->query->get('page', $page),
+            $paxPerPage
         );
 
         return $this->render('CoreCommonBundle:Pages:site_catalog.html.twig', [
             'categories' => $categories,
-            'parentSlug' => $this->getParentSLug($slug),
-            'curCategory' => (isset($curCategory)) ? $curCategory : null,
-            'curSlug' => (!$slug) ? null : $slug,
+            //'parentSlug' => $this->getParentSLug($slug),
+            //'curCategory' => (isset($curCategory)) ? $curCategory : null,
+//            'curSlug' => (!$slug) ? null : $slug,
             'sites' => $sites
         ]);
     }
 
-    private function getParentSLug($slug)
-    {
-        if (!$slug) {
-            return null;
-        }
 
-        $site = $this->getDoctrine()->getManager()->getRepository('CoreCategoryBundle:SiteCategory')
-            ->findOneBy(['slug' => $slug]);
-        if ($site->getParent()) {
-            return $site->getParent()->getSlug();
-        }
-        return null;
-    }
+//    private function getParentSLug($slug)
+//    {
+//        if (!$slug) {
+//            return null;
+//        }
+//
+//        $site = $this->getDoctrine()->getManager()->getRepository('CoreCategoryBundle:SiteCategory')
+//            ->findOneBy(['slug' => $slug]);
+//        if ($site->getParent()) {
+//            return $site->getParent()->getSlug();
+//        }
+//        return null;
+//    }
+
     /**
      * 404 ошибка, метод используется для внутреннего перенаправления
      * @return type
      */
     public function error404Action(Request $request)
     {
-        return  $this->render('TwigBundle:Exception:error404.html.twig', ['request'=>$request]);
+        return $this->render('TwigBundle:Exception:error404.html.twig', ['request' => $request]);
     }
 //
 //    /**

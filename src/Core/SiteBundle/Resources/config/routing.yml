@@ -226,7 +226,7 @@ core_create_site_img:
     requirements:
           id: \d+
 
-core_create_site_show:
+core_site_details:
     path:      /site-{id}.html
     schemes:  [http]
     defaults:  { _controller: CoreSiteBundle:SiteCabinet:show }

@@ -46,7 +46,7 @@ class __TwigTemplate_6be5bc188d0fc35c0f2c2da1f1ffb818fe3994e98fd0dce6a97dc4acad2
             // line 7
             echo "Помощь - ";
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["category"]) ? $context["category"] : null), ("caption" . $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : null), "request", array()), "locale", array()))), "html", null, true);
-            echo " | OliKids.ru";
+            echo " | PromoMaster.net";
         }
     }
 

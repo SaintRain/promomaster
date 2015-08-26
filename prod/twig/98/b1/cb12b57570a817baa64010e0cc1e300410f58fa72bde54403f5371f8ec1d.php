@@ -124,7 +124,7 @@ class __TwigTemplate_98b1cb12b57570a817baa64010e0cc1e300410f58fa72bde54403f5371f
             echo " - тематические наборы, игрушки для малышей, машинки, грузовики";
             echo twig_escape_filter($this->env, (isset($context["seoCats"]) ? $context["seoCats"] : null), "html", null, true);
             echo twig_escape_filter($this->env, (isset($context["seoPage"]) ? $context["seoPage"] : null), "html", null, true);
-            echo " | OliKids.ru";
+            echo " | PromoMaster.net";
         }
         echo trim(preg_replace('/>\s+</', '><', ob_get_clean()));
     }

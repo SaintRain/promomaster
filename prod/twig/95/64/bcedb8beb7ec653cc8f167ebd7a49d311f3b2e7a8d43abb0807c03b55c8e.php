@@ -24,10 +24,10 @@ class __TwigTemplate_9564bcedb8beb7ec653cc8f167ebd7a49d311f3b2e7a8d43abb0807c03b
 
 <form method=\"post\" action= \"https://www.paypal.com/cgi-bin/webscr\">
     <input type=\"hidden\" name=\"cmd\" value=\"_xclick\">
-    <input type=\"hidden\" name=\"business\" value=\"info@olikids.ru\">
-    <input type=\"hidden\" name=\"return\" value=\"info@olikids.ru\">
-    <input type=\"hidden\" name=\"cancel_return\" value=\"info@olikids.ru\">
-    <input type=\"hidden\" name=\"notify_url\" value=\"info@olikids.ru\">
+    <input type=\"hidden\" name=\"business\" value=\"info@PromoMaster.net\">
+    <input type=\"hidden\" name=\"return\" value=\"info@PromoMaster.net\">
+    <input type=\"hidden\" name=\"cancel_return\" value=\"info@PromoMaster.net\">
+    <input type=\"hidden\" name=\"notify_url\" value=\"info@PromoMaster.net\">
     <input type=\"hidden\" name=\"item_name\" value=\"Item name\">
     <input type=\"hidden\" name=\"item_number\" value=\"1234\">
     <input type=\"hidden\" name=\"amount\" value=\"1\">

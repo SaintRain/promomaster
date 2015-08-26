@@ -44,7 +44,7 @@ class __TwigTemplate_3aa444e364574b269b1c424c2d8de6d84abe2cb10008351d75e23cd2ea8
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["rootCategory"]) ? $context["rootCategory"] : null), ("title" . $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : null), "request", array()), "locale", array()))), "html");
         } else {
             // line 8
-            echo "Помощь и наиболее часто задаваемые вопросы | OliKids.ru";
+            echo "Помощь и наиболее часто задаваемые вопросы | PromoMaster.net";
         }
     }
 

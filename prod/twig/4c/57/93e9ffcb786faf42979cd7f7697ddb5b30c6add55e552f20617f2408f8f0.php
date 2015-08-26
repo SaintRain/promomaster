@@ -19,7 +19,7 @@ class __TwigTemplate_4c5793e9ffcb786faf42979cd7f7697ddb5b30c6add55e552f20617f240
         echo "<h3>Уважаемый(ая) ";
         echo twig_escape_filter($this->env, (($this->getAttribute((isset($context["ticket"]) ? $context["ticket"] : null), "authorName", array())) ? ($this->getAttribute((isset($context["ticket"]) ? $context["ticket"] : null), "authorName", array())) : ($this->getAttribute((isset($context["ticket"]) ? $context["ticket"] : null), "authorEmail", array()))), "html", null, true);
         echo "!</h3>
-<p>В интернет магазине olikids.ru на Ваше сообщение №";
+<p>В интернет магазине PromoMaster.net на Ваше сообщение №";
         // line 6
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["ticket"]) ? $context["ticket"] : null), "id", array()), "html", null, true);
         echo " пришел ответ.</p>

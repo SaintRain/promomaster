@@ -75,8 +75,8 @@ class __TwigTemplate_716f97a36acd5e015887ea6cecd6ab0c150f92113515a8d3688fd9feea4
         echo "\">обратной связи</a></p>
 
 <p>С уважением и наилучшими пожеланиями,</p>
-<p>команда olikids.ru</p>
-<p>olikids.ru - игрушки и игры</p>
+<p>команда PromoMaster.net</p>
+<p>PromoMaster.net - игрушки и игры</p>
 ";
         // line 24
         $context["phonesKeys"] = array("rostov" => "phones.simple.rostov", "msk" => "phones.simple.msk", "spb" => "phones.simple.spb");
@@ -100,7 +100,7 @@ class __TwigTemplate_716f97a36acd5e015887ea6cecd6ab0c150f92113515a8d3688fd9feea4
         // line 29
         echo "<p><a href=\"";
         echo twig_escape_filter($this->env, (isset($context["siteUrl"]) ? $context["siteUrl"] : null), "html", null, true);
-        echo "\">olikids.ru</a></p>
+        echo "\">PromoMaster.net</a></p>
 ";
     }
 

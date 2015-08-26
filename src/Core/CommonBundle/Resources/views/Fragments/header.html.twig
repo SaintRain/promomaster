@@ -49,8 +49,8 @@
                         </a>
                     </li>
                     <!-- End Home -->
-                    <li {% if active_route == 'core_common_catalog' %}class="active"{% endif %}>
-                        <a href="{{ path('core_common_catalog') }}" >
+                    <li {% if active_route == 'core_common_catalog_first_page' or active_route == 'core_common_catalog' %}class="active"{% endif %}>
+                        <a href="{{ path('core_common_catalog_first_page') }}" >
                             Каталог
                         </a>
                     </li>

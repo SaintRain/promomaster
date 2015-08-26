@@ -76,7 +76,7 @@ class __TwigTemplate_c1690ae3fd5fbf46a75c370d22bf8e63bb695d80a3b68c08daf43db5cbb
         $this->env->loadTemplate("ApplicationSonataUserBundle:Registration:register_content.html.twig")->display($context);
         // line 21
         echo "        <div class=\"registration_benefits\">
-            <h2>Зарегистрируйтесь на OliKids.ru прямо сейчас! Это займет одну минуту и даст Вам еще больше возможностей.</h2>
+            <h2>Зарегистрируйтесь на PromoMaster.net прямо сейчас! Это займет одну минуту и даст Вам еще больше возможностей.</h2>
             <ul class=\"round_bullet\">
                 <li>Только зарегистрированный пользователь может купить игрушки на нашем сайте.</li>
                 <li>Мы запомним все Ваши данные, и при оформлении новых заказов Вам не придется указывать свои имя, фамилию, адрес и т. д.</li>

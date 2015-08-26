@@ -134,7 +134,7 @@ class __TwigTemplate_5a4625f4877581a1cd630c80122ceb5059df1ad6ceaa37c359a99c40867
         echo $this->env->getExtension('translator')->trans("workTime.body");
         echo "</dt>
                     <dd class=\"contacts_list_name\">E-mail</dd>
-                    <dt class=\"contacts_list_info\"><a href=\"mailto:info@olikids.ru\">info@olikids.ru</a></dt>
+                    <dt class=\"contacts_list_info\"><a href=\"mailto:info@PromoMaster.net\">info@PromoMaster.net</a></dt>
                     ";
         // line 54
         echo "                    <dd class=\"contacts_list_name\">Юридический адрес</dd>

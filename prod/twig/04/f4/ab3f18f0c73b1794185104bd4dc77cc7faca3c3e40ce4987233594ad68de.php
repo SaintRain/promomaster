@@ -349,7 +349,7 @@ class __TwigTemplate_04f4ab3f18f0c73b1794185104bd4dc77cc7faca3c3e40ce4987233594a
     // line 210
     public function block_title($context, array $blocks = array())
     {
-        echo "OliKids.ru — интернет-магазин игрушек и детских товаров";
+        echo "PromoMaster.net — интернет-магазин игрушек и детских товаров";
     }
 
     // line 211

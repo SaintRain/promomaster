@@ -46,7 +46,7 @@ class __TwigTemplate_869a467054e8f89579e95f5ec65a95752988c8cc459bbabf87a91c056aa
                 echo " header_logo_holiday";
             }
             echo "\">
-                    <img alt=\"OliKids.ru &mdash; интернет-магазин детских товаров\" src=\"";
+                    <img alt=\"PromoMaster.net &mdash; интернет-магазин детских товаров\" src=\"";
             // line 19
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["logo"]) ? $context["logo"] : null), "src", array()), "html", null, true);
             echo "\">
@@ -71,7 +71,7 @@ class __TwigTemplate_869a467054e8f89579e95f5ec65a95752988c8cc459bbabf87a91c056aa
                     echo " header_logo_holiday";
                 }
                 echo "\">
-                    <img alt=\"OliKids.ru &mdash; интернет-магазин детских товаров\" src=\"";
+                    <img alt=\"PromoMaster.net &mdash; интернет-магазин детских товаров\" src=\"";
                 // line 28
                 echo twig_escape_filter($this->env, $this->getAttribute((isset($context["logo"]) ? $context["logo"] : null), "src", array()), "html", null, true);
                 echo "\">
@@ -88,7 +88,7 @@ class __TwigTemplate_869a467054e8f89579e95f5ec65a95752988c8cc459bbabf87a91c056aa
                     echo " header_logo_holiday";
                 }
                 echo "\">
-                        <img alt=\"OliKids.ru &mdash; интернет-магазин детских товаров\" src=\"";
+                        <img alt=\"PromoMaster.net &mdash; интернет-магазин детских товаров\" src=\"";
                 // line 33
                 echo twig_escape_filter($this->env, $this->getAttribute((isset($context["logo"]) ? $context["logo"] : null), "src", array()), "html", null, true);
                 echo "\">

@@ -64,7 +64,7 @@ class __TwigTemplate_442fde3bb45d76fadd4fe50bd33afa1bf06fd3564e415fa1cbd0c7858e3
     // line 14
     public function block_title($context, array $blocks = array())
     {
-        echo "Оформление заказа - оплата | OliKids.ru";
+        echo "Оформление заказа - оплата | PromoMaster.net";
     }
 
     // line 15

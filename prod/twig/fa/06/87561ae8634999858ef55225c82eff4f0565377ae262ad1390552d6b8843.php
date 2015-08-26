@@ -24,7 +24,7 @@ class __TwigTemplate_fa0687561ae8634999858ef55225c82eff4f0565377ae262ad1390552d6
         echo twig_escape_filter($this->env, twig_date_format_filter($this->env, "now", "Y-m-d H:i", (isset($context["default_timezone"]) ? $context["default_timezone"] : null)), "html", null, true);
         echo "\">
     <shop>
-        <name>Olikids.ru</name>
+        <name>PromoMaster.net</name>
         <company>ООО \"Olikids\"</company>
         <url>http://www.";
         // line 7

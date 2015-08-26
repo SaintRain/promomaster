@@ -39,7 +39,7 @@ class __TwigTemplate_32b12d968c95ed1f1945d33809ded2236c346094f7e1f1a33b7f6199200
     // line 4
     public function block_title($context, array $blocks = array())
     {
-        echo "Добавление и редактирование контрагентов | OliKids.ru";
+        echo "Добавление и редактирование контрагентов | PromoMaster.net";
     }
 
     // line 5

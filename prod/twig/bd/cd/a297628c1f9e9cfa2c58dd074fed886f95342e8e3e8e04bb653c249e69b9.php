@@ -47,7 +47,7 @@ class __TwigTemplate_bdcda297628c1f9e9cfa2c58dd074fed886f95342e8e3e8e04bb653c249
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["article"]) ? $context["article"] : null), ("caption" . $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : null), "request", array()), "locale", array()))), "html", null, true);
             echo " - ";
             echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["article"]) ? $context["article"] : null), "category", array()), ("caption" . $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : null), "request", array()), "locale", array()))), "html", null, true);
-            echo " | OliKids.ru";
+            echo " | PromoMaster.net";
         }
     }
 

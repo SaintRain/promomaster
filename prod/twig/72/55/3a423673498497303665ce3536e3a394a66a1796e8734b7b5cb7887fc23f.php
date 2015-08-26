@@ -53,7 +53,7 @@ class __TwigTemplate_72553a423673498497303665ce3536e3a394a66a1796e8734b7b5cb7887
     // line 16
     public function block_title($context, array $blocks = array())
     {
-        echo "Ваши покупки | OliKids.ru";
+        echo "Ваши покупки | PromoMaster.net";
     }
 
     // line 17

@@ -50,7 +50,7 @@ class __TwigTemplate_b0e8ab6177d4db827fbaf2ee16dc8c1a360b5d59fc759fb8d2c5d9d31ab
         echo "        <br/>
         Во вложении данного письма находится счет, который ожидает Вашей оплаты.
         <br/><br/>
-        С ув. администрация проекта olikids.ru
+        С ув. администрация проекта PromoMaster.net
     ";
         echo trim(preg_replace('/>\s+</', '><', ob_get_clean()));
     }

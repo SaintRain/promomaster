@@ -23,7 +23,7 @@ class __TwigTemplate_26502b978ced61d63c80680f7298aa14e3c6e62d5c90b7733cbc53f6af6
 <!doctype html>
 <html lang=\"ru\">
 <head>
-\t<title>OliKids.ru &mdash; интернет-магазин детских товаров<</title>
+\t<title>PromoMaster.net &mdash; интернет-магазин детских товаров<</title>
 \t<meta charset=\"utf-8\">
 \t<link href=\"";
         // line 14
@@ -38,32 +38,32 @@ class __TwigTemplate_26502b978ced61d63c80680f7298aa14e3c6e62d5c90b7733cbc53f6af6
 \t<script type=\"text/javascript\" src=\"//vk.com/js/api/openapi.js?82\"></script>
 \t<script type=\"text/javascript\">VK.init({apiId: 3503016, onlyWidgets: true});</script>
 
-\t<meta property=\"og:image\" content=\"http://www.olikids.ru/dummy/images/promo_pic.jpg\"/>
+\t<meta property=\"og:image\" content=\"http://www.PromoMaster.net/dummy/images/promo_pic.jpg\"/>
 \t<meta property=\"og:title\" content=\"OliKids &mdash; интернет-магазин детских товаров. Скоро открытие!\"/>
 \t<meta property=\"og:description\" content=\"Детские игрушки, товары для творчества, одежда и обувь для детей, все для кормления, мебель в детскую, коляски\"/>
 \t<meta property=\"og:type\" content=\"website\"/>
-\t<meta property=\"og:url\" content=\"http://www.olikids.ru/\"/>
+\t<meta property=\"og:url\" content=\"http://www.PromoMaster.net/\"/>
 </head>
 <body>
 
 <header id=\"header\">
-\t<h1 class=\"header_logo\">OliKids.ru &mdash; интернет-магазин детских товаров</h1>
+\t<h1 class=\"header_logo\">PromoMaster.net &mdash; интернет-магазин детских товаров</h1>
 \t<div class=\"socials\">
 \t\t<div class=\"social\">
 \t\t\t<div id=\"fb-root\"></div>
 \t\t\t<script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) {return;} js = d.createElement(s); js.id = id; js.src = \"//connect.facebook.net/ru_RU/all.js#xfbml=1\"; fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>
-\t\t\t<div class=\"fb-like\" data-href=\"http://www.olikids.ru/\" data-send=\"false\" data-layout=\"box_count\" data-width=\"150\" data-show-faces=\"true\" data-font=\"arial\"></div>
+\t\t\t<div class=\"fb-like\" data-href=\"http://www.PromoMaster.net/\" data-send=\"false\" data-layout=\"box_count\" data-width=\"150\" data-show-faces=\"true\" data-font=\"arial\"></div>
 \t\t</div>
 \t\t<div class=\"social\">
 \t\t\t<div id=\"vk_like\"></div>
 \t\t\t<script type=\"text/javascript\">VK.Widgets.Like(\"vk_like\", {type: \"vertical\", height: 24});</script>
 \t\t</div>
 \t\t<div class=\"social\">
-\t\t\t<div class=\"g-plusone\" data-size=\"tall\" data-href=\"http://www.olikids.ru/\"></div>
+\t\t\t<div class=\"g-plusone\" data-size=\"tall\" data-href=\"http://www.PromoMaster.net/\"></div>
 \t\t\t<script type=\"text/javascript\">(function() {var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true; po.src = 'https://apis.google.com/js/plusone.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);})();</script>
 \t\t</div>
 \t\t<div class=\"social socials_twitter\">
-\t\t\t<a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-url=\"http://www.olikids.ru/\" data-via=\"OliKids.ru\" data-lang=\"ru\" data-related=\"anywhereTheJavascriptAPI\" data-count=\"vertical\">Твитнуть</a>
+\t\t\t<a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-url=\"http://www.PromoMaster.net/\" data-via=\"PromoMaster.net\" data-lang=\"ru\" data-related=\"anywhereTheJavascriptAPI\" data-count=\"vertical\">Твитнуть</a>
 \t\t\t<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=\"https://platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>
 \t\t</div>
 \t</div>

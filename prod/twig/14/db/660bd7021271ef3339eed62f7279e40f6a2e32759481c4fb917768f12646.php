@@ -22,7 +22,7 @@ class __TwigTemplate_14db660bd7021271ef3339eed62f7279e40f6a2e32759481c4fb917768f
         echo $this->env->getExtension('routing')->getPath("core_common_index");
         echo "\"><img src=\"";
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("images/logo_olikids.png"), "html", null, true);
-        echo "\" alt=\"OliKids.ru — интернет-магазин детских товаров\"></a>
+        echo "\" alt=\"PromoMaster.net — интернет-магазин детских товаров\"></a>
         ";
         // line 3
         $this->env->loadTemplate("CoreCommonBundle:Fragments:searchForm.html.twig")->display($context);
