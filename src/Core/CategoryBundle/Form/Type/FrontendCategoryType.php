@@ -36,7 +36,7 @@ class FrontendCategoryType extends AbstractType {
 //        ]);
 
         $categories=$this->em->getRepository('CoreCategoryBundle:SiteCategory')
-            ->getBuildTree()[0]['__children'];
+            ->getBuildTree(['where'=>['isEnabled'=>true]])[0]['__children'];
 
         //проверяем есть ли уже в форме дерево
 //        $uniqid = $view->vars['sonata_admin']['admin']->getUniqid();

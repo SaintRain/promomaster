@@ -10,9 +10,37 @@
 namespace Core\SiteBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Core\SiteBundle\Model\SearchFilter;
 
 class CommonSiteRepository extends EntityRepository
 {
+
+    public function searchByFilter(SearchFilter $filter)
+    {
+
+        $query = $this->createQueryBuilder('s')
+            ->select('s')
+            ->join('s.categories', 'c')
+            ->where('s.isVerified = 1');
+
+        if ($filter->getKeywords()) {
+
+            $query->where('(s.keywords LIKE :keywords OR s.shortDescription LIKE :keywords OR s.description LIKE :keywords)')
+                ->setParameter('keywords', '%'.$filter->getKeywords().'%');
+        }
+
+        if ($filter->getCategories() && $filter->getCategories()->count()) {
+            $catIds = [];
+            foreach ($filter->getCategories() as $cat) {
+                $catIds[] = $cat->getId();
+            }
+            $query->andWhere('c.id IN (:categories)')
+                ->setParameter('categories', $catIds);
+        }
+        return $query->getQuery();
+
+    }
+
 
     /**
      * Построение запроса на выборку площадок
@@ -62,7 +90,7 @@ class CommonSiteRepository extends EntityRepository
             ->andWhere('s.isVerified = :isVerified')
             ->setParameters(
                 [':isVerified' => $isVerified,
-                 ':slug' => $slug
+                    ':slug' => $slug
                 ]
             )
             ->getQuery()->
