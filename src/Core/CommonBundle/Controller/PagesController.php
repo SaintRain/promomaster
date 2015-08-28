@@ -11,6 +11,8 @@ namespace Core\CommonBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Core\SiteBundle\Model\SearchFilter;
+use Core\SiteBundle\Form\Type\SearchFilterFormType;
 
 class PagesController extends Controller
 {
@@ -63,17 +65,17 @@ class PagesController extends Controller
         }
         $em = $this->getDoctrine()->getManager();
         $categories = $em->getRepository('CoreCategoryBundle:SiteCategory')->getBuildTree();
-        //здесь нужна обработка по фильтрам
-//        $slug='';
-//        if ($slug) {
-//            $curCategory = $em->getRepository('CoreCategoryBundle:SiteCategory')->findOneBy(['slug' => $slug]);
-//            $query = $em->getRepository('CoreSiteBundle:CommonSite')->findForCategory($slug);
-//        } else {
-//
-//        }
 
+        $filter = new SearchFilter();
+        $filterType = new SearchFilterFormType();
+        $form = $this->createForm($filterType, $filter, ['method' => 'GET', 'action' => $this->generateUrl('core_common_catalog_first_page')]);
+        $form->handleRequest($request);
 
-        $query = $em->getRepository('CoreSiteBundle:CommonSite')->findBy(['isVerified' => true]);
+        if (!$filter->getCategories() && $filter->getSelectMainCat()) {
+            $res = $em->getRepository('CoreCategoryBundle:SiteCategory')->children($filter->getSelectMainCat());
+            $filter->setCategories($res);
+        }
+        $query = $em->getRepository('CoreSiteBundle:CommonSite')->searchByFilter($filter);
         $sites = $this->get('knp_paginator')->paginate(
             $query,
             $request->query->get('page', $page),
@@ -82,10 +84,8 @@ class PagesController extends Controller
 
         return $this->render('CoreCommonBundle:Pages:site_catalog.html.twig', [
             'categories' => $categories,
-            //'parentSlug' => $this->getParentSLug($slug),
-            //'curCategory' => (isset($curCategory)) ? $curCategory : null,
-//            'curSlug' => (!$slug) ? null : $slug,
-            'sites' => $sites
+            'sites' => $sites,
+            'form' => $form->createView()
         ]);
     }
 

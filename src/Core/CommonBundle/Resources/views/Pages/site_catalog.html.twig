@@ -1,4 +1,5 @@
 {% extends "CoreCommonBundle::main_layout.html.twig" %}
+{% form_theme form 'CoreCategoryBundle::Form/FrontendCategorySearchTheme.html.twig' %}
 
 {# SEO - заголовки #}
 {% block title %}PromoMaster.net {% endblock %}
@@ -38,14 +39,14 @@
                     Каталог площадок
                 </li>
                 {#{% if curCategory %}#}
-                    {#{% if curCategory.parent and curCategory.parent.lvl %}#}
-                    {#<li>#}
-                        {#<a href="{{ path('core_common_catalog_first_page' , {slug : curCategory.parent.slug}) }}">#}
-                        {#{{ curCategory.parent.captionRu }}#}
-                        {#</a>#}
-                    {#</li>#}
-                    {#{% endif %}#}
-                    {#<li class="active">{{ curCategory.captionRu }}</li>#}
+                {#{% if curCategory.parent and curCategory.parent.lvl %}#}
+                {#<li>#}
+                {#<a href="{{ path('core_common_catalog_first_page' , {slug : curCategory.parent.slug}) }}">#}
+                {#{{ curCategory.parent.captionRu }}#}
+                {#</a>#}
+                {#</li>#}
+                {#{% endif %}#}
+                {#<li class="active">{{ curCategory.captionRu }}</li>#}
                 {#{% endif %}#}
 
             </ul>
@@ -54,87 +55,96 @@
     <div class="container">
         <div class="content">
             <div class="col-md-3">
-                {#<ul class="list-group sidebar-nav-v1" id="sidebar-nav">#}
-                    {#{% for category in categories[0]['__children'] %}#}
-                        {#{% if (parentSlug and parentSlug == category.slug) or (curSlug and (curSlug == category.slug)) %}#}
-                            {#{% set isActive = true %}#}
-                            {#{% else %}#}
-                                {#{% set isActive = false  %}#}
-                        {#{% endif %}#}
-                        {#<li class="list-group-item{% if isActive %} active{% endif %}">#}
-                            {#<a href="{{ path('core_common_catalog', {slug : category.slug }) }}">{{ category.captionRu }}</a>#}
-                            {#{% if (category['__children'] | length) and isActive %}#}
-                                {#<ul class="collapse in">#}
-                                    {#{% for child in category['__children'] %}#}
-                                        {#<li {% if curSlug and (curSlug == child.slug) %}class="active"{% endif %}>#}
-                                            {#<a href="{{ path('core_common_catalog', {slug : child.slug }) }}">{{ child.captionRu }}</a>#}
-                                        {#</li>#}
-                                    {#{% endfor %}#}
-                                {#</ul>#}
-                            {#{% endif  %}#}
-                        {#</li>#}
-                    {#{% endfor %}#}
-                {#</ul>#}
-            </div>
-            <div class="col-md-9">
+                <h3>Фильтр</h3>
 
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Площадка</th>
-                        <th>Описание</th>
-                        <th>Места</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for site in sites %}
+                {{ form_start(form, {attr:{class:'sky-form sky-form-other-style'}}) }}
+                <div>
+                    <label>Поисковая фраза:</label>
+                    {{ form_widget(form.keywords,{attr:{class:'form-control'}}) }}
+                </div>
+                <br>
 
-                        <tr data-url="{{ path('core_site_details', {id: site.id}) }}">
-                            <td>{{ loop.index }}</td>
-                            <td><a href="{{ path('core_site_details', {id: site.id}) }}">{{ site.domain }}</a></td>
-                            <td>{{ site.shortDescription }}</td>
-                            <td></td>
-                        </tr>
-
-                    {% endfor %}
-                    </tbody>
-                </table>
-
-
-                <div class="row margin-bottom-10">
-                    <div class="text-center">
-                        {{ knp_pagination_render(sites, 'CoreCommonBundle:Fragments:pagination.html.twig',{},
-                        { routeFirsPage: 'core_common_catalog_first_page', routePage: 'core_common_catalog'}) }}
-                    </div>
+                <div><label>Тематика площадки:</label>
+                    {{ form_widget(form.selectMainCat, {attr:{'class':'selectMainCat form-control'}}) }}
+                    {{ form_widget(form.categories) }}
                 </div>
 
-                {#<div class="fusion-portfolio wrapper-portfolio-grid cbp-4-col">#}
-                    {#<div id="grid-container" class="cbp-l-grid-gallery">#}
-                        {#<ul>#}
+                <br>
+                <div>
 
-                            {#{% for site in sites %}#}
-                            {#<li class="cbp-item motion">#}
-                                {#<a href="{{ path('core_create_site_show', {id: site.id}) }}" class="cbp-caption">#}
-                                    {#<div class="cbp-caption-defaultWrap">#}
-                                        {#{% set curImg = (site.webPath) ? site.webPath : '/assets/img/portfolio/01.jpg' %}#}
-                                        {#<img src="{{ asset(curImg) }}" alt="" width="100%">#}
-                                    {#</div>#}
-                                    {#<div class="cbp-caption-activeWrap">#}
-                                        {#<div class="cbp-l-caption-alignCenter">#}
-                                            {#<div class="cbp-l-caption-body">#}
-                                                {#<div class="cbp-l-caption-text">{{ site.name }}</div>#}
-                                                {#{% if site.shortDescription %}#}
-                                                {#<p class="cbp-l-caption-desc">{{ site.shortDescription }}</p>#}
-                                                {#{% endif %}#}
-                                            {#</div>#}
-                                        {#</div>#}
-                                    {#</div>#}
-                                {#</a>#}
-                            {#</li>#}
-                            {#{% endfor %}#}
-                        {#</ul>#}
-                    {#</div>#}
+                    <button class="btn-u" type="submit">Искать</button>
+&nbsp;&nbsp;
+                <a class="btn-u btn-u-default" href="{{ path('core_common_catalog_first_page') }}">Сбросить</a>
+                </div>
+                {{ form_end(form) }}
+                <br/>
+
+            </div>
+            <div class="col-md-9">
+                {% if sites.count %}
+                    <h3>Найденно {{ sites.totalItemCount }} {{ declOfNum(sites.totalItemCount, ['площадка','площадки', 'площадок']) }} </h3>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Площадка</th>
+                            <th>Описание</th>
+                            <th>Места</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for site in sites %}
+
+                            <tr data-url="{{ path('core_site_details', {id: site.id}) }}">
+                                <td>{{ loop.index }}</td>
+                                <td><a href="{{ path('core_site_details', {id: site.id}) }}">{{ site.domain }}</a></td>
+                                <td>{{ site.shortDescription }}</td>
+                                <td></td>
+                            </tr>
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+
+                    <div class="row margin-bottom-10">
+                        <div class="text-center">
+                            {{ knp_pagination_render(sites, 'CoreCommonBundle:Fragments:pagination.html.twig',{},
+                            { routeFirsPage: 'core_common_catalog_first_page', routePage: 'core_common_catalog'}) }}
+                        </div>
+                    </div>
+                {% else %}
+                    <h3>По заданному запросу ничего не найденно.</h3>
+
+                    <a class="btn-u " href="{{ path('core_common_catalog_first_page') }}">Вернуться к поиску</a>
+                {% endif %}
+
+                {#<div class="fusion-portfolio wrapper-portfolio-grid cbp-4-col">#}
+                {#<div id="grid-container" class="cbp-l-grid-gallery">#}
+                {#<ul>#}
+
+                {#{% for site in sites %}#}
+                {#<li class="cbp-item motion">#}
+                {#<a href="{{ path('core_create_site_show', {id: site.id}) }}" class="cbp-caption">#}
+                {#<div class="cbp-caption-defaultWrap">#}
+                {#{% set curImg = (site.webPath) ? site.webPath : '/assets/img/portfolio/01.jpg' %}#}
+                {#<img src="{{ asset(curImg) }}" alt="" width="100%">#}
+                {#</div>#}
+                {#<div class="cbp-caption-activeWrap">#}
+                {#<div class="cbp-l-caption-alignCenter">#}
+                {#<div class="cbp-l-caption-body">#}
+                {#<div class="cbp-l-caption-text">{{ site.name }}</div>#}
+                {#{% if site.shortDescription %}#}
+                {#<p class="cbp-l-caption-desc">{{ site.shortDescription }}</p>#}
+                {#{% endif %}#}
+                {#</div>#}
+                {#</div>#}
+                {#</div>#}
+                {#</a>#}
+                {#</li>#}
+                {#{% endfor %}#}
+                {#</ul>#}
+                {#</div>#}
                 {#</div>#}
 
                 <!--/End Wrapper Portfolio-->
@@ -152,10 +162,10 @@
                 {% endfor %}
                 #}
                 {#<div class="row margin-bottom-10">#}
-                    {#<div class="text-center">#}
-                            {#{{ knp_pagination_render(sites, 'CoreCommonBundle:Fragments:pagination.html.twig',{},#}
-                            {#{ routeFirsPage: 'core_common_catalog', routePage: 'core_common_catalog'}) }}#}
-                    {#</div>#}
+                {#<div class="text-center">#}
+                {#{{ knp_pagination_render(sites, 'CoreCommonBundle:Fragments:pagination.html.twig',{},#}
+                {#{ routeFirsPage: 'core_common_catalog', routePage: 'core_common_catalog'}) }}#}
+                {#</div>#}
                 {#</div>#}
             </div>
         </div>
