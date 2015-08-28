@@ -82,6 +82,11 @@ class CommonBanner implements \JsonSerializable
     protected $statistics;
 
 
+    public function __construct()
+    {
+        $this->statistics = new ArrayCollection();
+    }
+    
     /**
      * @return int
      */

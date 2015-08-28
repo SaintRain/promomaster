@@ -271,11 +271,9 @@ class CommonSubscriber implements EventSubscriber
             }
         }
 
-        if ($entity['new']->$method()) {
-            foreach ($entity['new']->$method() as $val) {
-                if (isset($operations['delete'][$meta->table['name']][$val->getId()])) {
-                    unset($operations['delete'][$meta->table['name']][$val->getId()]);
-                }
+        foreach ($entity['new']->$method() as $val) {
+            if (isset($operations['delete'][$meta->table['name']][$val->getId()])) {
+                unset($operations['delete'][$meta->table['name']][$val->getId()]);
             }
         }
 
