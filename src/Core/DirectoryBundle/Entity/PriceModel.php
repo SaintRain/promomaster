@@ -46,6 +46,16 @@ class PriceModel
      */
     private $captionRu;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="caption2Ru", type="string", length=255)
+     * @Assert\NotBlank
+     */
+    private $caption2Ru;
+
+
     /**
      * @var boolean
      *
@@ -69,7 +79,7 @@ class PriceModel
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -92,7 +102,7 @@ class PriceModel
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -115,12 +125,29 @@ class PriceModel
     /**
      * Get captionRu
      *
-     * @return string 
+     * @return string
      */
     public function getCaptionRu()
     {
         return $this->captionRu;
     }
+
+    /**
+     * @return string
+     */
+    public function getCaption2Ru()
+    {
+        return $this->caption2Ru;
+    }
+
+    /**
+     * @param string $caption2Ru
+     */
+    public function setCaption2Ru($caption2Ru)
+    {
+        $this->caption2Ru = $caption2Ru;
+    }
+
 
     /**
      * Set isEnabled
@@ -138,7 +165,7 @@ class PriceModel
     /**
      * Get isEnabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsEnabled()
     {
@@ -161,7 +188,7 @@ class PriceModel
     /**
      * Get indexPosition
      *
-     * @return integer 
+     * @return integer
      */
     public function getIndexPosition()
     {

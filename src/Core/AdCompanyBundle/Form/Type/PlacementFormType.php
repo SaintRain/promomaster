@@ -70,7 +70,7 @@ class PlacementFormType extends AbstractType
                 'query_builder' => function(EntityRepository $er ) {
                     return $er->createQueryBuilder('pm')->where('pm.name != :name')->setParameter('name','daysquantity');
                 },
-                'required' => false, 'property'=>'captionRu'])
+                'required' => false, 'property'=>'caption2Ru'])
             ->addModelTransformer(new PlacementTransformer())       //трансформер дат
         ;
         if ($options['adCompanyField']) {

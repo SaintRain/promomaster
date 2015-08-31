@@ -45,6 +45,10 @@ class PriceModelAdmin extends Admin
             ->add('captionRu', null, array(
                 'label' => 'Название'
             ))
+
+            ->add('caption2Ru', null, array(
+                'label' => 'Название 2'
+            ))
             ->add('name', null, array(
                 'label' => 'Системно имя',
                 'required' => false,
@@ -66,6 +70,10 @@ class PriceModelAdmin extends Admin
             ))
             ->addIdentifier('captionRu', null, array(
                 'label' => 'Название'
+            ))
+
+            ->addIdentifier('caption2Ru', null, array(
+                'label' => 'Название 2'
             ))
             ->add('name', null, array(
                 'label' => 'Системно имя'

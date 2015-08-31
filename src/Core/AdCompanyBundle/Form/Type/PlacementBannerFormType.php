@@ -1,7 +1,7 @@
 <?php
 
- /**
- * 
+/**
+ *
  * @author  Kaluzhy N.
  * @copyright LLC "PromoMaster"
  */
@@ -37,19 +37,34 @@ class PlacementBannerFormType extends AbstractType
                                         'class' => 'Core\BannerBundle\Entity\CommonBanner'])
             */
             ->add('banner', 'banner_entity', [
-                                        'label'=>'Баннер',
-                                        //'empty_value'=>'Ничего не выбрано',
-                                        'property'=>'name',
-                                        'class' => 'Core\BannerBundle\Entity\CommonBanner'
+                'label' => 'Баннер',
+                //'empty_value'=>'Ничего не выбрано',
+                'property' => 'name',
+                'class' => 'Core\BannerBundle\Entity\CommonBanner'
             ])
-            ->add('preoritet', null, ['label'=>'Приоритет', 'attr' =>['placeholder' => 'Приоритет']])
-        ;
+            ->add('preoritet', 'choice', ['required' => false,
+                    'choices' => [
+                        '1' => 1,
+                        '2' => 2,
+                        '3' => 3,
+                        '4' => 4,
+                        '5' => 5,
+                        '6' => 6,
+                        '7' => 7,
+                        '8' => 8,
+                        '9' => 9,
+                        '10' => 10
+                    ],
+                    'label' => 'Приоритет',
+                    'empty_value' => 'Приоритет показа...'
+                ]
+            );
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Core\AdCompanyBundle\Entity\PlacementBanner',
+            'data_class' => 'Core\AdCompanyBundle\Entity\PlacementBanner'
         ]);
     }
 

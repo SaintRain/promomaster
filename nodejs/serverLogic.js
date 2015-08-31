@@ -143,6 +143,7 @@ exports.getAd = function (req, res, adplace_id) {
                     }
 
 
+
                     if (placement && typeof SD.placementbannersByPlacement['_' + placement.id] !== 'undefined') { //если есть размещение с баннерами
                         /**
                          Пока берем просто первый баннер. Но нужно сделать:
@@ -151,8 +152,10 @@ exports.getAd = function (req, res, adplace_id) {
                         var placementBanner, index = 0;
 
                         for (key in SD.placementbannersByPlacement['_' + placement.id]) {
+
                             var preoritet = SD.placementbannersByPlacement['_' + placement.id][key].preoritet;
 
+                            //инициализация массива
                             if (typeof SD.placementbannersByPlacementPrioritets['_' + placement.id] === 'undefined') {
                                 SD.placementbannersByPlacementPrioritets['_' + placement.id] = {
                                     quantity: 0,
@@ -161,13 +164,14 @@ exports.getAd = function (req, res, adplace_id) {
                             }
 
                             if (SD.placementbannersByPlacementPrioritets['_' + placement.id].index == index) {
+
                                 SD.placementbannersByPlacementPrioritets['_' + placement.id].quantity++;
 
-                                if (SD.placementbannersByPlacementPrioritets['_' + placement.id].quantity <= preoritet) {
+                                if (SD.placementbannersByPlacementPrioritets['_' + placement.id].quantity <= preoritet || !preoritet) {
                                     placementBanner = SD.placementbannersByPlacement['_' + placement.id][key];
 
                                     //сдвигаем на следующий баннер
-                                    if (SD.placementbannersByPlacementPrioritets['_' + placement.id].quantity == preoritet) {
+                                    if (SD.placementbannersByPlacementPrioritets['_' + placement.id].quantity >= preoritet) {
                                         if (index + 1 < this.getObjectCount(SD.placementbannersByPlacement['_' + placement.id])) {
                                             var nextKey = index + 1;
                                         }
@@ -181,6 +185,7 @@ exports.getAd = function (req, res, adplace_id) {
                                         }
                                     }
                                 }
+
                                 break;
                             }
                             index++;
@@ -454,8 +459,8 @@ exports.saveStatistics = function () {
                     stats.push({
                         showsQuantity: STclone[adplace_id][placement_id][placement_banner_id][banner_id].showsQuantity,
                         clicksQuantity: STclone[adplace_id][placement_id][placement_banner_id][banner_id].clicksQuantity,
-                        site_id: SD.sites[adplace_id].id,
-                        adplace_id: SD.adplaces[adplace_id].site_id,
+                        site_id: SD.adplaces[adplace_id].site_id,
+                        adplace_id: SD.adplaces[adplace_id].id,
                         placement_id: SD.placements[placement_id].id,
                         //placement_banner_id: SD.placementbanners[placement_banner_id].id,
                         banner_id: SD.banners[banner_id].id,

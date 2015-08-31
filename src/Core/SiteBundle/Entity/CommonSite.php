@@ -122,6 +122,13 @@ class CommonSite
 
 
     /**
+     * Статистика
+     * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="site")
+     */
+    private $statistics;
+
+
+    /**
      * Принимать заказа размещения автоматически без баннера
      * @var string
      * @ORM\Column(type="boolean", nullable=true)
@@ -365,6 +372,24 @@ class CommonSite
     {
         return 'uploads/sites';
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStatistics()
+    {
+        return $this->statistics;
+    }
+
+    /**
+     * @param mixed $statistics
+     */
+    public function setStatistics($statistics)
+    {
+        $this->statistics = $statistics;
+    }
+
+
 
     /**
      * Дополнительные проверки

@@ -242,6 +242,11 @@ mysqlGetPlacementBanners = function (id) {
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {
+
+            if (!item.preoritet) {
+                preoritet=1;
+            }
+
             SD.placementbanners['_' + item.id] = item;
             if (!SD.placementbannersByPlacement['_' + item.placement_id]) {
                 SD.placementbannersByPlacement['_' + item.placement_id] = {};
