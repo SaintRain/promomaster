@@ -454,7 +454,8 @@ exports.saveStatistics = function () {
                     stats.push({
                         showsQuantity: STclone[adplace_id][placement_id][placement_banner_id][banner_id].showsQuantity,
                         clicksQuantity: STclone[adplace_id][placement_id][placement_banner_id][banner_id].clicksQuantity,
-                        adplace_id: SD.adplaces[adplace_id].id,
+                        site_id: SD.sites[adplace_id].id,
+                        adplace_id: SD.adplaces[adplace_id].site_id,
                         placement_id: SD.placements[placement_id].id,
                         //placement_banner_id: SD.placementbanners[placement_banner_id].id,
                         banner_id: SD.banners[banner_id].id,

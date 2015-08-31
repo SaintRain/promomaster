@@ -454,14 +454,14 @@ mysqlInsertStatistics = function (options) {
 
     if (options.length) {
         //var q = "INSERT INTO core_statistics (id,startDateTime,finishDateTime, showsQuantity, clicksQuantity, adPlace_id, placementBanner_id, placement_id, banner_id) VALUES ",
-        var q = "INSERT INTO core_statistics (id,startDateTime,finishDateTime, showsQuantity, clicksQuantity, adPlace_id, placement_id, banner_id) VALUES ",
+        var q = "INSERT INTO core_statistics (id, site_id, startDateTime,finishDateTime, showsQuantity, clicksQuantity, adPlace_id, placement_id, banner_id) VALUES ",
             values = [];
 
         for (var key in options) {
             var d = options[key];
 
             //values.push("(NULL,'" + d.startDateTime + "', '" + d.finishDateTime + "', '" + d.showsQuantity + "', '" + d.clicksQuantity + "', '" + d.adplace_id + "','" + d.placement_banner_id + "','" + d.placement_id + "','" + d.banner_id + "')");
-            values.push("(NULL,'" + d.startDateTime + "', '" + d.finishDateTime + "', '" + d.showsQuantity + "', '" + d.clicksQuantity + "', '" + d.adplace_id + "','"+ d.placement_id + "','" + d.banner_id + "')");
+            values.push("(NULL,'"+ d.site_id + "', '"  + d.startDateTime + "', '" + d.finishDateTime + "', '" + d.showsQuantity + "', '" + d.clicksQuantity + "', '" + d.adplace_id + "','"+ d.placement_id + "','" + d.banner_id + "')");
 
         }
         q = q + values.join(',');

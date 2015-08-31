@@ -38,5 +38,17 @@ function ucall(token) {
             });
         });
     }
-
 }
+
+$(function () {
+    //кликает на вкладку на которой есть ошибка
+    if ($('.state-error').length) {
+        var errorTabContentId=$('.state-error').parents('.tab-pane').attr('id');
+        if (errorTabContentId) {
+            $('.nav-tabs > li >a[href="#'+errorTabContentId+'"]').click();
+        }
+        $('.state-error').parents('nav-tabs')
+    }
+
+
+})

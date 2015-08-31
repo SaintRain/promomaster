@@ -388,6 +388,12 @@ class CommonSite
                 ->addViolation();
         }
 
+        else if (count($this->getCategories())>3) {
+            $context->buildViolation('Можно выбрать не более 3-х разделов.')
+                ->atPath('categories')
+                ->addViolation();
+        }
+
     }
 
 }

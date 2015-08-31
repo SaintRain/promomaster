@@ -97,6 +97,31 @@ a.fromIndexBlock:hover {
 text-decoration: none;
 }
 
+
+/*.dropcap {*/
+    /*float: left;*/
+    /*color: #72c02c;*/
+    /*padding: 5px 0;*/
+    /*font-size: 45px;*/
+    /*font-weight: 200;*/
+    /*line-height: 30px;*/
+    /*margin: 0px 5px 0 0;*/
+/*}*/
+
+.dropcap-bg {
+    float: left;
+    color: #fff;
+    padding: 7px 0;
+    min-width: 100px;
+    font-size: 55px;
+    font-weight: 200;
+    line-height: 55px;
+    text-align: center;
+    background: #72c02c;
+    margin: 0px 0px 0 0;
+}
+
+
 /*a:hover > .fa-user {*/
     /**/
 /*}*/
