@@ -26,11 +26,11 @@
                     </div>
                 </div>
                 <div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-11">
                         {{ form_widget(form.site,{ 'attr': {'class': 'form-control'} }) }}
                         {{ form_errors(form.site) }}
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
                         <a href="{{ path('core_cabinet_site_create_ajax') }}" class="btn-u site-creation"
                            style="margin-left: -15px">
                             <i class="fa fa-plus-square" title="Добавить площадку"></i>
@@ -51,11 +51,11 @@
                 </div>
             </div>
             <div>
-                <div class="col-sm-10">
+                <div class="col-sm-11">
                     {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.adPlace) }}
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1">
                     <a href="{{ path('core_cabinet_ad_place_create_ajax') }}" class="btn-u  ad-place-creation"
                        style="margin-left: -15px">
                         <i class="fa fa-plus-square" title="Добавить рекламное место"></i>

@@ -19,8 +19,11 @@ class CommonSiteRepository extends EntityRepository
     {
 
         $query = $this->createQueryBuilder('s')
-            ->select('s')
+            ->select('s, aP,statistics')
             ->join('s.categories', 'c')
+            ->leftJoin('s.adPlaces', 'aP', 'WITH', 'aP.isShowInCatalog=1')
+            ->leftJoin('aP.statistics', 'st')
+
             ->where('s.isVerified = 1');
 
         if ($filter->getKeywords()) {

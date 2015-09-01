@@ -61,7 +61,7 @@
             {% for site in sites %}
                 <tr>
                     <td height="53px">{{ loop.index }}</td>
-                    <td><a href="{{ path('core_cabinet_site_edit', {id:site.id}) }}"><b>{{ site.domain }}</b></a></td>
+                    <td><a href="{{ path('core_cabinet_site_edit', {id:site.id}) }}"><b>{{ site.domain|onlyDomain }}</b></a></td>
                     <td>
                         {% for category in site.categories %}
                             <i class="fa fa-check color-green"></i> {{ category.captionRu }}<br/>

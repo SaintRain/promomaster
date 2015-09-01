@@ -54,10 +54,10 @@ class PlacementBanner
     /**
      * Преоритет показа
      * @var int
-     * @Assert\GreaterThan(value = -1)
-     * @ORM\Column(type="bigint", nullable=false)
+     * @Assert\GreaterThan(value = 0)
+     * @ORM\Column(type="bigint", nullable=false, options={"default":1})
      */
-    private $preoritet = 0;
+    private $preoritet;
 
 
     /**
@@ -164,6 +164,9 @@ class PlacementBanner
      */
     public function setPreoritet($preoritet)
     {
+        if (!$preoritet) {
+            $preoritet=1;
+        }
         $this->preoritet = $preoritet;
     }
 
@@ -239,9 +242,9 @@ class PlacementBanner
      */
     public function isValid(ExecutionContextInterface $context)
     {
-//        if ($this->number && !$this->price) {
-//            $context->buildViolation('Пожалуйста, укажите цену')
-//                        ->atPath('price')
+//        if ($this->preoritet<1) {
+//            $context->buildViolation('Приоритет должен быть больше нуля.')
+//                        ->atPath('preoritet')
 //                        ->addViolation();
 //        }
     }

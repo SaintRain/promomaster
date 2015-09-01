@@ -82,6 +82,7 @@ class PagesController extends Controller
             $paxPerPage
         );
 
+
         return $this->render('CoreCommonBundle:Pages:site_catalog.html.twig', [
             'categories' => $categories,
             'sites' => $sites,

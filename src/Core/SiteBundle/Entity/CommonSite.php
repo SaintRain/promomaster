@@ -122,6 +122,13 @@ class CommonSite
 
 
     /**
+     * Статистика
+     * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="site")
+     */
+    private $statistics;
+
+
+    /**
      * Принимать заказа размещения автоматически без баннера
      * @var string
      * @ORM\Column(type="boolean", nullable=true)
@@ -367,6 +374,24 @@ class CommonSite
     }
 
     /**
+     * @return mixed
+     */
+    public function getStatistics()
+    {
+        return $this->statistics;
+    }
+
+    /**
+     * @param mixed $statistics
+     */
+    public function setStatistics($statistics)
+    {
+        $this->statistics = $statistics;
+    }
+
+
+
+    /**
      * Дополнительные проверки
      */
     public function isValidCommon(ExecutionContextInterface $context)
@@ -384,6 +409,12 @@ class CommonSite
                 ->addViolation();
         } else if (!count($parents)) {
             $context->buildViolation('Необходимо отметить минимум один подраздел.')
+                ->atPath('categories')
+                ->addViolation();
+        }
+
+        else if (count($this->getCategories())>3) {
+            $context->buildViolation('Можно выбрать не более 3-х разделов.')
                 ->atPath('categories')
                 ->addViolation();
         }

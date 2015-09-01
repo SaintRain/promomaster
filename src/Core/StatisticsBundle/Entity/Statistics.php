@@ -30,6 +30,15 @@ class Statistics
     protected $id;
 
 
+
+    /**
+     * Площадка
+     * @ORM\ManyToOne(targetEntity="Core\SiteBundle\Entity\CommonSite", inversedBy="statistics")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="RESTRICT")
+     * @Assert\NotBlank()
+     */
+    private $site;
+
     /**
      * Рекламная место
      * @ORM\ManyToOne(targetEntity="Core\SiteBundle\Entity\AdPlace", inversedBy="statistics")
@@ -110,6 +119,23 @@ class Statistics
     {
         $this->id = $id;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSite()
+    {
+        return $this->site;
+    }
+
+    /**
+     * @param mixed $site
+     */
+    public function setSite($site)
+    {
+        $this->site = $site;
+    }
+
 
     /**
      * @return mixed

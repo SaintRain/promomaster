@@ -15,7 +15,7 @@
         <div class="col-sm-12  ">
             {% for d in categories %}
                 <div id="subCat{{ d.id }}" class="subCat" data-parent-id="{{ d.id }}" style="{% if app.request.get('selectMainCat')!=d.id %}display:none;{% endif %}clear: both">
-                    <span class="note">Отметьте разделы, которые соответствуют тематике вашего сайта:</span><br/>
+                    <span class="note">Отметьте от 1 до 3 разделов, которые соответствуют тематике вашего сайта:</span><br/>
                     <br/>
                     {% for d2 in d.__children %}
                         <div style="float: left;width:270px; "><label class="checkbox"><input

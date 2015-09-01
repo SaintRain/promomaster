@@ -63,7 +63,7 @@
                     <td><a href="{{ path('core_cabinet_adplace_edit', {id:adplace.id}) }}"><b>{{ adplace.name }}</b></a></td>
                     <td>
                         {% if adplace.site.id is defined %}
-                        <a href="{{ path('core_cabinet_site_edit', {id:adplace.site.id}) }}"><b>{{ adplace.site.domain }}</b></a>
+                        <a href="{{ path('core_cabinet_site_edit', {id:adplace.site.id}) }}"><b>{{ adplace.site.domain|onlyDomain }}</b></a>
                         {% endif %}
                     </td>
                     <td>{{ adplace.height }}x{{ adplace.width }}</td>
