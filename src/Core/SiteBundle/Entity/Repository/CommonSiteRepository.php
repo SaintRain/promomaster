@@ -19,7 +19,7 @@ class CommonSiteRepository extends EntityRepository
     {
 
         $query = $this->createQueryBuilder('s')
-            ->select('s, aP,st')
+            ->select('s, aP, SUM(st.showsQuantity) showsQuantity, SUM(st.clicksQuantity) clicksQuantity')
             ->join('s.categories', 'c')
             ->leftJoin('s.adPlaces', 'aP', 'WITH', 'aP.isShowInCatalog=1')
             ->leftJoin('s.statistics', 'st')
@@ -31,7 +31,7 @@ class CommonSiteRepository extends EntityRepository
             $query->where('(s.keywords LIKE :keywords OR s.shortDescription LIKE :keywords OR s.description LIKE :keywords)')
                 ->setParameter('keywords', '%'.$filter->getKeywords().'%');
         }
-
+ldd($filter->getCategories() );
         if ($filter->getCategories() && $filter->getCategories()->count()) {
             $catIds = [];
             foreach ($filter->getCategories() as $cat) {
@@ -40,6 +40,7 @@ class CommonSiteRepository extends EntityRepository
             $query->andWhere('c.id IN (:categories)')
                 ->setParameter('categories', $catIds);
         }
+        $query->groupBy('s.id');
         return $query->getQuery();
 
     }

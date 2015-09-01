@@ -1,9 +1,9 @@
 {% extends "CoreCommonBundle::main_layout.html.twig" %}
 
 {# SEO - заголовки #}
-{% block title %}PromoMaster.net — интернет-магазин игрушек и детских товаров{% endblock %}
-{% block meta_keywords %}Детские игрушки, транспорт, куклы, машинки, детские товары{% endblock %}
-{% block meta_description %}Интернет-магазин детских товаров, где можно купить игрушки, самокаты, радионяни, бутылочки.{% endblock %}
+{% block title %}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_description %}{% endblock %}
 {% block css %}
     {{ parent() }}
     <style>
@@ -46,35 +46,42 @@
 {% block content %}
 <div class="breadcrumbs">
     <div class="container">
-        <h1 class="pull-left">{{ site.name }}</h1>
+        <h1 class="pull-left">{{ site.domain|onlyDomain }}</h1>
         <ul class="pull-right breadcrumb">
             <li>
                 <a href="{{ path('core_common_index') }}">На главную</a>
             </li>
             <li>
-                <a href="{{ path('core_common_catalog_first_page') }}">Список сайтов</a>
+                <a href="{{ path('core_common_catalog_first_page') }}">Список площадок</a>
             </li>
-            <li class="active">{{ site.name }}</li>
+            <li class="active">{{ site.domain|onlyDomain }}</li>
         </ul>
     </div>
 </div>
 <div class="container">
     <div class="content">
-        <div class="col-md-6 md-margin-bottom-50">
-            {% set curImg = (site.webPath) ? site.webPath : '/assets/img/portfolio/01.jpg' %}
-            <a href="{{ site.domain }}">
-                <img src="{{ asset(curImg) }}" alt="" width="100%">
-            </a>
+        <div class="col-md-3 md-margin-bottom-50">
+
+            {% if site.webPath %}
+                <img src="{{ asset(site.webPath) }}" alt="" width="100%">
+            {% else %}
+                <span class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
+            {% endif %}
+
+            {#{% set curImg = (site.webPath) ? site.webPath : '/assets/img/portfolio/01.jpg' %}#}
+            {#<a href="{{ site.domain }}">#}
+                {#<img src="{{ asset(curImg) }}" alt="" width="100%">#}
+            {#</a>#}
         </div>
         <section class="col-md-6 site-desc">
             <div class="headline margin-bottom-20">
-                <h3>{{ site.name }}</h3>
+                <h3>{{ site.domain|onlyDomain }}</h3>
             </div>
-            {% if site.description %}
+            {% if site.shortDescription %}
                 <div class="headline">
                     <h3>Описание</h3>
                 </div>
-                <p>{{ site.description | nl2br}}</p>
+                <p>{{ site.shortDescription | nl2br}}</p>
             {% endif %}
             <div class="headline">
                 <h3>Категории</h3>
@@ -83,10 +90,18 @@
             {% for category in site.categories %}
                 <li>
                     <i class="fa fa-check color-green"></i>&nbsp;
-                    <a href="{{ path('core_common_catalog_first_page') }}">{{ category.captionRu }}</a>
+                    {#<a href="{{ path('core_common_catalog_first_page') }}?site_search_filter_form[selectMainCat]={{ category.parent.id }}&site_search_filter_form[categories]={{ category.id }}">{{ category.captionRu }}</a>#}
+                    {{ category.captionRu }}
                 </li>
             {% endfor %}
             </ul>
+
+            {#{% if site.keywords %}#}
+                {#<div class="headline">#}
+                    {#<h3>Ключевые слова</h3>#}
+                {#</div>#}
+                {#<p>{{ site.keywords | nl2br}}</p>#}
+            {#{% endif %}#}
         </section>
     </div>
 </div>

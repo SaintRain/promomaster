@@ -57,7 +57,10 @@
 
             //очищаем предыдущие значения
             $('.selectMainCat').parents('form').submit(function () {
-                $('.subCat:hidden').find('input[type="checkbox"]').each(function () {
+
+                var dataParent=$('.selectMainCat').val();
+
+                $('.subCat:not([data-parent-id="'+dataParent+'"]').find('input[type="checkbox"]').each(function () {
                     $(this).prop("checked", false);
                 })
             })

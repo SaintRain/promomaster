@@ -52,7 +52,7 @@ class SiteCabinetController extends Controller
         $categories = $this->getDoctrine()->getManager()->getRepository('CoreCategoryBundle:SiteCategory')
             ->getBuildTree()[0]['__children'];
 
-
+//ldd($_POST);
         //Сохранения изменения
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
@@ -336,14 +336,7 @@ class SiteCabinetController extends Controller
     }
 
 
-    public function showAction($id)
-    {
-        $site = $this->getDoctrine()->getManager()->getRepository('CoreSiteBundle:CommonSite')->find($id);
-        if (!$site) {
-            throw $this->createNotFoundException('Site Not Found');
-        }
-        return $this->render('CoreSiteBundle:Site\Cabinet:show.html.twig', ['site' => $site]);
-    }
+
     /**
      * Установка сообщений
      * @param string $action

@@ -188,7 +188,7 @@ class CommonExtension extends \Twig_Extension
     public function firstDomainLatter($domain)
     {
         $domain = $this->onlyDomain($domain);
-        return substr($domain, 0, 1);
+        return mb_strtoupper(mb_substr($domain, 0, 1));
     }
 
     public function onlyDomain($domain)
@@ -199,7 +199,7 @@ class CommonExtension extends \Twig_Extension
 
     public function firstDomainLatterClass($domain)
     {
-        $fLatter = strtolower($this->firstDomainLatter($domain));
+        $fLatter = mb_strtolower($this->firstDomainLatter($domain));
 
         switch ($fLatter) {
             case 'q':

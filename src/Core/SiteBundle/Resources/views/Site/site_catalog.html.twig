@@ -88,7 +88,7 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th width="20px">#</th>
+                            {#<th width="20px">#</th>#}
                             <th width="100px">Скриншот</th>
                             <th width="200px">Площадка</th>
                             <th width="200px">Тематика</th>
@@ -97,18 +97,23 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for site in sites %}
+                        {% for s in sites %}
+                            {% set site=s[0] %}
 
                             <tr data-url="{{ path('core_site_details', {id: site.id}) }}">
-                                <td>{{ loop.index }}</td>
+                                {#<td>{{ loop.index }}</td>#}
                                 <td>
+                                    <a href="{{ path('core_site_details', {id: site.id}) }}">
                                     {% if site.webPath %}
                                         <img src="{{ asset(site.webPath) }}" alt="" width="100%">
                                     {% else %}
                                         <span class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
                                     {% endif %}
+                                        </a>
                                 </td>
-                                <td><a href="{{ path('core_site_details', {id: site.id}) }}"><b>{{ site.domain|onlyDomain }}</b></a>
+                                <td>
+                                    <a href="{{ path('core_site_details', {id: site.id}) }}"><b>{{ site.domain|onlyDomain }}</b></a>
+
                                     <p>{{ site.shortDescription }}</p>
                                 </td>
                                 <td>
@@ -117,10 +122,23 @@
                                     {% endfor %}
 
                                 </td>
-                                <td></td>
+                                <td>
+                                    {% if s.showsQuantity %}
+                                        {% set showsQuantity=s.showsQuantity %}
+                                    {% else %}
+                                        {% set showsQuantity=0 %}
+                                    {% endif %}
+                                    {% if s.clicksQuantity %}
+                                        {% set clicksQuantity=s.clicksQuantity %}
+                                    {% else %}
+                                        {% set clicksQuantity=0 %}
+                                    {% endif %}
+                                    <p>{{ clicksQuantity|number_format(0, '.', ',') }} {{ declOfNum(showsQuantity, ['показ', 'показа', 'показов']) }}</p>
+                                    <p>{{ showsQuantity|number_format(0, '.', ',') }} {{ declOfNum(showsQuantity, ['клик', 'клика', 'кликов']) }}</p>
+                                </td>
                                 <td>
                                     {% for place in site.adPlaces %}
-                                    <p>{{ place.size.width }}x{{ place.size.height }}</p>
+                                        <p>{{ place.size.width }}x{{ place.size.height }}</p>
                                     {% endfor %}
                                 </td>
                             </tr>

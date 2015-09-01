@@ -98,33 +98,21 @@ text-decoration: none;
 }
 
 
-/*.dropcap {*/
-    /*float: left;*/
-    /*color: #72c02c;*/
-    /*padding: 5px 0;*/
-    /*font-size: 45px;*/
-    /*font-weight: 200;*/
-    /*line-height: 30px;*/
-    /*margin: 0px 5px 0 0;*/
-/*}*/
-
-.dropcap-bg {
+.dropcap-bg{
     float: left;
     color: #fff;
-    padding: 7px 0;
-    min-width: 100px;
-    font-size: 55px;
+    padding: 0px 0 !important;
+    /* min-height: 100px; */
+    min-width: 100px !important;
+    font-size: 65px !important;
     font-weight: 200;
-    line-height: 55px;
+    line-height: 100px !important;
     text-align: center;
     background: #72c02c;
-    margin: 0px 0px 0 0;
+    margin: 4px 10px 0 0;
+    vertical-align: middle;
 }
 
-
-/*a:hover > .fa-user {*/
-    /**/
-/*}*/
 
 
 

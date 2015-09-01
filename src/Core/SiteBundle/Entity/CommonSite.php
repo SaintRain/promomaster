@@ -407,7 +407,7 @@ class CommonSite
             $context->buildViolation('Нельзя выбмрать категории из разных разделов.')
                 ->atPath('categories')
                 ->addViolation();
-        } else if (!count($parents)) {
+        } else if (!count($this->getCategories())) {
             $context->buildViolation('Необходимо отметить минимум один подраздел.')
                 ->atPath('categories')
                 ->addViolation();

@@ -49,7 +49,7 @@
                         </a>
                     </li>
                     <!-- End Home -->
-                    <li {% if active_route == 'core_common_catalog_first_page' or active_route == 'core_common_catalog' %}class="active"{% endif %}>
+                    <li {% if active_route == 'core_common_catalog_first_page' or active_route == 'core_common_catalog'  or   active_route == 'core_site_details' %}class="active"{% endif %}>
                         <a href="{{ path('core_common_catalog_first_page') }}" >
                             Каталог
                         </a>

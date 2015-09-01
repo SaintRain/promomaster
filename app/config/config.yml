@@ -102,7 +102,7 @@ assetic:
     debug:          %kernel.debug%
     #если false, то не будет каждый раз перегенерироваться файлы
     use_controller: false
-    bundles:        [CoreTroubleTicketBundle, CoreFileBundle, CoreCommonBundle,  ApplicationSonataUserBundle]
+    bundles:        [CoreTroubleTicketBundle, CoreFileBundle, CoreCommonBundle,  ApplicationSonataUserBundle, CoreSiteBundle]
     java: %java_path%
     filters:
         #фиксит пути
