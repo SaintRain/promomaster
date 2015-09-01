@@ -19,10 +19,10 @@ class CommonSiteRepository extends EntityRepository
     {
 
         $query = $this->createQueryBuilder('s')
-            ->select('s, aP,statistics')
+            ->select('s, aP,st')
             ->join('s.categories', 'c')
             ->leftJoin('s.adPlaces', 'aP', 'WITH', 'aP.isShowInCatalog=1')
-            ->leftJoin('aP.statistics', 'st')
+            ->leftJoin('s.statistics', 'st')
 
             ->where('s.isVerified = 1');
 
