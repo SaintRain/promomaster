@@ -31,7 +31,7 @@ class CommonSiteRepository extends EntityRepository
             $query->where('(s.keywords LIKE :keywords OR s.shortDescription LIKE :keywords OR s.description LIKE :keywords)')
                 ->setParameter('keywords', '%'.$filter->getKeywords().'%');
         }
-ldd($filter->getCategories() );
+
         if ($filter->getCategories() && $filter->getCategories()->count()) {
             $catIds = [];
             foreach ($filter->getCategories() as $cat) {
@@ -42,8 +42,9 @@ ldd($filter->getCategories() );
         }
         $query->groupBy('s.id');
         return $query->getQuery();
-
     }
+
+
 
 
     /**

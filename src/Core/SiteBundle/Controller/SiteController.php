@@ -17,18 +17,37 @@ use Core\SiteBundle\Entity\WebSite;
 use Core\SiteBundle\Form\Type\SiteFormType;
 use Core\SiteBundle\Model\SearchFilter;
 use Core\SiteBundle\Form\Type\SearchFilterFormType;
+
 class SiteController extends Controller
 {
 
     public function showAction($id)
     {
-        $site = $this->getDoctrine()->getManager()->getRepository('CoreSiteBundle:CommonSite')->find($id);
+        $em = $this->getDoctrine()->getManager();
+
+        $site = $em->getRepository('CoreSiteBundle:CommonSite')->find($id);
         if (!$site) {
-
-
             throw $this->createNotFoundException('Site Not Found');
         }
-        return $this->render('CoreSiteBundle:Site:show.html.twig', ['site' => $site]);
+
+        $todayStart = new \DateTime();
+        $todayStart->modify('today');
+        $todayEnd = clone $todayStart;
+        $todayEnd->modify('tomorrow');
+        $todayEnd->modify('1 second ago');
+
+        $monthStart = new \DateTime();
+        $monthStart->modify('30 day ago');
+
+
+        $statistics = [
+            'today' => $em->getRepository('CoreStatisticsBundle:Statistics')->getSiteStatisticsForPeriod($site, $todayStart, $todayEnd),
+            'month' => $em->getRepository('CoreStatisticsBundle:Statistics')->getSiteStatisticsForPeriod($site, $monthStart, $todayStart),
+            'all' => $em->getRepository('CoreStatisticsBundle:Statistics')->getSiteStatisticsForPeriod($site)
+        ];
+
+ldd($statistics);
+        return $this->render('CoreSiteBundle:Site:show.html.twig', ['site' => $site, 'statistics' => $statistics]);
     }
 
     /**
