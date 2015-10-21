@@ -114,5 +114,11 @@ text-decoration: none;
 }
 
 
+.fa-active{
+    color: #72c02c !important;
+}
 
-
+.da-dots span {
+    color: #72c02c !important;
+    background-color: #72c02c !important;
+}

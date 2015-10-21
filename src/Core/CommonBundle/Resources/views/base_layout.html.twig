@@ -111,12 +111,16 @@
             <!--End of Zopim Live Chat Script-->
 
             <script>
-
                 $zopim(function() {
+                    {% if app.user.firstName is defined %}
+                    $zopim.livechat.setName("{{ app.user.firstname }}");
+                    $zopim.livechat.setEmail("{{ app.user.email }}");
+                    {% endif %}
                     $zopim.livechat.window.hide();
                 });
-
             </script>
+
+
 
             <!--[if lt IE 9]>
             <script src="/assets/plugins/respond.js"></script>
