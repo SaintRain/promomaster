@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Core\SiteBundle\Entity\WebSite;
 use Core\SiteBundle\Form\Type\SiteFormType;
+use Symfony\Component\Process\Process;
 
 class SiteCabinetController extends Controller
 {
@@ -67,9 +68,9 @@ class SiteCabinetController extends Controller
             if (!$isBadName && $form->isValid()) {
 
                 $em = $this->getDoctrine()->getManager();
-                $this->makeSnapShot($site);
+                $site->setIsHaveSnapshot(false);
                 $em->flush();
-
+                //$this->makeSnapShot($site->getId());
                 $this->setFlash('edit_success', 'Данные успешно обновлены');
                 return new RedirectResponse($this->generateUrl('core_cabinet_site_edit', ['id' => $id]));
             } else {
@@ -109,9 +110,10 @@ class SiteCabinetController extends Controller
                 $site->setVerifiedCode($verifiedCode);
 
                 $em = $this->getDoctrine()->getManager();
+                $site->setIsHaveSnapshot(false);
                 $em->persist($site);
                 $em->flush();
-                $this->makeSnapShot($site);
+                //$this->makeSnapShot($site->getId());
                 $em->flush();
                 $this->setFlash('edit_success', 'Новый сайт добавлен');
                 return new RedirectResponse($this->generateUrl('core_cabinet_site_edit', ['id' => $site->getId()]));
@@ -150,9 +152,10 @@ class SiteCabinetController extends Controller
                 $site->setVerifiedCode($verifiedCode);
 
                 $em = $this->getDoctrine()->getManager();
+                $site->setIsHaveSnapshot(false);
                 $em->persist($site);
                 $em->flush();
-                $this->makeSnapShot($site);
+                //$this->makeSnapShot($site->getId());
                 $em->flush();
                 $answer = [
                     'data' => ['id' => $site->getId(), 'name' => $site->getName()],
@@ -347,15 +350,16 @@ class SiteCabinetController extends Controller
         $this->container->get('session')->getFlashBag()->set($action, $value);
     }
 
-    private function makeSnapShot(WebSite $site)
+    /**
+     * @param $id
+     */
+    private function makeSnapShot($id)
     {
-        $file = sprintf('site-%d.jpg', $site->getId());
-        $path = sprintf('%s/%d/%s', $site->getUploadRootDir(), $site->getUser()->getId(), $file);
-        if (file_exists($path)) {
-            unlink($path);
-        }
-        if ($this->get('knp_snappy.image')->generate($site->getDomain(), $path)) {
-            $site->setSnapShot($file);
-        }
+        $process = new Process(sprintf(
+            'php %s/console site:snapshot --id=%d',
+            $this->get('kernel')->getRootDir(),
+            $id
+        ));
+        $process->start();
     }
 }

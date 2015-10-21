@@ -120,6 +120,12 @@ class CommonSite
      */
     protected $snapShot;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=false, options={"default" = 0})
+     */
+    protected $isHaveSnapshot= false;
+
 
     /**
      * Статистика
@@ -360,12 +366,12 @@ class CommonSite
     {
         return null === $this->snapShot
             ? null
-            : $this->getUploadDir() .'/'. $this->getUser()->getId() . '/' . $this->snapShot;
+            : $this->getUploadDir() .'/'. $this->snapShot;
     }
 
     public function getUploadRootDir()
     {
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+        return __DIR__.'/../../../../web/'.$this->getUploadDir(). '/' .$this->getUser()->getId();
     }
 
     protected function getUploadDir()
@@ -389,7 +395,24 @@ class CommonSite
         $this->statistics = $statistics;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isIsHaveSnapshot()
+    {
+        return $this->isHaveSnapshot;
+    }
 
+    /**
+     * @param $isHaveSnapshot
+     * @return $this
+     */
+    public function setIsHaveSnapshot($isHaveSnapshot)
+    {
+        $this->isHaveSnapshot = $isHaveSnapshot;
+
+        return $this;
+    }
 
     /**
      * Дополнительные проверки
