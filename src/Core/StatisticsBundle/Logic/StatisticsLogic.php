@@ -24,6 +24,7 @@ class StatisticsLogic
         $this->em = $em;
     }
 
+
     public function getAdCompanyChartStats($adcompany)
     {
 

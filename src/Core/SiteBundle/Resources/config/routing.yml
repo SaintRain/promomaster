@@ -229,9 +229,24 @@ core_create_site_img:
 core_site_details:
     path:      /site-{id}.html
     schemes:  [http]
-    defaults:  { _controller: CoreSiteBundle:SiteCabinet:show }
+    defaults:  { _controller: CoreSiteBundle:Site:show }
     requirements:
           id: \d+
+
+core_common_catalog_first_page:
+    path:      /sites-catalog.html
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:Site:siteCatalog}
+
+core_common_catalog:
+    pattern:  /sites-catalog/{page}.html
+    schemes:  [http]
+    defaults: { _controller: CoreCommonBundle:Site:siteCatalog }
+    requirements:
+      page: \d+
+
+
+
 
 core_cabinet_ad_place_create_ajax:
     path:     /cabinet/place/create_ajax.json

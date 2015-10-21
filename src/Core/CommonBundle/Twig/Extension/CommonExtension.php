@@ -26,7 +26,11 @@ class CommonExtension extends \Twig_Extension
             new \Twig_SimpleFilter('menuTitleFormater', array($this, 'menuTitleFormaterFilter')),
             new \Twig_SimpleFilter('idFormat', array($this, 'idFormatFilter')),
             new \Twig_SimpleFilter('getMonthWord', array($this, 'getMonthWordFilter')),
-            new \Twig_SimpleFilter('floatval', array($this, 'floatvalFilter'))
+            new \Twig_SimpleFilter('floatval', array($this, 'floatvalFilter')),
+            new \Twig_SimpleFilter('firstDomainLatter', array($this, 'firstDomainLatter')),
+            new \Twig_SimpleFilter('firstDomainLatterClass', array($this, 'firstDomainLatterClass')),
+            new \Twig_SimpleFilter('onlyDomain', array($this, 'onlyDomain')),
+
 
 
         );
@@ -180,6 +184,111 @@ class CommonExtension extends \Twig_Extension
 //        echo '</div>'; exit;
         return $res;
     }
+
+    public function firstDomainLatter($domain)
+    {
+        $domain = $this->onlyDomain($domain);
+        return mb_strtoupper(mb_substr($domain, 0, 1));
+    }
+
+    public function onlyDomain($domain)
+    {
+        $domain = str_replace(['https://', 'http://', 'www.'], '', $domain);
+        return $domain;
+    }
+
+    public function firstDomainLatterClass($domain)
+    {
+        $fLatter = mb_strtolower($this->firstDomainLatter($domain));
+
+        switch ($fLatter) {
+            case 'q':
+                $class = 'bg-color-dark';
+                break;
+            case 'w':
+                $class = 'bg-color-sea';
+                break;
+            case 'e':
+                $class = 'bg-color-red';
+                break;
+            case 'r':
+                $class = 'bg-color-aqua';
+                break;
+            case 't':
+                $class = 'bg-color-blue';
+                break;
+            case 'y':
+                $class = 'bg-color-grey';
+                break;
+            case 'u':
+                $class = 'bg-color-light';
+                break;
+            case 'i':
+                $class = 'bg-color-green';
+                break;
+            case 'o':
+                $class = 'bg-color-brown';
+                break;
+            case 'p':
+                $class = 'bg-color-orange';
+                break;
+            case 'a':
+                $class = 'bg-color-green1';
+                break;
+            case 's':
+                $class = 'bg-color-purple';
+                break;
+            case 'd':
+                $class = 'bg-color-dark-blue';
+                break;
+            case 'f':
+                $class = 'bg-color-light-grey';
+                break;
+            case 'g':
+                $class = 'bg-color-light-green';
+                break;
+            case 'h':
+                $class = 'bg-color-sea';
+                break;
+            case 'j':
+                $class = 'bg-color-red';
+                break;
+            case 'k':
+                $class = 'bg-color-aqua';
+                break;
+            case 'l':
+                $class = 'g-color-blue';
+                break;
+            case 'z':
+                $class = 'bg-color-grey';
+                break;
+            case 'x':
+                $class = 'bg-color-light';
+                break;
+            case 'c':
+                $class = 'bg-color-green';
+                break;
+            case 'v':
+                $class = 'bg-color-brown';
+                break;
+            case 'b':
+                $class = 'bg-color-orange';
+                break;
+            case 'n':
+                $class = 'bg-color-green1';
+                break;
+            case 'm':
+                $class = 'bg-color-purple';
+                break;
+
+            default:
+                $class = '';
+                break;
+
+        }
+        return $class;
+    }
+
 
     public function getName()
     {

@@ -72,17 +72,6 @@ core_common_error404:
 #    defaults:  { _controller: CoreTroubleTicketBundle:TroubleTicket:contact }
 
 
-core_common_catalog_first_page:
-    path:      /sites-catalog.html
-    schemes:  [http]
-    defaults:  { _controller: CoreCommonBundle:Pages:siteCatalog}
-
-core_common_catalog:
-    pattern:  /sites-catalog/{page}.html
-    schemes:  [http]
-    defaults: { _controller: CoreCommonBundle:Pages:siteCatalog }
-    requirements:
-      page: \d+
 
 #core_common_catalog_details:
 #    pattern:  /sites-catalog/{slug}.html

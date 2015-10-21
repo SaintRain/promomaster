@@ -70,11 +70,12 @@
                 </div>
 
                 <br>
+
                 <div>
 
                     <button class="btn-u" type="submit">Искать</button>
-&nbsp;&nbsp;
-                <a class="btn-u btn-u-default" href="{{ path('core_common_catalog_first_page') }}">Сбросить</a>
+                    &nbsp;&nbsp;
+                    <a class="btn-u btn-u-default" href="{{ path('core_common_catalog_first_page') }}">Сбросить</a>
                 </div>
                 {{ form_end(form) }}
                 <br/>
@@ -82,24 +83,64 @@
             </div>
             <div class="col-md-9">
                 {% if sites.count %}
-                    <h3>Найденно {{ sites.totalItemCount }} {{ declOfNum(sites.totalItemCount, ['площадка','площадки', 'площадок']) }} </h3>
+                    <h3>
+                        Найденно {{ sites.totalItemCount }} {{ declOfNum(sites.totalItemCount, ['площадку','площадки', 'площадок']) }} </h3>
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Площадка</th>
-                            <th>Описание</th>
+                            {#<th width="20px">#</th>#}
+                            <th width="100px">Скриншот</th>
+                            <th width="200px">Площадка</th>
+                            <th width="200px">Тематика</th>
+                            <th>Статистика</th>
                             <th>Места</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for site in sites %}
+                        {% for s in sites %}
+                            {% set site=s[0] %}
 
                             <tr data-url="{{ path('core_site_details', {id: site.id}) }}">
-                                <td>{{ loop.index }}</td>
-                                <td><a href="{{ path('core_site_details', {id: site.id}) }}">{{ site.domain }}</a></td>
-                                <td>{{ site.shortDescription }}</td>
-                                <td></td>
+                                {#<td>{{ loop.index }}</td>#}
+                                <td>
+                                    <a href="{{ path('core_site_details', {id: site.id}) }}">
+                                    {% if site.webPath %}
+                                        <img src="{{ asset(site.webPath) }}" alt="" width="100%">
+                                    {% else %}
+                                        <span class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
+                                    {% endif %}
+                                        </a>
+                                </td>
+                                <td>
+                                    <a href="{{ path('core_site_details', {id: site.id}) }}"><b>{{ site.domain|onlyDomain }}</b></a>
+
+                                    <p>{{ site.shortDescription }}</p>
+                                </td>
+                                <td>
+                                    {% for category in site.categories %}
+                                        <i class="fa fa-check color-green"></i> {{ category.captionRu }}<br/>
+                                    {% endfor %}
+
+                                </td>
+                                <td>
+                                    {% if s.showsQuantity %}
+                                        {% set showsQuantity=s.showsQuantity %}
+                                    {% else %}
+                                        {% set showsQuantity=0 %}
+                                    {% endif %}
+                                    {% if s.clicksQuantity %}
+                                        {% set clicksQuantity=s.clicksQuantity %}
+                                    {% else %}
+                                        {% set clicksQuantity=0 %}
+                                    {% endif %}
+                                    <p>{{ clicksQuantity|number_format(0, '.', ',') }} {{ declOfNum(showsQuantity, ['показ', 'показа', 'показов']) }}</p>
+                                    <p>{{ showsQuantity|number_format(0, '.', ',') }} {{ declOfNum(showsQuantity, ['клик', 'клика', 'кликов']) }}</p>
+                                </td>
+                                <td>
+                                    {% for place in site.adPlaces %}
+                                        <p>{{ place.size.width }}x{{ place.size.height }}</p>
+                                    {% endfor %}
+                                </td>
                             </tr>
 
                         {% endfor %}

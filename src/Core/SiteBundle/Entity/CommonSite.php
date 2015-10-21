@@ -120,6 +120,19 @@ class CommonSite
      */
     protected $snapShot;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=false, options={"default" = 0})
+     */
+    protected $isHaveSnapshot= false;
+
+
+    /**
+     * Статистика
+     * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="site")
+     */
+    private $statistics;
+
 
     /**
      * Принимать заказа размещения автоматически без баннера
@@ -353,17 +366,52 @@ class CommonSite
     {
         return null === $this->snapShot
             ? null
-            : $this->getUploadDir() .'/'. $this->getUser()->getId() . '/' . $this->snapShot;
+            : $this->getUploadDir() .'/'. $this->snapShot;
     }
 
     public function getUploadRootDir()
     {
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+        return __DIR__.'/../../../../web/'.$this->getUploadDir(). '/' .$this->getUser()->getId();
     }
 
     protected function getUploadDir()
     {
         return 'uploads/sites';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatistics()
+    {
+        return $this->statistics;
+    }
+
+    /**
+     * @param mixed $statistics
+     */
+    public function setStatistics($statistics)
+    {
+        $this->statistics = $statistics;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIsHaveSnapshot()
+    {
+        return $this->isHaveSnapshot;
+    }
+
+    /**
+     * @param $isHaveSnapshot
+     * @return $this
+     */
+    public function setIsHaveSnapshot($isHaveSnapshot)
+    {
+        $this->isHaveSnapshot = $isHaveSnapshot;
+
+        return $this;
     }
 
     /**
@@ -382,8 +430,14 @@ class CommonSite
             $context->buildViolation('Нельзя выбмрать категории из разных разделов.')
                 ->atPath('categories')
                 ->addViolation();
-        } else if (!count($parents)) {
+        } else if (!count($this->getCategories())) {
             $context->buildViolation('Необходимо отметить минимум один подраздел.')
+                ->atPath('categories')
+                ->addViolation();
+        }
+
+        else if (count($this->getCategories())>3) {
+            $context->buildViolation('Можно выбрать не более 3-х разделов.')
                 ->atPath('categories')
                 ->addViolation();
         }

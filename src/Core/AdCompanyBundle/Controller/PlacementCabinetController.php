@@ -138,7 +138,7 @@ class PlacementCabinetController extends Controller
                 'query_builder' => function(PriceModelRepository $er ) {
                     return $er->createQueryBuilder('pm')->where('pm.name != :name')->setParameter('name','daysquantity');
                 },
-                'required' => false, 'property'=>'captionRu'])
+                'required' => false, 'property'=>'caption2Ru'])
            // ->add('defaultCountries', null, ['required' => false])
             ->add('defaultCountries', 'entity', [
                 //'required' => false ,
@@ -230,7 +230,10 @@ class PlacementCabinetController extends Controller
         $em = $this->getDoctrine()->getManager();
         $placement = $em->getRepository('CoreAdCompanyBundle:Placement')
             ->findForDeleting(['id' => $request->request->getInt('id'), 'user' => $user]);
-        $msg = "Размещение  «{$placement->getId()}» было удалено.";
+        if ($placement) {
+            $msg = "Размещение  «{$placement->getId()}» было удалено.";
+
+
         $em->remove($placement);
         try {
             $em->flush();
@@ -243,6 +246,13 @@ class PlacementCabinetController extends Controller
             $answer = [
                 'result' => false,
                 'msg'   => $msg
+            ];
+        }
+        }
+        else {
+            $answer = [
+                'result' => false,
+                'msg'   => 'Размещение было удалено ранее!'
             ];
         }
 

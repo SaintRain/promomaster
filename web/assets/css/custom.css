@@ -97,9 +97,28 @@ a.fromIndexBlock:hover {
 text-decoration: none;
 }
 
-/*a:hover > .fa-user {*/
-    /**/
-/*}*/
+
+.dropcap-bg{
+    float: left;
+    color: #fff;
+    padding: 0px 0 !important;
+    /* min-height: 100px; */
+    min-width: 100px !important;
+    font-size: 65px !important;
+    font-weight: 200;
+    line-height: 100px !important;
+    text-align: center;
+    background: #72c02c;
+    margin: 4px 10px 0 0;
+    vertical-align: middle;
+}
 
 
+.fa-active{
+    color: #72c02c !important;
+}
 
+.da-dots span {
+    color: #72c02c !important;
+    background-color: #72c02c !important;
+}

@@ -19,8 +19,11 @@ class CommonSiteRepository extends EntityRepository
     {
 
         $query = $this->createQueryBuilder('s')
-            ->select('s')
+            ->select('s, aP, SUM(st.showsQuantity) showsQuantity, SUM(st.clicksQuantity) clicksQuantity')
             ->join('s.categories', 'c')
+            ->leftJoin('s.adPlaces', 'aP', 'WITH', 'aP.isShowInCatalog=1')
+            ->leftJoin('s.statistics', 'st')
+
             ->where('s.isVerified = 1');
 
         if ($filter->getKeywords()) {
@@ -37,9 +40,11 @@ class CommonSiteRepository extends EntityRepository
             $query->andWhere('c.id IN (:categories)')
                 ->setParameter('categories', $catIds);
         }
+        $query->groupBy('s.id');
         return $query->getQuery();
-
     }
+
+
 
 
     /**

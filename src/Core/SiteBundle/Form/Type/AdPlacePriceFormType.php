@@ -26,7 +26,7 @@ class AdPlacePriceFormType extends AbstractType
             ->add('priceModel', 'entity',
                 ['label'       => 'В чем указано количество',
                  'empty_value' => 'Необходимо выбрать',
-                 'property'    => 'captionRu',
+                 'property'    => 'caption2Ru',
                  'class'       => 'CoreDirectoryBundle:PriceModel'
                 ])
             /*
