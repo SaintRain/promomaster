@@ -46,7 +46,6 @@ class SiteController extends Controller
             'all' => $em->getRepository('CoreStatisticsBundle:Statistics')->getSiteStatisticsForPeriod($site)
         ];
 
-ldd($statistics);
         return $this->render('CoreSiteBundle:Site:show.html.twig', ['site' => $site, 'statistics' => $statistics]);
     }
 

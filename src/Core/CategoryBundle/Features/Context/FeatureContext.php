@@ -35,7 +35,6 @@ class FeatureContext extends MinkContext
      */
     public function __construct(array $parameters)
     {
-        ldd('hr');
         $this->parameters = $parameters;
     }
 

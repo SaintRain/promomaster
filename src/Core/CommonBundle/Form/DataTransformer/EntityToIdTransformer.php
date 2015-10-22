@@ -22,14 +22,12 @@ class EntityToIdTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        ldd($value);
         return $value->getId();
     }
 
     public function transform($value)
     {
         if ($value) {
-            ldd($value);
             return $value->getId();
         }
         return null;
