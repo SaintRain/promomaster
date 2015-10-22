@@ -20,7 +20,7 @@ monolog:
             handler: swift
         swift:
             type:         swift_mailer
-            formatter:    html_log_formatter
+#            formatter:    html_log_formatter
             content_type: text/html
             from_email:   %default_email%
             to_email:     %default_email%
