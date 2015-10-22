@@ -49,4 +49,4 @@ services:
 
   core_trouble_ticket_log_mailer:
     class: Core\TroubleTicketBundle\Mailer\LogMailer
-    arguments: ['@mailer', '@router', '@templating','@translator', '@core_config_logic', {'fromEmail': %default_email_sender_name%}]
+    arguments: ['@mailer', '@router', '@templating','@translator', '@core_config_logic', {'fromEmail': %default_email%}]
