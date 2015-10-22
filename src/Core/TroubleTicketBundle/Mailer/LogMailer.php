@@ -84,7 +84,7 @@ class LogMailer
         $body = $renderedTemplate;
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
-            ->setFrom($this->params['fromEmail'])
+            ->setFrom($this->params['fromEmail'], $this->params['fromName'])
             ->setTo($toEmail)
             ->setBody($body, 'text/html');
 
