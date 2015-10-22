@@ -26,24 +26,8 @@ monolog:
             to_email:     %default_email%
             subject:      "Ошибка на сервере promomaster.net"
             level:        critical
-#        mail:
-#            type: fingers_crossed
-#            action_level: critical
-#            handler: swift
+        mail:
+            type: fingers_crossed
+            action_level: critical
+            handler: swift
 
-#monolog:
-#    handlers:
-#        applog:
-#            type: stream
-#            path: "%kernel.logs_dir%/%kernel.environment%.log"
-#            level: error
-#        main:
-#            type: fingers_crossed
-#            action_level: debug
-#            handler: file
-#        file:
-#            type: stream
-#            level: error
-#        syslog:
-#            type: syslog
-#            level: error
