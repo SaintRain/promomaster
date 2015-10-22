@@ -119,6 +119,28 @@ text-decoration: none;
 }
 
 .da-dots span {
-    color: #72c02c !important;
     background-color: #72c02c !important;
+}
+
+.info-blocks-in h4 {
+    text-transform: uppercase !important;
+    color: #687074;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+
+
+.info-blocks i.icon-info-blocks  {
+    margin-top: 3px !important;
+}
+
+
+.extra-block h4 {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.da-slide p {
+    line-height: 28px !important;
 }
