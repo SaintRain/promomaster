@@ -1,19 +1,49 @@
 imports:
     - { resource: config.yml }
 
+
 monolog:
     handlers:
-        applog:
-            type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.log"
-            level: error
         main:
+            type:         fingers_crossed
+            action_level: notice
+            handler:      grouped
+        grouped:
+            type:    group
+            members: [streamed, buffered]
+        streamed:
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: info
+        buffered:
+            type:    buffer
+            handler: swift
+        swift:
+            type:         swift_mailer
+            formatter:    html_log_formatter
+            content_type: text/html
+            from_email:   %default_email%
+            to_email:     %default_email%
+            subject:      Ошибка на сервере promomaster.net
+            level:        critical
+        mail:
             type: fingers_crossed
-            action_level: debug
-            handler: file
-        file:
-            type: stream
-            level: error
-        syslog:
-            type: syslog
-            level: error
+            action_level: critical
+            handler: swift
+
+#monolog:
+#    handlers:
+#        applog:
+#            type: stream
+#            path: "%kernel.logs_dir%/%kernel.environment%.log"
+#            level: error
+#        main:
+#            type: fingers_crossed
+#            action_level: debug
+#            handler: file
+#        file:
+#            type: stream
+#            level: error
+#        syslog:
+#            type: syslog
+#            level: error
