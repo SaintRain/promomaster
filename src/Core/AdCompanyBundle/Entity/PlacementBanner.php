@@ -57,7 +57,7 @@ class PlacementBanner
      * @Assert\GreaterThan(value = 0)
      * @ORM\Column(type="bigint", nullable=false, options={"default":1})
      */
-    private $preoritet;
+    private $preoritet=1;
 
 
     /**

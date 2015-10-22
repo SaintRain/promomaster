@@ -195,7 +195,6 @@ class SiteLogic
     {
 
         $params = parse_url($this->parameters['nodejs_server']);
-        $host = $_SERVER['HTTP_HOST'];
         $content = http_build_query($arr);
 
         $fp = @fsockopen($params['host'], $params['port']);
