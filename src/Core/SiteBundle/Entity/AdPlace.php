@@ -476,7 +476,6 @@ class AdPlace
      */
     public function setCountryList($countryList)
     {
-        ldd($countryList);
         $this->countryList = $countryList;
 
         return $this;

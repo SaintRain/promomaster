@@ -20,7 +20,6 @@ class AjaxUserController extends Controller
     {
         if (!$this->getUser()) {
             $request = $this->get('request_stack')->getCurrentRequest();
-            ldd($request->request->all());
         
         }
 
