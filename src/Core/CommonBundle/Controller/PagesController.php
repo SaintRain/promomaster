@@ -76,7 +76,7 @@ class PagesController extends Controller
     {
         return $this->render('TwigBundle:Exception:error404.html.twig', ['request' => $request]);
     }
-//
+
 //    /**
 //     * 504 ошибка, метод используется для внутреннего перенаправления
 //     * @return type
@@ -85,6 +85,6 @@ class PagesController extends Controller
 //    {
 //        return $this->render('CoreCommonBundle:Pages:error504.html.twig');
 //    }
-//
+
 
 }
