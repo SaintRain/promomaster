@@ -1,1 +1,0 @@
-var ParallaxSlider=function(){return{initParallaxSlider:function(){$("#da-slider").cslider({current:0,bgincrement:50,autoplay:false,interval:4000})},}}();
