@@ -366,7 +366,7 @@ class CommonSite
     {
         return null === $this->snapShot
             ? null
-            : $this->getUploadDir() .'/'. $this->snapShot;
+            : $this->getUploadDir() .'/'.$this->getUser()->getId().'/'.$this->snapShot;
     }
 
     public function getUploadRootDir()
