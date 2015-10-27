@@ -120,7 +120,7 @@ class AdPlace
 
     /**
      * Статистика
-     * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="adPlace")
+     * @ORM\OneToMany(targetEntity="Core\StatisticsBundle\Entity\Statistics", mappedBy="adPlace", indexBy="id")
      */
     private $statistics;
 

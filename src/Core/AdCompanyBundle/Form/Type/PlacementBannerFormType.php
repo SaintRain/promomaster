@@ -56,7 +56,7 @@ class PlacementBannerFormType extends AbstractType
                         '10' => 10
                     ],
                     'label' => 'Приоритет',
-                    'empty_value' => 'Приоритет показа...'
+                    'empty_value' => 'Приоритет'
                 ]
             );
     }

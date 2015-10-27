@@ -1,0 +1,28 @@
+{% macro statTable(adPlaces, statistics) %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Рекламное место</th>
+            <th>Клики</th>
+            <th>Показы</th>
+            <th>CTR</th>
+            <th>Описание</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for adPlace in adPlaces %}
+            {% if adPlace.isShowInCatalog %}
+                <tr>
+                    <td>{{ adPlace.size.width }}x{{ adPlace.size.height }}</td>
+                    <td>{% if  statistics[adPlace.id] is defined  %}{{ statistics[adPlace.id].clicksQuantity|number_format(0, '.', ',') }}{% else %}0{% endif %}</td>
+                    <td>{% if statistics[adPlace.id] is defined  %}{{ statistics[adPlace.id].showsQuantity|number_format(0, '.', ',') }}{% else %}0{% endif %}</td>
+                    <td>{% if statistics[adPlace.id]  is defined %}{{ statistics[adPlace.id].ctr }}{% else %}0{% endif %}%</td>
+                    <td>{{ adPlace.name }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endmacro %}

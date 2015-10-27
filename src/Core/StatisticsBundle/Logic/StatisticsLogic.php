@@ -36,44 +36,60 @@ class StatisticsLogic
         $shows = 0;
 
 
-            foreach ($adcompany->getPlacements() as $key => $placement) {
-                $statistics['placements'][$key] = [
-                    0 => [
-                        'object' => $placement,
-                        'caption' => 'Показы'],
-                    1 => [
-                        'object' => $placement,
-                        'caption' => 'Клики'],
-                ];
+        $ids = [];
+        foreach ($adcompany->getPlacements() as $key => $placement) {
+            $ids[] = $placement->getId();
+        }
 
-                $pClicks = 0;
-                $pShows = 0;
-                foreach ($placement->getStatistics() as $s) {
-                    $pShows += $s->getShowsQuantity();
-                    $pClicks += $s->getClicksQuantity();
-                    $statistics['general'][0]['data'][] = [$s->getStartDateTime()->getTimestamp() * 1000, $s->getShowsQuantity()];
-                    $statistics['general'][1]['data'][] = [$s->getStartDateTime()->getTimestamp() * 1000, $s->getClicksQuantity()];
-                    $statistics['placements'][$key][0]['data'][] = [$s->getStartDateTime()->getTimestamp() * 1000, $s->getShowsQuantity()];
-                    $statistics['placements'][$key][1]['data'][] = [$s->getStartDateTime()->getTimestamp() * 1000, $s->getClicksQuantity()];
+        $stats = $this->em->getRepository('CoreStatisticsBundle:Statistics')->getCommonStatisticsForPlacements($ids);
+
+
+        foreach ($adcompany->getPlacements() as $key => $placement) {
+            $statistics['placements'][$key] = [
+                0 => [
+                    'object' => $placement,
+                    'caption' => 'Показы'],
+                1 => [
+                    'object' => $placement,
+                    'caption' => 'Клики'],
+            ];
+
+            $pClicks = 0;
+            $pShows = 0;
+
+
+            if (isset($stats[$placement->getId()])) {
+                foreach ($stats[$placement->getId()] as $s) {
+                    $t = $s['startDateTime']->getTimestamp() * 1000;
+
+                    $pShows += $s['showsQuantity'];
+                    $pClicks += $s['clicksQuantity'];
+                    $statistics['general'][0]['data'][] = [$t, $s['showsQuantity']];
+                    $statistics['general'][1]['data'][] = [$t, $s['clicksQuantity']];
+                    $statistics['placements'][$key][0]['data'][] = [$t, $s['showsQuantity']];
+                    $statistics['placements'][$key][1]['data'][] = [$t, $s['clicksQuantity']];
                 }
-
-
-                $statistics['placementsClicks'][$key] = $pClicks;
-                $statistics['placementsShows'][$key] = $pShows;
-                $statistics['placementsCTR'][$key] = round($pClicks / ($pShows / 100), 2);
-
-
-                $clicks += $pClicks;
-                $shows += $pShows;
             }
+
+            $statistics['placementsClicks'][$key] = $pClicks;
+            $statistics['placementsShows'][$key] = $pShows;
+            if ($pClicks && $pShows) {
+                $statistics['placementsCTR'][$key] = round($pClicks / ($pShows / 100), 2);
+            } else {
+                $statistics['placementsCTR'][$key] = 0;
+            }
+
+
+            $clicks += $pClicks;
+            $shows += $pShows;
+        }
 
 
         $statistics['generalClicks'] = $clicks;
         $statistics['generalShows'] = $shows;
         if ($shows) {
             $statistics['generalCTR'] = round($clicks / ($shows / 100), 2);
-        }
-        else {
+        } else {
             $statistics['generalCTR'] = 0;
         }
 

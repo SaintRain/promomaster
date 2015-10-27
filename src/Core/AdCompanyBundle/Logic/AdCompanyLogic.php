@@ -62,6 +62,7 @@ class AdCompanyLogic
         $queryBuilder = $this->em->getRepository('CoreAdCompanyBundle:AdCompany')->generateQueryBuilderByFilter($filterRequest);
         $adCompanies = $this->paginator->paginate($queryBuilder, $page, $filterRequest['maxResults']);
 
+
         //для каждой рекламной компании определяем активна она или нет
         foreach ($adCompanies as $adComp) {
             $isActive = true;

@@ -21,6 +21,13 @@ use Core\SiteBundle\Form\Type\SearchFilterFormType;
 class SiteController extends Controller
 {
 
+    public function redirectToDomainAction($siteId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $site = $em->getRepository('CoreSiteBundle:CommonSite')->find($siteId);
+        return $this->redirect($site->getDomain());
+    }
+
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -79,10 +86,19 @@ class SiteController extends Controller
             $paxPerPage
         );
 
+        $ids = [];
+        foreach ($sites as $s) {
+            $ids[] = $s->getId();
+        }
+
+
+        $statistics = $em->getRepository('CoreStatisticsBundle:Statistics')->getCommonStatisticsForSites($ids);
+
 
         return $this->render('CoreSiteBundle:Site:site_catalog.html.twig', [
             'categories' => $categories,
             'sites' => $sites,
+            'statistics' => $statistics,
             'form' => $form->createView()
         ]);
     }

@@ -35,3 +35,13 @@ core_cabinet_adcompany_delete:
     defaults:  { _controller: CoreAdCompanyBundle:AdCompanyCabinet:delete }
     requirements:
       id: \d+
+
+
+core_cabinet_set_adcompany_status:
+    path:      /cabinet/adcompany/setstatus/{id}/{status}/{page}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreAdCompanyBundle:AdCompanyCabinet:setStatus }
+    requirements:
+      id: \d+
+      page: \d+
+      status: on|off

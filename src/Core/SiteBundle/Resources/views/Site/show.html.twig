@@ -1,4 +1,5 @@
 {% extends "CoreCommonBundle::main_layout.html.twig" %}
+{% import "@CoreSite/Site/site_catalog_macro.html.twig" as elements %}
 
 {# SEO - заголовки #}
 {% block title %}{% endblock %}
@@ -66,11 +67,13 @@
         <div class="content">
             <div class="col-md-3 md-margin-bottom-50">
 
-                {% if site.webPath %}
-                    <img src="{{ asset(site.webPath) }}" alt="" width="100%">
-                {% else %}
-                    <span class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
-                {% endif %}
+                <a target="_blank" href="{{ path('core_common_redirect_to_domain', {siteId:site.id}) }}">
+                    {% if site.webPath %}
+                        <img src="{{ asset(site.webPath) }}" alt="" width="100%">
+                    {% else %}
+                        <span class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
+                    {% endif %}
+                </a>
 
                 {#{% set curImg = (site.webPath) ? site.webPath : '/assets/img/portfolio/01.jpg' %}#}
                 {#<a href="{{ site.domain }}">#}
@@ -79,105 +82,68 @@
             </div>
             <section class="col-md-8">
                 <div class="margin-bottom-20">
-                    <h3>{{ site.domain|onlyDomain }}</h3>
-                </div>
-                <hr>
-                {% if site.shortDescription %}
 
-                    <h3>Описание</h3>
+                        <h3><a target="_blank" href="{{ path('core_common_redirect_to_domain', {siteId:site.id}) }}">{{ site.domain|onlyDomain }}</a></h3>
 
                     <p>{{ site.shortDescription | nl2br }}</p>
+                </div>
+
+                <br>
+
+
+                {% if site.adPlaces|length %}
+                    <div class="tab-v2">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#today" data-toggle="tab">Статистика за сегодня</a></li>
+                            <li><a href="#month" data-toggle="tab">За последний месяц</a></li>
+                            <li><a href="#all" data-toggle="tab">С самого начала</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="today">
+
+
+                                {{ elements.statTable(site.adPlaces , statistics.today) }}
+
+                            </div>
+                            <div class="tab-pane fade in" id="month">
+
+                                {{ elements.statTable(site.adPlaces , statistics.month) }}
+                            </div>
+                            <div class="tab-pane fade in" id="all">
+                                {{ elements.statTable(site.adPlaces , statistics.all) }}
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p><i>Статистика не доступна</i></p><br>
                 {% endif %}
 
 
-
-
-
-
-                <div class="tab-v2">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#home-1" data-toggle="tab">Статистика за сегодня</a></li>
-                        <li><a href="#messages-1" data-toggle="tab">За последний месяц</a></li>
-                        <li><a href="#settings-1" data-toggle="tab">С самого начала</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane fade in active" id="home-1">
-
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Рекламное место</th>
-                                    <th>Клики</th>
-                                    <th>Показы</th>
-                                    <th>CTR</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for adPlace in site.adPlaces %}
-                                <tr>
-                                    <td>{{ place.size.width }}x{{ place.size.height }}</td>
-                                    <td>Клики</td>
-                                    <td>Показы</td>
-                                    <td>CTR</td>
-                                </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <div class="tab-pane fade in" id="profile-1">
-                            <img alt="" class="pull-left lft-img-margin img-width-200" src="assets/img/main/5.jpg">
-                            <h4>Heading Sample 2</h4>
-
-                            <p>Vivamus imperdiet condimentum diam, eget placerat felis consectetur id. Donec eget orci
-                                metus, ac adipiscing nunc. Pellentesque fermentum, ante ac interdum ullamcorper. Donec
-                                eget orci metus, <strong>ac adipiscing nunc.</strong> Vivamus imperdiet condimentum
-                                diam, eget placerat felis consectetur id. Donec eget orci metus, ac adipiscing nunc.
-                                Pellentesque fermentum, ante ac interdum id. Donec eget orci metus, ac adipiscing nunc.
-                                Pellentesque fermentum, ante ac interdum ullamcorper. Donec eget orci metus, ac
-                                adipiscing nunc. Pellentesque fermentum, ante ac <strong>interdum ullamcorper.</strong>
-                            </p>
-                        </div>
-                        <div class="tab-pane fade in" id="messages-1">
-                            <h4>Heading Sample 3</h4>
-
-                            <p><img alt="" class="pull-right rgt-img-margin img-width-200" src="assets/img/main/6.jpg">
-                                <strong>Vivamus imperdiet condimentum diam, eget placerat felis consectetur id.</strong>
-                                Donec eget orci metus, Vivamus imperdiet condimentum diam, eget placerat felis
-                                consectetur id. Donec eget orci metus, ac adipiscing nunc. Pellentesque fermentum, ante
-                                ac interdum ullamcorper. Donec eget orci metus, ac adipiscing nunc. Pellentesque
-                                fermentum, consectetur id. Donec eget orci metus, ac adipiscing nunc. <strong>Pellentesque
-                                    fermentum</strong>, ante ac interdum ullamcorper. Donec eget orci metus, ac
-                                adipiscing nunc. Pellentesque fermentum, ante ac interdum ullamcorper.</p>
-                        </div>
-                        <div class="tab-pane fade in" id="settings-1">
-                            <h4>Heading Sample 4</h4>
-
-                            <p><img alt="" class="pull-right rgt-img-margin img-width-200" src="assets/img/main/1.jpg">
-                                Vivamus imperdiet condimentum diam, eget placerat felis consectetur id. Donec eget orci
-                                metus, Vivamus imperdiet condimentum diam, eget placerat felis consectetur id. Donec
-                                eget orci metus, ac adipiscing nunc. Pellentesque fermentum, ante ac interdum
-                                ullamcorper. Donec eget orci metus, ac adipiscing nunc. Pellentesque fermentum,
-                                consectetur id. Donec eget orci metus, ac adipiscing nunc. <strong>Pellentesque
-                                    fermentum</strong>, ante ac interdum ullamcorper. Donec eget orci metus, ac
-                                adipiscing nunc. Pellentesque fermentum, ante ac interdum ullamcorper.</p>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="headline">
-                    <h3>Категории</h3>
-                </div>
-                <ul class="list-styled">
+                <div>
+                    <h3>Тематика</h3>
                     {% for category in site.categories %}
-                        <li>
-                            <i class="fa fa-check color-green"></i>&nbsp;
+
+                        <span style="margin-right: 25px"><i class="fa fa-check color-green"></i>&nbsp;
                             {#<a href="{{ path('core_common_catalog_first_page') }}?site_search_filter_form[selectMainCat]={{ category.parent.id }}&site_search_filter_form[categories]={{ category.id }}">{{ category.captionRu }}</a>#}
-                            {{ category.captionRu }}
-                        </li>
+                            {{ category.captionRu }}</span>
+
+
                     {% endfor %}
-                </ul>
+                </div>
+
+
+                {% if site.description %}
+                    <br><br>
+
+                    <div style="clear: left">
+                        <h3>Требования к рекламным материалам</h3>
+
+
+                        {{ site.description | nl2br }}
+                    </div>
+
+                {% endif %}
+
 
                 {#{% if site.keywords %}#}
                 {#<div class="headline">#}
@@ -188,4 +154,6 @@
             </section>
         </div>
     </div>
+    <br/>
+    <br/>
 {% endblock %}

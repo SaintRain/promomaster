@@ -6,7 +6,6 @@
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
 
-
     {% block breadcrumbs %}
         <!--=== Breadcrumbs ===-->
         <div class="breadcrumbs">
@@ -22,109 +21,30 @@
         <!--=== End Breadcrumbs ===-->
     {% endblock %}
 
+  {% block js_head %}
+      {{ parent() }}
+      <script>
+          $(function () {
+              $(document).on('click', '.set-status', function () {
+                  var d = new Date();
+                  var t = d.getTime();
+
+                  $.get($(this).attr('data-url')+'?t='+t).done(function (response) {
+                      $('#adcompanyContent').html(response);
+                  });
+              })
+
+          })
+      </script>
+
+  {% endblock %}
+
 
 {% block sub_content %}
 
-    {% for flashMessage in app.session.flashbag.get('edit_success') %}
-        <br/>
-        <div class="alert alert-success fade in">
-            {{ flashMessage | raw }}
-        </div>
-    {% endfor %}
-
-
-    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
-        <br/>
-        <div class="alert alert-danger fade in">
-            {{ flashMessage | raw }}
-        </div>
-    {% endfor %}
-
-
-    {% if  adcompanies.getTotalItemCount %}
-        <h3>Список рекламных компаний</h3>
-        <a style="margin-top: -30px" href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u pull-right"><i
-                    class="fa fa-plus-square"></i> &nbsp;Добавить рекламную компанию</a>
-
-
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>ID</th>
-                <th>Название</th>
-                <th>Размещения</th>
-                <th>Показов</th>
-                <th>Кликов</th>
-                <th>CTR</th>
-                <th>Идут показы</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for adcompany in adcompanies %}
-                <tr>
-                    <td height="53px">{{ loop.index }}</td>
-                    <td><b>{{ adcompany.id }}</b></td>
-                    <td>
-                        <a href="{{ path('core_cabinet_adcompany_edit', {id:adcompany.id}) }}">{{ adcompany.name }}</a>
-                    </td>
-                    <td>
-                        {% if adcompany.placements.count==1 %}
-                            {% set placement=adcompany.placements.first %}
-
-                            {% if placement.adPlace %}
-                                {{ placement.adPlace.name }} {{ placement.adPlace.width }}x{{ placement.adPlace.height }}
-                                {% if placement.adPlace.site %}
-                                    <br/>
-                                    {{ placement.adPlace.site.domain }}
-                                {% endif %}
-                            {% endif %}
-                        {% else %}
-                            {% if adcompany.placements.count %}
-                                {{ adcompany.placements.count }} {{ declOfNum(adcompany.placements.count, ['размещение','размещения', 'размещений']) }}
-                            {% else %}
-                                нет размещений
-                            {% endif %}
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% set showsQuantitySum=0 %}
-                        {% set clicksQuantitySum=0 %}
-                        {% for placements in adcompany.placements %}
-                            {% for s in placements.statistics %}
-                                {% set showsQuantitySum=showsQuantitySum+s.showsQuantity %}
-                                {% set clicksQuantitySum=clicksQuantitySum+s.clicksQuantity %}
-                            {% endfor %}
-                        {% endfor %}
-                        {{ showsQuantitySum }}
-                    </td>
-                    <td>{{ clicksQuantitySum }}</td>
-                    <td>
-                        {% if clicksQuantitySum %}
-                        {{ (clicksQuantitySum/(showsQuantitySum/100))|round(2) }}
-                            {% else %}
-                            0.00
-                            {% endif %}%
-                            </td>
-                    <td>
-
-                        {% if adcompany.isActive %}<span class="label label-u">Да</span>{% else %}<span class="label label-warning">Нет</span>{% endif %}</td>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
-        {% set routeFirsPage = 'core_cabinet_adcompany_list_first_page' %}
-        {% set routePage = 'core_cabinet_adcompany_list' %}
-
-        {{ knp_pagination_render(adcompanies, 'CoreSiteBundle:Site/Cabinet:pagination.html.twig',{},
-        { routeFirsPage: routeFirsPage, routePage:routePage}) }}
-
-    {% else %}
-        <h2>У вас нет рекламных компаний</h2>
-        <a style="margin-top: -30px" href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u pull-right"><i
-                    class="fa fa-plus-square"></i> &nbsp;Добавить рекламную компанию</a>
-    {% endif %}
+    <div id="adcompanyContent">
+        {{ include('@CoreAdCompany/AdCompany/Cabinet/list_ajax.html.twig') }}
+    </div>
 
 {% endblock %}
+

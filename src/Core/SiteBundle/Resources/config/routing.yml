@@ -241,9 +241,17 @@ core_common_catalog_first_page:
 core_common_catalog:
     pattern:  /sites-catalog/{page}.html
     schemes:  [http]
-    defaults: { _controller: CoreCommonBundle:Site:siteCatalog }
+    defaults: { _controller: CoreSiteBundle:Site:siteCatalog }
     requirements:
       page: \d+
+
+
+core_common_redirect_to_domain:
+    pattern:  /redirect/domain/{siteId}.html
+    schemes:  [http]
+    defaults: { _controller: CoreSiteBundle:Site:redirectToDomain }
+    requirements:
+      siteId: \d+
 
 
 

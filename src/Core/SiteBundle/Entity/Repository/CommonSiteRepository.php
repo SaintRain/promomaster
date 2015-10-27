@@ -12,23 +12,21 @@ namespace Core\SiteBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Core\SiteBundle\Model\SearchFilter;
 
+
 class CommonSiteRepository extends EntityRepository
 {
 
     public function searchByFilter(SearchFilter $filter)
     {
-
         $query = $this->createQueryBuilder('s')
-            ->select('s, aP, SUM(st.showsQuantity) showsQuantity, SUM(st.clicksQuantity) clicksQuantity')
-            ->join('s.categories', 'c')
+            ->select('s, c')
             ->leftJoin('s.adPlaces', 'aP', 'WITH', 'aP.isShowInCatalog=1')
-            ->leftJoin('s.statistics', 'st')
-
+            ->leftJoin('aP.statistics', 'st', 'WITH', 'st.adPlace=aP.id AND st.site=s.id')
+            ->leftJoin('s.categories', 'c')
             ->where('s.isVerified = 1');
 
         if ($filter->getKeywords()) {
-
-            $query->where('(s.keywords LIKE :keywords OR s.shortDescription LIKE :keywords OR s.description LIKE :keywords)')
+            $query->andWhere('(s.keywords LIKE :keywords OR s.shortDescription LIKE :keywords OR s.description LIKE :keywords)')
                 ->setParameter('keywords', '%'.$filter->getKeywords().'%');
         }
 
@@ -40,9 +38,13 @@ class CommonSiteRepository extends EntityRepository
             $query->andWhere('c.id IN (:categories)')
                 ->setParameter('categories', $catIds);
         }
-        $query->groupBy('s.id');
+
         return $query->getQuery();
     }
+
+
+
+
 
 
 
