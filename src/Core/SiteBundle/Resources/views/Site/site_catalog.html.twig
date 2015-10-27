@@ -84,37 +84,39 @@
             <div class="col-md-9">
                 {% if sites.count %}
                     <h3>
-                        Найденно {{ sites.totalItemCount }} {{ declOfNum(sites.totalItemCount, ['площадку','площадки', 'площадок']) }} </h3>
+                        Найдено {{ sites.totalItemCount }} {{ declOfNum(sites.totalItemCount, ['площадку','площадки', 'площадок']) }} </h3>
                     <table class="table table-striped">
                         <thead>
                         <tr>
                             {#<th width="20px">#</th>#}
                             <th width="100px">Скриншот</th>
                             <th width="200px">Площадка</th>
-                            <th width="200px">Тематика</th>
+                            <th width="250px">Тематика</th>
                             <th>Статистика</th>
-                            <th>Места</th>
+                            <th>Рекламные места</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for s in sites %}
-                            {% set site=s[0] %}
+                        {% for site in sites %}
+
 
                             <tr data-url="{{ path('core_site_details', {id: site.id}) }}">
                                 {#<td>{{ loop.index }}</td>#}
                                 <td>
                                     <a href="{{ path('core_site_details', {id: site.id}) }}">
-                                    {% if site.webPath %}
-                                        <img src="{{ asset(site.webPath) }}" alt="" width="100%">
-                                    {% else %}
-                                        <span class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
-                                    {% endif %}
-                                        </a>
+                                        {% if site.webPath %}
+                                            <img src="{{ asset(site.webPath) }}" alt="" width="100%">
+                                        {% else %}
+                                            <span class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
+                                        {% endif %}
+                                    </a>
                                 </td>
                                 <td>
                                     <a href="{{ path('core_site_details', {id: site.id}) }}"><b>{{ site.domain|onlyDomain }}</b></a>
 
-                                    <p>{{ site.shortDescription }}</p>
+
+
+                                    <p>{{ site.shortDescription| nl2br  }}</p>
                                 </td>
                                 <td>
                                     {% for category in site.categories %}
@@ -123,22 +125,43 @@
 
                                 </td>
                                 <td>
-                                    {% if s.showsQuantity %}
-                                        {% set showsQuantity=s.showsQuantity %}
-                                    {% else %}
-                                        {% set showsQuantity=0 %}
+
+
+                                    {% if statistics[site.id] is defined  %}
+                                        {% set showsQuantity=statistics[site.id].showsQuantity %}
+                                        {% set clicksQuantity=statistics[site.id].clicksQuantity %}
+                                        {% set ctr=statistics[site.id].ctr %}
+                                        {% else %}
+                                            {% set showsQuantity=0 %}
+                                            {% set clicksQuantity=0 %}
+                                            {% set ctr=0 %}
                                     {% endif %}
-                                    {% if s.clicksQuantity %}
-                                        {% set clicksQuantity=s.clicksQuantity %}
-                                    {% else %}
-                                        {% set clicksQuantity=0 %}
-                                    {% endif %}
-                                    <p>{{ clicksQuantity|number_format(0, '.', ',') }} {{ declOfNum(showsQuantity, ['показ', 'показа', 'показов']) }}</p>
-                                    <p>{{ showsQuantity|number_format(0, '.', ',') }} {{ declOfNum(showsQuantity, ['клик', 'клика', 'кликов']) }}</p>
+
+                                    <p>
+                                        {% if showsQuantity>0 %}
+                                            {{ showsQuantity|number_format(0, '.', ',') }} {{ declOfNum(showsQuantity, ['показ', 'показа', 'показов']) }}
+                                        {% else %}
+                                            Нет показов
+                                        {% endif %}
+                                    </p>
+
+                                    <p>
+                                        {% if clicksQuantity %}
+                                            {{ clicksQuantity|number_format(0, '.', ',') }} {{ declOfNum(clicksQuantity, ['клик', 'клика', 'кликов']) }}
+                                        {% else %}
+                                            Нет кликов
+                                        {% endif %}
+                                    </p>
+
+                                    <p>
+                                        {{ ctr }}% CTR
+                                    </p>
                                 </td>
                                 <td>
-                                    {% for place in site.adPlaces %}
-                                        <p>{{ place.size.width }}x{{ place.size.height }}</p>
+                                    {% for adPlace in site.adPlaces %}
+                                        {% if adPlace.isShowInCatalog %}
+                                        <p>{{ adPlace.size.width }}x{{ adPlace.size.height }}</p>
+                                            {% endif %}
                                     {% endfor %}
                                 </td>
                             </tr>
@@ -155,7 +178,7 @@
                         </div>
                     </div>
                 {% else %}
-                    <h3>По заданному запросу ничего не найденно.</h3>
+                    <h3>По заданному запросу ничего не найдено.</h3>
 
                     <a class="btn-u " href="{{ path('core_common_catalog_first_page') }}">Вернуться к поиску</a>
                 {% endif %}

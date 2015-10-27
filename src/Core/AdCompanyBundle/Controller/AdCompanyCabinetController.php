@@ -11,12 +11,50 @@ namespace Core\AdCompanyBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Core\AdCompanyBundle\Entity\AdPlace;
 use Core\AdCompanyBundle\Entity\AdCompany;
 use Core\AdCompanyBundle\Form\Type\AdCompanyType;
 
 class AdCompanyCabinetController extends Controller
 {
+
+
+    /**
+     * Ставит статус компании
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function setStatusAction(Request $request, $id, $status, $page=1)
+    {
+
+        if ($status == 'on') {
+            $status = true;
+        } else {
+            $status = false;
+
+        }
+
+        $em=$this->getDoctrine()->getManager();
+
+        $adCompany = $em->getRepository('CoreAdCompanyBundle:AdCompany')->findForStatus($id, $this->getUser()->getId());
+
+
+        if ($adCompany) {
+            $adCompany->setIsEnabled($status);
+            $em->persist($adCompany);
+            $em->flush($adCompany);
+
+        } else {
+            throw new \Exception('Необходима авторизация.');
+        }
+
+        $adcompanies = $this->get('core_adcompany_logic')->getDataInCabinetForPage($page);
+        $stats = $this->getDoctrine()->getManager()->getRepository('CoreStatisticsBundle:Statistics')->getCommonStatisticsForAdCompanies($adcompanies);
+
+        return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:list_ajax.html.twig', ['adcompanies' => $adcompanies, 'stats' => $stats]);
+
+    }
+
 
     /**
      * Вывод списка рекламных компаний пользователя в личном кабинете
@@ -30,10 +68,13 @@ class AdCompanyCabinetController extends Controller
         }
 
         $adcompanies = $this->get('core_adcompany_logic')->getDataInCabinetForPage($page);
+        $stats = $this->getDoctrine()->getManager()->getRepository('CoreStatisticsBundle:Statistics')->getCommonStatisticsForAdCompanies($adcompanies);
 
-        return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:list.html.twig', ['adcompanies' => $adcompanies]);
+
+
+
+        return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:list.html.twig', ['adcompanies' => $adcompanies, 'stats' => $stats]);
     }
-
 
 
     /**
@@ -57,10 +98,9 @@ class AdCompanyCabinetController extends Controller
 
             if ($this->get('core_adcompany_logic')->checkIsExistAdCompany($adcompany, $user)) {
                 $this->setFlash('edit_errors', 'Рекламная компания с указанным именем была добавлена вами ранее.');
-                $isBadName=true;
-            }
-            else {
-                $isBadName=false;
+                $isBadName = true;
+            } else {
+                $isBadName = false;
             }
 
             if (!$isBadName && $form->isValid()) {
@@ -70,7 +110,7 @@ class AdCompanyCabinetController extends Controller
                 $this->setFlash('edit_success', 'Данные успешно обновлены');
                 return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $id]));
             } else {
-                return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', [ 'adcompany' => $adcompany,  'form' => $form->createView()]);
+                return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany, 'form' => $form->createView()]);
             }
         } else {
             return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany, 'form' => $form->createView()]);
@@ -144,7 +184,6 @@ class AdCompanyCabinetController extends Controller
     }
 
 
-
     /**
      * Удаление рекламной компании
      * @return \Symfony\Component\HttpFoundation\Response
@@ -171,7 +210,6 @@ class AdCompanyCabinetController extends Controller
     }
 
 
-
     /**
      * Установка сообщений
      * @param string $action
@@ -180,7 +218,7 @@ class AdCompanyCabinetController extends Controller
     private function setFlash($action, $value)
     {
         $this->container->get('session')->getFlashBag()->set($action, $value);
-    }    
+    }
 
 
 }

@@ -5,6 +5,7 @@
         {%for so_key,so in statistics.general%}
         seriesOptions[{{so_key}}] = {
             animation: false,
+            lineWidth:3,
             name: "{{so.caption|e('js')}}",
             {% if so.data is defined %}
             data: [{%for d_key,d in so.data%}[{{d[0]}}, {{d[1]}}], {%endfor%}]
@@ -24,8 +25,14 @@
         {%for so_key,so in placement%}
         seriesOptions[{{so_key}}] = {
             animation: false,
+            lineWidth:3,
             name: "{{so.caption|e('js')}}",
+            {% if so.data is defined %}
             data: [{%for d_key,d in so.data%}[{{d[0]}}, {{d[1]}}], {%endfor%}]
+            {% else %}
+            data: []
+            {% endif %}
+
         };
         {%endfor%}
 

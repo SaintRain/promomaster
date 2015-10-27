@@ -13,6 +13,16 @@ use Doctrine\ORM\EntityRepository;
 
 class AdCompanyRepository extends EntityRepository
 {
+
+    public function findForStatus($id, $userId)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.id=:id')
+            ->andWhere('a.user=:userId')
+            ->setParameters(['id' => $id, 'userId' => $userId])
+            ->getQuery()->getOneOrNullResult();
+    }
+
     /**
      * Построение запроса на выборку рекламных компаний
      * @param array $options

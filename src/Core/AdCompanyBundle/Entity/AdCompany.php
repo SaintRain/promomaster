@@ -110,7 +110,7 @@ class AdCompany
     private $token;
 
 
-    private  $isActive;   //хранит временное значение активности компаниии
+    private  $isActive;  //хранит временное значение активности компаниии
 
     public function __construct()
     {
@@ -346,6 +346,8 @@ class AdCompany
     {
         $this->isActive = $isActive;
     }
+
+
 
 
 
