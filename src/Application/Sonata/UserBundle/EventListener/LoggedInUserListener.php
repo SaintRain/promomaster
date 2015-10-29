@@ -56,7 +56,7 @@ class LoggedInUserListener
         }
         if (preg_match('/^\/admin.*/', $URL) && (($security->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') && !$security->isGranted('ROLE_ADMIN')) || !$security->isGranted('ROLE_ADMIN'))) {
             if ($this->container->get('kernel')->getEnvironment() === 'prod') {
-                $r = new Response($this->container->get('templating')->render('CoreCommonBundle:Pages:error404.html.twig'), 404);
+                $r = new Response($this->container->get('templating')->render('error404.html.twig'), 404);
                 $event->setResponse ($r);
             } else {
                 throw new NotFoundHttpException('Access denied! You don\'t have admin permissions!');
