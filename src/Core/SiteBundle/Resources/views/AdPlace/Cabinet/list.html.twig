@@ -45,7 +45,6 @@
         <h3>Список ваших рекламных мест</h3>
         <a style="margin-top: -30px" href="{{ path('core_cabinet_adplace_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламное место</a>
 
-
         <table class="table table-striped">
             <thead>
             <tr>
@@ -80,7 +79,8 @@
         { routeFirsPage: routeFirsPage, routePage:routePage}) }}
 
     {% else %}
-        <h2>Вы еще не добавляли свои рекламные места в систему</h2>
+        <h3>У вас нет рекламных мест</h3>
+        <a style="margin-top: -30px" href="{{ path('core_cabinet_adplace_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламное место</a>
     {% endif %}
 
 {% endblock %}
