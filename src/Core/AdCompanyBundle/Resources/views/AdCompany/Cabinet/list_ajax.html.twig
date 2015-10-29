@@ -24,12 +24,12 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>ID</th>
+                    {#<th>ID</th>#}
                     <th>Название</th>
                     <th>Размещения</th>
                     <th>Показов</th>
                     <th>Кликов</th>
-                    <th>CTR</th>
+                    <th colspan="2">CTR</th>
                     <th colspan="2">Идут показы</th>
                 </tr>
                 </thead>
@@ -37,7 +37,7 @@
                 {% for adcompany in adcompanies %}
                     <tr>
                         <td height="53px">{{ loop.index }}</td>
-                        <td><b>{{ adcompany.id }}</b></td>
+                        {#<td><b>{{ adcompany.id }}</b></td>#}
                         <td>
                             <a href="{{ path('core_cabinet_adcompany_edit', {id:adcompany.id}) }}">{{ adcompany.name }}</a>
                         </td>
@@ -49,7 +49,7 @@
                                     {{ placement.adPlace.name }} {{ placement.adPlace.width }}x{{ placement.adPlace.height }}
                                     {% if placement.adPlace.site %}
                                         <br/>
-                                        {{ placement.adPlace.site.domain }}
+                                        <a target="_blank" href="{{ placement.adPlace.site.domain }}">{{ placement.adPlace.site.domain|onlyDomain }}</a>
                                     {% endif %}
                                 {% endif %}
                             {% else %}
@@ -84,7 +84,12 @@
                             {% else %}
                                 0.00%
                             {% endif %}
+
+
                         </td>
+                        <td>
+                            <a title="Перейти к статистике рекламной компании" href="{{ path('core_statistics_ad_company_chart_statistics', {id:adcompany.id}) }}"><i class="fa fa-line-chart"></i></a>
+                            </td>
                         <td>
                             {% if adcompany.isActive %}<span class="label label-u">Да</span>{% else %}<span
                                     class="label label-warning">Нет</span>{% endif %}
@@ -94,12 +99,12 @@
                         <td>
 
 
-                            <button {% if  adcompany.isEnabled %}style="display: none" {% endif %}
+                            <button {% if not adcompany.isEnabled %}style="display: none" {% endif %}
                                     data-url="{{ path('core_cabinet_set_adcompany_status', {id:adcompany.id, status:'off', page:adcompanies.currentPageNumber}) }}"
                                     title="Остановить показы" class="set-status on btn-u btn-u-xs  btn-u" type="button">
                                 <span class="glyphicon glyphicon-stop"></span></button>
 
-                            <button {% if not adcompany.isEnabled %}style="display: none" {% endif %}
+                            <button {% if  adcompany.isEnabled %}style="display: none" {% endif %}
                                     data-url="{{ path('core_cabinet_set_adcompany_status', {id:adcompany.id, status:'on', page:adcompanies.currentPageNumber}) }}"
                                     title="Включить показы" class="set-status of btn-u btn-u-xs  btn-u-default"
                                     type="button"><span class="glyphicon glyphicon-play"></span></button>

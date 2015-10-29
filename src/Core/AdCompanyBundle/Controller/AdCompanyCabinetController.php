@@ -28,9 +28,9 @@ class AdCompanyCabinetController extends Controller
     {
 
         if ($status == 'on') {
-            $status = true;
+            $status = 1;
         } else {
-            $status = false;
+            $status = 0;
 
         }
 
@@ -41,12 +41,14 @@ class AdCompanyCabinetController extends Controller
 
         if ($adCompany) {
             $adCompany->setIsEnabled($status);
-            $em->persist($adCompany);
-            $em->flush($adCompany);
+            $em->flush();
 
         } else {
             throw new \Exception('Необходима авторизация.');
         }
+
+
+        $em->refresh($adCompany);
 
         $adcompanies = $this->get('core_adcompany_logic')->getDataInCabinetForPage($page);
         $stats = $this->getDoctrine()->getManager()->getRepository('CoreStatisticsBundle:Statistics')->getCommonStatisticsForAdCompanies($adcompanies);

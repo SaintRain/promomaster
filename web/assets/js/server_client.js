@@ -13,8 +13,8 @@ function __GET_AD(adplace_id) {
 
 //класс для работы с сервером
 var __PromoMasterClient = {
-   connectServerUrl: "http://191.235.147.26:1337", //адрес подключения к серверу
-   // connectServerUrl: "http://promomaster:1337", //адрес подключения к серверу
+   //connectServerUrl: "http://191.235.147.26:1337", //адрес подключения к серверу
+    connectServerUrl: "http://promomaster:1337", //адрес подключения к серверу
 
     //прорисовка баннера
     drawBanner: function (banner, adplace_id) {
@@ -57,7 +57,6 @@ var __PromoMasterClient = {
     },
     //запрашивает рекламу по данным, которые пришли
     getAd: function (adplace_id) {
-
         var xhr = this.getXhrObject(),
             t= new Date().getTime();
         xhr.open('GET', this.connectServerUrl + '/get?id='+adplace_id+'&t='+t, true);
@@ -70,21 +69,6 @@ var __PromoMasterClient = {
         }
         xhr.send(null);
     },
-
-    //getQ: function (url) {
-    //    var xhr = this.getXhrObject();
-    //    xhr.open('GET', url, true);
-    //    xhr.onreadystatechange = function () {
-    //        if (xhr.readyState == 4 && xhr.status == 200) {
-    //            output.innerHTML = JSON.parse(xhr.responseText);
-    //
-    //            __PromoMasterClient.drawBanner(response, adplace_id);
-    //
-    //        }
-    //    }
-    //    xhr.send(null);
-    //},
-
     getXhrObject: function () {
         if (typeof XMLHttpRequest === 'undefined') {
             XMLHttpRequest = function () {

@@ -17,7 +17,8 @@
         <meta name="author" content="">
 
         <!-- Favicon -->
-        <link rel="shortcut icon" href="/favicon.ico">
+        {#<link rel="shortcut icon" href="/favicon.ico">#}
+        <link rel="icon" type="image/png" href="/favicon.png"/>
         {#'assets/css/plugins/*'#}
         {#'assets/css/headers/*'#}
         {#'assets/css/footers/*'#}
@@ -102,23 +103,85 @@
 
             <!--Start of Zopim Live Chat Script-->
             <script type="text/javascript">
-                window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-                        d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-                        _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
-                    $.src="//v2.zopim.com/?3PKsfY2WILQFjCw1ng6Ze8hpzX2Zsd1L";z.t=+new Date;$.
-                            type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+                window.$zopim || (function (d, s) {
+                    var z = $zopim = function (c) {
+                        z._.push(c)
+                    }, $ = z.s =
+                            d.createElement(s), e = d.getElementsByTagName(s)[0];
+                    z.set = function (o) {
+                        z.set.
+                                _.push(o)
+                    };
+                    z._ = [];
+                    z.set._ = [];
+                    $.async = !0;
+                    $.setAttribute("charset", "utf-8");
+                    $.src = "//v2.zopim.com/?3PKsfY2WILQFjCw1ng6Ze8hpzX2Zsd1L";
+                    z.t = +new Date;
+                    $.
+                            type = "text/javascript";
+                    e.parentNode.insertBefore($, e)
+                })(document, "script");
             </script>
             <!--End of Zopim Live Chat Script-->
 
             <script>
-                $zopim(function() {
+                $zopim(function () {
                     {% if app.user.firstName is defined %}
                     $zopim.livechat.setName("{{ app.user.firstname }}");
                     $zopim.livechat.setEmail("{{ app.user.email }}");
                     {% endif %}
-                    $zopim.livechat.window.hide();
+                    //$zopim.livechat.window.hide();
                 });
+
+                $(function () {
+                    $(document).on('click', '.onlinechat', function () {
+                        $zopim.livechat.window.show();
+                        console.log('shop z')
+                    })
+
+                })
             </script>
+
+
+
+            <!-- Yandex.Metrika counter -->
+            <script type="text/javascript">
+                (function (d, w, c) {
+                    (w[c] = w[c] || []).push(function () {
+                        try {
+                            w.yaCounter33311263 = new Ya.Metrika({
+                                id: 33311263,
+                                clickmap: true,
+                                trackLinks: true,
+                                accurateTrackBounce: true
+                            });
+                        } catch (e) {
+                        }
+                    });
+
+                    var n = d.getElementsByTagName("script")[0],
+                            s = d.createElement("script"),
+                            f = function () {
+                                n.parentNode.insertBefore(s, n);
+                            };
+                    s.type = "text/javascript";
+                    s.async = true;
+                    s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+                    if (w.opera == "[object Opera]") {
+                        d.addEventListener("DOMContentLoaded", f, false);
+                    } else {
+                        f();
+                    }
+                })(document, window, "yandex_metrika_callbacks");
+            </script>
+            <noscript>
+                <div><img src="https://mc.yandex.ru/watch/33311263" style="position:absolute; left:-9999px;" alt=""/>
+                </div>
+            </noscript>
+            <!-- /Yandex.Metrika counter -->
+
 
 
 
