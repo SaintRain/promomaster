@@ -296,12 +296,13 @@ class GagController extends Controller
         $em = $this->getDoctrine()->getManager();
         $banner = $em->getRepository('CoreBannerBundle:CommonBanner')->findForDeleting(['id' => $id, 'user' => $user]);
 
-        $msg = "Заглушка  «{$banner->getName()}» была удалена";
-        $em->remove($banner);
         try {
+            $msg = "Заглушка  «{$banner->getName()}» была удалена";
+            $em->remove($banner);
             $em->flush();
             $this->setFlash('edit_success', $msg);
         } catch (\Exception $e) {
+            ld($e);
             $msg = "Невозможно удалить заглушку «{$banner->getName()}», т.к. она задействована в системе на данный момент.";
             $this->setFlash('edit_errors', $msg);
         }

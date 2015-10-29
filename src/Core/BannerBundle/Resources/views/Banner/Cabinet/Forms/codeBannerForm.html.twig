@@ -59,7 +59,7 @@
 
         <div class="row margin-bottom-20">
             <div class="col-lg-12  {% if form_errors(form.code) %}state-error{% endif %}">
-                <label>Код *</label>
+                <label>Код (JavaScript или HTML) *</label>
                 {{ form_widget(form.code,{ 'attr': {'class': 'form-control'} }) }}
                 {{ form_errors(form.code) }}
             </div>

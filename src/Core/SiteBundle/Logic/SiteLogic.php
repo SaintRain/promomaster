@@ -152,22 +152,26 @@ class SiteLogic
      * актуальность своих данных
      * @param $object
      */
-    public function sendRefreshDataNodJs($arr=[])
+    public function sendRefreshDataNodJs($arr = [])
     {
         $secretToken = 'elG5fNk4md3l4k4';
         if ($arr) {
-            foreach ($arr as $type=> $tables) {
+            foreach ($arr as $type => $tables) {
                 foreach ($tables as $tableName => $data) {
-                    foreach ($data as $id=>$v) {
-                        $options=[
-                            'secretToken'=>$secretToken,
-                            'tableName'=>$tableName,
-                            'type'=>$type,
-                            'id'=>$id
+                    foreach ($data as $id => $v) {
+
+                        if (!$id) {
+                            throw new \ErrorException('Нельзя передавать в NodeJs ID=0 !');
+                        }
+                        $options = [
+                            'secretToken' => $secretToken,
+                            'tableName' => $tableName,
+                            'type' => $type,
+                            'id' => $id
                         ];
 
                         if (is_array($v)) { //manyToMany
-                            $options['extraFields']=$v;
+                            $options['extraFields'] = $v;
                         }
 
                         $this->sendRefresRequestToNodJS($options);  //делаем запрос
@@ -206,9 +210,9 @@ class SiteLogic
             fwrite($fp, "Connection: close\r\n");
             fwrite($fp, "\r\n");
             fwrite($fp, $content);      //сразу закрываем не дождавшись ответа
-        }
-        else {
+        } else {
             //сервер nodejs лежит
+            throw new \Exception('Server NodeJs is down!');
         }
     }
 

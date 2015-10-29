@@ -30,7 +30,8 @@ exports.initialization = function (MYSQL) {
     var now = new Date();
     START_DATE_TIME = DATE_FORMAT(now, "yyyy-mm-dd HH:MM:ss");
 
-    TIMER_ID = setInterval(this.saveStatistics, 60000);   // раз в минуту
+    TIMER_ID = setInterval(this.saveStatistics, 1*60000);   // раз в 1 минуту
+    //TIMER_ID = setInterval(this.saveStatistics, 5*60000);   // раз в 5 минут
 
 }
 
@@ -199,6 +200,7 @@ exports.getAd = function (req, res, adplace_id) {
                         this.updateShowsStatistics(req, SD.adplaces['_' + adplace_id], placement, placementBanner, banner);
                     }
                     else {
+
                         //проверяем есть ли заглушка для рекламного места
                         if (SD.adplaces['_' + adplace_id].gag_id) {
                             var banner = SD.banners['_' + SD.adplaces['_' + adplace_id].gag_id];
@@ -206,18 +208,19 @@ exports.getAd = function (req, res, adplace_id) {
                         }
                         else {
                             //отдаём пустой ответ
-                            this.sendResponse(res, {statusCode: 200, body: ''});
+                            this.sendResponse(res, {statusCode: 200, body: {}});
                         }
                     }
                 }
                 else {
+
                     //проверяем есть ли заглушка для рекламного места
                     if (SD.adplaces['_' + adplace_id].gag_id) {
                         var banner = SD.banners['_' + SD.adplaces['_' + adplace_id].gag_id];
                         this.sendBanner(res, banner, {id: 0}, {id: 0});
                     } else {
                         //отдаём пустой ответ
-                        this.sendResponse(res, {statusCode: 200, body: ''});
+                        this.sendResponse(res, {statusCode: 200, body: {}});
                     }
                 }
             }
@@ -586,7 +589,7 @@ exports.refresh = function (req, res) {
         }
     }
 
-    this.sendResponse(res, {statusCode: 200, body: 'ok'});
+    this.sendResponse(res, {statusCode: 200, body: {res:'ok'}});
 
     console.log("Данные  обновлены:");
     console.log(req.body);

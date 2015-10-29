@@ -35,20 +35,27 @@
     <div class="headline"><h2>Помощь</h2></div>
     {% include 'CoreFaqBundle:Faq:search_form.html.twig' with {'form' : searchForm} %}
     <div id="accordion" class="panel-group acc-v1 margin-bottom-40">
+
+
+
     {% for cat in categories %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class=" panel-default">
+
                 <h4 class="panel-title">
                     <a {{fastEdit(cat)}} href="#collapse-{{ loop.index }}" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle">
-                        {{ loop.index }}. {{ attribute(cat, 'caption' ~ app.request.locale) }}
+                        {#{{ loop.index }}. {{ attribute(cat, 'caption' ~ app.request.locale) }}#}
+                        {{ attribute(cat, 'caption' ~ app.request.locale) }}
                     </a>
                 </h4>
-            </div>
-            <div class="panel-collapse collapse" id="collapse-{{ loop.index }}">
-                <div class="panel-body">
-                    <ul class="list-unstyled">
+<br>
+            <div class="collapse in" id="collapse-{{ loop.index }}">
+
+
+
+                <div class="faq-page">
+                    <ul class="list-unstyled check-style">
                         {% for article in cat.articles %}
-                            <li {{fastEdit(article)}}>
+                            <li {{fastEdit(article)}}><i class="fa fa-angle-right color-green"></i>&nbsp;
                                 <a href="{{path('core_faq_article', {'categorySlug': cat.slug, 'articleSlug':article.slug})}}">{{ attribute(article, 'caption' ~ app.request.locale) }}</a>
                             </li>
                         {% else %}
