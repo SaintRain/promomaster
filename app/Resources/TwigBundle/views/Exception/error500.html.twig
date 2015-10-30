@@ -1,7 +1,7 @@
 {% extends "CoreCommonBundle::main_layout.html.twig" %}
 
 {# SEO - заголовки #}
-{% block title %}Страница не найдена 500{% endblock %}
+{% block title %}Ошибка 500{% endblock %}
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
 
@@ -12,53 +12,29 @@
 
     <div class="breadcrumbs">
         <div class="container">
-            <h1 class="pull-left">505 ошибка</h1>
+            <h1 class="pull-left">500 ошибка</h1>
             <ul class="pull-right breadcrumb">
                 <li><a href="{ path('core_common_index') }}">Главная</a></li>
                 <li class="active">Ошибка 500 Internal Server Error</li>
             </ul>
-        </div><!--/container-->
+        </div>
+        <!--/container-->
     </div>
 
     <div class="container content">
-
-
-
         <div class="row">
-
             <div class="col-md-8 col-md-offset-2">
                 <div class="error-v1">
                     <span class="error-v1-title">
-                        <img  src="/assets/img/master/404.png" alt="">
+                        <img src="/assets/img/master/404.png" alt="">
                         </span>
                     <span>Внутренняя ошибка сервера.</span>
+
                     <p>Ошибка 500 Internal Server Error.</p>
                     <a class="btn-u btn-bordered" href="{{ path('core_common_index') }}">На главную</a>
                 </div>
             </div>
         </div>
-
-
-        {#<div style="float: left;margin: 20px">#}
-        {#<img class="img-responsive" src="/assets/img/master/404.png" alt="">#}
-        {#</div>#}
-        {#<div>#}
-        {#<br><br>#}
-        {#<h1 >Такой страницы не существует.</h1>#}
-        {#<h2 >Ошибка 404 Not Found</h2>#}
-        {#<p><strong>Что делать?</strong></p>#}
-        {#<p>#}
-        {#<ul style="line-height: 22px; font-size: 15px;"><li>Введите правильный адрес страницы</li><li>Перейти на <a href="{{ path('core_common_index') }}">главную</a> страницу сайта</li></ul>#}
-        {#</p>#}
-
-        {#</div>#}
     </div>
 
-
-
-
-
-
-
 {% endblock %}
-
