@@ -302,7 +302,6 @@ class GagController extends Controller
             $em->flush();
             $this->setFlash('edit_success', $msg);
         } catch (\Exception $e) {
-            ld($e);
             $msg = "Невозможно удалить заглушку «{$banner->getName()}», т.к. она задействована в системе на данный момент.";
             $this->setFlash('edit_errors', $msg);
         }
