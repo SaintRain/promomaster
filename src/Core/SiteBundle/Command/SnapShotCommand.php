@@ -11,6 +11,11 @@ use Core\SiteBundle\Entity\WebSite;
 
 class SnapShotCommand extends ContainerAwareCommand
 {
+    /**
+     * height or width max value
+     */
+    const MAX_SIZE = 1000;
+
     protected function configure()
     {
         $this
@@ -96,6 +101,7 @@ class SnapShotCommand extends ContainerAwareCommand
             $this->getContainer()->get('knp_snappy.image')->generate($site->getDomain(), $imagePath);
             $site->setSnapShot(sprintf('%s.jpg', $file));
             $result = true;
+            $this->resize($imagePath);
         } catch(\Exception $exception) {
             $result = false;
         }
@@ -111,14 +117,14 @@ class SnapShotCommand extends ContainerAwareCommand
                 $imagick = new \Imagick();
                 $imagick->setResolution(300,300);
                 $imagick->readimage("{$pfdPath}[0]");
-                $imagick->scaleImage(700, 740, true);
+//                $imagick->scaleImage(700, 740, true);
                 $imagick->setImageFormat('jpg');
                 $imagick->writeImage($imagePath);
                 $imagick->clear();
                 $imagick->destroy();
 
                 $site->setSnapShot(sprintf('%s.jpg', $file));
-
+                $this->resize($imagePath);
                 unlink($pfdPath);
                 $result = true;
             }
@@ -127,33 +133,31 @@ class SnapShotCommand extends ContainerAwareCommand
         }
 
         return $result;
-//
-//        if ($this->getContainer()->get('knp_snappy.image')->generate($site->getDomain(), $imagePath)) {
-//            $site->setSnapShot($file);
-//
-//            return true;
-//        } elseif (null === $this->getContainer()->get('knp_snappy.pdf')->generate($site->getDomain(), $pfdPath)) {
-//
-//            if (file_exists($imagePath)) {
-//                unlink($imagePath);
-//            }
-//
-//            $imagick = new \Imagick();
-//            $imagick->setResolution(300,300);
-//            $imagick->readimage("{$pfdPath}[0]");
-//            $imagick->scaleImage(700, 740, true);
-//            $imagick->setImageFormat('jpg');
-//            $imagick->writeImage($imagePath);
-//            $imagick->clear();
-//            $imagick->destroy();
-//
-//            $site->setSnapShot(sprintf('%s.jpg', $file));
-//
-//            unlink($pfdPath);
-//
-//            return true;
-//        }
-//
-//        return false;
+    }
+
+    /**
+     * @param $path
+     * @return bool
+     */
+    private function resize($path)
+    {
+        $thumb = new \Imagick();
+        $thumb->readImage($path);
+        $size = $thumb->identifyImage();
+
+        if (!($size['geometry']['width'] > static::MAX_SIZE || $size['geometry']['height'] > static::MAX_SIZE)) {
+            return false;
+        }
+
+        if ($size['geometry']['width'] > static::MAX_SIZE && $size['geometry']['height'] > static::MAX_SIZE) {
+            $thumb->scaleImage(static::MAX_SIZE, 0);
+            $thumb->cropImage(static::MAX_SIZE, static::MAX_SIZE, 0, 0);
+        } elseif ($size['geometry']['height']) {
+            $thumb->cropImage($size['geometry']['width'], static::MAX_SIZE, 0, 0);
+        } elseif ($size['geometry']['width'] > static::MAX_SIZE) {
+            $thumb->scaleImage(static::MAX_SIZE, 0);
+        }
+
+        $thumb->writeImage($path);
     }
 }
