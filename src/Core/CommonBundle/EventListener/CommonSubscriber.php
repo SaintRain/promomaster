@@ -109,13 +109,13 @@ class CommonSubscriber implements EventSubscriber
                 }
             }
         }
-/*
-        if (count($this->operations)) {
-            ldd($this->operations);
-        }
 
-        die('fdfd');
-*/
+//        if (count($this->operations)) {
+//            ldd($this->operations);
+//        }
+//
+//        die('fdfd');
+
     }
 
     /**
@@ -140,7 +140,8 @@ class CommonSubscriber implements EventSubscriber
                     $item = $item->getId();
                 }
             });
-            $this->container->get('core_site_logic')->sendRefreshDataNodJs($this->operations);
+
+            $this->container->get('core_site_logic')->sendRefreshDataNodJs($this->reloadData($this->operations));
         }
 
         return;
@@ -235,6 +236,7 @@ class CommonSubscriber implements EventSubscriber
     private function makeManyToONe($entity, $method, $meta)
     {
         $operations = [];
+
         if (!$entity['old']->$method() && !$entity['new']->$method()) {
             return $operations;
         }
@@ -278,5 +280,27 @@ class CommonSubscriber implements EventSubscriber
         }
 
         return $operations;
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function reloadData(array $data)
+    {
+        $result = [];
+        foreach($data as $operationName => $operations) {
+            foreach($operations as $tableName => $tables) {
+                foreach($tables as $key => $val) {
+                    if (is_int($val * 1)) {
+                        $result[$operationName][$tableName][$val] = $val;
+                    } else {
+                        $result[$operationName][$tableName][$key] = $val;
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 }
