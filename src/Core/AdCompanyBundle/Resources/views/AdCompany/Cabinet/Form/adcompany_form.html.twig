@@ -414,9 +414,30 @@
 
                 return false;
             });
-
             // fake placement submit
             $('#placement-modal-content').on('submit', 'form', function () {
+                var parent = $(this).parents('.modal-content-wr');
+                if (!parent.find(".form-control[id$='site']").val()
+                    || !parent.find(".form-control[id$='adPlace']").val()
+                ) {
+                    parent.find('a[data-target="placement-main"]').trigger('click');
+                    return false;
+                }
+                if (!parent.find(".form-control[id$='quantity']").val() && (
+                        !parent.find(".form-control[id$='startDateTime']").val()
+                        || !parent.find(".form-control[id$='finishDateTime']").val()
+                )) {
+                    parent.find('a[data-target="placement-other"]').trigger('click');
+                    return false;
+                }
+
+                if (parent.find(".form-control[id$='quantity']").val()
+                    && !parent.find(".form-control[id$='quantityModel']").val()
+                ) {
+                    parent.find('a[data-target="placement-other"]').trigger('click');
+                    return false;
+                }
+
                 var curId = $collectionHolder.data('index'),
                         placement = $collectionHolder.find(".row.collection-row[data-id='" + curId + "']"),
                         $html =

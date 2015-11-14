@@ -174,7 +174,7 @@ class SiteLogic
                             $options['extraFields'] = $v;
                         }
 
-                        $this->sendRefresRequestToNodJS($options);  //делаем запрос
+//                        $this->sendRefresRequestToNodJS($options);  //делаем запрос
                     }
                 }
             }

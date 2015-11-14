@@ -66,6 +66,7 @@ class PlacementFormType extends AbstractType
             ->add('isEnabled', null, ['required' => false])
             ->add('quantity', null, ['required' => false])
             ->add('quantityModel', 'entity', [
+                'empty_value'   => 'Необходимо выбрать',
                 'class' => 'Core\DirectoryBundle\Entity\PriceModel',
                 'query_builder' => function(EntityRepository $er ) {
                     return $er->createQueryBuilder('pm')->where('pm.name != :name')->setParameter('name','daysquantity');

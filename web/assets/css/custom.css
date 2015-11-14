@@ -144,3 +144,7 @@ text-decoration: none;
 .da-slide p {
     line-height: 28px !important;
 }
+
+.modal-body .tab-content {
+    border: none !important;
+}
