@@ -86,6 +86,19 @@
                 </div>
             </div>
         {% endif %}
+
+
+
+
+
+        <div class="margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
+            <label class="checkbox">
+                {{ form_widget(form.isEnabled) }}<i></i> Размещение активно</label>
+            {{ form_errors(form.isEnabled) }}
+            </label>
+
+        </div>
+
             {#
             <div class="row margin-bottom-20">
                 <div class="{{ fieldGroupClass }}  {% if form_errors(form.placementBannersList) %}state-error{% endif %}">
@@ -300,13 +313,7 @@
         </div>
 
 
-        <div class="margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
-            <label class="checkbox">
-                {{ form_widget(form.isEnabled) }}<i></i> Размещение активно</label>
-            {{ form_errors(form.isEnabled) }}
-            </label>
 
-        </div>
 
 
         <div class="margin-bottom-20">
