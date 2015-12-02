@@ -148,6 +148,7 @@ text-decoration: none;
 .modal-body .tab-content {
     border: none !important;
 }
-.edit-placement {
-    text-decoration: underline;
+
+a.edit-placement {
+    text-decoration: underline !important;
 }
