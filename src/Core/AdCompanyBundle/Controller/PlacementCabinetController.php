@@ -274,8 +274,9 @@ class PlacementCabinetController extends Controller
             return new JsonResponse(null, JsonResponse::HTTP_BAD_REQUEST);
         }
 
+
         $form = $this->createForm(
-            new PlacementFormType(),
+            new PlacementFormType($this->getUser()->getId()),
             $placement,
             ['adCompanyField' => false, 'adPlaceFieldReadonly' => true, 'siteFieldReadonly' => true, 'site' => true]
         );

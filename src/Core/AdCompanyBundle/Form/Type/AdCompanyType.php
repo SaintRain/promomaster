@@ -34,10 +34,13 @@ class AdCompanyType  extends AbstractType
      */
     private $requestStack;
 
-    public function __construct(EntityManagerInterface $em, RequestStack $requestStack)
+    private $security_context;
+
+    public function __construct(EntityManagerInterface $em, RequestStack $requestStack, $security_context)
     {
         $this->em = $em;
         $this->requestStack = $requestStack;
+        $this->security_context=$security_context;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -100,7 +103,7 @@ class AdCompanyType  extends AbstractType
 
         $form->add('placements', 'collection', [
             'label' => 'Размещения',
-            'type' => new PlacementFormType(),
+            'type' => new PlacementFormType($this->security_context->getToken()->getUser()->getId()),
             'allow_add' => true,
             'allow_delete' => true,
             //'by_reference' => false,

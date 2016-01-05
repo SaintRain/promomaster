@@ -51,5 +51,6 @@ services:
       arguments:
           - @doctrine.orm.entity_manager
           - @request_stack
+          - @security.context
       tags:
           - { name: form.type, alias: ad_company_type }

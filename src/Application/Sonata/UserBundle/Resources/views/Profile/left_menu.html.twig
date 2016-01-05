@@ -6,6 +6,19 @@
         </li>
 
         <li class="list-group-item
+ {% if app.request.attributes.get('_route') == 'core_cabinet_adcompany_list_first_page'
+        or app.request.attributes.get('_route') == 'core_cabinet_adcompany_list'
+        or app.request.attributes.get('_route') == 'core_cabinet_adcompany_edit'
+        or app.request.attributes.get('_route') == 'core_cabinet_adcompany_create'
+        or app.request.attributes.get('_route') == 'core_statistics_ad_company_chart_statistics'
+
+        %} active{% endif %}
+        ">
+            <a href="{{ path('core_cabinet_adcompany_list_first_page') }}"><i class="fa fa-bullhorn"></i> &nbsp;Рекламные компании</a>
+        </li>
+
+
+        <li class="list-group-item
         {% if app.request.attributes.get('_route') == 'core_cabinet_site_list_first_page'
         or app.request.attributes.get('_route') == 'core_cabinet_site_list'
         or app.request.attributes.get('_route') == 'core_cabinet_site_edit'
@@ -46,29 +59,19 @@
         </li>
 
 
-        <li class="list-group-item
- {% if app.request.attributes.get('_route') == 'core_cabinet_adcompany_list_first_page'
-        or app.request.attributes.get('_route') == 'core_cabinet_adcompany_list'
-        or app.request.attributes.get('_route') == 'core_cabinet_adcompany_edit'
-        or app.request.attributes.get('_route') == 'core_cabinet_adcompany_create'
-        or app.request.attributes.get('_route') == 'core_statistics_ad_company_chart_statistics'
-
-        %} active{% endif %}
-        ">
-            <a href="{{ path('core_cabinet_adcompany_list_first_page') }}"><i class="fa fa-bullhorn"></i> &nbsp;Рекламные компании</a>
-        </li>
 
 
 
-        <li class="list-group-item
- {% if app.request.attributes.get('_route') == 'core_cabinet_placement_list_first_page'
-        or app.request.attributes.get('_route') == 'core_cabinet_placement_list'
-        or app.request.attributes.get('_route') == 'core_cabinet_placement_edit'
-        or app.request.attributes.get('_route') == 'core_cabinet_placement_create'
-        %} active{% endif %}
-        ">
-            <a href="{{ path('core_cabinet_placement_list_first_page') }}"><i class="fa fa-crosshairs"></i> &nbsp;Размещения</a>
-        </li>
+
+        {#<li class="list-group-item#}
+ {#{% if app.request.attributes.get('_route') == 'core_cabinet_placement_list_first_page'#}
+        {#or app.request.attributes.get('_route') == 'core_cabinet_placement_list'#}
+        {#or app.request.attributes.get('_route') == 'core_cabinet_placement_edit'#}
+        {#or app.request.attributes.get('_route') == 'core_cabinet_placement_create'#}
+        {#%} active{% endif %}#}
+        {#">#}
+            {#<a href="{{ path('core_cabinet_placement_list_first_page') }}"><i class="fa fa-crosshairs"></i> &nbsp;Размещения</a>#}
+        {#</li>#}
 
 
 

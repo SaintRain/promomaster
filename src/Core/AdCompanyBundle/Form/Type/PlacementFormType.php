@@ -21,6 +21,12 @@ use Core\AdCompanyBundle\Form\DataTransformer\PlacementTransformer;
 class PlacementFormType extends AbstractType
 {
 
+    private $userId;
+    public  function __construct($userId) {
+        $this->userId=$userId;
+
+    }
+
     /**
      * Returns the name of this type.
      *
@@ -82,20 +88,35 @@ class PlacementFormType extends AbstractType
             );
         }
         if ($options['adPlaceField']) {
-            $builder->add('adPlace', null, [
+            $userId=$this->userId;
+            $builder->add('adPlace', 'entity', [
+                'class'         => 'CoreSiteBundle:AdPlace',
                 'required'      => true,
                 'property'      => 'name',
-                'empty_value'   => 'Необходимо выбрать',
-                'disabled'      => $options['adPlaceFieldReadonly']
+                'empty_value'   => 'Необходимо выбрать или добавить',
+                'disabled'      => $options['adPlaceFieldReadonly'],
+                'query_builder' => function(EntityRepository $er ) use ($userId) {
+                    return $er->createQueryBuilder('s')->where('s.user = :userId')->setParameter('userId',$userId);
+                },
             ]);
+//            $builder->add('adPlace', null, [
+//                'required'      => true,
+//                'property'      => 'name',
+//                'empty_value'   => 'Необходимо выбрать или добавить',
+//                'disabled'      => $options['adPlaceFieldReadonly']
+//            ]);
         }
         if ($options['site']) {
             $site = ($builder->getData() && $builder->getData()->getAdPlace())
                     ? $builder->getData()->getAdPlace()->getSite() : null;
 
+            $userId=$this->userId;
             $builder->add('site', 'entity', [
-                'empty_value'   => 'Необходимо выбрать',
+                'empty_value'   => 'Необходимо выбрать или добавить',
                 'class'         => 'CoreSiteBundle:CommonSite',
+                'query_builder' => function(EntityRepository $er ) use ($userId) {
+                    return $er->createQueryBuilder('s')->where('s.user = :userId')->setParameter('userId',$userId);
+                },
                 'required'      => true,
                 'property'      => 'name',
                 'label'         => 'Площадка*',

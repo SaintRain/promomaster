@@ -3,7 +3,7 @@
 {# SEO - заголовки #}
 {% block title %}Обращение №{{ ticket.id }} от {{ ticket.createdDateTime|date('d.m.Y, H:i', default_timezone) }}{% endblock %}
 {% block meta_keywords %}обращение, ответ{% endblock %}
-{% block meta_description %}Обращение №{{ ticket.id }} от {{ ticket.createdDateTime|date('d.m.Y, H:i', default_timezone) }}. Как только представитель интернет-магазина ответит Вам - Вы увидите ответ на этой странице.{% endblock %}
+{% block meta_description %}Обращение №{{ ticket.id }} от {{ ticket.createdDateTime|date('d.m.Y, H:i', default_timezone) }}. Как только представитель сервиса ответит Вам - Вы увидите ответ на этой странице.{% endblock %}
 
     {% block breadcrumbs %}
         <!--=== Breadcrumbs ===-->

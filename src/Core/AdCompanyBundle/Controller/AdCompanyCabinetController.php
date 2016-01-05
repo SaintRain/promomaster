@@ -158,6 +158,8 @@ class AdCompanyCabinetController extends Controller
     */
     public function createAction()
     {
+        $this->getUser();
+
         $adcompany = new AdCompany();
         $user = $this->container->get('security.context')->getToken()->getUser();
         $adcompany->setUser($user);
