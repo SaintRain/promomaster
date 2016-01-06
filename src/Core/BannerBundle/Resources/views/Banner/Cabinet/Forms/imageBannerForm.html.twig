@@ -64,6 +64,7 @@
             <div class="col-sm-12  {% if form_errors(form.url) %}state-error{% endif %}">
                 <label>Ссылка перехода*</label>
                 {{ form_widget(form.url,{ 'attr': {'class': 'form-control'} }) }}
+                <span class="note">Укажите ссылку куда будет перенаправлен пользователь при клике на баннер.</span>
                 {{ form_errors(form.url) }}
             </div>
         </div>

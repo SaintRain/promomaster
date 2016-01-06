@@ -94,7 +94,7 @@ class Placement
      * @var int
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isEnabled = false;
+    private $isEnabled;
 
 
     /**
@@ -132,6 +132,7 @@ class Placement
 
     public function __construct()
     {
+
         $this->placementBannersList = new ArrayCollection();
         $this->defaultCountries = new ArrayCollection();
     }

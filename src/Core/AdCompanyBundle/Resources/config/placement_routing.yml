@@ -28,6 +28,22 @@ core_cabinet_placement_create:
     defaults:  { _controller: CoreAdCompanyBundle:PlacementCabinet:create }
 
 
+# создание по ajax
+core_cabinet_placement_create_ajax:
+    path:      /cabinet/placement_create_ajax_{adcompany_id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreAdCompanyBundle:PlacementCabinet:сreateAjax }
+    requirements:
+      adcompany_id: \d+
+
+# форма добавления
+core_cabinet_placement_get_create_form:
+    path:      /cabinet/core_cabinet_placement_get_create_form.html
+    schemes:  [http]
+    defaults:  { _controller: CoreAdCompanyBundle:PlacementCabinet:getCreateForm }
+
+
+
 # удаление размещения в ЛК
 core_cabinet_placement_delete:
     path:      /cabinet/placement_delete_{id}.html

@@ -31,9 +31,16 @@ class UTCDateTimeType extends DateTimeType
             self::$utc = new \DateTimeZone('UTC');
         }
 
+
+        if (!is_object($value)) {
+            list($day, $month, $year) = explode('-', $value);
+            $value = new \DateTime ($year . '-' . $month . '-' . $day . '00:00:00',  self::$utc);
+        }
+
         $value->setTimeZone(self::$utc);
 
         return $value->format($platform->getDateTimeFormatString());
+
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)

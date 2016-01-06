@@ -146,16 +146,16 @@ abstract class GeneralBannerFormType  extends AbstractType
      */
     private function checkIsExistSite($banner, $element)
     {
-        $res = $this->em->getRepository('CoreBannerBundle:CommonBanner')
-            ->findQuantityByOptions([
-                'id'    =>  $banner->getId(),
-                'user'  =>  $banner->getUser(),
-                'name'  =>  $banner->getName()
-            ]);
-        if ($res['quantity']) {
-            $element
-                ->addError(new FormError('Баннер с указанным названием был добавлен вами ранее. Придумайте другое уникальное название.'));
-        }
+//        $res = $this->em->getRepository('CoreBannerBundle:CommonBanner')
+//            ->findQuantityByOptions([
+//                'id'    =>  $banner->getId(),
+//                'user'  =>  $banner->getUser(),
+//                'name'  =>  $banner->getName()
+//            ]);
+//        if ($res['quantity']) {
+//            $element
+//                ->addError(new FormError('Баннер с указанным названием был добавлен вами ранее. Придумайте другое уникальное название.'));
+//        }
     }
 
     /**

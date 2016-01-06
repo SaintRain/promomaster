@@ -2,6 +2,40 @@
 {% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
 
 {% block sub_content %}
+
+    {#форма редактирования профиля ЛК#}
+    {% for flashMessage in app.session.flashbag.get('edit_success') %}
+
+        <div class="alert alert-success fade in">
+            {{ flashMessage | raw }}
+
+            &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_adcompany_create') }}'><i
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще рекламную компанию</a>
+            &nbsp;&nbsp;&nbsp;
+            <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_adcompany_list_first_page') }}'><i
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку рекламных компаний</a>
+
+        </div>
+    {% endfor %}
+
+
+    {% for flashMessage in app.session.flashbag.get('edit_errors') %}
+
+        <div class="alert alert-danger fade in">
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
+
+
+    {% if form is defined and form.vars.errors | length %}
+
+        <div class="alert alert-danger fade in">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+
     <div class="tab-v2">
         <ul class="nav nav-tabs">
             <li {% if app.request.attributes.get('_route')=='core_cabinet_adcompany_edit'

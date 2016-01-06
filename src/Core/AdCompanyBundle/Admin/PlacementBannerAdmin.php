@@ -51,7 +51,7 @@ class PlacementBannerAdmin extends Admin
      */
     public function toString($object)
     {
-        $text = null === $object->getId() ? 'Добавление банера размещения' : 'Редактирование баннера размещения № ' . $object->getId();
+        $text = null === $object->getId() ? 'Добавление баннера размещения' : 'Редактирование баннера размещения № ' . $object->getId();
         return $text;
     }
 

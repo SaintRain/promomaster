@@ -12,7 +12,7 @@
     <div class="{{ fieldGroupClass }}  {% if form_errors(form.name) %}state-error{% endif %}">
         <label>Название*</label>
         {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
-
+        <span class="note">Укажите произвольное название рекламного места.</span>
         {{ form_errors(form.name) }}
     </div>
 </div>
@@ -176,6 +176,9 @@
 </div>
 <div class="margin-bottom-20">
 </div>
+
+
+
 <script>
 
     /**
@@ -189,25 +192,36 @@
     #}
     $(function () {
         var topModal = $('#modal-inner-placement #adplace-modal'),
-            isTopModal = $('#modal-inner-placement').length;
+                isTopModal = $('#modal-inner-placement').length;
+
+
+        {% if adplace.id %}
+        $('.delete').click(function () {
+            var res = confirm('Вы действительно хотите удалить это рекламное место из системы?');
+            if (res) {
+                window.location.href = '{{ path('core_cabinet_adplace_delete', {id:adplace.id}) }}';
+            }
+        });
+        {% endif %}
+
 
         /*
-        // topmodal show
-        $('body').on('click', '#banner-modal .close, #banner-modal .btn-u-default', function(){
-            topModal.modal('show');
-        });
+         // topmodal show
+         $('body').on('click', '#banner-modal .close, #banner-modal .btn-u-default', function(){
+         topModal.modal('show');
+         });
 
-        // topmodal show
-        $('body').on('keyup', function(e){
-            console.log('keyup');
-            var innerModal = $('#modal-inner-placement > .modal');
-            if (innerModal.is(':visible') && topModal && topModal.is(':hidden') && e.which == 27){
-                console.log('keyup true');
-                //topModal.modal('show');
-            }
-            return false;
-        });
-        */
+         // topmodal show
+         $('body').on('keyup', function(e){
+         console.log('keyup');
+         var innerModal = $('#modal-inner-placement > .modal');
+         if (innerModal.is(':visible') && topModal && topModal.is(':hidden') && e.which == 27){
+         console.log('keyup true');
+         //topModal.modal('show');
+         }
+         return false;
+         });
+         */
 
         $('body').on('hidden.bs.modal', '#banner-modal', function (e) {
             $('#modal-inner-placement #adplace-modal').modal('show');
@@ -232,21 +246,13 @@
 
         $('#form_size').change();
 
-        {% if adplace.id %}
-        $('.delete').click(function () {
-            var res = confirm('Вы действительно хотите удалить это рекламное место из системы?');
-            if (res) {
-                window.location.href = '{{ path('core_cabinet_adplace_delete', {id:adplace.id}) }}';
-            }
-        });
-        {% endif %}
 
 
         // форма добавления загушки
         $('.gag-create').click(function(e) {
             var $this = $(this),
-                modalPlacement = $('#modal-inner-inner-placement').length
-                        ? $('#modal-inner-inner-placement') : $('#gag-placement');
+                    modalPlacement = $('#modal-inner-inner-placement').length
+                            ? $('#modal-inner-inner-placement') : $('#gag-placement');
             modalPlacement.find('#banner-modal').remove();
             modalPlacement.html('');
             $.ajax({
@@ -345,7 +351,7 @@
                     curId = gagsList.val() || $this.attr('data-id');
 
             if (!(curId*1)) {
-                alert('Необходимо выбрать заглушку');
+                alert('Необходимо выбрать заглушку.');
                 return false;
             }
             $.ajax({
@@ -385,3 +391,7 @@
         });
     }
 </script>
+
+
+
+

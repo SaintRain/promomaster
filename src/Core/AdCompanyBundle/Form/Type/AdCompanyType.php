@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormEvent;
 use Core\AdCompanyBundle\Form\DataTransformer\AdCompanyTransformer;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Doctrine\ORM\EntityRepository;
-
+use Core\AdCompanyBundle\Form\DataTransformer\PlacementTransformer;
 class AdCompanyType  extends AbstractType
 {
     /**
@@ -83,7 +83,8 @@ class AdCompanyType  extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Core\AdCompanyBundle\Entity\AdCompany'
+            'data_class' => 'Core\AdCompanyBundle\Entity\AdCompany',
+
         ));
     }
 
@@ -102,7 +103,7 @@ class AdCompanyType  extends AbstractType
         $data = $event->getData();
 
         $form->add('placements', 'collection', [
-            'label' => 'Размещения',
+            'label' => 'Размещения рекламы',
             'type' => new PlacementFormType($this->security_context->getToken()->getUser()->getId()),
             'allow_add' => true,
             'allow_delete' => true,

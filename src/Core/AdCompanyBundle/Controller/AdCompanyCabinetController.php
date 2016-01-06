@@ -158,8 +158,9 @@ class AdCompanyCabinetController extends Controller
     */
     public function createAction()
     {
-        $this->getUser();
+        return $this->createEmpty();
 
+        $this->getUser();
         $adcompany = new AdCompany();
         $user = $this->container->get('security.context')->getToken()->getUser();
         $adcompany->setUser($user);
@@ -185,6 +186,24 @@ class AdCompanyCabinetController extends Controller
         } else {
             return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany, 'form' => $form->createView()]);
         }
+    }
+
+    /**
+     * Сразу пишем в базу РК
+     * @return RedirectResponse
+     */
+    public function createEmpty() {
+        $adcompany = new AdCompany();
+        $adcompany->setUser($this->getUser());
+        $adcompany->setIsEnabled(true);
+        $adcompany->setName('Новая рекламная компания');
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($adcompany);
+        $em->flush();
+        $adcompany->setName('Новая рекламная компания #'.$adcompany->getId());
+        $em->flush();
+
+        return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $adcompany->getId()]));
     }
 
 

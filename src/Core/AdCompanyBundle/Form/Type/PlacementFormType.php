@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Core\AdCompanyBundle\Form\DataTransformer\PlacementTransformer;
-
+use Symfony\Component\Validator\Constraints\NotBlank;
 class PlacementFormType extends AbstractType
 {
 
@@ -39,6 +39,8 @@ class PlacementFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+
         $builder
 //            ->add('placementBannersList', 'entity', [
 //                'class'     => 'Core\AdCompanyBundle\Entity\PlacementBanner',
@@ -69,7 +71,7 @@ class PlacementFormType extends AbstractType
             ])
             ->add('startDateTime', 'text', ['required' => false , 'read_only'=>true])
             ->add('finishDateTime', 'text', ['required' => false, 'read_only'=>true])
-            ->add('isEnabled', null, ['required' => false])
+            ->add('isEnabled', null, ['required' => false, ] )
             ->add('quantity', null, ['required' => false])
             ->add('quantityModel', 'entity', [
                 'empty_value'   => 'Необходимо выбрать',
@@ -117,6 +119,9 @@ class PlacementFormType extends AbstractType
                 'query_builder' => function(EntityRepository $er ) use ($userId) {
                     return $er->createQueryBuilder('s')->where('s.user = :userId')->setParameter('userId',$userId);
                 },
+                'constraints' => [
+                    new NotBlank()
+                ],
                 'required'      => true,
                 'property'      => 'name',
                 'label'         => 'Площадка*',

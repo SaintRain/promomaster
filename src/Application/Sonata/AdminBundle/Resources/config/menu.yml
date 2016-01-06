@@ -12,7 +12,7 @@
     Разделы рекламных мест:            { route: admin_core_site_section_list }
     Рекламные компании:             { route: admin_core_adcompany_adcompany_list }
     Размещения:                       { route: admin_core_adcompany_placement_list }
-    Банеры размещения:                       { route: admin_core_adcompany_placementbanner_list }
+    Баннеры размещения:                       { route: admin_core_adcompany_placementbanner_list }
     Категории сайтов:                  { route: admin_core_category_sitecategory_list}
 
 Пользователи:

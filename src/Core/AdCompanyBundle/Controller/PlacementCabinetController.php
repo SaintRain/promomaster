@@ -73,6 +73,88 @@ class PlacementCabinetController extends Controller
 
 
     /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function сreateAjaxAction($adcompany_id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $addcompany = $em->getRepository('CoreAdCompanyBundle:AdCompany')->find($adcompany_id);
+
+        $placement = new Placement();
+        $placement->setAdCompany($addcompany);
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        $placementFormType = new \Core\AdCompanyBundle\Form\Type\PlacementFormType($user->getId());
+        $form = $this->createForm($placementFormType, $placement, array(
+            'adCompanyField' => false,
+            'adPlaceField' => true,
+            'adPlaceAllowNew' => true,
+            'required' => false,
+            'site' => true,
+            'attr' => array('class' => 'email-box')
+        ));
+
+//        $form = $this->getForm($placement);
+        $request = $this->get('request');
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+
+            //сетапим текущее время, если оно не указано явно
+            if (!$placement->getStartDateTime()) {
+                $placement->setStartDateTime(new \DateTime());
+            }
+
+            if ($form->isValid()) {
+
+
+                $em->persist($placement);
+                $em->flush();
+                return new JsonResponse(['id' => $placement->getId(),
+                    'edit_url' => $this->generateUrl('core_cabinet_adplaces_placements_ajax_edit', ['id' => $placement->getId()])]);
+            } else {
+
+                return $this->render('CoreAdCompanyBundle:Placement\Cabinet\Form:form_placement_create.html.twig',
+                    ['placement' => $placement,
+                        'form' => $form->createView()]);
+            }
+        }
+
+    }
+
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getCreateFormAction()
+    {
+        $placement = new Placement();
+        $placement->setIsEnabled(true);
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        $placementFormType = new \Core\AdCompanyBundle\Form\Type\PlacementFormType($user->getId());
+        $form = $this->createForm($placementFormType, $placement, array(
+
+            'adCompanyField' => false,
+            'adPlaceField' => true,
+            'adPlaceAllowNew' => true,
+            'required' => false,
+            'site' => true,
+            'attr' => array('class' => 'email-box')
+        ));
+
+        return $this->render('CoreAdCompanyBundle:Placement\Cabinet\Form:form_placement_create.html.twig',
+            [
+                'placement' => $placement,
+//                'isTest'=>true,
+                'form' => $form->createView()
+            ]);
+
+    }
+
+
+    /**
      * Добавление размещения
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -129,33 +211,31 @@ class PlacementCabinetController extends Controller
                 'multiple'  => true,
                 'required' => false,'property'=>'banner.name'])
             */
-            ->add('startDateTime', 'text', ['required' => false , 'read_only'=>true])
-            ->add('finishDateTime', 'text', ['required' => false, 'read_only'=>true])
+            ->add('startDateTime', 'text', ['required' => false, 'read_only' => true])
+            ->add('finishDateTime', 'text', ['required' => false, 'read_only' => true])
             ->add('isEnabled', null, ['required' => false])
             ->add('quantity', null, ['required' => false])
             ->add('quantityModel', 'entity', [
                 'class' => 'Core\DirectoryBundle\Entity\PriceModel',
-                'query_builder' => function(PriceModelRepository $er ) {
-                    return $er->createQueryBuilder('pm')->where('pm.name != :name')->setParameter('name','daysquantity');
+                'query_builder' => function (PriceModelRepository $er) {
+                    return $er->createQueryBuilder('pm')->where('pm.name != :name')->setParameter('name', 'daysquantity');
                 },
-                'required' => false, 'property'=>'caption2Ru'])
-           // ->add('defaultCountries', null, ['required' => false])
+                'required' => false, 'property' => 'caption2Ru'])
+            // ->add('defaultCountries', null, ['required' => false])
             ->add('defaultCountries', 'entity', [
                 //'required' => false ,
                 //'by_reference' => false,
-                'class'     => 'CoreDirectoryBundle:Country',
+                'class' => 'CoreDirectoryBundle:Country',
                 //'property'  => 'name',
                 'withSubset' => true,
-                'expanded'  => true,
-                'multiple'  => true,
+                'expanded' => true,
+                'multiple' => true,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->select('c, w')
-                        ->innerJoin('c.worldSection', 'w')
-                        ;
+                        ->innerJoin('c.worldSection', 'w');
                 }
             ])
-
             ->add('placementBannersList', 'collection', [
                 'by_reference' => false,
                 'type' => 'placement_banner_form',
@@ -163,7 +243,7 @@ class PlacementCabinetController extends Controller
                 'allow_delete' => true,
 
             ])
-            ->addModelTransformer(new PlacementTransformer())       //трансформер дат
+            ->addModelTransformer(new PlacementTransformer())//трансформер дат
             ->getForm();
 
 
@@ -234,25 +314,24 @@ class PlacementCabinetController extends Controller
             $msg = "Размещение  «{$placement->getId()}» было удалено.";
 
 
-        $em->remove($placement);
-        try {
-            $em->flush();
-            $answer = [
-                'result' => true,
-                'msg'   => $msg
-            ];
-        } catch (\Exception $e) {
-            $msg = "Невозможно удалить размещение «#{$placement->getId()}», т.к. оно задействовано в системе на данный момент.";
+            $em->remove($placement);
+            try {
+                $em->flush();
+                $answer = [
+                    'result' => true,
+                    'msg' => $msg
+                ];
+            } catch (\Exception $e) {
+                $msg = "Невозможно удалить размещение «#{$placement->getId()}», т.к. оно задействовано в системе на данный момент.";
+                $answer = [
+                    'result' => false,
+                    'msg' => $msg
+                ];
+            }
+        } else {
             $answer = [
                 'result' => false,
-                'msg'   => $msg
-            ];
-        }
-        }
-        else {
-            $answer = [
-                'result' => false,
-                'msg'   => 'Размещение было удалено ранее!'
+                'msg' => 'Размещение было удалено ранее!'
             ];
         }
 
@@ -291,31 +370,31 @@ class PlacementCabinetController extends Controller
 
                 $msg = 'Данные успешно обновлены';
                 $data = [
-                    'result'    => true,
-                    'data'      => null,
-                    'msg'       => $msg
+                    'result' => true,
+                    'data' => null,
+                    'msg' => $msg
                 ];
             } else {
                 $html = $this->renderView('CoreAdCompanyBundle:Placement\Cabinet\Form:form_placement_modal.html.twig',
                     ['placement' => $placement, 'form' => $form->createView()
-                ]);
+                    ]);
 
                 $data = [
-                    'result'    => false,
-                    'data'      => $html,
-                    'msg'       => null
+                    'result' => false,
+                    'data' => $html,
+                    'msg' => null
                 ];
 
             }
         } else {
             $html = $this->renderView('CoreAdCompanyBundle:Placement\Cabinet\Form:form_placement_modal.html.twig',
                 ['placement' => $placement, 'form' => $form->createView()
-            ]);
+                ]);
 
             $data = [
-                'result'    => true,
-                'data'      => $html,
-                'msg'       => null
+                'result' => true,
+                'data' => $html,
+                'msg' => null
             ];
 
         }

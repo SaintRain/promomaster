@@ -28,11 +28,13 @@ class PlacementTransformer implements DataTransformerInterface
             $d = new \DateTime ($year . '-' . $month . '-' . $day . ' ' . $this->getTime($year, $month, $day), $UTC);
             $value->setFinishDateTime($d);
         }
+
         return $value;
     }
 
     public function transform($value)
     {
+
         if (!$value) {
             return null;
         }
@@ -46,6 +48,7 @@ class PlacementTransformer implements DataTransformerInterface
         if ($d) {
             $value->setFinishDateTime($d->format('d-m-Y'));
         }
+
         return $value;
 
     }

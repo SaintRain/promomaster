@@ -25,7 +25,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title"
-                    id="myModalLabel">{% if subject is defined %}Редактирование банера{% else %}Добавление банера{% endif %}</h4>
+                    id="myModalLabel">{% if subject is defined %}Редактирование баннера{% else %}Добавление баннера{% endif %}</h4>
 
                 <div class="modal-content-wr">
                     {% if imageForm %}
@@ -47,16 +47,26 @@
 
                                                         {% if child.vars.name ==  'isOpenUrlInNewWindow' %}
                                                     <label class="checkbox">
-                                                        {{ form_widget(child) }}<i></i> {{ child.vars.label }}{% if child.vars.required %} *{% endif %}</label>
+                                                        {{ form_widget(child) }}<i></i> {{ child.vars.label }}{% if child.vars.required %}*{% endif %}</label>
+                                                        <span class="note">Если выставленно, тогда ссылка с рекламного баннера будет открыаться в новом окне.</span>
                                                     {{ form_errors(child) }}
                                                     </label>
                                                 {% else %}
-                                                            <label>{{ child.vars.label }}{% if child.vars.required %} *{% endif %}</label>
+                                                            <label>{{ child.vars.label }}{% if child.vars.required %}*{% endif %}</label>
                                                             {{ form_widget(child,{ 'attr': {'class': curClass} }) }}
+
+                                                            {% if child.vars.name=='name' %}
+                                                            <span class="note">Укажите произвольное имя баннера.</span>
+                                                                {% endif %}
+
+                                                            {% if child.vars.name=='url' %}
+                                                            <span class="note">Укажите ссылку куда будет перенаправлен пользователь при клике на баннер.</span>
+                                                                {% endif %}
                                                             {{ form_errors(child) }}
                                                         {% endif %}
                                                     </div>
                                                 </div>
+
                                             {% endfor %}
                                             <div class=" margin-bottom-20">
                                             </div>
@@ -98,9 +108,18 @@
 
                                                 <div class="row margin-bottom-20">
                                                     <div class="col-sm-12  {% if form_errors(child) %}state-error{% endif %}">
-                                                        <label>{{ child.vars.label }}{% if child.vars.required %} *{% endif %}</label>
+                                                        <label>{{ child.vars.label }}{% if child.vars.required %}*{% endif %}</label>
                                                         {{ form_widget(child,{ 'attr': {'class': curClass} }) }}
                                                         {{ form_errors(child) }}
+
+                                                        {% if child.vars.name=='name' %}
+                                                            <span class="note">Укажите произвольное имя баннера.</span>
+                                                        {% endif %}
+
+                                                        {% if child.vars.name=='code' %}
+                                                            <span class="note">Укажите HTML или JavaScript код, который будет выводится в рекламном месте.</span>
+                                                        {% endif %}
+
                                                     </div>
                                                 </div>
                                             {% endfor %}
@@ -137,8 +156,18 @@
 
                                                 <div class="row margin-bottom-20" {% if child.vars.name=='_token' %} style="display: none" {% endif %}>
                                                     <div class="col-sm-12  {% if form_errors(child) %}state-error{% endif %}">
-                                                        {% if child.vars.label %}<label>{{ child.vars.label }}{% if child.vars.required %} *{% endif %}</label>{% endif %}
+                                                        {% if child.vars.label %}<label>{{ child.vars.label }}{% if child.vars.required %}*{% endif %}</label>{% endif %}
                                                         {{ form_widget(child,{ 'attr': {'class': curClass} }) }}
+
+
+                                                        {% if child.vars.name=='name' %}
+                                                            <span class="note">Укажите произвольное имя баннера.</span>
+                                                        {% endif %}
+
+                                                        {% if child.vars.name=='url' %}
+                                                            <span class="note">Укажите ссылку куда будет перенаправлен пользователь при клике на баннер.</span>
+                                                        {% endif %}
+
                                                         {{ form_errors(child) }}
                                                         {% if  child.vars.note is defined %}
                                                             <span class="note">{{ child.vars.note | raw }}</span>

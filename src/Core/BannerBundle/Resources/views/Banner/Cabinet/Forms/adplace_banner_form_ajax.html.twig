@@ -49,12 +49,21 @@
                                                         {% endif  %}
                                                         {% if child.vars.name ==  'isOpenUrlInNewWindow' %}
                                                     <label class="checkbox">
-                                                        {{ form_widget(child) }}<i></i> {{ labelText }}{% if child.vars.required %} *{%  endif %}</label>
+                                                        {{ form_widget(child) }}<i></i> {{ labelText }}{% if child.vars.required %}*{%  endif %}</label>
+                                                         <span class="note">Если выставленно, тогда ссылка с рекламного баннера будет открыаться в новом окне.</span>
                                                     {{ form_errors(child) }}
                                                     </label>
                                                 {% else %}
-                                                            <label>{{ labelText }}{% if child.vars.required %} *{%  endif %}</label>
+                                                            <label>{{ labelText }}{% if child.vars.required %}*{%  endif %}</label>
                                                             {{ form_widget(child,{ 'attr': {'class': curClass} }) }}
+
+                                                              {% if child.vars.name=='name' %}
+                                                             <span class="note">Укажите произвольное имя заглушки.</span>
+                                                                {% endif %}
+
+                                                        {% if child.vars.name=='url' %}
+                                                            <span class="note">Укажите ссылку куда будет перенаправлен пользователь при клике на баннер.</span>
+                                                        {% endif %}
                                                             {{ form_errors(child) }}
                                                         {% endif %}
                                                     </div>
@@ -108,8 +117,15 @@
 
                                                 <div class="row margin-bottom-20">
                                                     <div class="col-sm-12  {% if form_errors(child) %}state-error{% endif %}">
-                                                        <label>{{ labelText }}{% if child.vars.required %} *{%  endif %}</label>
+                                                        <label>{{ labelText }}{% if child.vars.required %}*{%  endif %}</label>
                                                         {{ form_widget(child,{ 'attr': {'class': curClass} }) }}
+                                                        {% if child.vars.name=='name' %}
+                                                            <span class="note">Укажите произвольное имя заглушки.</span>
+                                                        {% endif %}
+
+                                                        {% if child.vars.name=='code' %}
+                                                            <span class="note">Укажите HTML или JavaScript код, который будет выводится в рекламном месте.</span>
+                                                        {% endif %}
                                                         {{ form_errors(child) }}
                                                     </div>
                                                 </div>
@@ -124,8 +140,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                <button type="submit" class="btn-u btn-u-primary">Сохранить</button>&nbsp;&nbsp;
                                 <button type="button" class="btn-u btn-u-default" data-dismiss="modal">Отмена</button>
-                                <button type="submit" class="btn-u btn-u-primary">Сохранить</button>
                             </div>
                         </form>
                     {% endif %}
@@ -152,8 +168,18 @@
                                                 {% endif  %}
                                                 <div class="row margin-bottom-20">
                                                     <div class="col-sm-12  {% if form_errors(child) %}state-error{% endif %}">
-                                                        <label>{{ labelText }}{% if child.vars.required %} *{%  endif %}</label>
+                                                        <label>{{ labelText }}{% if child.vars.required %}*{%  endif %}</label>
                                                         {{ form_widget(child,{ 'attr': {'class': curClass} }) }}
+
+                                                        {% if child.vars.name=='name' %}
+                                                            <span class="note">Укажите произвольное имя заглушки.</span>
+                                                        {% endif %}
+
+                                                        {% if child.vars.name=='url' %}
+                                                            <span class="note">Укажите ссылку куда будет перенаправлен пользователь при клике на баннер.</span>
+                                                        {% endif %}
+
+
                                                         {{ form_errors(child) }}
                                                         {% if  child.vars.note is defined %}
                                                             <span class="note">{{ child.vars.note | raw }}</span>
@@ -161,6 +187,7 @@
                                                     </div>
                                                 </div>
                                             {% endfor %}
+                                            {{ include ('CoreBannerBundle:Banner\\Cabinet\\Forms:flashBannerMsg.html.twig') }}
                                             <div class=" margin-bottom-20">
                                             </div>
 
@@ -171,8 +198,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                <button type="submit" class="btn-u btn-u-primary">Сохранить</button>&nbsp;&nbsp;
                                 <button type="button" class="btn-u btn-u-default" data-dismiss="modal">Отмена</button>
-                                <button type="submit" class="btn-u btn-u-primary">Сохранить</button>
                             </div>
                         </form>
                     {% endif %}

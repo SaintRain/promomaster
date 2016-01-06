@@ -29,7 +29,7 @@ class FlashBanner extends CommonBanner
      * @var string
      * @ORM\Column(type="string", length=250, nullable=false)
      * @Assert\Url()
-     * @Assert\NotBlank()
+     * Assert\NotBlank()
      */
     private $url;
 
@@ -168,7 +168,7 @@ class FlashBanner extends CommonBanner
     public function isValid(ExecutionContextInterface $context)
     {
         if (!$this->isGag && !$this->getUrl()) {
-            $context->buildViolation('Необходимо указать')
+            $context->buildViolation('Необходимо указать ссылку перехода.')
                 ->atPath('url')
                 ->addViolation();
         }
