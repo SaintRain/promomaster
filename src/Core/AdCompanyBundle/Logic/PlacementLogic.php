@@ -93,7 +93,7 @@ class PlacementLogic
                     $endDate = true;
                 }
 
-                //если найден подходящий баннер по дате
+                //если найден подходящий период по дате
                 if ($startDate && $endDate) {
                     $isActiveByDate = true;
                 } else {
@@ -113,9 +113,9 @@ class PlacementLogic
                     $clicksQuantity += $s->getClicksQuantity();
                 }
 
-                if ($placement->getQuantityModel()->getName() == 'showsquantity' && $showsQuantity < $placement->getQuantity()) {
+                if ($placement->getQuantityModel() && $placement->getQuantityModel()->getName() == 'showsquantity' && $showsQuantity < $placement->getQuantity()) {
                     $isActive = true;
-                } else if ($placement->getQuantityModel()->getName() == 'clicksquantity' && $clicksQuantity < $placement->getQuantity()) {
+                } else if ( $placement->getQuantityModel() && $placement->getQuantityModel()->getName() == 'clicksquantity' && $clicksQuantity < $placement->getQuantity()) {
                     $isActive = true;
                 }
                 else {

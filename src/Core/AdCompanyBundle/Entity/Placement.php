@@ -412,12 +412,12 @@ class Placement
             if (!$this->quantity) {
 
                 if (!$this->startDateTime) {
-                    $context->buildViolation('Неверно задана начальная дата.')
+                    $context->buildViolation('Если не заполнено поле "Количество", тогда необходимо задать начальную дату.')
                         ->atPath('startDateTime')
                         ->addViolation();
                 }
                 if (!$this->finishDateTime) {
-                    $context->buildViolation('Неверно задана конечная дата.')
+                    $context->buildViolation('Если не заполнено поле "Количество", тогда необходимо задать конечную дату.')
                         ->atPath('finishDateTime')
                         ->addViolation();
                 }

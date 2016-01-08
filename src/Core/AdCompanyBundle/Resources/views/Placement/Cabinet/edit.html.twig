@@ -134,7 +134,7 @@
                     {{ form_widget(form.quantity,{ 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.quantity) }}
                     <span class="note">Вы можете указать точное количество показов или кликов. Если вы хотите установить показы независимо от количества показов/кликов , то
-                    оставте это поле пустым и укажите дату начала и дату окончания показов ниже.</span>
+                    оставьте это поле пустым и укажите дату начала и дату окончания показов ниже.</span>
                 </div>
 
                 <div class="col-sm-6  {% if form_errors(form.quantityModel) %}state-error{% endif %}">
@@ -408,4 +408,7 @@
         </script>
     {% endblock %}
 #}
+
+
+
 {% endblock %}

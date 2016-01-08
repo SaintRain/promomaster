@@ -153,7 +153,7 @@ class PaymentFormMapper extends LanguageSwitcherFormMapper
                 'read_only' => $isExist,
                 'required' => false,
                 'property' => 'captionRu',
-                'help' => 'Выберите платежную систему, если это необходимо или оставте поле пустым',
+                'help' => 'Выберите платежную систему, если это необходимо или оставьте поле пустым',
         ));
 
         $this

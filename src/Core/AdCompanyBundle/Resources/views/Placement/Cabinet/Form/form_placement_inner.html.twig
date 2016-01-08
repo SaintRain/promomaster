@@ -50,7 +50,7 @@
                         <div>
                             <div class="col-sm-11">
                                 {{ form_widget(form.site,{ 'attr': {'class': 'form-control'} }) }}
-                                <span class="note">Укажите площадку, на которой будет размещаться реклама</span>
+                                <span class="note">Укажите площадку, на которой будет размещаться реклама.</span>
                                 {% if form_errors(form.site) %}
                                     <div class="row">
                                         <div class="col-sm-12{% if form_errors(form.site) %} state-error{% endif %}">
@@ -82,7 +82,7 @@
                     <div>
                         <div class="col-sm-11">
                             {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
-                            <span class="note">Укажите место на площадке, где будет показываться реклама</span>
+                            <span class="note">Укажите место на площадке, где будет показываться реклама.</span>
                             {% if form_errors(form.adPlace) %}
                                 <div class="row">
                                     <div class="col-sm-12{% if form_errors(form.adPlace) %} state-error{% endif %}">
@@ -154,7 +154,7 @@
                         data-prototype="{% filter escape %}
                                         {% include 'CoreAdCompanyBundle:Placement\\Cabinet\\Form:placement_banner.html.twig' with { 'form': form.placementBannersList.vars.prototype } %}
                                     {% endfilter %}
-                                    " {% endif %}>
+                                    "{% endif %}>
                         <i class="fa fa-plus-square"></i>
                         <span>&nbsp;Добавить баннер</span>
                     </a>
@@ -185,12 +185,14 @@
                 {{ form_widget(form.quantity,{ 'attr': {'class': 'form-control'} }) }}
                 {{ form_errors(form.quantity) }}
                 <span class="note">Необходимо указать точное количество показов или кликов. Если вы хотите установить показы независимо от количества показов/кликов , то
-                            оставте это поле пустым и укажите дату начала и дату окончания показов ниже.</span>
+                            оставьте это поле пустым и укажите дату начала и дату окончания показов ниже.</span>
             </div>
 
             <div class="{{ fieldGroupClass }}{% if form_errors(form.quantityModel) %} state-error{% endif %}">
                 <label>В чем указано количество</label>
                 {{ form_widget(form.quantityModel,{ 'attr': {'class': 'form-control'} }) }}
+                <span class="note">Если вы хотите установить показы независимо от количества показов/кликов , то
+                            оставьте это поле пустым и укажите дату начала и дату окончания показов ниже.</span>
                 {{ form_errors(form.quantityModel) }}
             </div>
 
@@ -336,6 +338,8 @@
                     </a>
                 </div>
                 {{ form_widget(form.defaultCountries) }}
+                <span class="note">Укажите для каких стран будет показана реклама.</span>
+
                 {{ form_errors(form.defaultCountries) }}
             </div>
         </div>
@@ -363,7 +367,7 @@
             url_site_adplaces="{{ path('core_cabinet_site_adplaces') }}"
 
     initCalendarFromTo('startDateTimePlacement', 'finishDateTimePlacement');
-    manipulateCollection(collectionCount);
+
     clickErrorTab();
     $("#datepicker").datepicker();
 

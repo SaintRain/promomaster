@@ -53,6 +53,7 @@
                     } else {
                         site.append('<option value="' + data.data.id +'">' + data.data.name +'</option>');
                         site.val(data.data.id);
+                        site.trigger('change');
                     }
                 } else {
                     modalContent.html($(data.data).find('.modal-content-wr').html());
