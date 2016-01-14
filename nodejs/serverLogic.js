@@ -232,13 +232,13 @@ exports.getAd = function (req, res, adplace_id) {
 
         }
         else {
-
-            if (typeof(SD.adplaces[adplace_id]) !== 'undefined') {
-                var msgError = "Wrong refer hostname. Need " + SD.adplaces[adplace_id]['site']['domain'] + ", but get " + domain;
-            }
-            else {
+            if (typeof(SD.adplaces[adplace_id]) === 'undefined') {
                 var msgError = "Wrong parameter adplace_id.";
             }
+            else {
+                var msgError = "Wrong refer hostname. Need " + SD.adplaces[adplace_id]['site']['domain'] + ", but get " + domain;
+            }
+
             //отдаём ошибку
             this.sendResponse(res, {statusCode: 400, body: msgError})
         }

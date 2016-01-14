@@ -104,12 +104,12 @@ TRYCATCH(function () {
         }
     })
 
-
-///ПОТОМ НУЖНО УДАЛИТЬ !!!!!!
-    APP.get('/getAllData', function (req, res) {
-        LOGIC.sendResponse(res, {statusCode: 200, body: SD})
-    })
-
+    if (!CONFIG.isProd) {
+        //можно смотреть все данные
+        APP.get('/getAllData', function (req, res) {
+            LOGIC.sendResponse(res, {statusCode: 200, body: SD})
+        })
+    }
 
     var server = APP.listen(CONFIG.port, function () {
         var host = server.address().address
