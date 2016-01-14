@@ -23,7 +23,8 @@
     <!--=== Content Part ===-->
     <div class="container content">
         <div class="alert alert-success fade in margin-bottom-40">
-            <h4>{{  'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</h4>
+            <h4>Поздравляем {{ user.username }}, ваш аккаунт подтвержден. Для начала работы вам необходимо <a href="{{ path('core_cabinet_adcompany_create') }}">добавить рекламную компанию</a>.</h4>
+
             {% if app.session is not empty %}
                 {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
                 {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>{% endif %}
