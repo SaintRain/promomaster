@@ -80,13 +80,13 @@ class SiteAdmin extends Admin
         $listMapper
             ->addIdentifier('id', 'string', array('label' => 'ID'))
             ->addIdentifier('createdDateTime', null, ['label' => 'Добавлено'])
-//            ->add('domain', null, ['label' => 'Сайт',
-//            'template' => 'CoreSiteBundle:Admin\Site\list_fields:domain.html.twig'
-//            ])
-//            ->add('mirrors', null, ['label' => 'Зеркала',
-//                'required'=>false,
-//                'template' => 'CoreSiteBundle:Admin\Site\list_fields:mirrors.html.twig'
-//            ])
+            ->add('domain', null, ['label' => 'Сайт',
+            'template' => 'CoreSiteBundle:Admin\Site\list_fields:domain.html.twig'
+            ])
+            ->add('mirrors', null, ['label' => 'Зеркала',
+                'required'=>false,
+                'template' => 'CoreSiteBundle:Admin\Site\list_fields:mirrors.html.twig'
+            ])
             ->add('user.email', null, ['label' => 'Пользователь',
                 'template' => 'CoreSiteBundle:Admin\Site\list_fields:user.html.twig'
             ])
