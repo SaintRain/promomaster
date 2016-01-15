@@ -63,8 +63,11 @@ exports.getAd = function (req, res, adplace_id) {
 
         var refererInfo = URL.parse(req.header('Referer')),
         //var refererInfo = URL.parse(req.get('origin')),
-            domain = refererInfo.protocol + '//' + refererInfo.hostname;
+            //domain = refererInfo.protocol + '//' + refererInfo.hostname;
+        domain =  refererInfo.hostname;
+
         console.log('referer domain='+domain)
+
         //проверяем, чтоб домен рефера совпадал с тем, что у нас прописан в базе. Иначе возможна накрутка показов с других площадок
         if (typeof(SD.adplaces['_' + adplace_id]) !== 'undefined' && SD.sites['_' + SD.adplaces['_' + adplace_id].site_id].domain == domain) {
             if (SD.placementsByAdPlace['_' + adplace_id]) {  //если есть размещения
@@ -239,7 +242,6 @@ exports.getAd = function (req, res, adplace_id) {
             else {
                 var msgError = "Wrong refer hostname. Need " + SD.sites['_' + SD.adplaces['_' + adplace_id].site_id].domain + ", but get " + domain;
             }
-
 
 
             //отдаём ошибку

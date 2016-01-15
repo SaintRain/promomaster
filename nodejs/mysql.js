@@ -67,7 +67,17 @@ mysqlGetSites = function (id) {
     var q = "SELECT id, domain, user_id FROM core_site " + where;
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
+
+        var array = {"http://www.":"", "https://www.":"", "http://":"", "https://":""}
+
         rows.forEach(function (item) {
+
+            //оставляем только доменное имя
+            for (var val in array)
+                item.domain = item.domain.replace(val, array[val]);
+
+            //console.log(item.domain)
+
             SD.sites['_' + item.id] = item;
         })
     });

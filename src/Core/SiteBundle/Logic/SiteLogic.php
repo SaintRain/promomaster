@@ -117,11 +117,40 @@ class SiteLogic
             //если изменилось, тогда генерируем новый код
             if (isset($res['domain'])) {
 
-                $site->setVerifiedCode($this->generateVerifiedCode($site));
-                $site->setIsVerified(false);
-                $this->em->flush($site);
+                if ($this->isRealDomainChange($site)) {
+
+                    $site->setVerifiedCode($this->generateVerifiedCode($site));
+                    $site->setIsVerified(false);
+                    $this->em->flush($site);
+                }
             }
         }
+    }
+
+
+    /**
+     * проверяем изменилось ли название хоста или только www https
+     * @param $site
+     */
+    public function isRealDomainChange($site)
+    {
+
+        $domainNew=$site->getDomain();
+
+        $em = $this->container->get('doctrine')->getManager();
+        $em->refresh($site);
+        $domainOld=$site->getDomain();
+
+
+        $siteHost = str_replace('www.', '', parse_url($domainNew)['host']);
+        $siteHostOld = str_replace('www.', '', parse_url($domainOld)['host']);
+
+        if ($siteHost != $siteHostOld) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     /**
