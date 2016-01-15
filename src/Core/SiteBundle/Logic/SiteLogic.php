@@ -24,14 +24,17 @@ class SiteLogic
     private $container;
     private $paginator;
     private $parameters;
+    private $environment;
 
-    public function __construct($router, $em, $container, $paginator, $parameters)
+    public function __construct($router, $em, $container, $paginator, $parameters, $environment)
     {
         $this->router = $router;
         $this->em = $em;
         $this->container = $container;
         $this->paginator = $paginator;
         $this->parameters = $parameters;
+        $this->environment = $environment;
+
     }
 
 
@@ -241,7 +244,10 @@ class SiteLogic
             fwrite($fp, $content);      //сразу закрываем не дождавшись ответа
         } else {
             //сервер nodejs лежит
-            throw new \Exception('Server NodeJs is down!');
+            if ($this->environment=='prod') {
+                throw new \Exception('Server NodeJs is down!');
+            }
+
         }
     }
 

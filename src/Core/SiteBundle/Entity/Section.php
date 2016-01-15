@@ -59,7 +59,7 @@ class Section
     /**
      * Пользователь, которому принадлежит сайт
      * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      * @Assert\NotBlank()
      */
     private $user;

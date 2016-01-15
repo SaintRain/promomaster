@@ -114,7 +114,7 @@
                             if ($this.hasClass('create')) {
                                 elt = $('<tr><td><label style="margin-left: -15px; margin-top: -5px" title="Включить проверку раздела" class="toggle">' +
                                 '<input type="checkbox" value="' + data.data.section.id + '" name="form[sections][]" id="form_sections_' + data.data.section.id + '">' +
-                                '<i class="rounded-4x"></i></label></td><td><a href="/app_dev.php/cabinet/section_edit_' + data.data.section.id + '.json" class="section-edit" data-id="4"><u>' + data.data.section.name + '</u></a></td><td><a href="javascript:void(0);" class="section-delete" data-id="' + data.data.section.id + '"><i aria-hidden="true" class="icon-trash"></i></a></td></tr>');
+                                '<i class="rounded-4x"></i></label></td><td width="90%"><a href="/app_dev.php/cabinet/section_edit_' + data.data.section.id + '.json" class="section-edit" data-id="4"><u>' + data.data.section.name + '</u></a></td><td><a href="javascript:void(0);" class="section-delete" data-id="' + data.data.section.id + '"><i aria-hidden="true" class="icon-trash"></i></a></td></tr>');
                                 $('#form_sections tbody').append(elt);
                             } else {
                                 activeLink.text(data.data.section.name);
