@@ -257,7 +257,20 @@ class AdPlaceCabinetController extends Controller
                         ->setParameter('isGag', true);
                 }
             ])
-            ->add('sections', null, ['property' => 'name', 'required' => false, 'class' => 'CoreSiteBundle:Section', 'multiple' => true, 'expanded' => true, 'extraConfig' => [
+            ->add('sections', null, [
+                'property' => 'name',
+                'required' => false,
+                'class' => 'CoreSiteBundle:Section',
+
+                'query_builder' => function(EntityRepository $er ) use ( $adplace ) {
+                    return $er->createQueryBuilder('s')
+                        ->where('s.user = :user')
+                        ->setParameter('user', $adplace->getUser()->getId());
+                },
+
+                'multiple' => true,
+                'expanded' => true,
+                'extraConfig' => [
                 'field' => 'sections',
                 'editUrl' => '',
                 'deleteUrl' => '',

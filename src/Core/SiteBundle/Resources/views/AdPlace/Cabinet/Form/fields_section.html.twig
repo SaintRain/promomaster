@@ -20,7 +20,8 @@
                 {% endfor -%}
             </tbody>
         </table>
-        <span class="note">Если заданы разделы, тогда реклама будет показана только в соответствующих разделах.</span>
+        <span class="note">Если заданы разделы, тогда реклама будет показана только в соответствующих разделах.
+            Чтобы использовать раздел необходимо выставить значение On.</span>
         <div id="modal_placement"></div>
 
     </div>
@@ -30,7 +31,8 @@
             $(function(){
 
                 // section deleting
-                $('.section-delete').click(function() {
+
+                $(document).on('click', '.section-delete', function() {
                     var $this = $(this),
                             parentBlock = $this.closest('tr'),
                             curId = $this.data('id');
@@ -55,7 +57,7 @@
                 });
 
                 // section edit get form
-                $('body').on('click', '.section-edit', function(){
+                $(document).on('click', '.section-edit', function(){
                     var $this = $(this),
                             modalPlacement = $('#modal_placement'),
                             parentBlock = $this.closest('tr'),
@@ -95,7 +97,7 @@
                 });
 
 
-                $('body').on('click', '.section-create', function() {
+                $(document).on('click', '.section-create', function() {
 
                     var $this = $(this),
                         modalPlacement = $('#modal_placement');
