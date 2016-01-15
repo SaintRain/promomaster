@@ -295,7 +295,8 @@ class CommonSubscriber implements EventSubscriber
         foreach($data as $operationName => $operations) {
             foreach($operations as $tableName => $tables) {
                 foreach($tables as $key => $val) {
-                    if (is_int($val * 1)) {
+//                    if (is_int($val*1)) {
+                        if (is_numeric($val)) {
                         $result[$operationName][$tableName][$val] = $val;
                     } else {
                         $result[$operationName][$tableName][$key] = $val;

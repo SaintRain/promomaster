@@ -135,7 +135,7 @@ class SectionCabinetController extends Controller
         $em = $this->getDoctrine()->getManager();
         $section = $em->getRepository('CoreSiteBundle:Section')->findForDeleting(['id' => $id, 'user' => $user]);
 
-        $msg = "Раздел  «{$section->getName()}» был удален.";
+        $msg = "Раздел «{$section->getName()}» был удален.";
         $em->remove($section);
         try {
             $em->flush();
@@ -292,6 +292,41 @@ class SectionCabinetController extends Controller
 
         return $response;
     }
+
+    /**
+     * Выставление статуса для раздела рекламного места (Ajax)
+     * @param Request $request
+     * @return Response
+     */
+    public function setStatusAjaxAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new NotFoundHttpException('Page Not Found');
+        }
+
+        $section_id = (int)$request->request->get('section_id');
+        $status = (int)$request->request->get('status');
+        $adplace_id = (int)$request->request->get('adplace_id');
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $adplace = $em->getRepository('CoreSiteBundle:AdPlace')->findForDeleting(['id' => $adplace_id, 'user' => $user]);
+        $section = $em->getRepository('CoreSiteBundle:Section')->findForDeleting(['id' => $section_id, 'user' => $user]);
+
+        if ($status) {
+            $adplace->addSection($section);
+        }
+        else {
+            $adplace->removeSection($section);
+        }
+
+        $em->flush();
+
+        $response = new Response('ok');
+
+        return $response;
+    }
+
 
 
     /**

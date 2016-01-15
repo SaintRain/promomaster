@@ -50,10 +50,12 @@ class AdPlaceCabinetController extends Controller
         $form = $this->getForm($adplace);
         $gagsCount = $em->getRepository('CoreBannerBundle:CommonBanner')->getGagsCount($this->getUser()->getId());
 
+
         //Сохранения изменения
         //$request = $this->get('request');
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
+
 
 //            if ($this->checkIsExistSite($adplace)) {
 //                $this->setFlash('edit_errors', 'Рекламное место с указанным именем было добавлено вами ранее.');
@@ -70,6 +72,8 @@ class AdPlaceCabinetController extends Controller
             $this->container->get('core_adplace_logic')->setAuthoSize($adplace);
 
             if ($form->isValid()) {
+
+
                 //ldd($adplace->getSections()->count());
                 $em->flush();
 
@@ -188,7 +192,7 @@ class AdPlaceCabinetController extends Controller
                 $em->persist($adplace);
                 $em->flush();
                 $answer = [
-                    'data' => ['id' => $adplace->getId(), 'name'=> $adplace->getName()],
+                    'data' => ['id' => $adplace->getId(), 'name' => $adplace->getName()],
                     'result' => true
                 ];
             } else {
@@ -222,11 +226,9 @@ class AdPlaceCabinetController extends Controller
         return $response;
     }
 
-    /**
-     * Форма рекламного места
-     * @param $adplace
-     * @return \Symfony\Component\Form\Form
-     */
+
+
+
     private function getForm($adplace)
     {
         $form = $this->createFormBuilder($adplace)
@@ -262,7 +264,7 @@ class AdPlaceCabinetController extends Controller
                 'required' => false,
                 'class' => 'CoreSiteBundle:Section',
 
-                'query_builder' => function(EntityRepository $er ) use ( $adplace ) {
+                'query_builder' => function (EntityRepository $er) use ($adplace) {
                     return $er->createQueryBuilder('s')
                         ->where('s.user = :user')
                         ->setParameter('user', $adplace->getUser()->getId());
@@ -271,10 +273,10 @@ class AdPlaceCabinetController extends Controller
                 'multiple' => true,
                 'expanded' => true,
                 'extraConfig' => [
-                'field' => 'sections',
-                'editUrl' => '',
-                'deleteUrl' => '',
-            ]])
+                    'field' => 'sections',
+                    'editUrl' => '',
+                    'deleteUrl' => '',
+                ]])
             /*
             ->add('countryList', 'country_form_frontend', [
                 'class'     => 'CoreDirectoryBundle:Country',
@@ -388,17 +390,17 @@ class AdPlaceCabinetController extends Controller
         //Сохранения изменения
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
-            $updated=true;
-        }
-        else {
-            $updated=false;
+            $updated = true;
+
+        } else {
+            $updated = false;
         }
 
 
         return $this->render('CoreSiteBundle:AdPlace\Cabinet:editSections.html.twig', [
             'adplace' => $adplace,
             'form' => $form->createView(),
-            'updated'=>$updated
+            'updated' => $updated
         ]);
 
     }

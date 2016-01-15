@@ -61,10 +61,17 @@ exports.getAd = function (req, res, adplace_id) {
     if (typeof(req.header('Referer')) !== 'undefined') {
         //if (typeof(req.get('origin') !== 'undefined')) {
 
-        var refererInfo = URL.parse(req.header('Referer')),
+        var refererInfo = URL.parse(req.header('Referer'));
         //var refererInfo = URL.parse(req.get('origin')),
             //domain = refererInfo.protocol + '//' + refererInfo.hostname;
-        domain =  refererInfo.hostname.replace('www.', '');
+
+        //вырезаем www.
+        if (refererInfo.hostname.indexOf('www.')===0) {
+            var domain =  refererInfo.hostname.replace('www.', '');
+        }
+        else {
+            var domain =  refererInfo.hostname;
+        }
 
         console.log('referer domain='+domain)
 

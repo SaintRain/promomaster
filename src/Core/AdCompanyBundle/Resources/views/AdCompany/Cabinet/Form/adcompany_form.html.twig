@@ -43,7 +43,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="placements-container-in">
+                <br>
+                <div class="placements-container-in" >
                     {% if form.vars.placements is defined %}
                         {% for placement in form.vars.placements %}
                             <div class="row collection-row">
@@ -52,6 +53,8 @@
                                        style="margin: 8px 0; display: inline-block;" class="edit-placement">
                                         Размещение &numero;{{ placement.id }}
                                     </a>
+
+
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="pull-right">
@@ -73,18 +76,29 @@
                                 {% endif %}
                                 >
                             {% if placement.vars.value.id is defined and placement.vars.value.id %}
-                                <div class="col-sm-4">
+                                <div class="col-sm-3">
+
+
+                                    {% set site=placement.vars.value.adPlace.site %}
+                                    {% if not site.isVerified %}
+                                        &nbsp;<a title="Необходимо пройти подтверждение прав на площадку" href="{{ path('core_cabinet_site_verified_form', {id:site.id}) }}" class="btn-u rounded  btn-u-xs btn-u-orange"><i class="fa fa-exclamation"></i></a>&nbsp;
+                                    {% endif %}
+
                                     <a href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.vars.value.id}) }}"
                                        style="margin: 8px 0; display: inline-block;" class="edit-placement">
                                         Размещение #{{ placement.vars.value.id }}
                                     </a>
+
+
+
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <div class="pull-right">
                                         <div style="margin-top: 7px;">
+                                            <a  href="{{ path('core_cabinet_adplace_getcode', {id:placement.vars.value.adPlace.id}) }}" class="btn-u btn-u-xs btn-u-default">Код вставки</a>&nbsp;
                                             <a data-id="{{ placement.vars.value.id }}" href="javascript:void(0);"
                                                class="btn-u-xs btn-u btn-u-red placement-remove">
-                                                <i class="icon-close"></i>&nbsp;Удалить
+                                                Удалить
                                             </a>
                                         </div>
                                     </div>
@@ -123,6 +137,7 @@
             </div>
         </div>
 
+        <hr>
         <div class="row margin-bottom-20">
             <div {% if not form.startDateTime.vars.value %}  style="display: none"  {% endif %}
                     class="col-sm-6  {% if form_errors(form.startDateTime) %}state-error{% endif %}">

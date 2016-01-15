@@ -164,6 +164,13 @@ core_cabinet_section_delete_ajax:
     schemes:  [http]
     defaults:  { _controller: CoreSiteBundle:SectionCabinet:deleteAjax }
 
+# выставление статуса раздела для рекламных мест в ЛК
+core_cabinet_section_set_status_ajax:
+    path:      /cabinet/section_set_status.json
+    schemes:  [http]
+    defaults:  { _controller: CoreSiteBundle:SectionCabinet:setStatusAjax }
+
+
 # удаление разделов для рекламных мест в ЛК
 core_cabinet_section_delete:
     path:      /cabinet/section_delete_{id}.html
