@@ -64,7 +64,7 @@ exports.getAd = function (req, res, adplace_id) {
         var refererInfo = URL.parse(req.header('Referer')),
         //var refererInfo = URL.parse(req.get('origin')),
             //domain = refererInfo.protocol + '//' + refererInfo.hostname;
-        domain =  refererInfo.hostname;
+        domain =  refererInfo.hostname.replace('www.', '');
 
         console.log('referer domain='+domain)
 
