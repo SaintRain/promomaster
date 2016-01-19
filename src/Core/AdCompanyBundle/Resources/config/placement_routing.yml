@@ -36,6 +36,16 @@ core_cabinet_placement_create_ajax:
     requirements:
       adcompany_id: \d+
 
+
+# получить таблицу размещения
+core_cabinet_placement_get_placements:
+    path:      /cabinet/placement_get_placements_{adcompany_id}.html
+    schemes:  [http]
+    defaults:  { _controller: CoreAdCompanyBundle:PlacementCabinet:getPlacementsAjax }
+    requirements:
+      adcompany_id: \d+
+
+
 # форма добавления
 core_cabinet_placement_get_create_form:
     path:      /cabinet/core_cabinet_placement_get_create_form.html
@@ -68,3 +78,4 @@ core_cabinet_adplaces_placements_ajax_edit:
     defaults:  { _controller: CoreAdCompanyBundle:PlacementCabinet:editAjax }
     requirements:
           id: \d+
+

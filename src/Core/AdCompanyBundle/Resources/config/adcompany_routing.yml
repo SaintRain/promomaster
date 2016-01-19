@@ -37,6 +37,7 @@ core_cabinet_adcompany_delete:
       id: \d+
 
 
+
 core_cabinet_set_adcompany_status:
     path:      /cabinet/adcompany/setstatus/{id}/{status}/{page}.html
     schemes:  [http]

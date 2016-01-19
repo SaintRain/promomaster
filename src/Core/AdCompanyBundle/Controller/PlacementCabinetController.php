@@ -19,6 +19,7 @@ use Core\AdCompanyBundle\Form\DataTransformer\PlacementTransformer;
 use Core\DirectoryBundle\Entity\Repository\PriceModelRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormError;
 
 class PlacementCabinetController extends Controller
 {
@@ -55,7 +56,6 @@ class PlacementCabinetController extends Controller
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
-
             if ($form->isValid()) {
 
                 $em = $this->getDoctrine()->getManager();
@@ -95,6 +95,9 @@ class PlacementCabinetController extends Controller
             'attr' => array('class' => 'email-box')
         ));
 
+        $error = new FormError('Размещение уже добавлено на это рекламное место.');
+        $form->get('adPlace')->addError($error);
+
 //        $form = $this->getForm($placement);
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
@@ -108,17 +111,28 @@ class PlacementCabinetController extends Controller
 
             if ($form->isValid()) {
 
+                if (!$placement->getPlacementBannersList()->count()) {
+                    $error = new FormError('Необходимо добавить минимум 1 баннер.');
+                    $form->get('placementBannersList')->addError($error);
+                }
+                else {
+                    $twinsCount = $em->getRepository('CoreAdCompanyBundle:Placement')->getTwins($placement);
+                    if (intval($twinsCount)) {
+                        $error = new FormError('Размещение уже добавлено на это рекламное место.');
+                        $form->get('adPlace')->addError($error);
+                    } else {
+                        $em->persist($placement);
+                        $em->flush();
+                        return new JsonResponse(['id' => $placement->getId(),
+                            'edit_url' => $this->generateUrl('core_cabinet_adplaces_placements_ajax_edit', ['id' => $placement->getId()])]);
+                    }
+                }
 
-                $em->persist($placement);
-                $em->flush();
-                return new JsonResponse(['id' => $placement->getId(),
-                    'edit_url' => $this->generateUrl('core_cabinet_adplaces_placements_ajax_edit', ['id' => $placement->getId()])]);
-            } else {
-
+            }
                 return $this->render('CoreAdCompanyBundle:Placement\Cabinet\Form:form_placement_create.html.twig',
                     ['placement' => $placement,
                         'form' => $form->createView()]);
-            }
+
         }
 
     }
@@ -403,6 +417,16 @@ class PlacementCabinetController extends Controller
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
+
+
+    public function getPlacementsAjaxAction($adcompany_id)
+    {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $adcompany = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:AdCompany')
+            ->findForDeleting(['user' => $user, 'id' => $adcompany_id]);
+
+        return $this->render('@CoreAdCompany/AdCompany/Cabinet/Form/placements.html.twig', ['placements' => $adcompany->getPlacements()]);
     }
 
     /**

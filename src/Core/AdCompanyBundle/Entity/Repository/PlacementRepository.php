@@ -102,4 +102,18 @@ class PlacementRepository extends EntityRepository {
         return $res;
     }
 
+    public function getTwins($placement) {
+
+        return $this->createQueryBuilder('p')
+            ->select('COUNT(p)')
+            ->join('p.adPlace', 'ap')
+            ->where('ap.site=:site AND p.adCompany=:adCompany  AND ap.id=:adPlaceId ')
+            ->setParameters([
+                'site'=>$placement->getAdPlace()->getSite()->getId(),
+                'adCompany'=>$placement->getAdCompany()->getID(),
+                'adPlaceId'=>$placement->getAdPlace()->getID()
+                ])
+            ->getQuery()->getSingleScalarResult();
+    }
+
 }

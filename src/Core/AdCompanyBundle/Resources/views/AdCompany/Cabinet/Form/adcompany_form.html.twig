@@ -5,7 +5,6 @@
 {% endif %}
 
 
-
 <form style="clear: both" class="sky-form sky-form-other-style"
       action="{% if adcompany.id %}{{ path('core_cabinet_adcompany_edit', {id: adcompany.id}) }}{% else %}{{ path('core_cabinet_adcompany_create') }}{% endif %}" {{ form_enctype(form) }}
       method="POST">
@@ -24,19 +23,19 @@
             <div
                     class="placements-container{% if form_errors(form.placements) %} state-error{% endif %}"
                     {#{% if form.placements.vars.prototype is defined %}#}
-                        {#data-prototype="#}
-                     {#{% filter escape %}#}
-                         {#{{ include(#}
-                        {#'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',#}
-                        {#{ 'form': form.placements.vars.prototype, 'fieldGroupClass': 'col-sm-12'}#}
-                        {#) }}#}
-                     {#{% endfilter %}"#}
+                    {#data-prototype="#}
+                    {#{% filter escape %}#}
+                    {#{{ include(#}
+                    {#'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',#}
+                    {#{ 'form': form.placements.vars.prototype, 'fieldGroupClass': 'col-sm-12'}#}
+                    {#) }}#}
+                    {#{% endfilter %}"#}
                     {#{% endif %}#}
                     >
                 <div class="row">
                     <div class="col-sm-6">
-                        {{ form_label(form.placements) }}
-                        <div class="pull-right">
+                        {#{{ form_label(form.placements) }}#}
+                        <div>
                             <a class="btn-u btn-u-xs add-placement" href="javascript:void(0);">
                                 <i class="fa fa-plus-square"></i><span>&nbsp;Добавить размещение</span>
                             </a>
@@ -44,92 +43,10 @@
                     </div>
                 </div>
                 <br>
-                <div class="placements-container-in" >
-                    {% if form.vars.placements is defined %}
-                        {% for placement in form.vars.placements %}
-                            <div class="row collection-row">
-                                <div class="col-sm-4">
-                                    <a href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.id}) }}"
-                                       style="margin: 8px 0; display: inline-block;" class="edit-placement">
-                                        Размещение &numero;{{ placement.id }}
-                                    </a>
 
-
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="pull-right">
-                                        <div style="margin-top: 7px;">
-                                            <a data-id="{{ placement.id }}" href="javascript:void(0);"
-                                               class="btn-u-xs btn-u btn-u-red placement-remove">
-                                                <i class="icon-close"></i>&nbsp;Удалить
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    {% for placement in form.placements %}
-                        <div class="row collection-row"
-                                {% if not(placement.vars.value.id is defined and placement.vars.value.id) %}
-                                    data-id="{{ loop.index }}"
-                                {% endif %}
-                                >
-                            {% if placement.vars.value.id is defined and placement.vars.value.id %}
-                                <div class="col-sm-3">
-
-
-                                    {% set site=placement.vars.value.adPlace.site %}
-                                    {% if not site.isVerified %}
-                                        &nbsp;<a title="Необходимо пройти подтверждение прав на площадку" href="{{ path('core_cabinet_site_verified_form', {id:site.id}) }}" class="btn-u rounded  btn-u-xs btn-u-orange"><i class="fa fa-exclamation"></i></a>&nbsp;
-                                    {% endif %}
-
-                                    <a href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.vars.value.id}) }}"
-                                       style="margin: 8px 0; display: inline-block;" class="edit-placement">
-                                        Размещение #{{ placement.vars.value.id }}
-                                    </a>
-
-
-
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="pull-right">
-                                        <div style="margin-top: 7px;">
-                                            <a  href="{{ path('core_cabinet_adplace_getcode', {id:placement.vars.value.adPlace.id}) }}" class="btn-u btn-u-xs btn-u-default">Код вставки</a>&nbsp;
-                                            <a data-id="{{ placement.vars.value.id }}" href="javascript:void(0);"
-                                               class="btn-u-xs btn-u btn-u-red placement-remove">
-                                                Удалить
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% do placement.setRendered(true) %}
-                            {% else %}
-                                {#<div class="row" style="display: none;">#}
-                                    {#{{ include(#}
-                                    {#'CoreAdCompanyBundle:Placement\\Cabinet\\Form:form_placement_inner.html.twig',#}
-                                    {#{ 'form': placement, 'fieldGroupClass': 'col-sm-12'}#}
-                                    {#) }}#}
-                                {#</div>#}
-                                {#<div class="wrapper">#}
-                                    {#<div class="col-sm-4">#}
-                                        {#<a class="edit-placement-new" style="margin: 8px 0; display: inline-block;"#}
-                                           {#href="javascript:void(0);">#}
-                                            {#Редактировать Новое Размещение &numero;{{ loop.index }}#}
-                                        {#</a>#}
-                                    {#</div>#}
-                                    {#<div class="col-sm-2">#}
-                                        {#<div style="margin-top: 7px;" class="pull-right">#}
-                                            {#<a class="btn-u-xs btn-u btn-u-red placement-remove-new"#}
-                                               {#href="javascript:void(0);" data-id="{{ loop.index }}">#}
-                                                {#<i class="icon-close"></i>&nbsp;Удалить#}
-                                            {#</a>#}
-                                        {#</div>#}
-                                    {#</div>#}
-                                {#</div>#}
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+                <div class="placements-container-in">
+                    {% set  placements=adcompany.placements%}
+                            {% include "@CoreAdCompany/AdCompany/Cabinet/Form/placements.html.twig" %}
                     {% do form.placements.setRendered(true) %}
                 </div>
 
@@ -169,7 +86,7 @@
 
 
         <div class="row margin-bottom-20">
-            <div  {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}
+            <div {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}
                     class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
                 <label>Дата окончания показов</label>
 
@@ -257,15 +174,15 @@
 
                     <div class="modal-content-wr">
                         {#<form style="clear: both" class="sky-form sky-form-other-style" action="#" method="POST">#}
-                            {#<div class="modal-body">#}
-                                {#<div class="row">#}
-                                {#</div>#}
-                            {#</div>#}
-                            {#<div class="modal-footer">#}
-                                {#<button class="btn-u btn-u-primary" type="submit">Добавить</button>#}
-                                {#&nbsp;&nbsp;#}
-                                {#<button data-dismiss="modal" class="btn-u btn-u-default" type="button">Отмена</button>#}
-                            {#</div>#}
+                        {#<div class="modal-body">#}
+                        {#<div class="row">#}
+                        {#</div>#}
+                        {#</div>#}
+                        {#<div class="modal-footer">#}
+                        {#<button class="btn-u btn-u-primary" type="submit">Добавить</button>#}
+                        {#&nbsp;&nbsp;#}
+                        {#<button data-dismiss="modal" class="btn-u btn-u-default" type="button">Отмена</button>#}
+                        {#</div>#}
                         {#</form>#}
                     </div>
                 </div>
@@ -303,16 +220,15 @@
             });
 
 
-
             function addTagForm($collectionHolder) {
                 var
-                        //prototype = $collectionHolder.data('prototype'),
+                //prototype = $collectionHolder.data('prototype'),
                         index = $collectionHolder.data('index'),
                         placement = $('#placement-modal-container .modal-body .row'),
                         modalContainer = $('#placement-modal-content');
-                      //  newForm = prototype.replace(/__name__/g, index + 1);
+                //  newForm = prototype.replace(/__name__/g, index + 1);
 
-               $.ajax({
+                $.ajax({
                     url: "{{ path('core_cabinet_placement_get_create_form') }}",
                     method: 'POST',
                     success: function (data) {
@@ -331,8 +247,8 @@
             // remove placement
             $('body').on('click', '.placement-remove', function () {
 
-                var id=$(this).attr('data-id');
-                 res=confirm('Вы уверены, что хотите удалить размещение #'+id+' ?');
+                var id = $(this).attr('data-id');
+                res = confirm('Вы уверены, что хотите удалить размещение?');
                 if (res) {
                     var $this = $(this),
                             curRow = $this.parents('.collection-row');
@@ -342,7 +258,7 @@
                         method: 'POST',
                         success: function (data) {
                             if (data.result) {
-                                curRow.remove();
+                                reloadPlacements();
                             } else {
                                 alert(data.msg);
                             }
@@ -382,33 +298,11 @@
                 $.ajax({
                     type: 'POST',
                     url: '{{ path('core_cabinet_placement_create_ajax', {adcompany_id:adcompany.id}) }}',
-                    data: $( this ).serialize(),
+                    data: $(this).serialize(),
                     success: function (data) {
-                        if (typeof data.id!=='undefined') {
+                        if (typeof data.id !== 'undefined') {
 
-                            var curId = $collectionHolder.data('index'),
-                                    placement = $collectionHolder.find(".row.collection-row[data-id='" + curId + "']"),
-                                    $html =
-                                            '<div class="wrapper"><div class="col-sm-4">' +
-                                            '<a class="edit-placement" style="margin: 8px 0; display: inline-block;" href="'+data.edit_url+'">' +
-                                            'Размещение #' + data.id +
-                                            '</a>' +
-                                            '</div>' +
-                                            '<div class="col-sm-2">' +
-                                            '<div class="pull-right"><div style="margin-top: 7px;">' +
-                                            '<a class="btn-u-xs btn-u btn-u-red placement-remove" href="javascript:void(0);" data-id="' + data.id + '">' +
-                                            '<i class="icon-close"></i>&nbsp;Удалить' +
-                                            '</a>' +
-                                            '</div></div>' +
-                                            '</div></div>';
-
-                            if (!placement.length) {
-                                $('.placements-container-in', $collectionHolder).append('<div class="row collection-row" data-id="' + curId + '" />');
-                                placement = $collectionHolder.find(".row.collection-row[data-id='" + curId + "']");
-                            }
-                            // почему форма со странами тоже иммет row class
-                            placement.html($('.modal-body > .row:first', this).clone().hide());
-                            placement.append($html);
+                            reloadPlacements();
                             $('#placement-modal-content').modal('hide');
                         }
                         else {
@@ -422,62 +316,21 @@
                     }
                 });
 
-
                 return false;
 
-//                var parent = $(this).parents('.modal-content-wr');
-//                if (!parent.find(".form-control[id$='site']").val()
-//                    || !parent.find(".form-control[id$='adPlace']").val()
-//                ) {
-//                    parent.find('a[data-target="placement-main"]').trigger('click');
-//                    return false;
-//                }
-//                if (!parent.find(".form-control[id$='quantity']").val() && (
-//                        !parent.find(".form-control[id$='startDateTime']").val()
-//                        || !parent.find(".form-control[id$='finishDateTime']").val()
-//                )) {
-//                    parent.find('a[data-target="placement-other"]').trigger('click');
-//                    return false;
-//                }
-//
-//                if (parent.find(".form-control[id$='quantity']").val()
-//                    && !parent.find(".form-control[id$='quantityModel']").val()
-//                ) {
-//                    parent.find('a[data-target="placement-other"]').trigger('click');
-//                    return false;
-//                }
-//
-//                var curId = $collectionHolder.data('index'),
-//                        placement = $collectionHolder.find(".row.collection-row[data-id='" + curId + "']"),
-//                        $html =
-//                                '<div class="wrapper"><div class="col-sm-4">' +
-//                                '<a class="edit-placement-new" style="margin: 8px 0; display: inline-block;" href="javascript:void(0);">' +
-//                                'Редактировать Новое Размещение №' + curId +
-//                                '</a>' +
-//                                '</div>' +
-//                                '<div class="col-sm-2">' +
-//                                '<div class="pull-right"><div style="margin-top: 7px;">' +
-//                                '<a class="btn-u-xs btn-u btn-u-red placement-remove-new" href="javascript:void(0);" data-id="' + curId + '">' +
-//                                '<i class="icon-close"></i>&nbsp;Удалить' +
-//                                '</a>' +
-//                                '</div></div>' +
-//                                '</div></div>';
-//
-//                if (!placement.length) {
-//                    $('.placements-container-in', $collectionHolder).append('<div class="row collection-row" data-id="' + curId + '" />');
-//                    placement = $collectionHolder.find(".row.collection-row[data-id='" + curId + "']");
-//                }
-//                // почему форма со странами тоже иммет row class
-//                //formCreation(this);
-//                console.log($('.modal-body > .row:first', this));
-//                placement.html($('.modal-body > .row:first', this).clone().hide());
-//                //console.log($('.modal-body > .row:first select', this).val());
-//                //console.log($('select', placement).val());
-//                placement.append($html);
-//                $('#placement-modal-content').modal('hide');
-//
-//                return false;
             });
+
+
+            function reloadPlacements() {
+                $.ajax({
+                            type: 'POST',
+                            url: '{{ path('core_cabinet_placement_get_placements', {adcompany_id:adcompany.id}) }}',
+                            success: function (data) {
+                                    $('.placements-container-in').html(data);
+                            }
+                        });
+            }
+
 
             $('body').on('change', //'#placement-modal-content .modal-body > .row:first select', function(){
                     '#placement-modal-content .modal-body > .row:first input[type="checkbox"], ' +
@@ -556,19 +409,19 @@
 
                     for (var key in data) {
                         curHtml += '<div class="row collection-row">' +
-                        '<div class="col-sm-4">' +
-                        '<a class="edit-placement" style="margin: 8px 0; display: inline-block;" href="' + data[key].route + '">' +
-                        'Размещение №' + data[key].id +
-                        '</a>' +
-                        '</div>' +
-                        '<div class="col-sm-2">' +
-                        '<div style="margin-top: 7px;">' +
-                        '<a class="btn-u-xs btn-u btn-u-red placement-remove" href="javascript:void(0);" data-id="' + data[key].id + '">' +
-                        '<i class="icon-close"></i>&nbsp;Удалить' +
-                        '</a>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>';
+                                '<div class="col-sm-4">' +
+                                '<a class="edit-placement" style="margin: 8px 0; display: inline-block;" href="' + data[key].route + '">' +
+                                'Размещение №' + data[key].id +
+                                '</a>' +
+                                '</div>' +
+                                '<div class="col-sm-2">' +
+                                '<div style="margin-top: 7px;">' +
+                                '<a class="btn-u-xs btn-u btn-u-red placement-remove" href="javascript:void(0);" data-id="' + data[key].id + '">' +
+                                '<i class="icon-close"></i>&nbsp;Удалить' +
+                                '</a>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
                     }
 
                     adPlacementContainer.html(curHtml);

@@ -150,5 +150,5 @@ text-decoration: none;
 }
 
 a.edit-placement {
-    text-decoration: underline !important;
+    /*text-decoration: underline !important;*/
 }

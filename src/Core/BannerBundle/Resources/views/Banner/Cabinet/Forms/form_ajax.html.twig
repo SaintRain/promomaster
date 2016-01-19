@@ -272,6 +272,9 @@
                         {% if subject is defined %}
                         $(".entity-desc[data-id='" + data.data.id + "']").find('.inner').html(data.data.name);
                         {% else %}
+
+
+
                         newWidget = newWidget.replace(/data-id="[0-9]+"/g, 'data-id="' + data.data.id + '"');
                         newWidget = newWidget.replace(/\<span class="inner"\>.+\<\/span\>/g, '<span class="inner"><u>' + data.data.name + '<u/></span>');
                         collectionWrapper.append(newWidget);
@@ -279,11 +282,26 @@
                             console.log('edit');
                             collectionWrapper.find('#placement_form_placementBannersList_' + collectionCount + '_banner').val(data.data.id);
                         } else if (collectionWrapper.parents('#placement-modal-content').length) {
-                            var selector = '#ad_company_type_placements_'+
-                                            $('.placements-container').data('index') + '_placementBannersList_' +
-                                            + collectionCount + '_banner';
-                            collectionWrapper.find(selector).val(data.data.id);
+
+                            var
+                                    $input=$('.banners-list-content').find('[name$="[banner]"]');
+
+                            $input.each(function() {
+                                if (!$(this).val()) {
+                                    $(this).val(data.data.id);
+                                }
+                            })
+
+//                            inputHtml='<input type="hidden" id="placement_form_placementBannersList_'+rowIndex+'_banner" name="placement_form[placementBannersList]['+rowIndex+'][banner]" class="" value="'+data.data.id+'">';
+
+//                            var selector = '#ad_company_type_placements_'+
+//                                            $('.placements-container').data('index') + '_placementBannersList_' +
+//                                            + collectionCount + '_banner';
+//                            collectionWrapper.find(selector).val(data.data.id);
+
                             console.log('new');
+//
+
                         } else {
                             //collectionWrapper.append(newWidget);
                             collectionWrapper.find('#form_placementBannersList_' + collectionCount + '_banner').val(data.data.id);

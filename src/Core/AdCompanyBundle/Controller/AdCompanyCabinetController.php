@@ -88,7 +88,9 @@ class AdCompanyCabinetController extends Controller
     {
 
         $user = $this->container->get('security.context')->getToken()->getUser();
-        $adcompany = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:AdCompany')->find($id);
+        $adcompany = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:AdCompany')->
+        findForDeleting(['user'=>$user, 'id'=>$id]);
+
 
 
         //$form = $this->getForm($adcompany);
@@ -233,6 +235,8 @@ class AdCompanyCabinetController extends Controller
 
         return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_list'));
     }
+
+
 
 
     /**

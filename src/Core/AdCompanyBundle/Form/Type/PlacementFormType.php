@@ -52,7 +52,9 @@ class PlacementFormType extends AbstractType
                 'type' => 'placement_banner_form',
                 'allow_add' => true,
                 'allow_delete' => true,
-                'prototype_name' => '__banner_name__'
+                'prototype_name' => '__banner_name__',
+                'error_bubbling' => false,
+
             ])
             ->add('defaultCountries', 'entity', [
                 //'required' => false ,

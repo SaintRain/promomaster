@@ -1,0 +1,55 @@
+{% if placements.count %}
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Рекламное место</th>
+        <th>Домен</th>
+        <th>Операции</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for placement in placements %}
+        <tr>
+            <td class="row collection-row" {% if not(placement.vars.value.id is defined and placement.vars.value.id) %}
+                data-id="{{ loop.index }}"
+                    {% endif %}>{{ loop.index }}</td>
+
+            <td>
+                {% set site=placement.adPlace.site %}
+                <a href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.id}) }}"
+                   style=" display: inline-block; " class="edit-placement">
+                    {{ placement.adPlace.name }}
+                </a>
+            </td>
+
+            <td>
+                {% if not site.isVerified %}
+                    <a title="Необходимо пройти подтверждение прав на площадку"
+                       href="{{ path('core_cabinet_site_verified_form', {id:site.id}) }}"
+                       class="btn-u rounded  btn-u-xs btn-u-orange"><i
+                                class="fa fa-exclamation"></i></a>&nbsp;
+                {% endif %}
+                <span style=" display: inline-block;">{{ site.domain|onlyDomain }}</span>
+
+            </td>
+            <td>
+
+                <a title="Редактировать настройки размещения"
+                   href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.id}) }}"
+                   class="btn-u  btn-u-xs btn-u-succses edit-placement">Настройки</a>&nbsp;
+                <a href="{{ path('core_cabinet_adplace_getcode', {id:placement.adPlace.id}) }}"
+                   class="btn-u btn-u-xs btn-u-default">Код вставки</a>&nbsp;
+                <a data-id="{{ placement.id }}" href="javascript:void(0);"
+                   class="btn-u-xs btn-u btn-u-red placement-remove">
+                    Удалить
+                </a>
+
+            </td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}

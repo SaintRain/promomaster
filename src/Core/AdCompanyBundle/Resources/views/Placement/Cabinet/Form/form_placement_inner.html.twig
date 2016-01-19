@@ -135,7 +135,7 @@
     </div>
     <div class="placement-banner tab-pane fade" aria-labelledby="placement-banner-tab" role="tabpanel">
         <div class=" margin-bottom-20">
-            <div class="discounts  {% if form_errors(form.placementBannersList) %} state-error{% endif %}">
+            <div class="discounts banners-list-content  {% if form_errors(form.placementBannersList) %} state-error{% endif %}">
 
                 {#
                 <div class="pull-right" style="margin: 0 10px;">
@@ -171,6 +171,7 @@
                     </tbody>
                 </table>
 
+                {{ form_errors(form.placementBannersList) }}
                 <span class="note">Добавьте баннеры, которые будут показываться в рекламном месте.</span>
 
                 {% do form.placementBannersList.setRendered %}
