@@ -125,10 +125,13 @@ exports.getAd = function (req, res, adplace_id) {
                     for (key in SD.placementsByAdPlace['_' + adplace_id]) {
                         var placement = SD.placementsByAdPlace['_' + adplace_id][key];
 
+
                         //проверяем, чтоб количество показов не привысило максимально-заданное
                         if ((typeof(STplacements['_' + placement.id]) === 'undefined' || !placement.quantity ||
                             STplacements['_' + placement.id][placement.quantityModelName] < placement.quantity)) {
 
+
+                            console.log('in loop');
 
                             //проверяем рекламную компанию по дате
                             var checkByDateRes = this.checkByDate(SD.adcompanies['_' + placement.adCompany_id].startDateTime,
