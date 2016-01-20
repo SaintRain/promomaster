@@ -224,10 +224,15 @@ $(function () {
 
     // удаление коллекции
     $(document).on('click', '.collection-row-remove', function (e) {
-        var $this = $(this),
-            curRow = $this.parents('.collection-row');
 
-        curRow.remove();
+
+            var $this = $(this),
+                curRow = $this.parents('.collection-row');
+
+            curRow.remove();
+
+
+
         return false;
     });
 

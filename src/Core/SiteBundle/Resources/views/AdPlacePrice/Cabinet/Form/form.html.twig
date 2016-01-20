@@ -154,6 +154,9 @@
         // удаление коллекции
         $('body').on('click' ,'.collection-row-remove', function(e){
 
+            var res=confirm('Вы действительно хотите удалить баннер?');
+            if (res) {
+
             var $this = $(this),
                 curRow = $this.parents('.collection-row');
 
@@ -161,7 +164,7 @@
             if (!$('.collection-row').length) {
                 $('.discountLabel').hide();
             }
-
+            }
             return false;
         });
     }
