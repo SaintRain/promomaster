@@ -24,9 +24,11 @@
 
         {% if  form.site is defined and form.site %}
             {% if  form.site.vars.disabled %}
+
+
                 <div class="row margin-bottom-20">
                     <div class="{{ fieldGroupClass }}{% if form_errors(form.site) %} state-error{% endif %}">
-                        <label>{{ form_label(form.site) }}</label>
+                        <label>Площадка <a target="_blank" href="{{ path('core_cabinet_site_edit', {id:form.site.vars.value}) }}"><i class="fa fa-cog"></i></a></label>
                         {{ form_widget(form.site,{ 'attr': {'class': 'form-control'} }) }}
                         <span class="note">Укажите площадку, на которой будет размещаться реклама. Чтобы сменить площадку необходимо создать новое размещение.</span>
                         {% if form_errors(form.site) %}
@@ -103,7 +105,7 @@
         {% elseif  form.adPlace is defined %}
             <div class="row margin-bottom-20">
                 <div class="{{ fieldGroupClass }}{% if form_errors(form.adPlace) %} state-error{% endif %}">
-                    <label>Рекламное место*</label>
+                    <label>Рекламное место</label> <a target="_blank" href="{{ path('core_cabinet_adplace_edit', {id:form.adPlace.vars.value}) }}"><i class="fa fa-cog"></i></a>
                     {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
                     <span class="note">Укажите место на площадке, где будет показываться реклама. Чтобы сменить место необходимо создать новое размещение.</span>
                     {{ form_errors(form.adPlace) }}

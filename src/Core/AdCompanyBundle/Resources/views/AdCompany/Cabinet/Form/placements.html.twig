@@ -31,8 +31,8 @@
                        class="btn-u rounded  btn-u-xs btn-u-orange"><i
                                 class="fa fa-exclamation"></i></a>&nbsp;
                 {% endif %}
-                <span style=" display: inline-block;">{{ site.domain|onlyDomain }}</span>
 
+                <a target="_blank" href="{{ path('core_cabinet_site_edit', {id:site.id}) }}">{{ site.domain|onlyDomain }}</a>
             </td>
             <td>
 
