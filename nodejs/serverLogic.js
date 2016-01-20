@@ -82,11 +82,17 @@ exports.getAd = function (req, res, adplace_id) {
                 //если заданы разделы проверяем, чтоб раздел совпадал
                 if (SD.placementsMatchSections['_' + adplace_id]) {
 
-                    var isAllowed = false;    //если задан хоть один раздел
+console.log(SD.placementsMatchSections['_' + adplace_id]) ;
+                   var isAllowed = false;    //если задан хоть один раздел
 
                     //перебираем все разделы
-                    SD.placementsMatchSections['_' + adplace_id].forEach(function (placementsMatchSection) {
-                        var section = SD.sections[placementsMatchSection.section_id];
+//                    SD.placementsMatchSections['_' + adplace_id].forEach(function (placementsMatchSection) {
+
+                        for (key in SD.placementsMatchSections['_' + adplace_id]) {
+                            var placementsMatchSection=SD.placementsMatchSections['_' + adplace_id][key];
+console.log(placementsMatchSection)
+                        var section = SD.sections['_'+placementsMatchSection.section_id];
+
 
                         //проверка по регулярному выражению, регулярка на этапе сохранения должна быть проверена и без ошибок,
                         //иначе сервер станет
@@ -107,7 +113,7 @@ exports.getAd = function (req, res, adplace_id) {
                                 return true;
                             }
                         }
-                    })
+                    }
                 }
                 else {
                     var isAllowed = true;
