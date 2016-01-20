@@ -82,17 +82,11 @@ exports.getAd = function (req, res, adplace_id) {
                 //если заданы разделы проверяем, чтоб раздел совпадал
                 if (SD.placementsMatchSections['_' + adplace_id]) {
 
-console.log(SD.placementsMatchSections['_' + adplace_id]) ;
                    var isAllowed = false;    //если задан хоть один раздел
-
                     //перебираем все разделы
-//                    SD.placementsMatchSections['_' + adplace_id].forEach(function (placementsMatchSection) {
-
                         for (key in SD.placementsMatchSections['_' + adplace_id]) {
-                            var placementsMatchSection=SD.placementsMatchSections['_' + adplace_id][key];
-console.log(placementsMatchSection)
-                        var section = SD.sections['_'+placementsMatchSection.section_id];
-
+                            var placementsMatchSection=SD.placementsMatchSections['_' + adplace_id][key],
+                             section = SD.sections['_'+placementsMatchSection.section_id];
 
                         //проверка по регулярному выражению, регулярка на этапе сохранения должна быть проверена и без ошибок,
                         //иначе сервер станет
@@ -101,7 +95,6 @@ console.log(placementsMatchSection)
                             regexResult = regex.test(refererInfo.path);
                             if (regexResult) {
                                 isAllowed = true;
-                                return true;
                             }
 
                         }
@@ -110,7 +103,6 @@ console.log(placementsMatchSection)
                             var result = refererInfo.path.indexOf(section.urlTemplate);
                             if (result === 0) {    //совпадать должно с первого символа
                                 isAllowed = true;
-                                return true;
                             }
                         }
                     }
