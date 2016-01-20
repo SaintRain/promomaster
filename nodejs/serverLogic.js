@@ -134,12 +134,19 @@ exports.getAd = function (req, res, adplace_id) {
                                     SD.adcompanies['_' + placement.adCompany_id].finishDateTime),
                             //проверяет по странам/регионам
                                 checkByGeoRes = this.checkByGeo(ip, SD.adCompanyMatchCountries, '_' + SD.adcompanies['_' + placement.adCompany_id].id);
+
+                            console.log('checkByGeoRes='+checkByGeoRes);
+
                             if (checkByDateRes && checkByGeoRes && SD.adcompanies['_' + placement.adCompany_id].isEnabled) {  //если для компании все ок, идем дальше
                                 checkByDateRes = this.checkByDate(placement.startDateTime, placement.finishDateTime),
                                     checkByGeoRes = this.checkByGeo(ip, SD.adPlaceMatchCountries, '_' + placement.id);
 
-                                if (checkByDateRes && checkByGeoRes && placement.isEnabled) {  //подходит и размещение
+                                console.log('checkByGeoRes='+checkByGeoRes);
+                                console.log('checkByDateRes='+checkByDateRes);
 
+
+                                if (checkByDateRes && checkByGeoRes && placement.isEnabled) {  //подходит и размещение
+                                    console.log(placement);
                                 }
                                 else {
                                     placement = false;
@@ -158,8 +165,7 @@ exports.getAd = function (req, res, adplace_id) {
 
                     if (placement && typeof SD.placementbannersByPlacement['_' + placement.id] !== 'undefined') { //если есть размещение с баннерами
                         /**
-                         Пока берем просто первый баннер. Но нужно сделать:
-                         1. Определяем по параметрам баннера, какой баннер нужно отобразить
+                         Определяем по параметрам баннера, какой баннер нужно отобразить
                          */
                         var placementBanner, index = 0;
 
@@ -469,7 +475,7 @@ exports.saveStatistics = function () {
 
     for (var adplace_id in STclone) {
         for (var placement_id in STclone[adplace_id]) {
-            console.log(placement_id)
+
             for (var placement_banner_id in STclone[adplace_id][placement_id]) {
                 for (var banner_id in STclone[adplace_id][placement_id][placement_banner_id]) {
                     stats.push({
