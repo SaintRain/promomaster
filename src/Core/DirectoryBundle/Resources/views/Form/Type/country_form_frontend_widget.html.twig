@@ -39,7 +39,7 @@
                                                 <ul class="list-unstyled world-section-inner">
                                                     {% for inner in child.views %}
                                                         <li style="margin-left: 15px;">
-                                                            <label for="{{ inner.vars.id }}" style="margin-left: 5px; vertical-align: middle;">
+                                                            <label data-text="{{ inner.vars.label }}" for="{{ inner.vars.id }}" style="margin-left: 5px; vertical-align: middle;">
                                                             {{- form_widget(inner) -}}
                                                             {#{{- form_label(inner) -}}#}
                                                             {{ inner.vars.label }}</label>
@@ -98,7 +98,9 @@
                                 var $this = $(element);
 
                                 if ($(element).prop('checked') && !$(element).parents('.collection-row').length) {
-                                    countries.push($(element).siblings('label').text());
+
+
+                                    countries.push($(element).parents('label').attr('data-text'));
                                 }
                             });
                             if (countries.length) {

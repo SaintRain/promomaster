@@ -116,9 +116,11 @@ exports.getAd = function (req, res, adplace_id) {
 
                 if (isAllowed) {
                     var ip = this.getIpFromReq(req);
-                    if (ip == '127.0.0.1') {  //для теста на локальном
+                    if (!CONFIG.isProd && ip == '127.0.0.1') {  //для теста на локальном
                         var ip = '92.112.66.58';
                     }
+
+
                     console.log('referer ip='+ip)
 
                     console.log(SD.placementsByAdPlace['_' + adplace_id])
@@ -126,9 +128,7 @@ exports.getAd = function (req, res, adplace_id) {
                     for (key in SD.placementsByAdPlace['_' + adplace_id]) {
                         var placement = SD.placementsByAdPlace['_' + adplace_id][key];
 
-
                         console.log(typeof(STplacements['_' + placement.id]));
-
                         console.log(placement.quantity);
                         console.log(STplacements['_' + placement.id][placement.quantityModelName]+'<'+placement.quantity);
                         //проверяем, чтоб количество показов не привысило максимально-заданное
