@@ -385,7 +385,7 @@ mysqlGetCountries = function (id) {
 
 }
 
-//удаление пользователя
+//удаление страны
 mysqlDeleteCountries = function (id) {
     if (SD.countries['_' + id]) {
         delete SD.countriesByAlpha2[SD.countries['_' + id].alpha2];

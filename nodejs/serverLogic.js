@@ -475,7 +475,7 @@ exports.saveStatistics = function () {
 
     for (var adplace_id in STclone) {
         for (var placement_id in STclone[adplace_id]) {
-
+console.log(SD.placements[placement_id])
             for (var placement_banner_id in STclone[adplace_id][placement_id]) {
                 for (var banner_id in STclone[adplace_id][placement_id][placement_banner_id]) {
                     stats.push({
