@@ -129,6 +129,7 @@ exports.getAd = function (req, res, adplace_id) {
                         if ((typeof(STplacements['_' + placement.id]) === 'undefined' || !placement.quantity ||
                             STplacements['_' + placement.id][placement.quantityModelName] < placement.quantity)) {
 
+
                             //проверяем рекламную компанию по дате
                             var checkByDateRes = this.checkByDate(SD.adcompanies['_' + placement.adCompany_id].startDateTime,
                                     SD.adcompanies['_' + placement.adCompany_id].finishDateTime),
@@ -147,6 +148,7 @@ exports.getAd = function (req, res, adplace_id) {
 
                                 if (checkByDateRes && checkByGeoRes && placement.isEnabled) {  //подходит и размещение
                                     console.log(placement);
+                                    break;
                                 }
                                 else {
                                     placement = false;
