@@ -95,6 +95,7 @@ exports.getAd = function (req, res, adplace_id) {
                             regexResult = regex.test(refererInfo.path);
                             if (regexResult) {
                                 isAllowed = true;
+                                break;
                             }
 
                         }
@@ -103,6 +104,7 @@ exports.getAd = function (req, res, adplace_id) {
                             var result = refererInfo.path.indexOf(section.urlTemplate);
                             if (result === 0) {    //совпадать должно с первого символа
                                 isAllowed = true;
+                                break;
                             }
                         }
                     }
