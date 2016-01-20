@@ -192,6 +192,7 @@
             </div>
 
             <div class="{{ fieldGroupClass }}{% if form_errors(form.quantityModel) %} state-error{% endif %}">
+                <br>
                 <label>В чем указано количество</label>
                 {{ form_widget(form.quantityModel,{ 'attr': {'class': 'form-control'} }) }}
                 <span class="note">Если вы хотите установить показы независимо от количества показов/кликов , то

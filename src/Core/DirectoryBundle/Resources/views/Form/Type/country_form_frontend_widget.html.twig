@@ -39,9 +39,10 @@
                                                 <ul class="list-unstyled world-section-inner">
                                                     {% for inner in child.views %}
                                                         <li style="margin-left: 15px;">
+                                                            <label for="{{ inner.vars.id }}" style="margin-left: 5px; vertical-align: middle;">
                                                             {{- form_widget(inner) -}}
                                                             {#{{- form_label(inner) -}}#}
-                                                            <label for="{{ inner.vars.id }}" style="margin-left: 5px; vertical-align: middle;">{{ inner.vars.label }}</label>
+                                                            {{ inner.vars.label }}</label>
                                                         </li>
                                                     {% endfor %}
                                                 </ul>
