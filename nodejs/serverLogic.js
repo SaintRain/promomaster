@@ -121,6 +121,7 @@ exports.getAd = function (req, res, adplace_id) {
                     }
                     console.log('referer ip='+ip)
 
+                    console.log(SD.placementsByAdPlace['_' + adplace_id])
                     //перебираем все размещения и проверяем их по дате
                     for (key in SD.placementsByAdPlace['_' + adplace_id]) {
                         var placement = SD.placementsByAdPlace['_' + adplace_id][key];
