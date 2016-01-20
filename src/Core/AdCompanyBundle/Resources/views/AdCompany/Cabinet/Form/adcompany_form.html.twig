@@ -21,7 +21,7 @@
         <div class=" margin-bottom-20">
 
             <div
-                    class="placements-container{% if form_errors(form.placements) %} state-error{% endif %}"
+                    class="placements-container"
                     {#{% if form.placements.vars.prototype is defined %}#}
                     {#data-prototype="#}
                     {#{% filter escape %}#}
@@ -47,7 +47,7 @@
                 <div class="placements-container-in">
                     {% set  placements=adcompany.placements%}
                             {% include "@CoreAdCompany/AdCompany/Cabinet/Form/placements.html.twig" %}
-                    {% do form.placements.setRendered(true) %}
+                    {#{% do form.placements.setRendered(true) %}#}
                 </div>
 
                 <span class="note">Добавьте рекламные материалы и настройте показы.</span>

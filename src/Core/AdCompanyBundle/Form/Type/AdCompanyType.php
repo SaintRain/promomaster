@@ -66,7 +66,7 @@ class AdCompanyType  extends AbstractType
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
-            $this->addPlacements($event);
+           // $this->addPlacements($event);
         });
 
         $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {

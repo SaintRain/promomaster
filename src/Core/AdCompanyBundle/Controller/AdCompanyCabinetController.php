@@ -91,8 +91,6 @@ class AdCompanyCabinetController extends Controller
         $adcompany = $this->getDoctrine()->getManager()->getRepository('CoreAdCompanyBundle:AdCompany')->
         findForDeleting(['user'=>$user, 'id'=>$id]);
 
-
-
         //$form = $this->getForm($adcompany);
         $form = $this->createForm('ad_company_type', $adcompany);
         //Сохранения изменения
