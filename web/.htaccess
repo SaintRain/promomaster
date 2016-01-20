@@ -6,8 +6,11 @@
 DirectoryIndex app.php
 
 
+
 <IfModule mod_rewrite.c>
+
     RewriteEngine On
+    
 
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the
@@ -18,6 +21,7 @@ DirectoryIndex app.php
     # the following 2 lines to eliminate the overhead.
     RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
     RewriteRule ^(.*) - [E=BASE:%1]
+
 
 
     # Redirect to URI without front controller to prevent duplicate content
@@ -32,7 +36,9 @@ DirectoryIndex app.php
     # - use Apache >= 2.3.9 and replace all L flags by END flags and remove the
     #   following RewriteCond (best solution)
     RewriteCond %{ENV:REDIRECT_STATUS} ^$
+
     RewriteRule ^app\.php(/(.*)|$) %{ENV:BASE}/$2 [R=301,L]
+
 
     # If the requested filename exists, simply serve it.
     # We only want to let Apache serve files and not directories.
@@ -41,6 +47,8 @@ DirectoryIndex app.php
 
     # Rewrite all other queries to the front controller.
     RewriteRule .? %{ENV:BASE}/app.php [L]
+
+
 </IfModule>
 
 <IfModule !mod_rewrite.c>
