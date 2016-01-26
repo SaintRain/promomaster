@@ -412,15 +412,17 @@ class Placement
             if (!$this->quantity) {
 
                 if (!$this->startDateTime) {
-                    $context->buildViolation('Если не заполнено поле "Количество", тогда необходимо задать начальную дату.')
-                        ->atPath('startDateTime')
+                    $context->buildViolation('Если не заполнено поле "Количество", тогда необходимо задать начальную дату показов.')
+                        ->atPath('quantity')
                         ->addViolation();
+
                 }
-                if (!$this->finishDateTime) {
-                    $context->buildViolation('Если не заполнено поле "Количество", тогда необходимо задать конечную дату.')
-                        ->atPath('finishDateTime')
-                        ->addViolation();
-                }
+
+//                if (!$this->finishDateTime) {
+//                    $context->buildViolation('Если не заполнено поле "Количество", тогда необходимо задать конечную дату показов.')
+//                        ->atPath('quantityModel')
+//                        ->addViolation();
+//                }
 
             } else if (!$this->quantityModel) {
                 $context->buildViolation('Необходимо выбрать в чем указано количество.')

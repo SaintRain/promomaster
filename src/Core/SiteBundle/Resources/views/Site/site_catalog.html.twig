@@ -26,6 +26,14 @@
     output='js/compiled/cubeportfolio.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    <script>
+        $(function() {
+            $(document).on('click', '.show-hidden-place', function(){
+              $(this).parents('td').find('.hide-place').show(500);
+               $(this).hide();
+            });
+        });
+    </script>
 {% endblock %}
 {% block content %}
     <div class="breadcrumbs">
@@ -59,12 +67,12 @@
 
                 {{ form_start(form, {attr:{class:'sky-form sky-form-other-style'}}) }}
                 <div>
-                    <label>Поисковая фраза:</label>
+                    <label>Поисковая фраза</label>
                     {{ form_widget(form.keywords,{attr:{class:'form-control'}}) }}
                 </div>
                 <br>
 
-                <div><label>Тематика площадки:</label>
+                <div><label>Тематика площадки</label>
                     {{ form_widget(form.selectMainCat, {attr:{'class':'selectMainCat form-control'}}) }}
                     {{ form_widget(form.categories) }}
                 </div>
@@ -98,7 +106,6 @@
                         </thead>
                         <tbody>
                         {% for site in sites %}
-
 
                             <tr data-url="{{ path('core_site_details', {id: site.id}) }}">
                                 {#<td>{{ loop.index }}</td>#}
@@ -158,11 +165,17 @@
                                     </p>
                                 </td>
                                 <td>
+                                    {% set ind=0 %}
                                     {% for adPlace in site.adPlaces %}
                                         {% if adPlace.isShowInCatalog %}
-                                        <p>{{ adPlace.size.width }}x{{ adPlace.size.height }}</p>
+                                            {% set ind=ind+1 %}
+                                        <p {% if ind>4 %}class="hide-place"{% endif %}>{{ adPlace.size.width }}x{{ adPlace.size.height }}</p>
+
                                             {% endif %}
                                     {% endfor %}
+
+                                    {% if ind>4 %}<a title="Посмотреть все рекламные места" class="show-hidden-place" href="javascript:void(0)">Показать еще...</a>{% endif %}
+
                                 </td>
                             </tr>
 
@@ -234,5 +247,5 @@
             </div>
         </div>
     </div>
-
+<sc>
 {% endblock %}

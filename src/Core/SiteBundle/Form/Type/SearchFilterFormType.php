@@ -22,7 +22,7 @@ class SearchFilterFormType extends AbstractType
                 'required' => false,
                 'class'=>'Core\CategoryBundle\Entity\SiteCategory',
                 'property'=>'captionRu',
-                'empty_value'=>'...Выберите раздел',
+                'empty_value'=>'Выберите раздел...',
                 'query_builder' => function (SiteCategoryRepository $er) {
                     return $er->createQueryBuilder('s')
                         ->where('s.isEnabled=1 AND s.lvl=1')

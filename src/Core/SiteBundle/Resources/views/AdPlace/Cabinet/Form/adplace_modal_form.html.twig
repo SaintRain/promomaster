@@ -50,6 +50,7 @@
             data: $this.serialize(),
             success: function(data) {
                 if (data.result) {
+                    modalBlock.html('');
                     modalBlock.modal('hide');
                     if (adPlaces.val() == data.data.id) {
                         $('option:selected', adPlaces).text(data.data.name);

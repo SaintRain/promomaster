@@ -30,8 +30,9 @@
     <div >
         <div class="headline">
             <h3>Мои обращения</h3>
-            <a class="pull-right btn-u" style="display: inline-block;" href="{{path('trouble_ticket_contact')}}#ask-a-question">{{'ticket.create' | trans()}}</a>
+            <a class="pull-right btn-u" style="display: inline-block;" href="{{path('trouble_ticket_contact')}}#ask-a-question"><i class="fa fa-plus-square"></i> {{'ticket.create' | trans()}}</a>
         </div>
+
         <ul class="timeline-v2">
             {% for ticket in tickets %}
             <li>

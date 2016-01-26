@@ -32,15 +32,18 @@
                                 <div {{ block('widget_container_attributes') }}>
                                         {% for key, child in form.vars.views %}
                                             <ul id="world_section_wr_{{ modalName }}" class="list-unstyled world-section-wr">
-                                                <label>
+
+
+                                                <label class="checkbox">
                                                     <input class="world-section" type="checkbox" name="{{ key }}"{% if child.isChecked %}checked="checked"{% endif %} value="{{ key }}">
+                                                    <i></i>
                                                     <span  style="color: #72c02c; margin-left: 5px; vertical-align: top; display: inline-block;">{{ key }}</span>
                                                 </label>
                                                 <ul class="list-unstyled world-section-inner">
                                                     {% for inner in child.views %}
                                                         <li style="margin-left: 15px;">
-                                                            <label data-text="{{ inner.vars.label }}" for="{{ inner.vars.id }}" style="margin-left: 5px; vertical-align: middle;">
-                                                            {{- form_widget(inner) -}}
+                                                            <label class="checkbox" data-text="{{ inner.vars.label }}" for="{{ inner.vars.id }}" style="margin-left: 5px; vertical-align: middle;">
+                                                            {{- form_widget(inner) -}}<i></i>
                                                             {#{{- form_label(inner) -}}#}
                                                             {{ inner.vars.label }}</label>
                                                         </li>

@@ -167,6 +167,12 @@ class AdPlaceCabinetController extends Controller
         }
         $adplace = new AdPlace();
         $adplace->setSite($site);
+
+        if ($request->getMethod() == 'GET') {
+            $adplace->setIsShowInCatalog(true);
+        }
+
+
         $user = $this->container->get('security.context')->getToken()->getUser();
         $adplace->setUser($user);
         $form = $this->getForm($adplace);
@@ -231,6 +237,8 @@ class AdPlaceCabinetController extends Controller
 
     private function getForm($adplace)
     {
+
+
         $form = $this->createFormBuilder($adplace)
             ->add('site', null, ['required' => true, 'property' => 'domain',
             ])

@@ -30,6 +30,7 @@
         <div id="modal_placement"></div>
 
     </div>
+
     <script>
         (function ($) {
 
@@ -39,7 +40,7 @@
 
                     var sectionId = $(this).val(),
                             status = $(this).is(':checked') ? 1 : 0,
-                            adplace_id = {{ form.parent.vars.value.id }};
+                            adplace_id = "{{ form.parent.vars.value.id }}";
 
                     $.ajax({
                         type: "POST",

@@ -34,7 +34,7 @@
         <div class="headline">
             <h3>{{ticket.title}}</h3>
             <p class="pull-right" >
-                <span class="label rounded label-default">&numero;{{ticket.id}} от {{ticket.createdDateTime | date('d.m.Y, H:i', default_timezone)}}</span>
+                <span class="label rounded label-default">&numero;{{ticket.id}} от {{ticket.createdDateTime | date('d.m.Y, H:i', default_timezone)}} MSK</span>
                 </p>
         </div>
         {% if ticket.body or (ticket.file | length) %}
