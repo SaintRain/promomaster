@@ -44,7 +44,7 @@ class Placement
     /**
      * Рекламная место
      * @ORM\ManyToOne(targetEntity="Core\SiteBundle\Entity\AdPlace", inversedBy="placements")
-     * @ORM\JoinColumn(referencedColumnName="id", onDelete="RESTRICT")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      * @Assert\NotBlank()
      */
     private $adPlace;
