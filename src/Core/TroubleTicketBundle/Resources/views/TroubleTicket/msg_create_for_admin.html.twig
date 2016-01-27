@@ -1,0 +1,11 @@
+<h3>Уважаемый администратор!</h3>
+<p>В сервисе PromoMaster.net  создано сообщение №{{ ticket.id }} в категории «{{ ticket.category.captionRu }}».</p>
+<p>
+     Всю историю сообщений Вы можете проследить по
+    данной ссылке: <a href="{{ url('admin_core_troubleticket_troubleticket_edit', {id:ticket.id}) }}">{{ url('admin_core_troubleticket_troubleticket_edit', {id:ticket.id}) }}</a></p>
+
+
+<p>С уважением и наилучшими
+    пожеланиями,</p>
+<p>команда {{ base_url }}</p>
+<p>PromoMaster.ru - агрегатор рекламных мест</p>
