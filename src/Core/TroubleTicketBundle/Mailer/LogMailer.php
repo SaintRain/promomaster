@@ -37,7 +37,7 @@ class LogMailer
      */
     public function sendNotificationEmailMessage(TroubleTicket $ticket, TroubleTicket $oldObject = null, Message $message = null)
     {
-        if (count($ticket->getWatchers())) {
+
             $rendered = $this->templating->render('CoreTroubleTicketBundle:TroubleTicket:log.html.twig', array(
                 'ticket'    => $ticket,
                 'oldTicket' => $oldObject,
@@ -45,9 +45,15 @@ class LogMailer
                 'message'   => $message,
                 'ticketUrl' => $this->router->generate('admin_core_troubleticket_troubleticket_edit', array('id' => $ticket->getId()))
             ));
+
+
+        if (count($ticket->getWatchers())) {
             foreach ($ticket->getWatchers() as $watcher) {
                 $this->sendEmailMessage($rendered, $ticket->getTitle(), $watcher->getEmail());
             }
+        }
+        else {
+            $this->sendEmailMessage($rendered, $ticket->getTitle(), $this->params['fromEmail']);
         }
     }
 

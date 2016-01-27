@@ -119,9 +119,9 @@ class TroubleTicketController extends Controller {
             if ($form->isValid()) {
                 $em->persist($message);
                 $em->flush();
-                if (count($troubleTicket->getWatchers())) {
+              //  if (count($troubleTicket->getWatchers())) {
                     $this->get('core_trouble_ticket_log_mailer')->sendNotificationEmailMessage($troubleTicket, null, $message);
-                }
+//                }
                 return new RedirectResponse($this->generateUrl('trouble_ticket_edit',array('hash' => $hash)));
             }
 
