@@ -105,7 +105,7 @@
 
             {% if site.id %}
             $('.delete').click(function () {
-                var res = confirm('Вы действительно хотите удалить этот баннер из системы?');
+                var res = confirm('Вы действительно хотите удалить эту площадку из системы?');
                 if (res) {
                     window.location.href = '{{ path('core_cabinet_site_delete', {id:site.id}) }}';
                 }

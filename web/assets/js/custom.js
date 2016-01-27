@@ -51,4 +51,22 @@ $(function () {
     }
 
 
+
+
+    $(document).on('click', '.video-show', function() {
+        var url=$(this).attr('data-url');
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (response) {
+                $('.modal-video').find('.modal-dialog').html(response);
+                $('.modal-video').modal('show');
+            },
+            error: function () {
+                console.log(response)
+            }
+        });
+
+    })
+
 })

@@ -1,7 +1,7 @@
 $(function () {
 
     $(document).off('click', '.collection-add');
-    $(document).on('click', '.delete', function () {
+    $(document).on('click', '.placement-remove', function () {
         var res = confirm('Вы действительно хотите удалить это размещение из системы?');
         if (res) {
             window.location.href = url_placement_delete;

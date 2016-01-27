@@ -27,6 +27,17 @@
     {% endfor %}
 
 
+    {% if adcompany.id %}
+        <h3>Редактирование рекламной компании #{{ adcompany.id }}</h3>
+    {% else %}
+        <h3>Добавление новой рекламной компании</h3>
+    {% endif %}
+
+    <a style="margin-top: -35px" class="video-show pull-right"    data-url="{{path('core_faq_show_video')}}" href="javascript:void(0)"><i class="fa fa-info-circle"></i> Видеоурок: добавление рекламной компании</a>
+<br>
+
+
+
 
     {% if form is defined and form.vars.errors | length %}
 
@@ -41,7 +52,7 @@
             <li {% if app.request.attributes.get('_route')=='core_cabinet_adcompany_edit'
             or
             app.request.attributes.get('_route')=='core_cabinet_adcompany_create'
-             %} class="active"  {% endif %}><a href="   {% if adcompany.id %}{{ path('core_cabinet_adcompany_edit', {id:adcompany.id}) }}{% else %}#{% endif %}" >Настройки рекламной компании</a></li>
+             %} class="active"  {% endif %}><a href="   {% if adcompany.id %}{{ path('core_cabinet_adcompany_edit', {id:adcompany.id}) }}{% else %}#{% endif %}" >Настройки</a></li>
             {#<li><a href="#profile-1" data-toggle="tab2">Размещения</a></li>#}
             {#<li><a href="#messages-1" >Таргетинг</a></li>#}
             {% if adcompany.id %}

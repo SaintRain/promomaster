@@ -29,6 +29,11 @@ core_faq_article_rate:
         methods: POST
         categorySlug: "[a-z0-9\-\__\/]+"
 
+core_faq_show_video:
+    pattern: /faq/show_video
+    schemes:  [http]
+    defaults: { _controller: CoreFaqBundle:Faq:showVideo }
+
 core_faq_category:
     pattern: /faq/{categorySlug}.html
     schemes:  [http]
@@ -36,3 +41,5 @@ core_faq_category:
     requirements:
         methods: GET
         categorySlug: "[a-z0-9\-\__\/]+"
+
+

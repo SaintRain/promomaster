@@ -203,7 +203,7 @@ class AdCompanyCabinetController extends Controller
         $adcompany->setName('Новая рекламная компания #'.$adcompany->getId());
         $em->flush();
 
-        $this->setFlash('edit_success', 'Рекламная компания добавлена');
+        //$this->setFlash('edit_success', 'Рекламная компания добавлена');
 
         return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $adcompany->getId()]));
     }

@@ -132,4 +132,14 @@ class FaqController extends Controller {
             'searchString' => $searchString
         ));
     }
+
+    public function showVideoAction(Request $request)
+    {
+        return $this->render('CoreFaqBundle:video:video_help1.html.twig');
+    }
+
 }
+
+
+
+
