@@ -62,6 +62,16 @@ class LogMailer
 
         $subject = $this->translator->trans('ticket.send.create',array('%number%' => $ticket->getId()));
         $this->sendEmailMessage($rendered, $subject, $ticket->getAuthorEmail());
+
+        //отправляем админу уведомление
+        $renderedToAdmin = $this->templating->render('CoreTroubleTicketBundle:TroubleTicket:msg_create_for_admin.html.twig', array(
+            'ticket' => $ticket,
+            'phones'=>$this->configLogic->get('phones'),
+            'contactsLink' => $this->router->generate('trouble_ticket_contact', [], true),
+            'ticketLink' => $this->router->generate('trouble_ticket_edit', array('hash' => $ticket->getHash()), true )
+        ));
+
+        $this->sendEmailMessage($renderedToAdmin, $subject, $this->params['fromEmail']);
     }
 
     public function sendEditMessage(TroubleTicket $ticket)
