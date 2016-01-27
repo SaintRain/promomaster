@@ -56,7 +56,7 @@ class AdCompanyType  extends AbstractType
                     return $er->createQueryBuilder('c')
                         ->select('c, w')
                         ->innerJoin('c.worldSection', 'w')
-                        ->orderBy('c.position')
+                        ->orderBy('c.indexPosition')
                         ;
                 }
             ])
