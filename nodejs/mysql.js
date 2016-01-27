@@ -346,6 +346,7 @@ mysqlGetUsers = function (id) {
     }
 
     var q = "SELECT * FROM fos_user_user " + where;
+    console.log('query'+q);
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {
