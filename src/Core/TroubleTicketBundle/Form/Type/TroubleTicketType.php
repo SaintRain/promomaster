@@ -15,13 +15,21 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Doctrine\ORM\EntityRepository;
 
+use Core\CategoryBundle\Entity\Repository\TroubleTicketCategoryRepository;
 class TroubleTicketType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('authorName', null, array('label'=>'Имя:', 'attr' => array('size' => '40', 'class' => 'text_input')))
                 ->add('authorEmail', null, array('label'=>'E-mail:', 'attr' => array('size' => '40', 'class' => 'text_input')))
-                ->add('category', null, array('label'=>'Категория вопроса:', 'empty_value' => 'Необходимо выбрать' , 'attr' => array('class' => 'text_input')))
+                ->add('category', null, array('label'=>'Категория вопроса:',
+                    'class' => 'Core\CategoryBundle\Entity\TroubleTicketCategory',
+                    'query_builder' => function(TroubleTicketCategoryRepository $er )  {
+                        return $er->createQueryBuilder('c')->where('c.isEnabled = 1')->orderBy('c.root, c.lft', 'ASC');
+                    },
+
+                    'empty_value' => 'Необходимо выбрать' , 'attr' => array('class' => 'text_input')))
+
                 ->add('title', null, array('label'=>'Ваш вопрос:', 'attr' => array('class' => 'text_input', 'size' => 40)))
                 ->add('body','textarea', array('label'=>'Подробное описание:', 'required' => false, 'attr' => array('class' => 'text_input textarea', 'rows' => 5, 'cols' => '50')))
                 //->add('captcha', 'captcha',array('label' => 'Введите код с картинки:', 'attr' => array('class' => 'text_input', 'size' => 10)))

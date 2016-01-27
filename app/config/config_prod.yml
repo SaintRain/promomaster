@@ -24,7 +24,7 @@ monolog:
             content_type: text/html
             from_email:   %default_email%
             to_email:     %default_email%
-            subject:      "Ошибка на сервере promomaster.net"
+            subject:      "Ошибка на сервере  promomaster.net"
             level:        critical
         mail:
             type: fingers_crossed
