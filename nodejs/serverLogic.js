@@ -73,7 +73,7 @@ exports.getAd = function (req, res, adplace_id) {
             var domain =  refererInfo.hostname;
         }
 
-        console.log('referer domain='+domain)
+        //console.log('referer domain='+domain)
 
         //проверяем, чтоб домен рефера совпадал с тем, что у нас прописан в базе. Иначе возможна накрутка показов с других площадок
         if (typeof(SD.adplaces['_' + adplace_id]) !== 'undefined' && SD.sites['_' + SD.adplaces['_' + adplace_id].site_id].domain == domain) {
@@ -120,10 +120,10 @@ exports.getAd = function (req, res, adplace_id) {
                         var ip = '92.112.66.58';
                     }
 
-
-                    console.log('referer ip='+ip)
-
-                    console.log(SD.placementsByAdPlace['_' + adplace_id])
+                    //
+                    //console.log('referer ip='+ip)
+                    //
+                    //console.log(SD.placementsByAdPlace['_' + adplace_id])
                     //перебираем все размещения и проверяем их по дате
                     for (key in SD.placementsByAdPlace['_' + adplace_id]) {
                         var placement = SD.placementsByAdPlace['_' + adplace_id][key];
@@ -137,7 +137,7 @@ exports.getAd = function (req, res, adplace_id) {
                             STplacements['_' + placement.id][placement.quantityModelName] < placement.quantity)) {
 
 
-                            console.log('in loop');
+                            //console.log('in loop');
 
                             //проверяем рекламную компанию по дате
                             var checkByDateRes = this.checkByDate(SD.adcompanies['_' + placement.adCompany_id].startDateTime,
@@ -145,18 +145,18 @@ exports.getAd = function (req, res, adplace_id) {
                             //проверяет по странам/регионам
                                 checkByGeoRes = this.checkByGeo(ip, SD.adCompanyMatchCountries, '_' + SD.adcompanies['_' + placement.adCompany_id].id);
 
-                            console.log('checkByGeoRes='+checkByGeoRes);
+                            //console.log('checkByGeoRes='+checkByGeoRes);
 
                             if (checkByDateRes && checkByGeoRes && SD.adcompanies['_' + placement.adCompany_id].isEnabled) {  //если для компании все ок, идем дальше
                                 checkByDateRes = this.checkByDate(placement.startDateTime, placement.finishDateTime),
                                     checkByGeoRes = this.checkByGeo(ip, SD.adPlaceMatchCountries, '_' + placement.id);
 
-                                console.log('checkByGeoRes='+checkByGeoRes);
-                                console.log('checkByDateRes='+checkByDateRes);
+                                //console.log('checkByGeoRes='+checkByGeoRes);
+                                //console.log('checkByDateRes='+checkByDateRes);
 
 
                                 if (checkByDateRes && checkByGeoRes && placement.isEnabled) {  //подходит и размещение
-                                    console.log(placement);
+                                    //console.log(placement);
                                     break;
                                 }
                                 else {
@@ -486,7 +486,7 @@ exports.saveStatistics = function () {
 
     for (var adplace_id in STclone) {
         for (var placement_id in STclone[adplace_id]) {
-console.log(SD.placements[placement_id])
+//console.log(SD.placements[placement_id])
             for (var placement_banner_id in STclone[adplace_id][placement_id]) {
                 for (var banner_id in STclone[adplace_id][placement_id][placement_banner_id]) {
                     stats.push({
@@ -504,7 +504,7 @@ console.log(SD.placements[placement_id])
             }
         }
     }
-    console.log(stats)
+    //console.log(stats)
     START_DATE_TIME = finishDateTime;
     mysqlInsertStatistics(stats);  //пишем в базу
 

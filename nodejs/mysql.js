@@ -346,7 +346,6 @@ mysqlGetUsers = function (id) {
     }
 
     var q = "SELECT * FROM fos_user_user " + where;
-    console.log('query'+q);
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {
@@ -482,8 +481,8 @@ mysqlInsertStatistics = function (options) {
         }
         q = q + values.join(',');
         MYSQL_CONNECTION.query(q);
-        console.log(q);
-        console.log("Статистика записана в базу");
+        //console.log(q);
+        //console.log("Статистика записана в базу");
     }
 }
 
