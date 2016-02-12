@@ -128,9 +128,9 @@ exports.getAd = function (req, res, adplace_id) {
                     for (key in SD.placementsByAdPlace['_' + adplace_id]) {
                         var placement = SD.placementsByAdPlace['_' + adplace_id][key];
 
-                        console.log(typeof(STplacements['_' + placement.id]));
-                        console.log(placement.quantity);
-                        console.log(STplacements['_' + placement.id][placement.quantityModelName]+'<'+placement.quantity);
+                        //console.log(typeof(STplacements['_' + placement.id]));
+                        //console.log(placement.quantity);
+                        //console.log(STplacements['_' + placement.id][placement.quantityModelName]+'<'+placement.quantity);
                         //проверяем, чтоб количество показов не привысило максимально-заданное
                         if ((typeof(STplacements['_' + placement.id]) === 'undefined' ||
                             !placement.quantity ||
