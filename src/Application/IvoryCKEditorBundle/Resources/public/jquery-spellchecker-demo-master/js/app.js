@@ -4,7 +4,7 @@
 	  top.location.href = self.location.href;
 	}
   $('head').append(
-    '<link href="http://fonts.googleapis.com/css?family=Ubuntu+Condensed" rel="stylesheet" type="text/css">'
+    '<link href="https://fonts.googleapis.com/css?family=Ubuntu+Condensed" rel="stylesheet" type="text/css">'
   );
   $('body').append([
     '<a href="https://github.com/badsyntax/jquery-spellchecker" class="github-ribbon">',
