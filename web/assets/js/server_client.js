@@ -13,7 +13,7 @@ function __GET_AD(adplace_id) {
 
 //класс для работы с сервером
 var __PromoMasterClient = {
-   connectServerUrl: "http://www.promomaster.net:1337", //адрес подключения к серверу
+   connectServerUrl: "https://promomaster.net:1337", //адрес подключения к серверу
    // connectServerUrl: "http://promomaster:1337", //адрес подключения к серверу
 
     //прорисовка баннера

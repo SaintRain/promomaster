@@ -13,7 +13,7 @@ parameters:
     mailer_password:   ~
 
     locale:            ru
-    domain_ru:         www.promomaster.net
+    domain_ru:         promomaster.net
     secret:            b4e7a4ba6de9c87f227a93857e26b0856d0f4af1
     filebrowserBrowseRoute: elfinder  #папка куда будут сохраняться файлы из elfinder-менеджера
     default_timezone: Europe/Moscow

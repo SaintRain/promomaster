@@ -1,34 +1,43 @@
 application_sonata_user_security:
     resource: "@ApplicationSonataUserBundle/Resources/config/routing/security.xml"
+    schemes:  [https]
 
 application_sonata_user_profile:
     resource: "@ApplicationSonataUserBundle/Resources/config/routing/profile.xml"
+    schemes:  [https]
 
 application_sonata_user_register:
     resource: "@ApplicationSonataUserBundle/Resources/config/routing/registration.xml"
+    schemes:  [https]
 
 application_sonata_user_resetting:
     resource: "@ApplicationSonataUserBundle/Resources/config/routing/resetting.xml"
     prefix: /resetting
+    schemes:  [https]
 
 application_sonata_user_change_password:
     resource: "@ApplicationSonataUserBundle/Resources/config/routing/change_password.xml"
     prefix: /change-password
+    schemes:  [https]
 
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
     prefix: /admin
+    schemes:  [https]
 
 application_sonata_user:
     resource: '@ApplicationSonataUserBundle/Resources/config/routing/routing.yml'
+    schemes:  [https]
 
 application_sonata_admin:
     resource: '@ApplicationSonataAdminBundle/Resources/config/routing.yml'
+    schemes:  [https]
 
 _sonata_admin:
     resource: .
     type: sonata_admin
     prefix: /admin
+    schemes:  [https]
 
 
 # роуты отвечающие за авторизацию через админку и выход из нее же
@@ -40,107 +49,124 @@ _sonata_admin:
 sonata_user_admin_security_logout:
   path: /logout.html
   defaults:  { _controller: SonataUserBundle:AdminSecurity:logout }
+  schemes:  [https]
 
 
 # Роут для logout потому как он неопредел в security
 _logout:
     pattern: /logout.html
-
+    schemes:  [https]
 
 #Страницы общего бандла
 core_common:
     resource: "@CoreCommonBundle/Resources/config/routing.yml"
     prefix:   /
+    schemes:  [https]
 
 #Бандл файлов (фото, документация и др.)
 core_file:
     resource: "@CoreFileBundle/Resources/config/routing.yml"
     prefix:   /
+    schemes:  [https]
 
 #файловый менеджер для ckEditor
 elfinder:
      resource: "@FMElfinderBundle/Resources/config/routing.yml"
+     schemes:  [https]
 
 trouble_tickets:
     resource: "@CoreTroubleTicketBundle/Resources/config/routing.yml"
     prefix: /trouble-tickets
+    schemes:  [https]
 
 #переключалка языков в админке
 core_language:
     resource: "@CoreLanguageBundle/Resources/config/routing.yml"
     prefix:   /admin
+    schemes:  [https]
 
 
 #объединяющий бандла
 core_union:
     resource: "@CoreUnionBundle/Resources/config/routing.yml"
     prefix:   /admin
+    schemes:  [https]
 
 
 #справочник цветов и их обработка
 core_color:
     resource: "@CoreColorBundle/Resources/config/routing.yml"
     prefix:   /
+    schemes:  [https]
 
 # каптча
 gregwar_captcha_routing:
     resource: "@GregwarCaptchaBundle/Resources/config/routing/routing.yml"
+    schemes:  [https]
 
 
 simple_things_entity_audit:
     resource: "@SimpleThingsEntityAuditBundle/Resources/config/routing.yml"
     prefix: /admin/audit
+    schemes:  [https]
 
 # статистика
 core_statistics:
     resource: "@CoreStatisticsBundle/Resources/config/routing.yml"
     prefix:   /admin
+    schemes:  [https]
 
 # статистика фронтенда
 core_statistics_frontend:
     resource: "@CoreStatisticsBundle/Resources/config/frontend_routing.yml"
     prefix:   /
+    schemes:  [https]
 
 #Раздел FAQ
 core_faq:
     resource: "@CoreFaqBundle/Resources/config/routing.yml"
     prefix: /
+    schemes:  [https]
 
 
 # все что связано с платежами
 core_payment:
     resource: "@CorePaymentBundle/Resources/config/routing.yml"
     prefix:   /
-
+    schemes:  [https]
 
 # все что связано со справочными данными
 core_directory:
     resource: "@CoreDirectoryBundle/Resources/config/routing.yml"
     prefix: /
-
+    schemes:  [https]
 
 #роутеры для автозаполнения
 shtumi_useful:
     resource: '@ShtumiUsefulBundle/Resources/config/routing.xml'
+    schemes:  [https]
 
 _monitor:
     resource: "@LiipMonitorBundle/Resources/config/routing.xml"
     prefix: admin/monitor/health
+    schemes:  [https]
 
 PrestaSitemapBundle:
     resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
     prefix:   /
-
+    schemes:  [https]
 
 # Роуты бандла HistoryBundle
 core_slug_history:
     resource: "@CoreSlugHistoryBundle/Resources/config/routing.yml"
     prefix:   /
+    schemes:  [https]
 
 # Роуты бандла HolidayBundle
 core_holiday:
     resource: "@CoreHolidayBundle/Resources/config/routing.yml"
     prefix:   /
+    schemes:  [https]
 
 
 #НАЧИНАЕМ ОТСЮДА ПИСАТЬ НОВЫЕ РОУТЕРЫ
@@ -149,18 +175,22 @@ core_holiday:
 core_site:
     resource: "@CoreSiteBundle/Resources/config/routing.yml"
     prefix:   /
+    schemes:  [https]
 
 # Роуты бандла BannerBundle
 core_banner:
     resource: "@CoreBannerBundle/Resources/config/routing.yml"
     prefix:   /
+    schemes:  [https]
 
 
 # Роуты бандла CoreAdCompanyBundle
 core_placement:
     resource: "@CoreAdCompanyBundle/Resources/config/placement_routing.yml"
     prefix:   /
+    schemes:  [https]
 
 core_adcompany:
     resource: "@CoreAdCompanyBundle/Resources/config/adcompany_routing.yml"
     prefix:   /
+    schemes:  [https]

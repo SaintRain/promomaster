@@ -596,7 +596,7 @@ ornicar_apc:
 
 presta_sitemap:
     timetolive: 3600
-    dumper_base_url: "http://%domain_ru%"
+    dumper_base_url: "https://%domain_ru%"
     route_annotation_listener: true
 
 #core_manufacturer:
