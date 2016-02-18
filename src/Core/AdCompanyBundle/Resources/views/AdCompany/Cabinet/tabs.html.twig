@@ -27,13 +27,20 @@
     {% endfor %}
 
 
+
     {% if adcompany.id %}
-        <h3>Редактирование рекламной компании #{{ adcompany.id }}</h3>
+        <h3>Редактирование рекламной компании #{{ adcompany.id }} &nbsp;&nbsp;
+            <a  class="video-show"    data-url="{{path('core_faq_show_video')}}"
+                                                                     href="javascript:void(0)"><i class="fa fa-info-circle"></i>Видеоурок</a></h3>
     {% else %}
         <h3>Добавление новой рекламной компании</h3>
     {% endif %}
 
-    <a style="margin-top: -35px" class="video-show pull-right"    data-url="{{path('core_faq_show_video')}}" href="javascript:void(0)"><i class="fa fa-info-circle"></i> Видеоурок: добавление рекламной компании</a>
+
+
+
+
+
 <br>
 
 

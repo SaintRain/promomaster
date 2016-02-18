@@ -3,11 +3,18 @@
         <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
         <h4 class="modal-title">Видеоурок: добавление рекламной компании</h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body video-lessons">
         <div class="responsive-video margin-bottom-30">
-            <iframe src="http://player.vimeo.com/video/155384285?autoplay=1" width="530" height="300" frameborder="0"
+            <iframe src="https://player.vimeo.com/video/155384285?autoplay=1" width="530" height="300" frameborder="0"
                     webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
         </div>
     </div>
-
 </div>
+
+<script>
+    $(function () {
+        $(document).on('hidden.bs.modal', function () {
+            $('.modal-body.video-lessons').remove();
+        })
+    });
+</script>

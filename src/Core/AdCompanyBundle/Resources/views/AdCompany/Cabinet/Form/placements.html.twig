@@ -19,7 +19,7 @@
             <td>
                 {% set site=placement.adPlace.site %}
                 <a href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.id}) }}"
-                   style=" display: inline-block; " class="edit-placement">
+                   style=" display: inline-block" class="edit-placement">
                     {{ placement.adPlace.name }}
                 </a>
             </td>
@@ -38,11 +38,12 @@
 
                 <a title="Редактировать настройки размещения"
                    href="{{ path('core_cabinet_adplaces_placements_ajax_edit', {'id': placement.id}) }}"
-                   class="btn-u  btn-u-xs btn-u-succses edit-placement">Настройки</a>&nbsp;
+                   class="btn-u  btn-u-xs btn-u-succses   edit-placement">Настройки</a>&nbsp;
                 <a href="{{ path('core_cabinet_adplace_getcode', {id:placement.adPlace.id}) }}"
-                   class="btn-u btn-u-xs btn-u-default">Код вставки</a>&nbsp;
-                <a data-id="{{ placement.id }}" href="javascript:void(0);"
-                   class="btn-u-xs btn-u btn-u-red placement-remove">
+                   class="btn-u btn-u-xs   btn-u-default">Код вставки</a>&nbsp;
+                <a  data-id="{{ placement.id }}" href="javascript:void(0);"
+                   class="btn-u-xs btn-u btn-u-red   placement-remove">
+                    {#<i class="fa fa-trash-o"></i>#}
                     Удалить
                 </a>
 

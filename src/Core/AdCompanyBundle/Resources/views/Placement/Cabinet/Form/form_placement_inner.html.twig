@@ -1,12 +1,15 @@
 <ul role="tablist" class="nav nav-tabs margin-bottom-20 tabs">
     <li class="active" role="presentation">
-        <a href="javascript:void(0);" aria-expanded="true" aria-controls="placement-main" data-toggle="tab" role="tab" data-target="placement-main">Основное</a>
+        <a href="javascript:void(0);" aria-expanded="true" aria-controls="placement-main" data-toggle="tab" role="tab"
+           data-target="placement-main">Основное</a>
     </li>
     <li role="presentation">
-        <a href="javascript:void(0);" aria-controls="placement-banner" data-toggle="tab" role="tab" data-target="placement-banner">Баннеры</a>
+        <a href="javascript:void(0);" aria-controls="placement-banner" data-toggle="tab" role="tab"
+           data-target="placement-banner">Баннеры</a>
     </li>
     <li role="presentation">
-        <a href="javascript:void(0);" aria-controls="placement-other" data-toggle="tab" role="tab" data-target="placement-other">Настройки показов</a>
+        <a href="javascript:void(0);" aria-controls="placement-other" data-toggle="tab" role="tab"
+           data-target="placement-other">Настройки показов</a>
     </li>
 </ul>
 <div class="tab-content">
@@ -28,7 +31,9 @@
 
                 <div class="row margin-bottom-20">
                     <div class="{{ fieldGroupClass }}{% if form_errors(form.site) %} state-error{% endif %}">
-                        <label>Площадка <a title="Расширенная настройка площадки" target="_blank" href="{{ path('core_cabinet_site_edit', {id:form.site.vars.value}) }}"><i class="fa fa-cog"></i></a></label>
+                        <label>Площадка <a title="Расширенная настройка площадки" target="_blank"
+                                           href="{{ path('core_cabinet_site_edit', {id:form.site.vars.value}) }}"><i
+                                        class="fa fa-cog"></i></a></label>
                         {{ form_widget(form.site,{ 'attr': {'class': 'form-control'} }) }}
                         <span class="note">Укажите площадку, на которой будет размещаться реклама. Чтобы сменить площадку необходимо создать новое размещение.</span>
                         {% if form_errors(form.site) %}
@@ -41,7 +46,7 @@
 
                     </div>
                 </div>
-                {% else %}
+            {% else %}
                 <div class="row margin-bottom-20">
                     <div class="site-container{% if form_errors(form.site) %} state-error{% endif %}">
                         <div>
@@ -50,7 +55,10 @@
                             </div>
                         </div>
                         <div>
-                            <div class="col-sm-11">
+                            <table width="100%">
+                                <tr>
+                                    <td>
+                            <div class="col-sm-13">
                                 {{ form_widget(form.site,{ 'attr': {'class': 'form-control'} }) }}
                                 <span class="note">Укажите площадку, на которой будет размещаться реклама.</span>
                                 {% if form_errors(form.site) %}
@@ -61,12 +69,17 @@
                                     </div>
                                 {% endif %}
                             </div>
+                                    </td>
+                                    <td style="vertical-align: top">
                             <div class="col-sm-1">
-                                <a href="{{ path('core_cabinet_site_create_ajax') }}" class="btn-u site-creation"
-                                   style="margin-left: -15px">
+                                <a href="{{ path('core_cabinet_site_create_ajax') }}" class="btn-u site-creation">
                                     <i class="fa fa-plus-square" title="Добавить площадку"></i>
                                 </a>
                             </div>
+                                    </td>
+                                </tr>
+
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -82,39 +95,49 @@
                         </div>
                     </div>
                     <div>
-                        <div class="col-sm-11">
-                            {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
-                            <span class="note">Укажите место на площадке, где будет показываться реклама.</span>
-                            {% if form_errors(form.adPlace) %}
-                                <div class="row">
-                                    <div class="col-sm-12{% if form_errors(form.adPlace) %} state-error{% endif %}">
-                                        {{ form_errors(form.adPlace) }}
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <div class="col-sm-13">
+                                        {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
+                                        <span class="note">Укажите место на площадке, где будет показываться реклама.</span>
+                                        {% if form_errors(form.adPlace) %}
+                                            <div class="row">
+                                                <div class="col-sm-12{% if form_errors(form.adPlace) %} state-error{% endif %}">
+                                                    {{ form_errors(form.adPlace) }}
+                                                </div>
+                                            </div>
+                                        {% endif %}
                                     </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-sm-1">
-                            <a href="{{ path('core_cabinet_ad_place_create_ajax') }}" class="btn-u  ad-place-creation"
-                               style="margin-left: -15px">
-                                <i class="fa fa-plus-square" title="Добавить рекламное место"></i>
-                            </a>
-                        </div>
+
+                                </td>
+                                <td style="vertical-align: top">
+                                    <div class="col-sm-1">
+                                        <a href="{{ path('core_cabinet_ad_place_create_ajax') }}"
+                                           class="btn-u  ad-place-creation">
+                                            <i class="fa fa-plus-square" title="Добавить рекламное место"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+
                     </div>
                 </div>
             </div>
         {% elseif  form.adPlace is defined %}
             <div class="row margin-bottom-20">
                 <div class="{{ fieldGroupClass }}{% if form_errors(form.adPlace) %} state-error{% endif %}">
-                    <label>Рекламное место</label> <a  title="Расширенная настройка рекламного места" target="_blank" href="{{ path('core_cabinet_adplace_edit', {id:form.adPlace.vars.value}) }}"><i class="fa fa-cog"></i></a>
+                    <label>Рекламное место</label> <a title="Расширенная настройка рекламного места" target="_blank"
+                                                      href="{{ path('core_cabinet_adplace_edit', {id:form.adPlace.vars.value}) }}"><i
+                                class="fa fa-cog"></i></a>
                     {{ form_widget(form.adPlace,{ 'attr': {'class': 'form-control'} }) }}
                     <span class="note">Укажите место на площадке, где будет показываться реклама. Чтобы сменить место необходимо создать новое размещение.</span>
                     {{ form_errors(form.adPlace) }}
                 </div>
             </div>
         {% endif %}
-
-
-
 
 
         <div class="margin-bottom-20 {% if form_errors(form.isEnabled) %}state-error{% endif %}">
@@ -125,15 +148,15 @@
 
         </div>
 
-            {#
-            <div class="row margin-bottom-20">
-                <div class="{{ fieldGroupClass }}  {% if form_errors(form.placementBannersList) %}state-error{% endif %}">
-                    <label>Баннеры</label>
-                    {{ form_widget(form.placementBannersList,{ 'attr': {'class': 'form-control'} }) }}
-                    {{ form_errors(form.placementBannersList) }}
-                </div>
+        {#
+        <div class="row margin-bottom-20">
+            <div class="{{ fieldGroupClass }}  {% if form_errors(form.placementBannersList) %}state-error{% endif %}">
+                <label>Баннеры</label>
+                {{ form_widget(form.placementBannersList,{ 'attr': {'class': 'form-control'} }) }}
+                {{ form_errors(form.placementBannersList) }}
             </div>
-            #}
+        </div>
+        #}
     </div>
     <div class="placement-banner tab-pane fade" aria-labelledby="placement-banner-tab" role="tabpanel">
         <div class=" margin-bottom-20">
@@ -153,7 +176,7 @@
                 <div class="pull-right">
                     <a href="{{ path('core_cabinet_banner_create_ajax') }}" class="btn-u btn-u-xs collection-add"
                             {% if form.placementBannersList.vars.prototype is defined %}
-                        data-prototype="{% filter escape %}
+                    data-prototype="{% filter escape %}
                                         {% include 'CoreAdCompanyBundle:Placement\\Cabinet\\Form:placement_banner.html.twig' with { 'form': form.placementBannersList.vars.prototype } %}
                                     {% endfilter %}
                                     "{% endif %}>
@@ -162,7 +185,6 @@
                     </a>
 
                 </div>
-
 
 
                 <table class="table table-striped">
@@ -204,62 +226,62 @@
 
 
         {#<div class="row margin-bottom-20">#}
-            {#<div {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  style="display: none"  {% endif %}#}
-            {#class="start-date {{ fieldGroupClass }}{% if form_errors(form.startDateTime) %} state-error{% endif %}">#}
-            {#<label>Дата начала показов</label>#}
-            {#<label class="input">#}
-            {#<i class="icon-append fa fa-calendar"></i>#}
-            {#{{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date'} }) }}#}
-            {#</label>#}
+        {#<div {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  style="display: none"  {% endif %}#}
+        {#class="start-date {{ fieldGroupClass }}{% if form_errors(form.startDateTime) %} state-error{% endif %}">#}
+        {#<label>Дата начала показов</label>#}
+        {#<label class="input">#}
+        {#<i class="icon-append fa fa-calendar"></i>#}
+        {#{{ form_widget(form.startDateTime,{ 'attr': {'class': 'form-control date'} }) }}#}
+        {#</label>#}
 
-            {#{{ form_errors(form.startDateTime) }}#}
-            {#</div>#}
-
-
-            {#<div class="{{ fieldGroupClass }}">#}
-            {#<label class="dateSettingsStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>#}
-
-            {#<div class="inline-group">#}
-            {#<label class="radio"><input {% if form.startDateTime.vars.value or form.startDateTime.vars.errors|length %}  checked=""  {% endif %}#}
-            {#class="dateSettingsStart" value="1" type="radio" name="dateSettingsStart"><i#}
-            {#class="rounded-x"></i>По#}
-            {#дате</label>#}
-            {#<label class="radio"><input {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  checked=""  {% endif %}#}
-            {#class="dateSettingsStart" value="0" type="radio" name="dateSettingsStart"><i#}
-            {#class="rounded-x"></i>Начать#}
-            {#показ сразу</label>#}
-            {#</div>#}
-            {#</div>#}
-            {#</div>#}
+        {#{{ form_errors(form.startDateTime) }}#}
+        {#</div>#}
 
 
-            {#<div class="row margin-bottom-20">#}
-            {#<div  {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length %}  style="display: none"  {% endif %}#}
-            {#class="end-date {{ fieldGroupClass }}{% if form_errors(form.finishDateTime) %} state-error{% endif %}">#}
-            {#<label>Дата окончания показов</label>#}
+        {#<div class="{{ fieldGroupClass }}">#}
+        {#<label class="dateSettingsStartLabel">{% if not form.startDateTime.vars.value %}Дата начала показов{% endif %}</label>#}
 
-            {#<label class="input">#}
-            {#<i class="icon-append fa fa-calendar"></i>#}
-            {#{{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date'} }) }}#}
-            {#</label>#}
-            {#{{ form_errors(form.finishDateTime) }}#}
+        {#<div class="inline-group">#}
+        {#<label class="radio"><input {% if form.startDateTime.vars.value or form.startDateTime.vars.errors|length %}  checked=""  {% endif %}#}
+        {#class="dateSettingsStart" value="1" type="radio" name="dateSettingsStart"><i#}
+        {#class="rounded-x"></i>По#}
+        {#дате</label>#}
+        {#<label class="radio"><input {% if not form.startDateTime.vars.value and not form.startDateTime.vars.errors|length %}  checked=""  {% endif %}#}
+        {#class="dateSettingsStart" value="0" type="radio" name="dateSettingsStart"><i#}
+        {#class="rounded-x"></i>Начать#}
+        {#показ сразу</label>#}
+        {#</div>#}
+        {#</div>#}
+        {#</div>#}
 
-            {#</div>#}
 
-            {#<div class="{{ fieldGroupClass }}">#}
-            {#<label class="dateSettingsFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>#}
+        {#<div class="row margin-bottom-20">#}
+        {#<div  {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length %}  style="display: none"  {% endif %}#}
+        {#class="end-date {{ fieldGroupClass }}{% if form_errors(form.finishDateTime) %} state-error{% endif %}">#}
+        {#<label>Дата окончания показов</label>#}
 
-            {#<div class="inline-group">#}
-            {#<label class="radio"><input {% if form.finishDateTime.vars.value or form.finishDateTime.vars.errors|length %}  checked=""  {% endif %}#}
-            {#class="dateSettingsFinish" value="1" type="radio" name="dateSettingsFinish"><i#}
-            {#class="rounded-x"></i>По#}
-            {#дате</label>#}
-            {#<label class="radio"><input {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length %}  checked=""  {% endif %}#}
-            {#class="dateSettingsFinish" value="0" type="radio" name="dateSettingsFinish"><i#}
-            {#class="rounded-x"></i>Показывать бесконечно</label>#}
-            {#</div>#}
-            {#</div>#}
-            {#</div>#}
+        {#<label class="input">#}
+        {#<i class="icon-append fa fa-calendar"></i>#}
+        {#{{ form_widget(form.finishDateTime,{ 'attr': {'class': 'form-control date'} }) }}#}
+        {#</label>#}
+        {#{{ form_errors(form.finishDateTime) }}#}
+
+        {#</div>#}
+
+        {#<div class="{{ fieldGroupClass }}">#}
+        {#<label class="dateSettingsFinishLabel">{% if not form.finishDateTime.vars.value %}Дата начала показов{% endif %}</label>#}
+
+        {#<div class="inline-group">#}
+        {#<label class="radio"><input {% if form.finishDateTime.vars.value or form.finishDateTime.vars.errors|length %}  checked=""  {% endif %}#}
+        {#class="dateSettingsFinish" value="1" type="radio" name="dateSettingsFinish"><i#}
+        {#class="rounded-x"></i>По#}
+        {#дате</label>#}
+        {#<label class="radio"><input {% if not form.finishDateTime.vars.value and not form.finishDateTime.vars.errors|length %}  checked=""  {% endif %}#}
+        {#class="dateSettingsFinish" value="0" type="radio" name="dateSettingsFinish"><i#}
+        {#class="rounded-x"></i>Показывать бесконечно</label>#}
+        {#</div>#}
+        {#</div>#}
+        {#</div>#}
 
 
         <div class="row margin-bottom-20{% if form_errors(form.startDateTime) %} state-error{% endif %}">
@@ -298,7 +320,7 @@
 
         <div class="row margin-bottom-20{% if form_errors(form.finishDateTime) %} state-error{% endif %}">
 
-            <div  {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}
+            <div {% if not form.finishDateTime.vars.value %}  style="display: none"  {% endif %}
                     class="col-sm-6  {% if form_errors(form.finishDateTime) %}state-error{% endif %}">
                 <label>Дата окончания показов</label>
 
@@ -314,11 +336,13 @@
 
                 <div class="inline-group">
                     <label class="radio"><input {% if form.finishDateTime.vars.value %} checked{% endif %}
-                                class="finishDateTimePlacementFinish" value="1" type="radio" name="dateSettingsFinish"><i
+                                class="finishDateTimePlacementFinish" value="1" type="radio"
+                                name="dateSettingsFinish"><i
                                 class="rounded-x"></i>По
                         дате</label>
                     <label class="radio"><input {% if not form.finishDateTime.vars.value %} checked {% endif %}
-                                class="finishDateTimePlacementFinish" value="0" type="radio" name="dateSettingsFinish"><i
+                                class="finishDateTimePlacementFinish" value="0" type="radio"
+                                name="dateSettingsFinish"><i
                                 class="rounded-x"></i>Показывать бесконечно</label>
                 </div>
                 {% if form_errors(form.finishDateTime) %}
@@ -349,9 +373,6 @@
         </div>
 
 
-
-
-
         <div class="margin-bottom-20">
         </div>
 
@@ -365,30 +386,27 @@
     var collectionCount = '{{ form.placementBannersList | length }}',
             topModal = $('#modal-top-placement #placement-modal, #placement-modal-content'),
             isTopModal = $('#modal-top-placement').length,
-            url_placement_delete= {% if placement.id  %} '{{ path('core_cabinet_placement_delete', {id:placement.id}) }}'{% else %}''{% endif %},
+            url_placement_delete = {% if placement.id  %} '{{ path('core_cabinet_placement_delete', {id:placement.id}) }}'
+    {% else %}''{% endif %},
 
-            url_edit_ajax='{{ path('core_cabinet_banner_edit_ajax') }}',
-            url_site_adplaces="{{ path('core_cabinet_site_adplaces') }}"
+            url_edit_ajax = '{{ path('core_cabinet_banner_edit_ajax') }}',
+            url_site_adplaces = "{{ path('core_cabinet_site_adplaces') }}"
 
-    $(function() {
+    $(function () {
 
-      //  $("#datepicker").datepicker();
+        //  $("#datepicker").datepicker();
         initCalendarFromTo('startDateTimePlacement', 'finishDateTimePlacement');
         clickErrorTab();
 
     });
 
 
-
-
-
-
     {#{% if placement is defined and placement.id is defined and placement.id %}#}
     {#$('.delete').click(function () {#}
-        {#var res = confirm('Вы действительно хотите удалить это размещение из системы?');#}
-        {#if (res) {#}
-            {#window.location.href = url_placement_delete;#}
-        {#}#}
+    {#var res = confirm('Вы действительно хотите удалить это размещение из системы?');#}
+    {#if (res) {#}
+    {#window.location.href = url_placement_delete;#}
+    {#}#}
     {#});#}
     {#{% endif %}#}
 

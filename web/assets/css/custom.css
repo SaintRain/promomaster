@@ -160,3 +160,21 @@ a.edit-placement {
 .hide-place {
     display: none;
 }
+
+
+.slider-image {
+
+    margin-left:0px!important;
+    margin-top:-70px!important;
+}
+
+
+.info-blocks-in h1.info-small {
+    text-transform: uppercase!important;
+    color: #687074 !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+}
+.yandex-counter{
+    position:absolute; left:-9999px;
+}
