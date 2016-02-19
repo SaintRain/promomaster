@@ -73,7 +73,7 @@ body {
     bottom: 0;
     position: absolute;
     width: 100%;
-    height: 375px;
+
     overflow: hidden;
 }
 .modal-body .file-attachment img,
@@ -177,4 +177,57 @@ a.edit-placement {
 }
 .yandex-counter{
     position:absolute; left:-9999px;
+}
+
+.dropcap-bg {
+    margin: 0px !important;
+}
+
+
+
+
+
+.site-desc .headline {
+    border-bottom: 1px solid #dedede;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.site-desc .headline h3 {
+    color: #687074;
+    float: left;
+    font-size: 20px;
+    text-transform: uppercase
+}
+
+.site-desc ul {
+    margin: 0;
+    padding: 0;
+}
+
+.site-desc li {
+    background: none repeat scroll 0 0 #f8f8f8;
+    color: #dedede;
+    display: block;
+    font-size: 24px;
+    height: 30px;
+    font-size: 15px;
+    padding: 5px;
+    margin: 0 5px 0 0;
+    text-align: left;
+    text-transform: uppercase;
+    line-height: 120%;
+}
+
+.site-desc li:after {
+    content: ".";
+    visibility: hidden;
+    display: block;
+    clear: both;
+}
+
+div.catalog-theme {
+    float: left;
+    margin-right: 25px;
+    width: 30%;
 }

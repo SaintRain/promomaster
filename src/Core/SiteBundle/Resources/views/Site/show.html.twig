@@ -5,49 +5,7 @@
 {% block title %}PromoMaster - каталог площадок{% endblock %}
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
-{% block css %}
-    {{ parent() }}
-    <style>
-        .site-desc .headline {
-            border-bottom: 1px solid #dedede;
-            margin-bottom: 12px;
-            overflow: hidden;
-        }
 
-        .site-desc .headline h3 {
-            color: #687074;
-            float: left;
-            font-size: 20px;
-            text-transform: uppercase
-        }
-
-        .site-desc ul {
-            margin: 0;
-            padding: 0;
-        }
-
-        .site-desc li {
-            background: none repeat scroll 0 0 #f8f8f8;
-            color: #dedede;
-            display: block;
-            font-size: 24px;
-            height: 30px;
-            font-size: 15px;
-            padding: 5px;
-            margin: 0 5px 0 0;
-            text-align: left;
-            text-transform: uppercase;
-            line-height: 120%;
-        }
-
-        .site-desc li:after {
-            content: ".";
-            visibility: hidden;
-            display: block;
-            clear: both;
-        }
-    </style>
-{% endblock %}
 {% block content %}
     <div class="breadcrumbs">
         <div class="container">
@@ -69,9 +27,16 @@
 
                 <a target="_blank" href="{{ path('core_common_redirect_to_domain', {siteId:site.id}) }}">
                     {% if site.webPath %}
-                        <img src="{{ asset(site.webPath) }}" alt="" width="100%">
+                        <div class="thumbnails thumbnail-style thumbnail-kenburn">
+                            <div class="thumbnail-img">
+                                <div class="overflow-hidden">
+                                    <img class="img-responsive" src="{{ asset(site.webPath) }}" alt="" width="100%">
+                                </div>
+                            </div>
+                        </div>
+
                     {% else %}
-                        <span class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
+                        <span  class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
                     {% endif %}
                 </a>
 
@@ -80,17 +45,12 @@
                 {#<img src="{{ asset(curImg) }}" alt="" width="100%">#}
                 {#</a>#}
             </div>
-            <section class="col-md-8">
+            <div class="col-md-8">
                 <div class="margin-bottom-20">
-
                         <h3><a target="_blank" href="{{ path('core_common_redirect_to_domain', {siteId:site.id}) }}">{{ site.domain|onlyDomain }}</a></h3>
-
                     <p>{{ site.shortDescription | nl2br }}</p>
                 </div>
-
                 <br>
-
-
                 {% if site.adPlaces|length %}
                     <div class="tab-v2">
                         <ul class="nav nav-tabs">
@@ -100,10 +60,7 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade in active" id="today">
-
-
                                 {{ elements.statTable(site.adPlaces , statistics.today) }}
-
                             </div>
                             <div class="tab-pane fade in" id="month">
 
@@ -122,36 +79,24 @@
                 <div>
                     <h3>Тематика</h3>
                     {% for category in site.categories %}
-
-                        <span style="margin-right: 25px"><i class="fa fa-check color-green"></i>&nbsp;
-                            {#<a href="{{ path('core_common_catalog_first_page') }}?site_search_filter_form[selectMainCat]={{ category.parent.id }}&site_search_filter_form[categories]={{ category.id }}">{{ category.captionRu }}</a>#}
-                            {{ category.captionRu }}</span>
-
-
-                    {% endfor %}
+                        <div  class="catalog-theme"><i class="fa fa-check color-green"></i>&nbsp;{{ category.captionRu }}</div>
+                   {% endfor %}
                 </div>
+
+
+
 
 
                 {% if site.description %}
                     <br><br>
-
                     <div style="clear: left">
                         <h3>Требования к рекламным материалам</h3>
-
-
                         {{ site.description | nl2br }}
                     </div>
 
                 {% endif %}
 
-
-                {#{% if site.keywords %}#}
-                {#<div class="headline">#}
-                {#<h3>Ключевые слова</h3>#}
-                {#</div>#}
-                {#<p>{{ site.keywords | nl2br}}</p>#}
-                {#{% endif %}#}
-            </section>
+            </div>
         </div>
     </div>
     <br/>
