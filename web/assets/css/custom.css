@@ -231,3 +231,7 @@ div.catalog-theme {
     margin-right: 25px;
     width: 30%;
 }
+
+.slider-inner .da-slider {
+    border-bottom: 1px solid #ddd !important;
+}

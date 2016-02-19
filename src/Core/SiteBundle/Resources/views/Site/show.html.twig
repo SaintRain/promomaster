@@ -9,7 +9,7 @@
 {% block content %}
     <div class="breadcrumbs">
         <div class="container">
-            <h1 class="pull-left">{{ site.domain|onlyDomain }}</h1>
+            <h1 class="pull-left">Площадка {{ site.domain|onlyDomain }}</h1>
             <ul class="pull-right breadcrumb">
                 <li>
                     <a href="{{ path('core_common_index') }}">На главную</a>
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                 {% else %}
-                    <p><i>Статистика не доступна</i></p><br>
+                    <p><i>Статистика недоступна</i></p><br>
                 {% endif %}
 
 
