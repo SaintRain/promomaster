@@ -38,13 +38,22 @@
             'assets/css/pages/profile.css'
             'assets/css/pages/feature_timeline2.css'
             'assets/css/pages/page_404_error.css'
-            'assets/css/plugins/hover-effect/css/custom-hover-effects.css'
             'assets/css/custom.css'
             output='css/compiled/main.css'
             filter='cssrewrite,yui_css' %}
             <link rel="stylesheet" href="{{ asset_url }}"/>
             {% endstylesheets %}
             <link rel="stylesheet" href="/assets/css/style.css">
+
+            {% stylesheets
+            'assets/css/plugins/hover-effect/css/custom-hover-effects.css'
+            output='css/compiled/hover.css'
+            filter='cssrewrite,yui_css' %}
+            <link rel="stylesheet" href="{{ asset_url }}"/>
+            {% endstylesheets %}
+            <link rel="stylesheet" href="/assets/css/style.css">
+
+
 
             <!--[if lt IE 9]>
             <link rel="stylesheet" href="/assets/plugins/sky-forms/version-2.0.1/css/sky-forms-ie8.css">
