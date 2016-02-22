@@ -30,8 +30,7 @@
 
     {% if adcompany.id %}
         <h3>Редактирование рекламной компании #{{ adcompany.id }} &nbsp;&nbsp;
-            <a  class="video-show"    data-url="{{path('core_faq_show_video')}}"
-                                                                     href="javascript:void(0)"><i class="fa fa-info-circle"></i>Видеоурок</a></h3>
+            <span class="text-right" style="white-space: nowrap"><a  class="video-show"    data-url="{{path('core_faq_show_video')}}" href="javascript:void(0)"><i class="fa fa-info-circle"></i>Видеоурок</a></span></h3>
     {% else %}
         <h3>Добавление новой рекламной компании</h3>
     {% endif %}
