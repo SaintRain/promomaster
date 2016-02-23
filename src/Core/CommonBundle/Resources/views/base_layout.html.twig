@@ -8,8 +8,7 @@
     <html lang="ru"> <!--<![endif]-->
     <head>
         <!-- Favicon -->
-        {#<link rel="shortcut icon" href="/favicon.ico">#}
-        <link rel="icon" type="image/x-icon" href="/favicon.png"/>
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon.png"/>
         <title>{% block title %}{% endblock %}</title>
         <!-- Meta -->
         <meta charset="utf-8">
@@ -20,24 +19,36 @@
         <meta name='yandex-verification' content='58444132489db140'/>
 
 
-        {#'assets/css/plugins/*'#}
-        {#'assets/css/headers/*'#}
-        {#'assets/css/footers/*'#}
         {% block css %}
-
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400"/>
             {% stylesheets
             'assets/plugins/bootstrap/css/bootstrap.min.css'
+
+            'assets/css/app.css'
+            'assets/css/ie8.css'
+            'assets/css/blocks.css'
+            'assets/css/plugins.css'
+            'assets/css/plugins/animate.css'
+            'assets/css/plugins/box-shadows.css'
+            'assets/css/plugins/style-switcher.css'
+            'assets/css/headers/header-default.css'
+            'assets/css/headers/header-v1.css'
+            'assets/css/footers/footer-default.css'
+            'assets/css/footers/footer-v1.css'
             'assets/css/style.css'
+
             'assets/plugins/font-awesome/css/font-awesome.min.css'
             'assets/plugins/sky-forms/version-2.0.1/css/sky-forms.css'
             'assets/plugins/sky-forms/version-2.0.1/css/custom-sky-forms.css'
             'assets/plugins/flexslider/flexslider.css'
             'assets/plugins/parallax-slider/css/parallax-slider.css'
+            'assets/css/plugins/hover-effect/css/hover.css'
             'assets/css/plugins/hover-effect/css/custom-hover-effects.css'
             'assets/css/theme-colors/default.css'
             'assets/css/custom.css'
             output='css/compiled/main.css'
-            filter='cssrewrite,yui_css' %}
+            filter='cssrewrite,yui_css'
+             %}
             <link rel="stylesheet" href="{{ asset_url }}"/>
             {% endstylesheets %}
 
