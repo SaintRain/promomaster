@@ -1,5 +1,7 @@
 {#построение левого меню в ЛК#}
 {% block left_menu %}
+
+    {%  if app.user %}
     <ul class="list-group sidebar-nav-v1 margin-bottom-40" id="sidebar-nav-1">
         <li class="list-group-item{% if app.request.attributes.get('_route') == 'sonata_user_profile_show' %} active{% endif %} ">
             <a href="{{ path('sonata_user_profile_show') }}"><i class="fa fa-user"></i> &nbsp;Профиль</a>
@@ -59,10 +61,6 @@
         </li>
 
 
-
-
-
-
         {#<li class="list-group-item#}
  {#{% if app.request.attributes.get('_route') == 'core_cabinet_placement_list_first_page'#}
         {#or app.request.attributes.get('_route') == 'core_cabinet_placement_list'#}
@@ -80,14 +78,17 @@
             {#<a href="#"><i class="fa  fa-comments-o"></i> &nbsp;Сообщения</a>#}
         {#</li>#}
 
+        {%  if app.user or ticket.owner is defined %}
         <li class="list-group-item
         {% if app.request.attributes.get('_route') == 'trouble_ticket_edit'
         or app.request.attributes.get('_route') == 'trouble_ticket_index_auth'
         or app.request.attributes.get('_route') == 'trouble_ticket_index'
         %} active{% endif %}
         ">
+
             <a href="{{app.user ? path('trouble_ticket_index_auth') : path('trouble_ticket_index',{'owner':ticket.owner})}}"><i class="fa fa-twitch"></i> &nbsp;Техподдержка</a>
         </li>
+            {% endif %}
 
         {#<li class="list-group-item">#}
             {#<a href="#"><i class="fa fa-bar-chart-o"></i> &nbsp;Статистика</a>#}
@@ -97,4 +98,5 @@
             <a href="{{ path('_logout') }}"><i class="fa fa-sign-out"></i> &nbsp;Выйти</a>
         </li>
     </ul>
+    {% endif %}
 {% endblock %}

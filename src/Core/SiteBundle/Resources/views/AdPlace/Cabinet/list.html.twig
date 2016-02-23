@@ -42,8 +42,19 @@
 
 
     {% if  adplaces.getTotalItemCount %}
-        <h3>Список ваших рекламных мест</h3>
-        <a style="margin-top: -30px" href="{{ path('core_cabinet_adplace_create') }}" class="btn-u pull-right"><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламное место</a>
+
+
+        <div class="row">
+            <div class="col-sm-8 ">
+                <h3>Список ваших рекламных мест</h3>
+            </div>
+            <div class="col-sm-2">
+                <a  href="{{ path('core_cabinet_adplace_create') }}" class="btn-u"><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламное место</a>
+            </div>
+        </div>
+
+
+
 
         <table class="table table-striped">
             <thead>

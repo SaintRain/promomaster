@@ -66,21 +66,19 @@
                 <h3>Фильтр</h3>
 
                 {{ form_start(form, {attr:{class:'sky-form sky-form-other-style'}}) }}
-                <div>
+                <div сlass="row">
                     <label>Ключевое слово</label>
                     {{ form_widget(form.keywords,{attr:{class:'form-control'}}) }}
                 </div>
                 <br>
 
-                <div><label>Тематика площадки</label>
+                <div сlass="row"><label>Тематика площадки</label>
                     {{ form_widget(form.selectMainCat, {attr:{'class':'selectMainCat form-control'}}) }}
                     {{ form_widget(form.categories) }}
                 </div>
 
                 <br>
-
-                <div>
-
+                <div сlass="row navigate-filter-row" >
                     <button class="btn-u" type="submit">Найти площадки</button>
                     &nbsp;&nbsp;
                     <a class="btn-u btn-u-default" href="{{ path('core_common_catalog_first_page') }}">Сбросить</a>
@@ -101,7 +99,7 @@
                             <th width="200px">Площадка</th>
                             <th width="250px">Тематика</th>
                             <th>Статистика</th>
-                            <th>Рекламные места</th>
+                            <th>Места</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -127,7 +125,7 @@
                                 </td>
                                 <td>
                                     {% for category in site.categories %}
-                                        <i class="fa fa-check color-green"></i> {{ category.captionRu }}<br/>
+                                        <div><i class="fa fa-check color-green"></i>&nbsp;{{ category.captionRu }}</div>
                                     {% endfor %}
 
                                 </td>

@@ -70,6 +70,10 @@ div.state-error > ul > li {
 
     /*overflow: hidden;*/
 /*}*/
+
+
+
+
 .modal-body .file-attachment img,
 #form_image img,
 #form_flash img {
@@ -228,4 +232,8 @@ div.catalog-theme {
 
 .slider-inner .da-slider {
     border-bottom: 1px solid #ddd !important;
+}
+
+.navigate-filter-row {
+    clear: both;
 }

@@ -24,13 +24,26 @@
 
 
 {% block sub_content %}
-    {% if  banners.getTotalItemCount %}
-        <h3>Список ваших заглушек</h3>
-    {% else %}
-        <h3>Вы еще не добавляли свои заглушки в систему</h3>
-    {% endif %}
-    <a style="margin-top: -30px" href="{{ path('core_cabinet_gag_create') }}" class="btn-u pull-right"><i
-                class="fa fa-plus-square"></i> &nbsp;Добавить заглушку</a>
+
+
+
+
+    <div class="row">
+        <div class="col-sm-9 ">
+            {% if  banners.getTotalItemCount %}
+                <h3>Список ваших заглушек</h3>
+            {% else %}
+                <h3>Вы еще не добавляли свои заглушки в систему</h3>
+            {% endif %}
+        </div>
+        <div class="col-sm-2">
+            <a  href="{{ path('core_cabinet_gag_create') }}" class="btn-u "><i
+                        class="fa fa-plus-square"></i> &nbsp;Добавить заглушку</a>
+        </div>
+    </div>
+
+
+
 
 
     {% for flashMessage in app.session.flashbag.get('edit_success') %}
