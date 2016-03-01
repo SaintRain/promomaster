@@ -20,6 +20,7 @@ class BasicDataLogic implements ScheduleInterface
 
     public function __construct(array $parameters, Translator $translator, RequestStack $requestStack)
     {
+        
         if (!isset($parameters['options']['basic_data'])) {
             throw new \Exception('Parameter basic_data not found');
         }
