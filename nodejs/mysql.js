@@ -43,11 +43,25 @@ mysqlConnect = function (MYSQL, connectionTryCount) {
             }
         );
 
+        MYSQL_CONNECTION.on('close', function (err) {
+            //устанавливаем соединение
+            mysqlConnect(MYSQL, 0);
+        });
+
+        MYSQL_CONNECTION.on('error', function (err) {
+            //устанавливаем соединение
+            mysqlConnect(MYSQL, 0);
+        });
+
     }
     else {
         throw new Error('Невозможно приконектится к базе, соединение обрывается.');
     }
 }
+
+
+
+
 
 //преобразует строковую чату в INT
 strDateToInt = function (dateStr) {

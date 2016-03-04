@@ -75,10 +75,10 @@ class SiteController extends Controller
         $form = $this->createForm($filterType, $filter, ['method' => 'GET', 'action' => $this->generateUrl('core_common_catalog_first_page')]);
         $form->handleRequest($request);
 
-        if (!$filter->getCategories() && $filter->getSelectMainCat()) {
-            $res = $em->getRepository('CoreCategoryBundle:SiteCategory')->children($filter->getSelectMainCat());
-            $filter->setCategories($res);
+        if (!count($filter->getCategories()) && $filter->getSelectMainCat()) {
+            $filter->setCategories($filter->getSelectMainCat()->getChildrens());
         }
+
         $query = $em->getRepository('CoreSiteBundle:CommonSite')->searchByFilter($filter);
         $sites = $this->get('knp_paginator')->paginate(
             $query,
@@ -91,9 +91,7 @@ class SiteController extends Controller
             $ids[] = $s->getId();
         }
 
-
         $statistics = $em->getRepository('CoreStatisticsBundle:Statistics')->getCommonStatisticsForSites($ids);
-
 
         return $this->render('CoreSiteBundle:Site:site_catalog.html.twig', [
             'categories' => $categories,

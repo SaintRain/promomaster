@@ -33,7 +33,7 @@ security:
                 check_path:     /admin/login_check.html
                 failure_path:   null
             logout:
-                path:           /logout.html
+                path:           /
                 target: /
                 invalidate_session: false
                 success_handler: application_user_auth_logic

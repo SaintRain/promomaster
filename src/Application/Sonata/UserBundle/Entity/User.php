@@ -69,7 +69,7 @@ class User extends BaseUser
      * Подписан ли пользователь на рассылку
      * @var boolean
      */
-    protected $isRssNews = false;
+    protected $isRssNews = true;
 
     /**
      * Регистрировался через соц сеть

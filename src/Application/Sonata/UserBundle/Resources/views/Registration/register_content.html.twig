@@ -73,13 +73,12 @@
 
 
 
-
-                    {#<div class="margin-bottom-20 {% if form_errors(form.isRssNews) %}state-error{% endif %}">#}
-                        {#<label class="checkbox">#}
-                            {#{{ form_widget(form.isRssNews) }}<i></i> Получать рассылку</label>#}
-                        {#{{ form_errors(form.isRssNews) }}#}
-                        {#</label>#}
-                    {#</div>#}
+                    <div class="margin-bottom-20 {% if form_errors(form.isRssNews) %}state-error{% endif %}">
+                        <label class="checkbox">
+                            {{ form_widget(form.isRssNews) }}<i></i> Получать новостную рассылку</label>
+                        {{ form_errors(form.isRssNews) }}
+                        </label>
+                    </div>
 
 
                     <hr>

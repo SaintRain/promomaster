@@ -19,7 +19,7 @@ class CommonSiteRepository extends EntityRepository
     public function searchByFilter(SearchFilter $filter)
     {
         $query = $this->createQueryBuilder('s')
-            ->select('s, c')
+            ->select('s')
             ->leftJoin('s.adPlaces', 'aP', 'WITH', 'aP.isShowInCatalog=1')
             ->leftJoin('aP.statistics', 'st', 'WITH', 'st.adPlace=aP.id AND st.site=s.id')
             ->leftJoin('s.categories', 'c')

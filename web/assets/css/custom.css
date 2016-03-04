@@ -233,3 +233,8 @@ div.catalog-theme {
 .slider-inner .da-slider {
     border-bottom: 1px solid #ddd !important;
 }
+
+.subcategory-catalog {
+    color: #777;
+    font-size: 11px;
+}

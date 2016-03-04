@@ -11,9 +11,13 @@ class RegistrationFormType extends BaseType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
+
+
         $builder->remove('username')
             ->add('firstname', null, ['label' => 'Имя'])
             ->add('lastname', null, ['label' => 'Фамилия'])
+            ->add('isRssNews', null, ['required'=>false,  'label' => 'Получать новостную рассылку'])
+
             ->add('userStatus', 'choice', [
                 'choices' => $this::getUserStatuses(),
                 'label' => 'Статус',

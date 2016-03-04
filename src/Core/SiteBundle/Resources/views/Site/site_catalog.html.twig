@@ -27,10 +27,10 @@
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
-        $(function() {
-            $(document).on('click', '.show-hidden-place', function(){
-              $(this).parents('td').find('.hide-place').show(500);
-               $(this).hide();
+        $(function () {
+            $(document).on('click', '.show-hidden-place', function () {
+                $(this).parents('td').find('.hide-place').show(500);
+                $(this).hide();
             });
         });
     </script>
@@ -78,7 +78,8 @@
                 </div>
 
                 <br>
-                <div сlass="row" style="clear: both;" >
+
+                <div сlass="row" style="clear: both;">
                     <button class="btn-u" type="submit">Найти площадки</button>
                     &nbsp;&nbsp;
                     <a class="btn-u btn-u-default" href="{{ path('core_common_catalog_first_page') }}">Сбросить</a>
@@ -120,26 +121,26 @@
                                     <a href="{{ path('core_site_details', {id: site.id}) }}"><b>{{ site.domain|onlyDomain }}</b></a>
 
 
-
-                                    <p>{{ site.shortDescription| nl2br  }}</p>
+                                    <p>{{ site.shortDescription| nl2br }}</p>
                                 </td>
                                 <td>
+                                    {{ site.categories.first.parent.captionRu }}
                                     {% for category in site.categories %}
-                                        <div><i class="fa fa-check color-green"></i>&nbsp;{{ category.captionRu }}</div>
+                                        <div class="subcategory-catalog">{{ category.captionRu }}</div>
                                     {% endfor %}
 
                                 </td>
                                 <td>
 
 
-                                    {% if statistics[site.id] is defined  %}
+                                    {% if statistics[site.id] is defined %}
                                         {% set showsQuantity=statistics[site.id].showsQuantity %}
                                         {% set clicksQuantity=statistics[site.id].clicksQuantity %}
                                         {% set ctr=statistics[site.id].ctr %}
-                                        {% else %}
-                                            {% set showsQuantity=0 %}
-                                            {% set clicksQuantity=0 %}
-                                            {% set ctr=0 %}
+                                    {% else %}
+                                        {% set showsQuantity=0 %}
+                                        {% set clicksQuantity=0 %}
+                                        {% set ctr=0 %}
                                     {% endif %}
 
                                     <p>
@@ -163,17 +164,23 @@
                                     </p>
                                 </td>
                                 <td>
-                                    {% set ind=0 %}
-                                    {% for adPlace in site.adPlaces %}
-                                        {% if adPlace.isShowInCatalog %}
-                                            {% set ind=ind+1 %}
-                                        <p {% if ind>4 %}class="hide-place"{% endif %}>{{ adPlace.size.width }}x{{ adPlace.size.height }}</p>
+                                    {% if site.adPlaces.count %}
+                                        {% set ind=0 %}
+                                        {% for adPlace in site.adPlaces %}
+                                            {% if adPlace.isShowInCatalog %}
+                                                {% set ind=ind+1 %}
+                                                <p {% if ind>4 %}class="hide-place"{% endif %}>{{ adPlace.size.width }}
+                                                    x{{ adPlace.size.height }}</p>
 
                                             {% endif %}
-                                    {% endfor %}
+                                        {% endfor %}
 
-                                    {% if ind>4 %}<a title="Посмотреть все рекламные места" class="show-hidden-place" href="javascript:void(0)">Показать еще...</a>{% endif %}
-
+                                        {% if ind>4 %}<a title="Посмотреть все рекламные места"
+                                                         class="show-hidden-place" href="javascript:void(0)">Показать
+                                            еще...</a>{% endif %}
+                                    {% else %}
+                                        Нет рекламных мест
+                                    {% endif %}
                                 </td>
                             </tr>
 
@@ -245,5 +252,5 @@
             </div>
         </div>
     </div>
-<sc>
+    <sc>
 {% endblock %}
