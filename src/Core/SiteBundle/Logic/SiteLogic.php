@@ -138,12 +138,11 @@ class SiteLogic
     public function isRealDomainChange($site)
     {
 
-        $domainNew=$site->getDomain();
+        $domainNew = $site->getDomain();
 
         $em = $this->container->get('doctrine')->getManager();
         $em->refresh($site);
-        $domainOld=$site->getDomain();
-
+        $domainOld = $site->getDomain();
 
         $siteHost = str_replace('www.', '', parse_url($domainNew)['host']);
         $siteHostOld = str_replace('www.', '', parse_url($domainOld)['host']);
@@ -154,6 +153,13 @@ class SiteLogic
             return false;
         }
 
+    }
+
+    public function getDomainFromUrl($url)
+    {
+        $res = parse_url($url);
+        $domain = $res['scheme'] . '://' . $res['host'];
+        return $domain;
     }
 
     /**
@@ -244,7 +250,7 @@ class SiteLogic
             fwrite($fp, $content);      //сразу закрываем не дождавшись ответа
         } else {
             //сервер nodejs лежит
-            if ($this->environment=='prod') {
+            if ($this->environment == 'prod') {
                 throw new \Exception('Server NodeJs is down!');
             }
 

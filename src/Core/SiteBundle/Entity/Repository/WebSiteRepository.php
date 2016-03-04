@@ -11,9 +11,23 @@ namespace Core\SiteBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Core\SiteBundle\Entity\Repository\CommonSiteRepository;
+use  Core\SiteBundle\Entity\WebSite;
 
 class WebSiteRepository extends CommonSiteRepository
 {
+
+
+    public function findFakeWebSite(WebSite $site)
+    {
+        $res = $this->createQueryBuilder('s')
+            ->where('s.domain = :domain AND s.user=:user')
+            ->setParameters(['domain' => $site->getDomain(), 'user' => 2])
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $res;
+    }
+
     /**
      * Находит площадку по опциям
      * @param $options

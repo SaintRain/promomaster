@@ -621,7 +621,7 @@ exports.refresh = function (req, res) {
 
     this.sendResponse(res, {statusCode: 200, body: {res:'ok'}});
 
-    console.log("Данные  обновлены:");
-    console.log(req.body);
+    //console.log("Данные  обновлены:");
+    //console.log(req.body);
 
 }

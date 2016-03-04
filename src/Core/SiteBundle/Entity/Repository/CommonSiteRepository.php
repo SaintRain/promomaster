@@ -9,12 +9,15 @@
 
 namespace Core\SiteBundle\Entity\Repository;
 
+use Core\SiteBundle\Entity\CommonSite;
 use Doctrine\ORM\EntityRepository;
 use Core\SiteBundle\Model\SearchFilter;
-
+use  Core\SiteBundle\Entity\WebSite;
 
 class CommonSiteRepository extends EntityRepository
 {
+
+
 
     public function searchByFilter(SearchFilter $filter)
     {
@@ -27,7 +30,7 @@ class CommonSiteRepository extends EntityRepository
 
         if ($filter->getKeywords()) {
             $query->andWhere('(s.keywords LIKE :keywords OR s.shortDescription LIKE :keywords OR s.description LIKE :keywords)')
-                ->setParameter('keywords', '%'.$filter->getKeywords().'%');
+                ->setParameter('keywords', '%' . $filter->getKeywords() . '%');
         }
 
         if ($filter->getCategories() && $filter->getCategories()->count()) {
@@ -41,12 +44,6 @@ class CommonSiteRepository extends EntityRepository
 
         return $query->getQuery();
     }
-
-
-
-
-
-
 
 
     /**

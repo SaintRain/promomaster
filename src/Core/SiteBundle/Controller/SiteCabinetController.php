@@ -69,6 +69,7 @@ class SiteCabinetController extends Controller
 
                 $em = $this->getDoctrine()->getManager();
                 $site->setIsHaveSnapshot(false);
+                $site->setDomain($this->container->get('core_site_logic')->getDomainFromUrl($site->getDomain()));
                 $em->flush();
                 //$this->makeSnapShot($site->getId());
                 $this->setFlash('edit_success', 'Данные успешно обновлены');
@@ -108,13 +109,14 @@ class SiteCabinetController extends Controller
                 //генерируем проверочный код
                 $verifiedCode = $this->get('core_site_logic')->generateVerifiedCode($site);
                 $site->setVerifiedCode($verifiedCode);
+                $site->setDomain($this->container->get('core_site_logic')->getDomainFromUrl($site->getDomain()));
 
                 $em = $this->getDoctrine()->getManager();
                 $site->setIsHaveSnapshot(false);
                 $em->persist($site);
                 $em->flush();
                 //$this->makeSnapShot($site->getId());
-                $em->flush();
+//                $em->flush();
                 $this->setFlash('edit_success', 'Новый сайт добавлен');
                 return new RedirectResponse($this->generateUrl('core_cabinet_site_edit', ['id' => $site->getId()]));
             } else {
@@ -168,8 +170,8 @@ class SiteCabinetController extends Controller
                     'form' => $form->createView()
                 ])->getContent();
                 $answer = [
-                    'data'      => $html,
-                    'result'    => false
+                    'data' => $html,
+                    'result' => false
                 ];
 
             }
@@ -179,9 +181,9 @@ class SiteCabinetController extends Controller
                 'form' => $form->createView()
             ])->getContent();
             $answer = [
-                'data'      => $html,
-                'result'    => true
-                ];
+                'data' => $html,
+                'result' => true
+            ];
         }
 
         $response = new Response(json_encode($answer));
@@ -198,7 +200,7 @@ class SiteCabinetController extends Controller
     private function getForm($site)
     {
         $form = $this->createFormBuilder($site)
-            ->add('domain', 'text', ['required' => true, 'trim'=>true])
+            ->add('domain', 'text', ['required' => true, 'trim' => true])
             ->add('mirrors', 'textarea', ['required' => false])
             ->add('keywords', 'textarea', ['required' => false, 'attr' => ['rows' => 5]])
             ->add('categories', 'FrontendCategory', ['required' => true,
@@ -267,7 +269,6 @@ class SiteCabinetController extends Controller
 
         $pageUrl = $site->getDomain() . '/promomaster_' . $site->getVerifiedCode() . '.html';
 
-
         $Headers = @get_headers($pageUrl);
         if (strpos('200', $Headers[0])) {
             $isVerified = true;
@@ -287,11 +288,22 @@ class SiteCabinetController extends Controller
         $em->flush($site);
 
 
+        //удаляем фейковую площадку
+        if ($isVerified && $site instanceof WebSite) {
+            $fakeSite = $em->getRepository('CoreSiteBundle:WebSite')->findFakeWebSite($site);
+            if ($fakeSite) {
+                $em->remove($fakeSite);
+                $em->flush();
+            }
+        }
+
+
+
         $response = new JsonResponse();
         $response->setData(
             ['isVerified' => $isVerified]
         );
-        return  $response;
+        return $response;
     }
 
     /**
@@ -328,7 +340,7 @@ class SiteCabinetController extends Controller
             throw $this->createNotFoundException('Page Not Found');
         }
 
-        $filePath = sprintf('%s/%s.jpg',  sys_get_temp_dir(), md5(time()));
+        $filePath = sprintf('%s/%s.jpg', sys_get_temp_dir(), md5(time()));
         $this->get('knp_snappy.image')->generate($request->get('site'), $filePath);
 
         $answer = ['data' => base64_encode(file_get_contents($filePath)), 'result' => 'ok'];
@@ -337,7 +349,6 @@ class SiteCabinetController extends Controller
 
         return $response;
     }
-
 
 
     /**
