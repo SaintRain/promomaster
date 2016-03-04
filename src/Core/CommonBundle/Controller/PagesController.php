@@ -19,9 +19,6 @@ class PagesController extends Controller
     public function indexAction()
     {
 
-//        /var/www/promomaster.net/src/Application/Sonata/UserBundle/Resources/views/Registration/confirmed.html.twig
-
-    return $this->render('ApplicationSonataUserBundle:Registration:confirmed.html.twig', ['user'=>['userStatus'=>0, 'username'=>'Aleks']]);
         return $this->render('CoreCommonBundle:Pages:index.html.twig');
     }
 
