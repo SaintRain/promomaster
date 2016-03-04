@@ -23,11 +23,20 @@
     <!--=== Content Part ===-->
     <div class="container content">
         <div class="alert alert-success fade in margin-bottom-40">
-            <h4>Поздравляем {{ user.username }}, ваш аккаунт подтвержден. Для начала работы вам необходимо <a href="{{ path('core_cabinet_adcompany_create') }}">добавить рекламную компанию</a>.</h4>
+            {% if user.userStatus==constant('Application\\Sonata\\UserBundle\\Entity\\User::USER_TYPE_WEBMASTER') %}
+                <h4>Поздравляем {{ user.username }}, ваш аккаунт подтвержден!</h4>
+                <a rel="float-shadow" href="{{ path('core_cabinet_site_create') }}"
+                   class="btn-u btn-u-lg rounded-2x float-shadow">Добавить сайт в каталог системы</a>
+            {% else %}
+                <h4>Поздравляем {{ user.username }}, ваш аккаунт подтвержден!</h4>
+                <a rel="float-shadow" href="{{ path('core_cabinet_adcompany_create') }}"
+                   class="btn-u btn-u-lg rounded-2x float-shadow">Добавить рекламную компанию</a>
+            {% endif %}
+
 
             {#{% if app.session is not empty %}#}
-                {#{% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}#}
-                {#{% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>{% endif %}#}
+            {#{% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}#}
+            {#{% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>{% endif %}#}
             {#{% endif %}#}
         </div>
     </div><!--/container-->

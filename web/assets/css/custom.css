@@ -238,3 +238,7 @@ div.catalog-theme {
     color: #777;
     font-size: 11px;
 }
+
+.content {
+    min-height: 455px !important;
+}
