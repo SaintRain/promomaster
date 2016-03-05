@@ -186,6 +186,8 @@ class CommonSite
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
     }
 
     /**
