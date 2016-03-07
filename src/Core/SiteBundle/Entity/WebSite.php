@@ -57,6 +57,8 @@ class WebSite extends CommonSite
     {
 //        $domain = preg_replace("#/$#", '', $domain);
         $this->domain = $domain;
+
+        return $this;
     }
 
 

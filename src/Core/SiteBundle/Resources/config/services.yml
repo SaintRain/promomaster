@@ -87,4 +87,10 @@ services:
       tags:
           - { name: form.type, alias: ad_place_price_discount_form }
 
-
+# хелпер для скриншотов
+  core_site.logic.snapshot_logic:
+    class: Core\SiteBundle\Logic\SnapShotLogic
+    arguments:
+      - @knp_snappy.image
+      - @knp_snappy.pdf
+    lazy: true
