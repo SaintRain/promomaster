@@ -88,60 +88,63 @@ class SnapShotCommand extends ContainerAwareCommand
      */
     private function makeSnapShot(WebSite $site)
     {
-        $result = false;
 
-        if (!file_exists($site->getUploadRootDir())) {
-            mkdir($site->getUploadRootDir());
-        }
+        return $this->getContainer()->get('core_site.logic.snapshot_logic')->makeSnapShot($site);
 
-        $file = sprintf('site-%d', $site->getId());
-        $imagePath = sprintf('%s/%s.jpg', $site->getUploadRootDir(),$file);
-        $pfdPath = sprintf('%s/%s.pdf', $site->getUploadRootDir(), $file);
-
-        if (file_exists($imagePath)) {
-            unlink($imagePath);
-        }
-
-        if (file_exists($pfdPath)) {
-            unlink($pfdPath);
-        }
-
-        try {
-            $this->getContainer()->get('knp_snappy.image')->generate($site->getDomain(), $imagePath);
-            $site->setSnapShot(sprintf('%s.jpg', $file));
-            $result = true;
-            $this->resize($imagePath);
-        } catch(\Exception $exception) {
-            ld($exception);
-            $result = false;
-        }
-
-        try {
-            if (!$result) {
-                $res = $this->getContainer()->get('knp_snappy.pdf')->generate($site->getDomain(), $pfdPath);
-
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
-                }
-
-                $imagick = new \Imagick();
-                $imagick->setResolution(300,300);
-                $imagick->readimage("{$pfdPath}[0]");
-//                $imagick->scaleImage(700, 740, true);
-                $imagick->setImageFormat('jpg');
-                $imagick->writeImage($imagePath);
-                $imagick->clear();
-                $imagick->destroy();
-
-                $site->setSnapShot(sprintf('%s.jpg', $file));
-                $this->resize($imagePath);
-                unlink($pfdPath);
-                $result = true;
-            }
-        } catch (\Exception $exception) {
-            ld($exception);
-            $result = false;
-        }
+//        $result = false;
+//
+//        if (!file_exists($site->getUploadRootDir())) {
+//            mkdir($site->getUploadRootDir());
+//        }
+//
+//        $file = sprintf('site-%d', $site->getId());
+//        $imagePath = sprintf('%s/%s.jpg', $site->getUploadRootDir(),$file);
+//        $pfdPath = sprintf('%s/%s.pdf', $site->getUploadRootDir(), $file);
+//
+//        if (file_exists($imagePath)) {
+//            unlink($imagePath);
+//        }
+//
+//        if (file_exists($pfdPath)) {
+//            unlink($pfdPath);
+//        }
+//
+//        try {
+//            $this->getContainer()->get('knp_snappy.image')->generate($site->getDomain(), $imagePath);
+//            $site->setSnapShot(sprintf('%s.jpg', $file));
+//            $result = true;
+//            $this->resize($imagePath);
+//        } catch(\Exception $exception) {
+//            ld($exception);
+//            $result = false;
+//        }
+//
+//        try {
+//            if (!$result) {
+//                $res = $this->getContainer()->get('knp_snappy.pdf')->generate($site->getDomain(), $pfdPath);
+//
+//                if (file_exists($imagePath)) {
+//                    unlink($imagePath);
+//                }
+//
+//                $imagick = new \Imagick();
+//                $imagick->setResolution(300,300);
+//                $imagick->readimage("{$pfdPath}[0]");
+////                $imagick->scaleImage(700, 740, true);
+//                $imagick->setImageFormat('jpg');
+//                $imagick->writeImage($imagePath);
+//                $imagick->clear();
+//                $imagick->destroy();
+//
+//                $site->setSnapShot(sprintf('%s.jpg', $file));
+//                $this->resize($imagePath);
+//                unlink($pfdPath);
+//                $result = true;
+//            }
+//        } catch (\Exception $exception) {
+//            ld($exception);
+//            $result = false;
+//        }
 
         return $result;
     }
