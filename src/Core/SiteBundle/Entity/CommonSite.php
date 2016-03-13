@@ -108,9 +108,9 @@ class CommonSite
     /**
      * Описание
      * @var string
-     * @ORM\Column(type="string", length=120, nullable=true)
+     * @ORM\Column(type="string", length=350, nullable=true)
      * @Assert\Length(
-     *      max = 120
+     *      max = 350
      * )
      */
     protected $shortDescription;

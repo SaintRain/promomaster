@@ -20,8 +20,7 @@ class ImportCommand extends ContainerAwareCommand
         $this
             ->setName('site:import')
             ->addArgument('file_name', InputArgument::REQUIRED, 'File Name Fot CSV File Must Be in Web Uploads Dir')
-            ->addArgument('owner_email', InputArgument::REQUIRED, 'Sites Owner Email')
-            ;
+            ->addArgument('owner_email', InputArgument::REQUIRED, 'Sites Owner Email');
     }
 
     /**
@@ -32,7 +31,7 @@ class ImportCommand extends ContainerAwareCommand
         /** @var \Doctrine\ORM\EntityManagerInterface $em */
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-        $user =$em->getRepository('ApplicationSonataUserBundle:User')
+        $user = $em->getRepository('ApplicationSonataUserBundle:User')
             ->findOneBy(['email' => $input->getArgument('owner_email')]);
 
         if (!$user) {
@@ -48,66 +47,94 @@ class ImportCommand extends ContainerAwareCommand
         $handle = fopen($filePath, 'r');
 
         $total = [
-            'all'       => 0,
-            'success'   => 0,
-            'error'     => 0
+            'all' => 0,
+            'success' => 0,
+            'error' => 0
         ];
 
         if (($handle = fopen($filePath, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                $total['all'] += 1;
+            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
 
-                if (count($data) != 2) {
-                    $output->writeln('<error>Arguments mismatch</error>');
-                    continue;
-                }
 
-                $category = $em->getRepository('CoreCategoryBundle:SiteCategory')->find($data[1]);
+//                if (count($data) != 2) {
+//                    $output->writeln('<error>Arguments mismatch</error>');
+//                    continue;
+//                }
 
-                if (!$category) {
-                    $output->writeln(
-                        sprintf('<error>Site Category With Id %d Not Found</error>', $data[1])
-                    );
-                    continue;
-                }
-
+                $cats = explode(',', $data[4]);
                 $categories = new ArrayCollection();
 
-                $categories->add($category);
-                $extraInfo = $this->getExtraInfo($data[0]);
-                $site = new WebSite();
+                foreach ($cats as $c) {
+                    $category = $em->getRepository('CoreCategoryBundle:SiteCategory')->find(trim($c));
 
-                if (isset($extraInfo['keywords'])) {
-                    $site->setKeywords($extraInfo['keywords']);
+                    if (!$category) {
+                        $output->writeln(
+                            sprintf('<error>Site Category With Id %d Not Found</error>', $data[1])
+                        );
+                        continue;
+                    }
+
+                    $categories->add($category);
                 }
 
-                if (isset($extraInfo['description'])) {
-                    $site->setDescription($extraInfo['description']);
+
+
+                $domain = $this->getContainer()->get('core_site_logic')->getDomainFromUrl($data[0]);
+
+
+                if ($data[3]=='') {
+                    $extraInfo = $this->getExtraInfo($domain);
+                    $data[3]=$extraInfo['description'];
                 }
 
-                $site
-                    ->setUser($user)
-                    ->setDomain($data[0])
-                    ->setIsVerified(true)
-                    ->setCategories($categories)
-                    ->setCreatedDateTime(new \DateTime());
+                $extraInfo = [
+                    'keywords' => $data[1],
+                    'shortDescription' => $data[3],
+                    'region'=>$data[2]
+                ];
+                if ($extraInfo) {
+                    $site = new WebSite();
 
-                $em->persist($site);
-                $em->flush();
+                    if (isset($extraInfo['keywords'])) {
+                        $site->setKeywords($extraInfo['keywords']);
+                    }
 
-                $snapShotLogic = $this->getContainer()->get('core_site.logic.snapshot_logic');
+                    if (isset($extraInfo['shortDescription'])) {
+                        $site->setShortDescription($extraInfo['shortDescription']);
+                    }
 
-                if ($snapShotLogic->makeSnapShot($site)) {
-                    $site->setIsHaveSnapshot(true);
-                    $em->flush($site);
-                    $total['success'] += 1;
+                    if (isset($extraInfo['region'])) {
+                        $site->setRegion($extraInfo['region']);
+                    }
+                    $site
+                        ->setUser($user)
+                        ->setDomain($domain)
+                        ->setIsVerified(true)
+                        ->setCategories($categories)
+                        ->setCreatedDateTime(new \DateTime());
+
+                    $em->persist($site);
+                    $em->flush();
+
+                    $snapShotLogic = $this->getContainer()->get('core_site.logic.snapshot_logic');
+
+                    if ($snapShotLogic->makeSnapShot($site)) {
+                        $site->setIsHaveSnapshot(true);
+                        $em->flush($site);
+                        $total['success'] += 1;
+                    } else {
+                        $total['error'] += 1;
+                    }
+                    $em->detach($site);
+
+                    $output->writeln(sprintf('<info>Processed %d</info>', $total['all']));
+
                 } else {
                     $total['error'] += 1;
                 }
 
-                $em->detach($site);
+                $total['all'] += 1;
             }
-
             fclose($handle);
         }
 
@@ -118,30 +145,37 @@ class ImportCommand extends ContainerAwareCommand
 
     private function getExtraInfo($url)
     {
-        $html = file_get_contents($url);
+        try {
 
-        if (!$html) {
-            return null;
-        }
 
-        $crawler = new Crawler($html);
+            $html = @file_get_contents($url);
 
-        $nodeValues = $crawler->filter('head meta')->each(function (Crawler $node, $i) {
-            return [
-                'content' => $node->attr('content'),
-                'name'    => $node->attr('name')
-            ];
-        });
-
-        $data = [];
-
-        foreach ($nodeValues as $value) {
-            if ($value['name'] == 'keywords') {
-                $data['keywords'] = str_replace(',', "\n\r", $value['content']);
-            } elseif($value['name'] == 'description') {
-                $data['description'] = ucfirst($value['content']);
+            if (!$html) {
+                return null;
             }
+
+            $crawler = new Crawler($html);
+
+            $nodeValues = $crawler->filter('head meta')->each(function (Crawler $node, $i) {
+                return [
+                    'content' => $node->attr('content'),
+                    'name' => $node->attr('name')
+                ];
+            });
+
+            $data = [];
+
+            foreach ($nodeValues as $value) {
+                if ($value['name'] == 'keywords') {
+                    $data['keywords'] = str_replace(',', "\n\r", $value['content']);
+                } elseif ($value['name'] == 'description') {
+                    $data['description'] = ucfirst($value['content']);
+                }
+            }
+        } catch (Exception $e) {
+            $data = false;
         }
+
 
         return $data;
     }

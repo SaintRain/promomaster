@@ -40,7 +40,12 @@ class WebSite extends CommonSite
     private $mirrors;
 
 
-
+    /**
+     * Регион
+     * @var string
+     * @ORM\Column(type="string", length=250, nullable=false)
+     */
+    private $region;
 
     /**
      * @return string
@@ -82,6 +87,23 @@ class WebSite extends CommonSite
     {
         return str_replace('http://', '', $this->getDomain());
     }
+
+    /**
+     * @return string
+     */
+    public function getRegion()
+    {
+        return $this->region;
+    }
+
+    /**
+     * @param string $region
+     */
+    public function setRegion($region)
+    {
+        $this->region = $region;
+    }
+
 
 
     /**

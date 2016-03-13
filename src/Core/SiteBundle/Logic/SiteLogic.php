@@ -158,6 +158,7 @@ class SiteLogic
     public function getDomainFromUrl($url)
     {
         $res = parse_url($url);
+
         $domain = $res['scheme'] . '://' . $res['host'];
         return $domain;
     }

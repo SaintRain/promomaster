@@ -2,7 +2,7 @@
 {% import "@CoreSite/Site/site_catalog_macro.html.twig" as elements %}
 
 {# SEO - заголовки #}
-{% block title %}PromoMaster - каталог площадок{% endblock %}
+{% block title %}PromoMaster - каталог рекламных площадок{% endblock %}
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
 
@@ -48,7 +48,9 @@
             <div class="col-md-8">
                 <div class="margin-bottom-20">
                         <h3><a target="_blank" href="{{ path('core_common_redirect_to_domain', {siteId:site.id}) }}">{{ site.domain|onlyDomain }}</a></h3>
+
                     <p>{{ site.shortDescription | nl2br }}</p>
+                    {% if site.region %}<p>Регион: <b>{{ site.region  }}</b></p>{% endif %}
                 </div>
                 <br>
                 {% if site.adPlaces|length %}
@@ -90,6 +92,19 @@
                         {{ site.description | nl2br }}
                     </div>
                 {% endif %}
+
+
+
+
+
+                {% if site.keywords %}
+                    <br><br><br>
+                    <div style="clear: left">
+                        <h3>Ключевые слова</h3>
+                        {{ site.keywords  }}
+                    </div>
+                {% endif %}
+
 
             </div>
         </div>
