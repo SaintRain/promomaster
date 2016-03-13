@@ -84,6 +84,7 @@
                         <div  class="catalog-theme"><i class="fa fa-check color-green"></i>&nbsp;{{ category.captionRu }}</div>
                    {% endfor %}
                 </div>
+                {% if site.categories.count>3 %}<br><br><br>{% endif %}
 
                 {% if site.description %}
                     <br><br><br>

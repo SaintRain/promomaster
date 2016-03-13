@@ -91,7 +91,7 @@
             <div class="col-md-9">
                 {% if sites.count %}
                     <h3>
-                        Найдено {{ sites.totalItemCount }} {{ declOfNum(sites.totalItemCount, ['площадку','площадки', 'площадок']) }} </h3>
+                        Найдено {{ sites.totalItemCount|number_format }} {{ declOfNum(sites.totalItemCount, ['площадку','площадки', 'площадок']) }} </h3>
                     <table class="table table-striped">
                         <thead>
                         <tr>

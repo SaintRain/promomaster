@@ -81,10 +81,8 @@ class ImportCommand extends ContainerAwareCommand
 
                 $domain = $this->getContainer()->get('core_site_logic')->getDomainFromUrl($data[0]);
 
+//                http://moy-dom.ucoz.ru
 
-                if ($domain=='http://moy-dom.ucoz.ru') {
-                    $start=true;
-                }
 
                 if ($start) {
                     if ($data[3] == '') {
@@ -142,6 +140,9 @@ class ImportCommand extends ContainerAwareCommand
                     }
 
                     $total['all'] += 1;
+                }
+                if ($domain=='http://pushkino.tv') {
+                    $start=true;
                 }
             }
 
