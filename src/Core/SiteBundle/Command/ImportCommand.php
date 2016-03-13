@@ -51,7 +51,7 @@ class ImportCommand extends ContainerAwareCommand
             'success' => 0,
             'error' => 0
         ];
-
+        $start=false;
         if (($handle = fopen($filePath, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
 
@@ -82,39 +82,46 @@ class ImportCommand extends ContainerAwareCommand
                 $domain = $this->getContainer()->get('core_site_logic')->getDomainFromUrl($data[0]);
 
 
-                if ($data[3]=='') {
-                    $extraInfo = $this->getExtraInfo($domain);
-                    $data[3]=$extraInfo['description'];
+                if ($domain=='http://moy-dom.ucoz.ru') {
+                    $start=true;
                 }
 
-                $extraInfo = [
-                    'keywords' => $data[1],
-                    'shortDescription' => $data[3],
-                    'region'=>$data[2]
-                ];
-                if ($extraInfo) {
-                    $site = new WebSite();
-
-                    if (isset($extraInfo['keywords'])) {
-                        $site->setKeywords($extraInfo['keywords']);
+                if ($start) {
+                    if ($data[3] == '') {
+                        $extraInfo = $this->getExtraInfo($domain);
+                        if (isset($extraInfo['description'])) {
+                            $data[3] = $extraInfo['description'];
+                        }
                     }
 
-                    if (isset($extraInfo['shortDescription'])) {
-                        $site->setShortDescription($extraInfo['shortDescription']);
-                    }
+                    $extraInfo = [
+                        'keywords' => $data[1],
+                        'shortDescription' => $data[3],
+                        'region' => $data[2]
+                    ];
+                    if ($extraInfo) {
+                        $site = new WebSite();
 
-                    if (isset($extraInfo['region'])) {
-                        $site->setRegion($extraInfo['region']);
-                    }
-                    $site
-                        ->setUser($user)
-                        ->setDomain($domain)
-                        ->setIsVerified(true)
-                        ->setCategories($categories)
-                        ->setCreatedDateTime(new \DateTime());
+                        if (isset($extraInfo['keywords'])) {
+                            $site->setKeywords($extraInfo['keywords']);
+                        }
 
-                    $em->persist($site);
-                    $em->flush();
+                        if (isset($extraInfo['shortDescription'])) {
+                            $site->setShortDescription($extraInfo['shortDescription']);
+                        }
+
+                        if (isset($extraInfo['region'])) {
+                            $site->setRegion($extraInfo['region']);
+                        }
+                        $site
+                            ->setUser($user)
+                            ->setDomain($domain)
+                            ->setIsVerified(true)
+                            ->setCategories($categories)
+                            ->setCreatedDateTime(new \DateTime());
+
+                        $em->persist($site);
+                        $em->flush();
 
 //                    $snapShotLogic = $this->getContainer()->get('core_site.logic.snapshot_logic');
 //
@@ -126,16 +133,19 @@ class ImportCommand extends ContainerAwareCommand
 //                        $total['error'] += 1;
 //                    }
 
-                    $em->detach($site);
+                        $em->detach($site);
 
-                    $output->writeln(sprintf('<info>Processed %d '.$domain.'</info>', $total['all']));
+                        $output->writeln(sprintf('<info>Processed %d ' . $domain . '</info>', $total['all']));
 
-                } else {
-                    $total['error'] += 1;
+                    } else {
+                        $total['error'] += 1;
+                    }
+
+                    $total['all'] += 1;
                 }
-
-                $total['all'] += 1;
             }
+
+
             fclose($handle);
         }
 
