@@ -116,18 +116,20 @@ class ImportCommand extends ContainerAwareCommand
                     $em->persist($site);
                     $em->flush();
 
-                    $snapShotLogic = $this->getContainer()->get('core_site.logic.snapshot_logic');
+//                    $snapShotLogic = $this->getContainer()->get('core_site.logic.snapshot_logic');
+//
+//                    if ($snapShotLogic->makeSnapShot($site)) {
+//                        $site->setIsHaveSnapshot(true);
+//                        $em->flush($site);
+//                        $total['success'] += 1;
+//                    } else {
+//                        $total['error'] += 1;
+//                    }
 
-                    if ($snapShotLogic->makeSnapShot($site)) {
-                        $site->setIsHaveSnapshot(true);
-                        $em->flush($site);
-                        $total['success'] += 1;
-                    } else {
-                        $total['error'] += 1;
-                    }
+                    $em->flush($site);
                     $em->detach($site);
 
-                    $output->writeln(sprintf('<info>Processed %d</info>', $total['all']));
+                    $output->writeln(sprintf('<info>Processed %d '.$domain.'</info>', $total['all']));
 
                 } else {
                     $total['error'] += 1;
