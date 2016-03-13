@@ -102,6 +102,10 @@ class SnapShotCommand extends ContainerAwareCommand
             unlink($imagePath);
         }
 
+        if (file_exists($pfdPath)) {
+            unlink($pfdPath);
+        }
+
         try {
             $this->getContainer()->get('knp_snappy.image')->generate($site->getDomain(), $imagePath);
             $site->setSnapShot(sprintf('%s.jpg', $file));
