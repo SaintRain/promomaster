@@ -64,11 +64,15 @@ class SnapShotCommand extends ContainerAwareCommand
                     $site->setIsHaveSnapshot(true);
                 } else {
                     $failed++;
+                    $output->writeln('<info>Failed '. $site->getDomain());
                 }
                 $output->writeln('<info>Processed '. $total);
+                $em->flush();
+                $em->detach($site);
             }
 
-            $em->flush();
+
+
             if ($total) {
                 $output->writeln('<info>Snapshot for '. $success . ' site created successfull</info>');
                 $output->writeln('<info>Can not create snapshot for '. $failed . ' sites</info>');
