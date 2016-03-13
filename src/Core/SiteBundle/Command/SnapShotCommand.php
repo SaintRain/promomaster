@@ -65,6 +65,7 @@ class SnapShotCommand extends ContainerAwareCommand
                 } else {
                     $failed++;
                 }
+                $output->writeln('<info>Processed '. $total);
             }
 
             $em->flush();
