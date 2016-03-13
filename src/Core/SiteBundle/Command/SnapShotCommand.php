@@ -67,9 +67,9 @@ class SnapShotCommand extends ContainerAwareCommand
                     $output->writeln('<info>Failed '. $site->getDomain());
                 }
                 $output->writeln('<info>Processed '. $total);
-                $em->flush();
-                $em->detach($site);
+
             }
+            $em->flush();
 
 
 
