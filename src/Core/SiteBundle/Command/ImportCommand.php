@@ -126,7 +126,6 @@ class ImportCommand extends ContainerAwareCommand
 //                        $total['error'] += 1;
 //                    }
 
-                    $em->flush($site);
                     $em->detach($site);
 
                     $output->writeln(sprintf('<info>Processed %d '.$domain.'</info>', $total['all']));
