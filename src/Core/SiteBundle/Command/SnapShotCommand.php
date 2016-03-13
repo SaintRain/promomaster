@@ -62,6 +62,9 @@ class SnapShotCommand extends ContainerAwareCommand
                 if ($this->makeSnapShot($site)) {
                     $success++;
                     $site->setIsHaveSnapshot(true);
+                    $em->flush();
+                    $em->detach($site);
+
                 } else {
                     $failed++;
                     $output->writeln('<info>Failed '. $site->getDomain());
@@ -69,7 +72,7 @@ class SnapShotCommand extends ContainerAwareCommand
                 $output->writeln('<info>Processed '. $total);
 
             }
-            $em->flush();
+
 
 
 
