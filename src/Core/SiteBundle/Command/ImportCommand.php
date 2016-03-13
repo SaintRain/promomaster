@@ -13,7 +13,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ImportCommand extends ContainerAwareCommand
 {
-    const BASE_PATH = '../../../../web/uploads';
+    const BASE_PATH = '../../../../web';
 
     protected function configure()
     {
