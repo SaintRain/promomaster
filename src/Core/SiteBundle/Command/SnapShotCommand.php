@@ -108,6 +108,7 @@ class SnapShotCommand extends ContainerAwareCommand
             $result = true;
             $this->resize($imagePath);
         } catch(\Exception $exception) {
+            ld($exception);
             $result = false;
         }
 
@@ -134,6 +135,7 @@ class SnapShotCommand extends ContainerAwareCommand
                 $result = true;
             }
         } catch (\Exception $exception) {
+            ld($exception);
             $result = false;
         }
 
