@@ -17,6 +17,16 @@ class WebSiteRepository extends CommonSiteRepository
 {
 
 
+    public function getSitesForScreenshotCreating() {
+
+         return  $this->createQueryBuilder('s')
+             ->where('s.isHaveSnapshot = :isHaveSnapshot AND s.isVerified=1')
+             ->setParameters(['isHaveSnapshot' => false])
+             ->getQuery()
+             ->execute();
+
+    }
+
     public function findFakeWebSite(WebSite $site)
     {
         $res = $this->createQueryBuilder('s')
