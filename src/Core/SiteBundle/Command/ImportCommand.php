@@ -53,7 +53,7 @@ class ImportCommand extends ContainerAwareCommand
         ];
 
         if (($handle = fopen($filePath, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+            while (($data = fgetcsv($handle, null, ";")) !== FALSE) {
 
 
 //                if (count($data) != 2) {
@@ -149,14 +149,11 @@ class ImportCommand extends ContainerAwareCommand
 
                     } else {
                         $total['error'] += 1;
+                        $output->writeln(sprintf('<info>Error %d ' . $domain . '</info>', $total['error']));
                     }
 
                     $total['all'] += 1;
                 }
-
-
-
-
             fclose($handle);
         }
 
