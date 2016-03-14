@@ -57,7 +57,10 @@ class SnapShotCommand extends ContainerAwareCommand
             $success = 0;
             $failed = 0;
             $total = 0;
-            foreach($em->getRepository('CoreSiteBundle:WebSite')->findBy(['isHaveSnapshot' => false]) as $site) {
+
+            $sites=$em->getRepository('CoreSiteBundle:WebSite')->getSitesForScreenshotCreating();
+
+            foreach($sites as $site) {
                 $total++;
                 if ($this->makeSnapShot($site)) {
                     $success++;
