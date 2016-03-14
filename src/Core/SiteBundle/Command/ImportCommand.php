@@ -61,95 +61,95 @@ class ImportCommand extends ContainerAwareCommand
 //                    continue;
 //                }
 
-//                $cats = explode(',', $data[4]);
-//                $categories = new ArrayCollection();
+                $cats = explode(',', $data[4]);
+                $categories = new ArrayCollection();
+
+                foreach ($cats as $c) {
+                    $category = $em->getRepository('CoreCategoryBundle:SiteCategory')->find(trim($c));
+
+                    if (!$category) {
+                        $output->writeln(
+                            sprintf('<error>Site Category With Id %d Not Found</error>', $data[1])
+                        );
+                        continue;
+                    }
+
+                    $categories->add($category);
+                }
+
+                $domain = $this->getContainer()->get('core_site_logic')->getDomainFromUrl($data[0]);
+
+//                $domain = $this->getContainer()->get('core_site_logic')->getDomainFromUrl($data[0]);
 //
-//                foreach ($cats as $c) {
-//                    $category = $em->getRepository('CoreCategoryBundle:SiteCategory')->find(trim($c));
 //
-//                    if (!$category) {
-//                        $output->writeln(
-//                            sprintf('<error>Site Category With Id %d Not Found</error>', $data[1])
-//                        );
-//                        continue;
+//                $site = $em->getRepository('CoreSiteBundle:WebSite')->findByDomain($domain);
+//
+//
+//                if ($site) {
+//                    $site=$site[0];
+//                    $extraInfo = $this->getExtraInfo($domain);
+//                    if (isset($extraInfo['description'])) {
+//                        $site->setShortDescription($extraInfo['description']);
+//                        $em->flush($site);
+//                        $em->detach($site);
 //                    }
-//
-//                    $categories->add($category);
 //                }
 
 
 
-                $domain = $this->getContainer()->get('core_site_logic')->getDomainFromUrl($data[0]);
-
-
-                $site = $em->getRepository('CoreSiteBundle:WebSite')->findByDomain($domain);
-
-
-                if ($site) {
-                    $site=$site[0];
-                    $extraInfo = $this->getExtraInfo($domain);
-                    if (isset($extraInfo['description'])) {
-                        $site->setShortDescription($extraInfo['description']);
-                        $em->flush($site);
-                        $em->detach($site);
+                    if ($data[3] == '') {
+                        $extraInfo = $this->getExtraInfo($domain);
+                        if (isset($extraInfo['description'])) {
+                            $data[3] = $extraInfo['description'];
+                        }
                     }
-                }
 
+                    $extraInfo = [
+                        'keywords' => $data[1],
+                        'shortDescription' => $data[3],
+                        'region' => $data[2]
+                    ];
+                    if ($extraInfo) {
+                        $site = new WebSite();
 
+                        if (isset($extraInfo['keywords'])) {
+                            $site->setKeywords($extraInfo['keywords']);
+                        }
 
-//                    if ($data[3] == '') {
-//                        $extraInfo = $this->getExtraInfo($domain);
-//                        if (isset($extraInfo['description'])) {
-//                            $data[3] = $extraInfo['description'];
-//                        }
-//                    }
-//
-//                    $extraInfo = [
-//                        'keywords' => $data[1],
-//                        'shortDescription' => $data[3],
-//                        'region' => $data[2]
-//                    ];
-//                    if ($extraInfo) {
-//                        $site = new WebSite();
-//
-//                        if (isset($extraInfo['keywords'])) {
-//                            $site->setKeywords($extraInfo['keywords']);
-//                        }
-//
-//                        if (isset($extraInfo['shortDescription'])) {
-//                            $site->setShortDescription($extraInfo['shortDescription']);
-//                        }
-//
-//                        if (isset($extraInfo['region'])) {
-//                            $site->setRegion($extraInfo['region']);
-//                        }
-//                        $site
-//                            ->setUser($user)
-//                            ->setDomain($domain)
-//                            ->setIsVerified(true)
-//                            ->setCategories($categories)
-//                            ->setCreatedDateTime(new \DateTime());
-//
-//                        $em->persist($site);
-//                        $em->flush();
-//
-//                    $snapShotLogic = $this->getContainer()->get('core_site.logic.snapshot_logic');
-//
-//                    if ($snapShotLogic->makeSnapShot($site)) {
-//                        $site->setIsHaveSnapshot(true);
-//                        $em->flush($site);
-//                        $total['success'] += 1;
-//                    } else {
-//                        $total['error'] += 1;
-//                    }
-//
-//                        $em->detach($site);
-//
-//                        $output->writeln(sprintf('<info>Processed %d ' . $domain . '</info>', $total['all']));
-//
-//                    } else {
-//                        $total['error'] += 1;
-//                    }
+                        if (isset($extraInfo['shortDescription'])) {
+                            $site->setShortDescription($extraInfo['shortDescription']);
+                        }
+
+                        if (isset($extraInfo['region'])) {
+                            $site->setRegion($extraInfo['region']);
+                        }
+                        $site
+                            ->setUser($user)
+                            ->setDomain($domain)
+                            ->setIsVerified(true)
+                            ->setCategories($categories)
+                            ->setCreatedDateTime(new \DateTime());
+
+                        $em->persist($site);
+                        $em->flush();
+
+                    $snapShotLogic = $this->getContainer()->get('core_site.logic.snapshot_logic');
+
+                    if ($snapShotLogic->makeSnapShot($site)) {
+                        $site->setIsHaveSnapshot(true);
+                        $em->flush($site);
+                        $total['success'] += 1;
+                    } else {
+                        $total['error'] += 1;
+                    }
+
+                        $em->detach($site);
+
+                        $output->writeln(sprintf('<info>Processed %d ' . $domain . '</info>', $total['all']));
+
+                    } else {
+                        $total['error'] += 1;
+                    }
 
                     $total['all'] += 1;
                 }
