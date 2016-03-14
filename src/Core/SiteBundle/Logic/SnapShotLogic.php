@@ -51,12 +51,17 @@ class SnapShotLogic
             unlink($imagePath);
         }
 
+        if (file_exists($pfdPath)) {
+            unlink($pfdPath);
+        }
+
         try {
             $this->imageSnapper->generate($site->getDomain(), $imagePath);
             $site->setSnapShot(sprintf('%s.jpg', $file));
             $result = true;
             $this->resize($imagePath);
         } catch(\Exception $exception) {
+            ld($exception);
             $result = false;
         }
 
@@ -82,6 +87,7 @@ class SnapShotLogic
                 $result = true;
             }
         } catch (\Exception $exception) {
+            ld($exception);
             $result = false;
         }
 
