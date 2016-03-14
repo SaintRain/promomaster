@@ -63,7 +63,7 @@ class SnapShotCommand extends ContainerAwareCommand
                     $success++;
                     $site->setIsHaveSnapshot(true);
                     $em->flush();
-//                    $em->detach($site);
+                    $em->detach($site);
 
                 } else {
                     $failed++;
