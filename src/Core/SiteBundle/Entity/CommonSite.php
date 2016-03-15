@@ -370,6 +370,13 @@ class CommonSite
             ? null
             : $this->getUploadDir() .'/'.$this->getUser()->getId().'/'.$this->snapShot;
     }
+    public function getSmallWebPath()
+    {
+        return null === $this->snapShot
+            ? null
+            : $this->getUploadDir() .'/'.$this->getUser()->getId().'/small_'.$this->snapShot;
+    }
+
 
     public function getUploadRootDir()
     {

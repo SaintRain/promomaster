@@ -556,6 +556,34 @@ mysqlGetPriceModel = function () {
 }
 
 
+//выборка сайтов для создания скриншотов
+mysqlGetSitesForWebshot = function (callback) {
+
+var sites=[];
+    var q = "SELECT id, domain, user_id  FROM core_site WHERE isVerified=1 AND (isHaveSnapshot=0 OR isHaveSnapshot IS NULL)";
+    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
+        if (err) throw err;
+        rows.forEach(function (item) {
+            sites.push(item) ;
+        })
+        callback(sites);
+    });
+return sites;
+}
+
+
+//обновление скриншота
+mysqlUpdateSitesForWebshot = function (site) {
+
+    var q = "UPDATE core_site SET isHaveSnapshot=1, snapshot='"+site.snapshot+"'  WHERE id="+site.id;
+    MYSQL_CONNECTION.query(q, function (err, rows, fields) {
+        if (err) throw err;
+    });
+
+}
+
+
+
 //выборка связи рекламных компаний и стран
 //mysqlGetAdCompanyMatchCountries = function (adcompany_id, country_id) {
 //    if (adcompany_id, country_id) {
