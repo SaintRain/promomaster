@@ -61,7 +61,7 @@ class SnapShotLogic
             $result = true;
             $this->resize($imagePath);
         } catch(\Exception $exception) {
-            ld($exception);
+//            ld($exception);
             $result = false;
         }
 
@@ -87,7 +87,7 @@ class SnapShotLogic
                 $result = true;
             }
         } catch (\Exception $exception) {
-            ld($exception);
+//            ld($exception);
             $result = false;
         }
 
