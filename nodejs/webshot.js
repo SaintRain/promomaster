@@ -10,8 +10,8 @@ require(__dirname + '/mysql.js');
 
 
 var options = {
-    renderDelay: 5000,
-    timeout: 10000,
+    renderDelay: 10000,
+    timeout: 15000,
     screenSize: {
         width: 1024
         , height: 1024
@@ -31,7 +31,6 @@ mysqlConnect(MYSQL, 0);
 
 mysqlGetSitesForWebshot(function (sites) {
     webshotsRun(false, sites);
-
 });
 
 
