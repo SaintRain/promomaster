@@ -111,7 +111,7 @@
                                 <td>
                                     <a href="{{ path('core_site_details', {id: site.id}) }}">
                                         {% if site.webPath %}
-                                            <img src="{{ asset(site.getSmallWebPath) }}" alt="" width="100%">
+                                            <img src="{{ asset(site.getSmallWebPath) }}" alt="" >
                                         {% else %}
                                             <span class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
                                         {% endif %}
