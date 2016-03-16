@@ -3,6 +3,7 @@
 var MYSQL = require('mysql');
 var webshot = require('webshot');
 
+
 var easyimg = require('easyimage');
 
 require(__dirname + '/config.js');//подключаем настройки
@@ -11,7 +12,7 @@ require(__dirname + '/mysql.js');
 
 var options = {
     renderDelay: 5000,
-    timeout: 10000,
+    timeout: 60000,
     screenSize: {
         width: 1024
         , height: 1024
@@ -21,8 +22,10 @@ var options = {
         , height: 1024
     },
     quality: 80,
+    streamType:'jpg',
+    defaultWhiteBackground: true,
     phantomConfig: {'ignore-ssl-errors': 'true'},
-    userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36'
+ //   userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36'
 
 };
 
@@ -55,6 +58,7 @@ function webshotsRun(checkKey, sites) {
     if (sites.length <= currentIndex) {
         console.log('Complete : ' + currentIndex);
         console.log('Sites count : ' + sites.length);
+        screenshot.close();
         process.exit();
     }
 
@@ -64,6 +68,10 @@ function getWebshot(sites, currentIndex, checkKey) {
     var site = sites[checkKey],
         filename = 'site-' + site.id + '.jpg',
         srcFile='web/uploads/sites/' + site.user_id + '/' + filename;
+
+
+
+
 
     webshot(site.domain, srcFile, options, function (err) {
 
