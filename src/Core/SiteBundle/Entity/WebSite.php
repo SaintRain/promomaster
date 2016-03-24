@@ -31,6 +31,13 @@ class WebSite extends CommonSite
      */
     private $domain;
 
+    /**
+     * Yandex Тиц
+     * @var int
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $tyc;
+
 
     /**
      * Зеркала
@@ -116,5 +123,23 @@ class WebSite extends CommonSite
 
     }
 
+    /**
+     * @return int
+     */
+    public function getTyc()
+    {
+        return $this->tyc;
+    }
+
+    /**
+     * @param int $tyc
+     * @return WebSite
+     */
+    public function setTyc($tyc)
+    {
+        $this->tyc = $tyc;
+
+        return $this;
+    }
 }
 

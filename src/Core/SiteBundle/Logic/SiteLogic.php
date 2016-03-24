@@ -258,5 +258,65 @@ class SiteLogic
         }
     }
 
+    /**
+     * @param $siteUrl
+     * @return int
+     */
+    public function getYandexTicFromBar($siteUrl)
+    {
+        /*
+        // test
+        $result = '<?xml version="1.0" encoding="windows-1251" ?>'
+            . '<urlinfo>'
+            . '<url domain="www.ex.ua"><![CDATA[/]]></url>'
+            . '<yaca url="www.ex.ua"/>'
+            . '<tcy rang="6" value="3500"/>'
+            . '<r1>hqkyxitxcpfeoqfblryutumpdovlmnoaccrpoxspblclxatfwlaexdkqohktwlrjcgvoyuglbxjwsofjcodcrmndiyofdhmrvvop78c814086847a16aa29358a4a53b254e</r1>'
+            . '</urlinfo>';
+        */
+        $result = file_get_contents('http://bar-navig.yandex.ru/u?ver=2&show=32&url='. $siteUrl);
 
+        try {
+            $xml = simplexml_load_string($result);
+
+            if ($xml->tcy) {
+                foreach ($xml->tcy->attributes() as $key => $attr) {
+                    if ($key == 'value') {
+                        return (int)$attr;
+                    }
+                }
+
+                return 0;
+            }
+
+            return 0;
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * @param $siteUrl
+     * @return int
+     */
+    public function getYandexTicFromSite($siteUrl)
+    {
+        /*
+        //test
+        $result = '<br>«http:»: ресурс не описан в Яндекс.Каталоге (<a href="//yaca.yandex.ru">yaca.yandex.ru</a>)'
+                    . '<p class="b-cy_error-cy">'
+                    . 'Индекс цитирования (тИЦ) ресурса —'
+                    . '190000'
+                    . '<a href="//help.yandex.ru/catalogue/citation-index/tic-rules.xml" target="_blank"><img src="//yandex.st/lego/_/LyXZ4Az_NHQS9CVs5nWBbxa_3ko.png" alt="Яндекc.Помощь" class="b-cy__question"></a></p>'
+                    . '</td>';
+        */
+        $matches    = [];
+        $result     = file_get_contents('https://yaca.yandex.ua/yca/cy/ch/' .$siteUrl);
+
+        if (preg_match('/Индекс цитирования \(тИЦ\) ресурса —\s*(\d+)/',$result, $matches) && isset($matches[1])) {
+            return (int) $matches[1];
+        }
+
+        return 0;
+    }
 }

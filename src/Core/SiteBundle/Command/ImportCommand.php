@@ -123,7 +123,14 @@ class ImportCommand extends ContainerAwareCommand
                         if (isset($extraInfo['region'])) {
                             $site->setRegion($extraInfo['region']);
                         }
+                        $siteLogic = $this->getContainer()->get('core_site_logic');
+
+                        $tyc = (rand(0, 100) % 2 == 0)
+                                ? $siteLogic->getYandexTicFromSite($domain)
+                                : $siteLogic->getYandexTicFromBar($domain);
+
                         $site
+                            ->setTyc($tyc)
                             ->setUser($user)
                             ->setDomain($domain)
                             ->setIsVerified(true)
