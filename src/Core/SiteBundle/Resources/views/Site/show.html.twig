@@ -38,6 +38,8 @@
                     {% else %}
                         <span  class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
                     {% endif %}
+
+
                 </a>
 
                 {#{% set curImg = (site.webPath) ? site.webPath : '/assets/img/portfolio/01.jpg' %}#}
@@ -47,10 +49,12 @@
             </div>
             <div class="col-md-8">
                 <div class="margin-bottom-20">
-                        <h3><a target="_blank" href="{{ path('core_common_redirect_to_domain', {siteId:site.id}) }}">{{ site.domain|onlyDomain }}</a></h3>
+                        <h3><a target="_blank" href="{{ path('core_common_redirect_to_domain', {siteId:site.id}) }}">{{ site.domain|onlyDomain }}</a> </h3>
 
                     <p>{{ site.shortDescription | nl2br }}</p>
                     {% if site.region %}<p>Регион: <b>{{ site.region  }}</b></p>{% endif %}
+
+
                 </div>
                 <br>
                 {% if site.adPlaces|length %}
@@ -74,8 +78,19 @@
                         </div>
                     </div>
                 {% else %}
-                    <p><i>Статистика недоступна</i></p><br>
+                    <p><i>Статистика показов недоступна</i></p><br>
                 {% endif %}
+
+
+                <div><span title="Yandex Ранг - 5, Тиц - 120" class="label yandex-tic">
+                    <img src="/assets/img/yandex-bar/bar{{ 5 }}.png"/> 120</span></div>
+                <br>
+
+
+
+
+
+
 
 
                 <div>

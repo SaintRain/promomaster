@@ -94,6 +94,13 @@ class ImportCommand extends ContainerAwareCommand
                         $em->flush($site);
                         $em->detach($site);
                     }
+                    elseif(isset($extraInfo['title']) && $extraInfo['title']!='')  {
+                        $site->setShortDescription($extraInfo['title']);
+                        ld($extraInfo['title']);
+                        $em->flush($site);
+                        $em->detach($site);
+                    }
+                    ld('Обработано: '.$total['all']);
                 }
 
 
@@ -190,6 +197,9 @@ class ImportCommand extends ContainerAwareCommand
                     $data['keywords'] = str_replace(',', "\n\r", $value['content']);
                 } elseif ($value['name'] == 'description') {
                     $data['description'] = ucfirst($value['content']);
+                }
+                elseif ($value['name'] == 'title') {
+                    $data['title'] = ucfirst($value['content']);
                 }
             }
         } catch (Exception $e) {

@@ -111,11 +111,12 @@
                                 <td>
                                     <a href="{{ path('core_site_details', {id: site.id}) }}">
                                         {% if site.webPath %}
-                                            <img src="{{ asset(site.getSmallWebPath) }}" alt="" >
+                                            <img src="{{ asset(site.getSmallWebPath) }}" alt="">
                                         {% else %}
                                             <span class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
                                         {% endif %}
                                     </a>
+
                                 </td>
                                 <td>
                                     <a href="{{ path('core_site_details', {id: site.id}) }}"><b>{{ site.domain|onlyDomain }}</b></a>
@@ -130,7 +131,7 @@
                                     {% endfor %}
 
                                 </td>
-                                <td>
+                                <td align="left">
 
 
                                     {% if statistics[site.id] is defined %}
@@ -162,6 +163,11 @@
                                     <p>
                                         {{ ctr }}% CTR
                                     </p>
+
+                                    <span title="Yandex Ранг - 5; Тиц - 120" class="label yandex-tic">
+                                        <img src="/assets/img/yandex-bar/bar{{ 4 }}.png"/> 120</span>
+
+
                                 </td>
                                 <td>
                                     {% if site.adPlaces.count %}
