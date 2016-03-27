@@ -27,7 +27,8 @@ mysqlConnect = function (MYSQL, connectionTryCount) {
             function (err) {
                 if (err) {
                     if (err.code == "ER_ACCESS_DENIED_ERROR") {
-                        console.log('Не правильные данные авторизации Mysql');
+                        throw new Error('Не правильные данные авторизации Mysql');
+
                     }
                     else if (err.code == "PROTOCOL_CONNECTION_LOST") {
                         console.log('Соединение с Mysql потеряно, пытаемся переустановить.');
@@ -38,7 +39,9 @@ mysqlConnect = function (MYSQL, connectionTryCount) {
                     }
                 }
                 else {
-                    console.log("Соединение с Mysql успешно установлено.");
+                    if (!CONFIG.isProd) {
+                        console.log("Соединение с Mysql успешно установлено.");
+                    }
                 }
             }
         );
