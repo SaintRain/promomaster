@@ -18,7 +18,8 @@ class YandexRatingCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('site:importYandexRating');
+            ->setName('site:importYandexRating')
+            ->addArgument('debug', InputArgument::OPTIONAL, 'is need debug Mode?');
     }
 
     /**
@@ -26,6 +27,7 @@ class YandexRatingCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
 
         $em = $this->getContainer()->get('doctrine')->getManager();
         $sites = $em->getRepository('CoreSiteBundle:WebSite')->findAll();
@@ -51,7 +53,10 @@ class YandexRatingCommand extends ContainerAwareCommand
             $em->persist($site);
             $em->flush();
 
-            ld('Обработано: ' . $key.', '.$domain.' rang='.$rang.', tyc='.$tyc);
+            if ($input->getArgument('debug')) {
+                ld('Обработано: ' . $key.', '.$domain.' rang='.$rang.', tyc='.$tyc);
+            }
+
         }
 
     }
