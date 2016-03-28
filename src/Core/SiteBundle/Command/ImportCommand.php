@@ -19,7 +19,7 @@ class ImportCommand extends ContainerAwareCommand
     {
         $this
             ->setName('site:import')
-            ->addArgument('file_name', InputArgument::REQUIRED, 'File Name Fot CSV File Must Be in Web Uploads Dir')
+            //->addArgument('file_name', InputArgument::REQUIRED, 'File Name Fot CSV File Must Be in Web Uploads Dir')
             ->addArgument('owner_email', InputArgument::REQUIRED, 'Sites Owner Email');
     }
 
@@ -42,127 +42,40 @@ class ImportCommand extends ContainerAwareCommand
             return null;
         }
 
-        $filePath = sprintf('%s/%s/%s', __DIR__, static::BASE_PATH, $input->getArgument('file_name'));
 
-        $handle = fopen($filePath, 'r');
+        $sites = $em->getRepository('CoreSiteBundle:WebSite')
+            ->findAll();
 
-        $total = [
+         $total = [
             'all' => 0,
             'success' => 0,
             'error' => 0
         ];
 
-        if (($handle = fopen($filePath, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, null, ";")) !== FALSE) {
 
 
-//                if (count($data) != 2) {
-//                    $output->writeln('<error>Arguments mismatch</error>');
-//                    continue;
-//                }
+        foreach ($sites as $key => $site) {
 
-//                $cats = explode(',', $data[4]);
-//                $categories = new ArrayCollection();
-//
-//                foreach ($cats as $c) {
-//                    $category = $em->getRepository('CoreCategoryBundle:SiteCategory')->find(trim($c));
-//
-//                    if (!$category) {
-//                        $output->writeln(
-//                            sprintf('<error>Site Category With Id %d Not Found</error>', $data[1])
-//                        );
-//                        continue;
-//                    }
-//
-//                    $categories->add($category);
-//                }
-//
-//                $domain = $this->getContainer()->get('core_site_logic')->getDomainFromUrl($data[0]);
+            $domain = $site->getDomain();
 
-                $domain = $this->getContainer()->get('core_site_logic')->getDomainFromUrl($data[0]);
+            if ($site) {
+                $extraInfo = $this->getExtraInfo($domain);
+                if (isset($extraInfo['title']) && $extraInfo['title'] != '') {
+                    $site->setShortDescription($extraInfo['title']);
+                    ld($extraInfo['title']);
+                    $em->flush();
 
-
-                $site = $em->getRepository('CoreSiteBundle:WebSite')->findByDomain($domain);
-
-
-                if ($site) {
-                    $site=$site[0];
-                    $extraInfo = $this->getExtraInfo($domain);
-                    if (isset($extraInfo['description']) && $extraInfo['description']!='') {
-                        $site->setShortDescription($extraInfo['description']);
-                        ld($extraInfo['description']);
-                        $em->flush($site);
-                        $em->detach($site);
-                    }
-                    elseif(isset($extraInfo['title']) && $extraInfo['title']!='')  {
-                        $site->setShortDescription($extraInfo['title']);
-                        ld($extraInfo['title']);
-                        $em->flush($site);
-                        $em->detach($site);
-                    }
-                    ld('Обработано: '.$total['all']);
                 }
-
-
-
-//                    if ($data[3] == '') {
-//                        $extraInfo = $this->getExtraInfo($domain);
-//                        if (isset($extraInfo['description'])) {
-//                            $data[3] = $extraInfo['description'];
-//                        }
-//                    }
-//
-//                    $extraInfo = [
-//                        'keywords' => $data[1],
-//                        'shortDescription' => $data[3],
-//                        'region' => $data[2]
-//                    ];
-//                    if ($extraInfo) {
-//                        $site = new WebSite();
-//
-//                        if (isset($extraInfo['keywords'])) {
-//                            $site->setKeywords($extraInfo['keywords']);
-//                        }
-//
-//                        if (isset($extraInfo['shortDescription'])) {
-//                            $site->setShortDescription($extraInfo['shortDescription']);
-//                        }
-//
-//                        if (isset($extraInfo['region'])) {
-//                            $site->setRegion($extraInfo['region']);
-//                        }
-//                        $site
-//                            ->setUser($user)
-//                            ->setDomain($domain)
-//                            ->setIsVerified(true)
-//                            ->setCategories($categories)
-//                            ->setCreatedDateTime(new \DateTime());
-//
-//                        $em->persist($site);
-//                        $em->flush();
-//
-//                    $snapShotLogic = $this->getContainer()->get('core_site.logic.snapshot_logic');
-//
-//                    if ($snapShotLogic->makeSnapShot($site)) {
-//                        $site->setIsHaveSnapshot(true);
-//                        $em->flush($site);
-//                        $total['success'] += 1;
-//                    } else {
-//                        $total['error'] += 1;
-//                    }
-//
-//                        $em->detach($site);
-//
-//                        $output->writeln(sprintf('<info>Processed %d ' . $domain . '</info>', $total['all']));
-//
-//                    } else {
-//                        $total['error'] += 1;
-//                        $output->writeln(sprintf('<info>Error %d ' . $domain . '</info>', $total['error']));
-//                    }
-
-                    $total['all'] += 1;
+                else if (isset($extraInfo['description']) && $extraInfo['description'] != '') {
+                    $site->setShortDescription($extraInfo['description']);
+                    ld($extraInfo['description']);
+                    $em->flush();
                 }
-            fclose($handle);
+                ldd('Обработано: ' . $key);
+            }
+
+            $total['all'] += 1;
+
         }
 
         $output->writeln(sprintf('<info>Total Sites Found %d</info>', $total['all']));
@@ -170,7 +83,8 @@ class ImportCommand extends ContainerAwareCommand
         $output->writeln(sprintf('<info>Total Sites With Snapshot Problems %d</info>', $total['error']));
     }
 
-    private function getExtraInfo($url)
+    private
+    function getExtraInfo($url)
     {
         try {
 
@@ -197,8 +111,7 @@ class ImportCommand extends ContainerAwareCommand
                     $data['keywords'] = str_replace(',', "\n\r", $value['content']);
                 } elseif ($value['name'] == 'description') {
                     $data['description'] = ucfirst($value['content']);
-                }
-                elseif ($value['name'] == 'title') {
+                } elseif ($value['name'] == 'title') {
                     $data['title'] = ucfirst($value['content']);
                 }
             }
