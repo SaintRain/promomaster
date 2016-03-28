@@ -50,7 +50,6 @@ class YandexRatingCommand extends ContainerAwareCommand
             $site
                 ->setTyc($tyc)
                 ->setRang($rang);
-            $em->persist($site);
             $em->flush();
 
             if ($input->getArgument('debug')) {
