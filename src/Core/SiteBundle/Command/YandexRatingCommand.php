@@ -18,7 +18,7 @@ class YandexRatingCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('site:importYandexRating')
+            ->setName('git')
             ->addArgument('debug', InputArgument::OPTIONAL, 'is need debug Mode?');
     }
 
