@@ -221,7 +221,7 @@ class CommonExtension extends \Twig_Extension
                 $class = 'bg-color-grey';
                 break;
             case 'u':
-                $class = 'bg-color-light';
+                $class = 'bg-color-purple';
                 break;
             case 'i':
                 $class = 'bg-color-green';
@@ -263,7 +263,7 @@ class CommonExtension extends \Twig_Extension
                 $class = 'bg-color-grey';
                 break;
             case 'x':
-                $class = 'bg-color-light';
+                $class = 'bg-color-green1';
                 break;
             case 'c':
                 $class = 'bg-color-green';

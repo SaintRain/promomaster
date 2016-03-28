@@ -111,11 +111,12 @@
                                 <td>
                                     <a href="{{ path('core_site_details', {id: site.id}) }}">
                                         {% if site.webPath %}
-                                            <img src="{{ asset(site.getSmallWebPath) }}" alt="" width="100%">
+                                            <img src="{{ asset(site.getSmallWebPath) }}" alt="">
                                         {% else %}
                                             <span class="dropcap-bg {{ site.domain|firstDomainLatterClass }}">{{ site.domain|firstDomainLatter }}</span>
                                         {% endif %}
                                     </a>
+
                                 </td>
                                 <td>
                                     <a href="{{ path('core_site_details', {id: site.id}) }}"><b>{{ site.domain|onlyDomain }}</b></a>
@@ -130,7 +131,7 @@
                                     {% endfor %}
 
                                 </td>
-                                <td>
+                                <td align="left">
 
 
                                     {% if statistics[site.id] is defined %}
@@ -162,6 +163,13 @@
                                     <p>
                                         {{ ctr }}% CTR
                                     </p>
+
+                            {% if  site.rang  %}
+                                    <span title="Yandex Ранг - {{ site.rang }}; Тиц - {{ site.tyc }}" class="label yandex-tic">
+                                        <img src="/assets/img/yandex-bar/bar{{ site.rang }}.png"/> {{ site.tyc }}</span>
+                                {% endif %}
+
+
                                 </td>
                                 <td>
                                     {% if site.adPlaces.count %}

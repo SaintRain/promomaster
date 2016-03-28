@@ -242,3 +242,8 @@ div.catalog-theme {
 .content {
     min-height: 454px !important;
 }
+
+.yandex-tic {
+    color: #777;
+    font-size: 12px;
+}

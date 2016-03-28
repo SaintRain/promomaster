@@ -38,6 +38,12 @@ class WebSite extends CommonSite
      */
     private $tyc;
 
+    /**
+     * Yandex рейтинг
+     * @var int
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $rang;
 
     /**
      * Зеркала
@@ -141,5 +147,26 @@ class WebSite extends CommonSite
 
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getRang()
+    {
+        return $this->rang;
+    }
+
+    /**
+     * @param int $rang
+     */
+    public function setRang($rang)
+    {
+        $this->rang = $rang;
+    }
+
+
+
 }
+
+
 

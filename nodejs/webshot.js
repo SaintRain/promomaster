@@ -34,7 +34,6 @@ mysqlConnect(MYSQL, 0);
 
 mysqlGetSitesForWebshot(function (sites) {
     webshotsRun(false, sites);
-
 });
 
 
@@ -56,8 +55,8 @@ function webshotsRun(checkKey, sites) {
     }
 
     if (sites.length <= currentIndex) {
-        console.log('Complete : ' + currentIndex);
-        console.log('Sites count : ' + sites.length);
+        //console.log('Complete : ' + currentIndex);
+        //console.log('Sites count : ' + sites.length);
         screenshot.close();
         process.exit();
     }
@@ -91,10 +90,10 @@ function getWebshot(sites, currentIndex, checkKey) {
 
             site.snapshot = filename;
             mysqlUpdateSitesForWebshot(site);
-            console.log('processed: ' + currentIndex + '; ' + site.domain);
+            //console.log('processed: ' + currentIndex + '; ' + site.domain);
         }
         else {
-            console.log('filed: ' + currentIndex + '; ' + site.domain);
+            //console.log('filed: ' + currentIndex + '; ' + site.domain);
         }
 
 

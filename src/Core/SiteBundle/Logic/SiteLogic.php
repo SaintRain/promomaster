@@ -274,25 +274,31 @@ class SiteLogic
             . '<r1>hqkyxitxcpfeoqfblryutumpdovlmnoaccrpoxspblclxatfwlaexdkqohktwlrjcgvoyuglbxjwsofjcodcrmndiyofdhmrvvop78c814086847a16aa29358a4a53b254e</r1>'
             . '</urlinfo>';
         */
-        $result = file_get_contents('http://bar-navig.yandex.ru/u?ver=2&show=32&url='. $siteUrl);
+        $result = file_get_contents('http://bar-navig.yandex.ru/u?ver=2&show=32&url=' . $siteUrl);
 
+        $tyc = 0;
+        $rang = 0;
         try {
+
             $xml = simplexml_load_string($result);
 
             if ($xml->tcy) {
                 foreach ($xml->tcy->attributes() as $key => $attr) {
                     if ($key == 'value') {
-                        return (int)$attr;
+                        $tyc = $attr;
+                    } else if ($key == 'rang') {
+                        $rang = $attr;
                     }
                 }
 
-                return 0;
+//                return 0;
             }
 
-            return 0;
+//            return 0;
         } catch (\Exception $e) {
             return 0;
         }
+        return [$tyc, $rang];
     }
 
     /**
@@ -310,11 +316,11 @@ class SiteLogic
                     . '<a href="//help.yandex.ru/catalogue/citation-index/tic-rules.xml" target="_blank"><img src="//yandex.st/lego/_/LyXZ4Az_NHQS9CVs5nWBbxa_3ko.png" alt="Яндекc.Помощь" class="b-cy__question"></a></p>'
                     . '</td>';
         */
-        $matches    = [];
-        $result     = file_get_contents('https://yaca.yandex.ua/yca/cy/ch/' .$siteUrl);
+        $matches = [];
+        $result = file_get_contents('https://yaca.yandex.ua/yca/cy/ch/' . $siteUrl);
 
-        if (preg_match('/Индекс цитирования \(тИЦ\) ресурса —\s*(\d+)/',$result, $matches) && isset($matches[1])) {
-            return (int) $matches[1];
+        if (preg_match('/Индекс цитирования \(тИЦ\) ресурса —\s*(\d+)/', $result, $matches) && isset($matches[1])) {
+            return (int)$matches[1];
         }
 
         return 0;
