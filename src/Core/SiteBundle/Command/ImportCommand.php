@@ -71,7 +71,7 @@ class ImportCommand extends ContainerAwareCommand
                     ld($extraInfo['description']);
                     $em->flush();
                 }
-                ldd('Обработано: ' . $key);
+                ld('Обработано: ' . $key);
             }
 
             $total['all'] += 1;
