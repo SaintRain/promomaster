@@ -32,7 +32,6 @@ class YandexRatingCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $sites = $em->getRepository('CoreSiteBundle:WebSite')->findAll();
 
-
         foreach ($sites as $key => $site) {
 
 
@@ -50,6 +49,7 @@ class YandexRatingCommand extends ContainerAwareCommand
             $site
                 ->setTyc($tyc)
                 ->setRang($rang);
+
             $em->flush();
 
             if ($input->getArgument('debug')) {
