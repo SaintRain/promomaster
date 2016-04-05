@@ -12,9 +12,36 @@ namespace Core\SiteBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Core\SiteBundle\Entity\Repository\CommonSiteRepository;
 use  Core\SiteBundle\Entity\WebSite;
-
+use Core\SiteBundle\Model\SearchFilter;
 class WebSiteRepository extends CommonSiteRepository
 {
+
+    public function searchByFilter(SearchFilter $filter)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->select('s')
+            ->leftJoin('s.adPlaces', 'aP', 'WITH', 'aP.isShowInCatalog=1')
+            ->leftJoin('aP.statistics', 'st', 'WITH', 'st.adPlace=aP.id AND st.site=s.id')
+            ->leftJoin('s.categories', 'c')
+            ->orderBy('s.tyc','DESC')
+            ->where('s.isVerified = 1');
+
+        if ($filter->getKeywords()) {
+            $query->andWhere('(s.keywords LIKE :keywords OR s.shortDescription LIKE :keywords OR s.description LIKE :keywords)')
+                ->setParameter('keywords', '%' . $filter->getKeywords() . '%');
+        }
+
+        if ($filter->getCategories() && $filter->getCategories()->count()) {
+            $catIds = [];
+            foreach ($filter->getCategories() as $cat) {
+                $catIds[] = $cat->getId();
+            }
+            $query->andWhere('c.id IN (:categories)')
+                ->setParameter('categories', $catIds);
+        }
+
+        return $query->getQuery();
+    }
 
 
     public function getSitesForScreenshotCreating() {

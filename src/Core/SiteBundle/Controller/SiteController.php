@@ -79,7 +79,7 @@ class SiteController extends Controller
             $filter->setCategories($filter->getSelectMainCat()->getChildrens());
         }
 
-        $query = $em->getRepository('CoreSiteBundle:CommonSite')->searchByFilter($filter);
+        $query = $em->getRepository('CoreSiteBundle:WebSite')->searchByFilter($filter);
         $sites = $this->get('knp_paginator')->paginate(
             $query,
             $request->query->get('page', $page),
