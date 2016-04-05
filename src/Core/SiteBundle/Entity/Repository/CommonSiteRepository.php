@@ -26,7 +26,7 @@ class CommonSiteRepository extends EntityRepository
             ->leftJoin('s.adPlaces', 'aP', 'WITH', 'aP.isShowInCatalog=1')
             ->leftJoin('aP.statistics', 'st', 'WITH', 'st.adPlace=aP.id AND st.site=s.id')
             ->leftJoin('s.categories', 'c')
-            ->orderBy('s.id','DESC')
+            ->orderBy('s.tyc','DESC')
             ->where('s.isVerified = 1');
 
         if ($filter->getKeywords()) {

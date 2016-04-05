@@ -69,9 +69,6 @@ function getWebshot(sites, currentIndex, checkKey) {
         srcFile='web/uploads/sites/' + site.user_id + '/' + filename;
 
 
-
-
-
     webshot(site.domain, srcFile, options, function (err) {
 
         if (err == null) {
