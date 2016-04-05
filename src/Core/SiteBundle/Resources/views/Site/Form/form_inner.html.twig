@@ -43,14 +43,6 @@
 
         </div>
         <div class="tab-pane fade in" id="tab3">
-            <div class="row margin-bottom-20">
-                <div class="{{ fieldGroupClass }}  {% if form_errors(form.keywords) %}state-error{% endif %}">
-                    <label>Ключевые слова (каждое с новой строки)</label>
-                    {{ form_widget(form.keywords,{ 'attr': {'class': 'form-control'} }) }}
-                    <span class="note">Ключевые слова используются для повышения релевантности поиска в каталоге системы.</span>
-                    {{ form_errors(form.keywords) }}
-                </div>
-            </div>
 
             <div class="row margin-bottom-20">
                 <div class="{{ fieldGroupClass }}  {% if form_errors(form.shortDescription) %}state-error{% endif %}">
@@ -61,6 +53,17 @@
                     {{ form_errors(form.shortDescription) }}
                 </div>
             </div>
+
+            <div class="row margin-bottom-20">
+                <div class="{{ fieldGroupClass }}  {% if form_errors(form.keywords) %}state-error{% endif %}">
+                    <label>Ключевые слова (каждое с новой строки)</label>
+                    {{ form_widget(form.keywords,{ 'attr': {'class': 'form-control'} }) }}
+                    <span class="note">Ключевые слова используются для повышения релевантности поиска в каталоге системы.</span>
+                    {{ form_errors(form.keywords) }}
+                </div>
+            </div>
+
+
 
             <div class="row margin-bottom-20">
                 <div class="{{ fieldGroupClass }}  {% if form_errors(form.description) %}state-error{% endif %}">
