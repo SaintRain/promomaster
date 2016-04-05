@@ -65,7 +65,7 @@ class ImportCommand extends ContainerAwareCommand
 
             if ($site && $domain!='http://multiki-online24.ru') {
                 $extraInfo = $this->getExtraInfo($domain);
-
+                $text=false;
                 if (isset($extraInfo['title']) && $extraInfo['title'] != '') {
                     $text = $extraInfo['title'];
                 } else if (isset($extraInfo['description']) && $extraInfo['description'] != '') {
@@ -76,12 +76,18 @@ class ImportCommand extends ContainerAwareCommand
 
 
 
+                if ($text) {
+                    $site->setShortDescription($text);
+                    $em->flush();
 
-                $site->setShortDescription($text);
-                $em->flush();
+                    ld($text);
+                    ld('Обработано: ' . $key . ', ' . $domain);
+                }
+                else {
+                    ld('ОШИБКА: ' . $key . ', ' . $domain);
+                }
 
-                ld($text);
-                ld('Обработано: ' . $key . ', ' . $domain);
+
             }
 
             $total['all'] += 1;
