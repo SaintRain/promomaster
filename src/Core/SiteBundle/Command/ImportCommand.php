@@ -12,7 +12,8 @@ use Core\CategoryBundle\Entity\SiteCategory;
 use Symfony\Component\DomCrawler\Crawler;
 
 mb_internal_encoding("UTF-8");
-function mb_ucfirst($text) {
+function mb_ucfirst($text)
+{
     return mb_strtoupper(mb_substr($text, 0, 1)) . mb_substr($text, 1);
 }
 
@@ -24,8 +25,8 @@ class ImportCommand extends ContainerAwareCommand
     {
         $this
             ->setName('site:import');
-            //->addArgument('file_name', InputArgument::REQUIRED, 'File Name Fot CSV File Must Be in Web Uploads Dir')
-           // ->addArgument('owner_email', InputArgument::REQUIRED, 'Sites Owner Email');
+        //->addArgument('file_name', InputArgument::REQUIRED, 'File Name Fot CSV File Must Be in Web Uploads Dir')
+        // ->addArgument('owner_email', InputArgument::REQUIRED, 'Sites Owner Email');
     }
 
     /**
@@ -51,34 +52,36 @@ class ImportCommand extends ContainerAwareCommand
         $sites = $em->getRepository('CoreSiteBundle:WebSite')
             ->findAll(null, ['tyc', 'asc']);
 
-         $total = [
+        $total = [
             'all' => 0,
             'success' => 0,
             'error' => 0
         ];
 
 
-
         foreach ($sites as $key => $site) {
 
             $domain = $site->getDomain();
 
-            if ($site) {
+            if ($site && $domain!='http://multiki-online24.ru') {
                 $extraInfo = $this->getExtraInfo($domain);
 
                 if (isset($extraInfo['title']) && $extraInfo['title'] != '') {
-                    $site->setShortDescription(mb_ucfirst(trim($extraInfo['title'])));
-                    ld($site->getShortDescription());
-                    $em->flush();
-
-                }
-                else if (isset($extraInfo['description']) && $extraInfo['description'] != '') {
-                    $site->setShortDescription(mb_ucfirst(trim($extraInfo['description'])));
-                    ld($site->getShortDescription());
-                    $em->flush();
+                    $text = $extraInfo['title'];
+                } else if (isset($extraInfo['description']) && $extraInfo['description'] != '') {
+                    $text = $extraInfo['description'];
                 }
 
-                ld('Обработано: ' . $key. ', '.$domain);
+
+
+
+
+
+                $site->setShortDescription($text);
+                $em->flush();
+
+                ld($text);
+                ld('Обработано: ' . $key . ', ' . $domain);
             }
 
             $total['all'] += 1;
@@ -91,42 +94,49 @@ class ImportCommand extends ContainerAwareCommand
     }
 
 
-
     private
     function getExtraInfo($url)
     {
-        try {
 
+        $html = @file_get_contents($url);
+        preg_match_all( "|<title>(.*)</title>|sUSi", $html, $titles);
+        $title=implode(' ', $titles[1]);
+        return ['title'=>$title];
 
-            $html = @file_get_contents($url);
-
-            if (!$html) {
-                return null;
-            }
-
-            $crawler = new Crawler($html);
-
-            $nodeValues = $crawler->filter('head meta')->each(function (Crawler $node, $i) {
-                return [
-                    'content' => $node->attr('content'),
-                    'name' => $node->attr('name')
-                ];
-            });
-
-            $data = [];
-
-            foreach ($nodeValues as $value) {
-                if ($value['name'] == 'keywords') {
-                    $data['keywords'] = str_replace(',', "\n\r", $value['content']);
-                } elseif ($value['name'] == 'description') {
-                    $data['description'] = ucfirst($value['content']);
-                } elseif ($value['name'] == 'title') {
-                    $data['title'] = ucfirst($value['content']);
-                }
-            }
-        } catch (Exception $e) {
-            $data = false;
-        }
+//        try {
+//
+//
+//            $html = @file_get_contents($url);
+//
+//
+//
+//            if (!$html) {
+//                return null;
+//            }
+//
+//            $crawler = new Crawler($html);
+//
+//            $nodeValues = $crawler->filter('head meta')->each(function (Crawler $node, $i) {
+//                return [
+//                    'content' => $node->attr('content'),
+//                    'name' => $node->attr('name')
+//                ];
+//            });
+//
+//            $data = [];
+//
+//            foreach ($nodeValues as $value) {
+//                if ($value['name'] == 'keywords') {
+//                    $data['keywords'] = str_replace(',', "\n\r", $value['content']);
+//                } elseif ($value['name'] == 'description') {
+//                    $data['description'] = mb_ucfirst($value['content']);
+//                } elseif ($value['name'] == 'title') {
+//                    $data['title'] = mb_ucfirst($value['content']);
+//                }
+//            }
+//        } catch (Exception $e) {
+//            $data = false;
+//        }
 
 
         return $data;
