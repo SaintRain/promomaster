@@ -49,7 +49,7 @@ class ImportCommand extends ContainerAwareCommand
 
 
         $sites = $em->getRepository('CoreSiteBundle:WebSite')
-            ->findAll(null, ['tyc', 'desc']);
+            ->findAll(null, ['tyc', 'asc']);
 
          $total = [
             'all' => 0,
