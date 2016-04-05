@@ -13,7 +13,7 @@ class SiteFormType extends AbstractType
             ->add('domain', 'text', ['required' => true])
             ->add('mirrors', 'textarea', ['required' => false])
             ->add('keywords', 'textarea', ['required' => false, 'attr' => ['rows' => 5]])
-            ->add('shortDescription', 'textarea', ['required' => false])
+            ->add('shortDescription', 'textarea', ['required' => false, 'attr' => ['rows' => 5]])
             ->add('description', 'textarea', ['required' => false, 'attr' => ['rows' => 5]])
             ->add('categories', 'FrontendCategory', [
                     'required' => true,

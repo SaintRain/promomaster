@@ -11,6 +11,11 @@ use Core\SiteBundle\Entity\WebSite;
 use Core\CategoryBundle\Entity\SiteCategory;
 use Symfony\Component\DomCrawler\Crawler;
 
+mb_internal_encoding("UTF-8");
+function mb_ucfirst($text) {
+    return mb_strtoupper(mb_substr($text, 0, 1)) . mb_substr($text, 1);
+}
+
 class ImportCommand extends ContainerAwareCommand
 {
     const BASE_PATH = '../../../../web';
@@ -18,9 +23,9 @@ class ImportCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('site:import')
+            ->setName('site:import');
             //->addArgument('file_name', InputArgument::REQUIRED, 'File Name Fot CSV File Must Be in Web Uploads Dir')
-            ->addArgument('owner_email', InputArgument::REQUIRED, 'Sites Owner Email');
+           // ->addArgument('owner_email', InputArgument::REQUIRED, 'Sites Owner Email');
     }
 
     /**
@@ -31,20 +36,20 @@ class ImportCommand extends ContainerAwareCommand
         /** @var \Doctrine\ORM\EntityManagerInterface $em */
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-        $user = $em->getRepository('ApplicationSonataUserBundle:User')
-            ->findOneBy(['email' => $input->getArgument('owner_email')]);
-
-        if (!$user) {
-            $output->writeln(
-                sprintf('<error>User With Email %s Not Found</error>', $input->getArgument('owner_email'))
-            );
-
-            return null;
-        }
+//        $user = $em->getRepository('ApplicationSonataUserBundle:User')
+//            ->findOneBy(['email' => $input->getArgument('owner_email')]);
+//
+//        if (!$user) {
+//            $output->writeln(
+//                sprintf('<error>User With Email %s Not Found</error>', $input->getArgument('owner_email'))
+//            );
+//
+//            return null;
+//        }
 
 
         $sites = $em->getRepository('CoreSiteBundle:WebSite')
-            ->findAll();
+            ->findAll(null, ['tyc', 'desc']);
 
          $total = [
             'all' => 0,
@@ -60,17 +65,19 @@ class ImportCommand extends ContainerAwareCommand
 
             if ($site) {
                 $extraInfo = $this->getExtraInfo($domain);
+
                 if (isset($extraInfo['title']) && $extraInfo['title'] != '') {
-                    $site->setShortDescription($extraInfo['title']);
-                    ld($extraInfo['title']);
+                    $site->setShortDescription(mb_ucfirst(trim($extraInfo['title'])));
+                    ld($site->getShortDescription());
                     $em->flush();
 
                 }
                 else if (isset($extraInfo['description']) && $extraInfo['description'] != '') {
-                    $site->setShortDescription($extraInfo['description']);
-                    ld($extraInfo['description']);
+                    $site->setShortDescription(mb_ucfirst(trim($extraInfo['description'])));
+                    ld($site->getShortDescription());
                     $em->flush();
                 }
+
                 ld('Обработано: ' . $key);
             }
 
@@ -82,6 +89,8 @@ class ImportCommand extends ContainerAwareCommand
         $output->writeln(sprintf('<info>Total Sites Success Proccesses %d</info>', $total['success']));
         $output->writeln(sprintf('<info>Total Sites With Snapshot Problems %d</info>', $total['error']));
     }
+
+
 
     private
     function getExtraInfo($url)
