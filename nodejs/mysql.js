@@ -31,7 +31,9 @@ mysqlConnect = function (MYSQL, connectionTryCount) {
 
                     }
                     else if (err.code == "PROTOCOL_CONNECTION_LOST") {
-                        console.log('Соединение с Mysql потеряно, пытаемся переустановить.');
+                        if (!CONFIG.isProd) {
+                            console.log('Соединение с Mysql потеряно, пытаемся переустановить.');
+                        }
                         mysqlConnect(MYSQL, connectionTryCount);    //пытаемся пересоздать соединение
                     }
                     else {
