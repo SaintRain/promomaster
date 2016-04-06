@@ -88,7 +88,7 @@ TRYCATCH(function () {
     function getWebshot(sites, currentIndex, checkKey) {
         var site = sites[checkKey],
             filename = 'site-' + site.id + '.jpg',
-            srcFile = 'web/uploads/sites/' + site.user_id + '/' + filename;
+            srcFile = CONFIG.image_patch+'/sites/' + site.user_id + '/' + filename;
 
 
         webshot(site.domain, srcFile, options, function (err) {
@@ -104,7 +104,7 @@ TRYCATCH(function () {
 
                 easyimg.thumbnail({
                     src: srcFile,
-                    dst: 'web/uploads/sites/' + site.user_id + '/small_' + filename,
+                    dst: CONFIG.image_patch+'/sites/' + site.user_id + '/small_' + filename,
                     width: 100,
                     height: 100
                 });
