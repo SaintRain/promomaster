@@ -71,7 +71,7 @@ TRYCATCH(function () {
 
         //console.log(sites.length);
 
-        if (sites.length <= currentIndex) {
+        if (!sites.length || sites.length <= currentIndex) {
 
             if (!CONFIG.isProd) {
                 console.log('Complete : ' + currentIndex);
