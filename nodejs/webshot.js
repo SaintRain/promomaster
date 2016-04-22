@@ -79,7 +79,7 @@ TRYCATCH(function () {
             }
 
 
-            screenshot.close();
+            //screenshot.close();
             process.exit();
         }
 
