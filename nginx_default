@@ -1,0 +1,153 @@
+# You may add here your
+# server {
+#	...
+# }
+# statements for each of your virtual hosts to this file
+
+##
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# http://wiki.nginx.org/Pitfalls
+# http://wiki.nginx.org/QuickStart
+# http://wiki.nginx.org/Configuration
+#
+# Generally, you will want to move this file somewhere, and start with a clean
+# file but keep this around for reference. Or just disable in sites-enabled.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+
+#server {
+#	listen 80 default_server;
+#	listen [::]:80 default_server ipv6only=on;
+
+#	root /usr/share/nginx/html;
+#	index app.php index.html index.htm;
+
+#	server_name promomaster.net;
+
+#                location ~* \.(jpg|jpeg|gif|png|ico|css|bmp|swf|js|flv|woff|ttf)$ {
+#                        root /var/www/promomaster/web;
+#                }
+
+#	location / {
+
+#		proxy_pass http://apache;
+#                        proxy_set_header Host $host;
+#                        proxy_set_header X-Real-IP $remote_addr;
+#                        proxy_set_header X-Forwarded-For $remote_addr;
+#
+#                        proxy_connect_timeout 120;
+#                        proxy_send_timeout    120;
+#                        proxy_read_timeout    180;
+#			proxy_intercept_errors on;
+#	}
+
+
+	
+
+#	error_page   502 =   /var/www/promomaster/web/static_pages/502.html;
+      
+
+#}
+
+server {    listen 80;
+    server_name www.promomaster.net;
+
+ return 301 https://promomaster.net$request_uri;
+}
+
+server {
+    listen 443  ssl;
+
+     ssl on;
+    ssl_certificate /etc/ssl/promomaster_net.crt;        # path to your cacert.pem
+        ssl_certificate_key /etc/ssl/promomaster_net.key;    # path to your privkey.pem
+    server_name 104.45.91.173 ;
+
+    
+    return 301 https://promomaster.net$request_uri;
+}
+
+
+
+
+# HTTPS server
+#
+server {
+
+	listen  443 default_server ssl;
+        ssl on;
+        ssl_certificate /etc/ssl/promomaster_net.crt;        # path to your cacert.pem
+        ssl_certificate_key /etc/ssl/promomaster_net.key;    # path to your privkey.pem
+        server_name promomaster.net;
+        # ......
+        fastcgi_param   HTTPS               on;
+        fastcgi_param   HTTP_SCHEME         https;
+
+        root /var/www/promomaster/web;
+
+	client_max_body_size 10m;
+	gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+
+
+
+
+
+#    location /css {
+#        expires 1d;
+#    }
+
+#    location /js {
+#        expires 1d;
+#    }
+
+
+location ~* \.(?:jpg|jpeg|gif|png|ico)$ {
+  expires 1M;
+  access_log off;
+  add_header Cache-Control "public";
+}
+
+    location / {
+
+        # try to serve file directly, fallback to rewrite
+        try_files $uri @rewriteapp;
+    }
+
+    location @rewriteapp {
+
+
+
+  if ($http_user_agent ~* LWP::Simple|wget|libwww-perl|Libwww-perl) {
+              return 403;
+     }
+
+        rewrite ^(.*)$ /app.php/$1 last;
+    }
+
+
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /var/www/promomaster/web/static_pages/;
+    }
+
+
+    
+
+    location ~ ^/(app|app_dev|app_test|config)\.php(/|$) {
+
+
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        fastcgi_param HTTPS on;
+    }
+
+
+
+}
