@@ -40,7 +40,7 @@ class UpdateTextCommand extends ContainerAwareCommand
 
 
 
-            if($key % 20 == 0) {
+            if($key % 50 == 0) {
                 $output->writeln('Обработано '.($key+1));
             $em->flush();
             }
