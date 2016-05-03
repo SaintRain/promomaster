@@ -45,7 +45,7 @@ class UpdateTextCommand extends ContainerAwareCommand
 //            $em->flush();
 //            }
             $em->flush();
-            $em->detatch($site);
+            $em->detach($site);
 
         }
         $em->flush();
