@@ -15,7 +15,7 @@ use  Core\SiteBundle\Entity\WebSite;
 use Core\SiteBundle\Model\SearchFilter;
 class WebSiteRepository extends CommonSiteRepository
 {
-
+CONST MINIMAL_TYC=40;
     public function searchByFilter(SearchFilter $filter)
     {
         $query = $this->createQueryBuilder('s')
@@ -24,7 +24,7 @@ class WebSiteRepository extends CommonSiteRepository
             ->leftJoin('aP.statistics', 'st', 'WITH', 'st.adPlace=aP.id AND st.site=s.id')
             ->leftJoin('s.categories', 'c')
             ->orderBy('s.tyc','DESC')
-            ->where('s.isVerified = 1 and s.tyc>40');
+            ->where('s.isVerified = 1 and s.tyc>'.self::MINIMAL_TYC);
 
         if ($filter->getKeywords()) {
             $query->andWhere('(s.keywords LIKE :keywords OR s.shortDescription LIKE :keywords OR s.description LIKE :keywords)')
