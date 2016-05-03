@@ -40,9 +40,9 @@ class UpdateTextCommand extends ContainerAwareCommand
 
             $output->writeln('Обработано '.($key+1));
 
-
+            $em->flush();
         }
-        $em->flush();
+
 
     }
 
