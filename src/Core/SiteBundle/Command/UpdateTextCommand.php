@@ -46,6 +46,7 @@ class UpdateTextCommand extends ContainerAwareCommand
 //            }
             $em->flush();
             $em->detach($site);
+            $output->writeln('Обработано '.($key+1));
 
         }
         $em->flush();
