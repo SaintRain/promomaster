@@ -38,9 +38,13 @@ class UpdateTextCommand extends ContainerAwareCommand
             $site->setShortDescription(  $this->replaceInText($site->getShortDescription()));
 
 
-            $output->writeln('Обработано '.($key+1));
 
+
+            if($key % 20 == 0) {
+                $output->writeln('Обработано '.($key+1));
             $em->flush();
+            }
+
         }
 
 
