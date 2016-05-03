@@ -24,7 +24,7 @@ class WebSiteRepository extends CommonSiteRepository
             ->leftJoin('aP.statistics', 'st', 'WITH', 'st.adPlace=aP.id AND st.site=s.id')
             ->leftJoin('s.categories', 'c')
             ->orderBy('s.tyc','DESC')
-            ->where('s.isVerified = 1');
+            ->where('s.isVerified = 1 and s.rang>40');
 
         if ($filter->getKeywords()) {
             $query->andWhere('(s.keywords LIKE :keywords OR s.shortDescription LIKE :keywords OR s.description LIKE :keywords)')
