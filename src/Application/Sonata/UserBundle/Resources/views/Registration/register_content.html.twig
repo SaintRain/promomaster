@@ -34,6 +34,7 @@
                 <form id="regForm" class="sky-form sky-form-other-style"
                       action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST">
 
+                    <div style="display:none">
                     <label>Имя</label>
                     {#<input type="text" class="form-control margin-bottom-20">#}
                     {{ form_widget(form.firstname,{ 'attr': {'class': 'form-control margin-bottom-20'} }) }}
@@ -42,6 +43,7 @@
                     {#<input type="text" class="form-control margin-bottom-20">#}
                     {{ form_widget(form.lastname,{ 'attr': {'class': 'form-control margin-bottom-20'} }) }}
                     {{ form_errors(form.lastname) }}
+                        </div>
 
                     <div class="margin-bottom-20 {% if form_errors(form.email) %}state-error{% endif %}">
                         <label>Email*</label>

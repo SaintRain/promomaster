@@ -56,7 +56,7 @@
                             компаний для привлечения целевой аудитории.</h4>
 
                         <br>
-                        <a  rel="float-shadow" href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u btn-u-lg rounded-2x float-shadow" >Добавить рекламную компанию</a>
+                        <a  rel="float-shadow" href="{% if app.user %}{{ path('core_cabinet_adcompany_create') }}{% else %}{{ path('fos_user_registration_register') }}{% endif %}" class="btn-u btn-u-lg rounded-2x float-shadow" >Добавить рекламную компанию</a>
                         <br>
                         <br>
                     </div>

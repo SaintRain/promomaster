@@ -56,7 +56,7 @@
                             а также дает полную свободу по размещению рекламы.</h4>
 
 <br>
-                        <a rel="float-shadow" href="{{ path('core_cabinet_site_create') }}" class="btn-u btn-u-lg rounded-2x float-shadow" >Добавить сайт в каталог системы</a>
+                        <a rel="float-shadow" href="{% if app.user %}{{ path('core_cabinet_site_create') }}{% else %}{{ path('fos_user_registration_register') }}{% endif %}" class="btn-u btn-u-lg rounded-2x float-shadow" >Добавить сайт в каталог системы</a>
                         <br>
                         <br>
                     </div>

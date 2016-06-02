@@ -11,6 +11,9 @@
                 <li class="topbar-devider"></li>
                 {%- if not  app.user -%}
                 <li><a href="{{ path('fos_user_security_login') }}">Авторизация</a></li>
+                    <li class="topbar-devider"></li>
+                    <li><a href="{{ path('fos_user_registration_register') }}">Регистрация</a></li>
+
                 {%- else -%}
                 <li><a href="{{ path('sonata_user_profile_show') }}"><i class="fa fa-user"></i><strong style="margin-left: 5px">{% if app.user.firstname or app.user.lastname %}{{ app.user.lastname ~ ' ' ~ app.user.firstname }}{% else %}{{ app.user.username }}{% endif %}</strong></a></li>
                     <li class="topbar-devider"></li>
