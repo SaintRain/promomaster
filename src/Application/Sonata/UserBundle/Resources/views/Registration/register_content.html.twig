@@ -5,6 +5,11 @@
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
 
+ {% block js_head %}
+     {{ parent() }}
+     <script src="/assets/js/plugins/ulogin.js"></script>
+ {% endblock %}
+
 {% block content %}
     <!--=== Breadcrumbs ===-->
     <div class="breadcrumbs">
@@ -26,6 +31,7 @@
             <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                 <div class="reg-header">
                     <h2>Регистрация в системе</h2>
+                    {% include '@ApplicationSonataUser/Security/login_social.html.twig' %}
 
                     <p>Вы уже зарегистрированы? Нажмите <a href="{{ path('fos_user_security_login') }}"
                                                            class="color-green">авторизоваться</a>, чтобы войти в
