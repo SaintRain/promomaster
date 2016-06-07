@@ -83,7 +83,8 @@ class SiteLogic
     public function checkIsExistWebSite($site, $user)
     {
 
-        $res = $this->em->getRepository('CoreSiteBundle:WebSite')->findQuantityByOptions(['id' => $site->getId(), 'user' => $user, 'domain' => $site->getDomain()]);
+        $res = $this->em->getRepository('CoreSiteBundle:WebSite')
+            ->findQuantityByOptions(['id' => $site->getId(), 'user' => $user, 'domain' => $site->getDomain()]);
 
         if ($res['quantity']) {
             return true;
@@ -274,6 +275,10 @@ class SiteLogic
             . '<r1>hqkyxitxcpfeoqfblryutumpdovlmnoaccrpoxspblclxatfwlaexdkqohktwlrjcgvoyuglbxjwsofjcodcrmndiyofdhmrvvop78c814086847a16aa29358a4a53b254e</r1>'
             . '</urlinfo>';
         */
+
+
+
+
         $result = file_get_contents('http://bar-navig.yandex.ru/u?ver=2&show=32&url=' . $siteUrl);
 
         $tyc = 0;
@@ -298,7 +303,8 @@ class SiteLogic
         } catch (\Exception $e) {
             return 0;
         }
-        return [$tyc, $rang];
+
+        return [$tyc.'', $rang.''];
     }
 
     /**
@@ -307,15 +313,6 @@ class SiteLogic
      */
     public function getYandexTicFromSite($siteUrl)
     {
-        /*
-        //test
-        $result = '<br>«http:»: ресурс не описан в Яндекс.Каталоге (<a href="//yaca.yandex.ru">yaca.yandex.ru</a>)'
-                    . '<p class="b-cy_error-cy">'
-                    . 'Индекс цитирования (тИЦ) ресурса —'
-                    . '190000'
-                    . '<a href="//help.yandex.ru/catalogue/citation-index/tic-rules.xml" target="_blank"><img src="//yandex.st/lego/_/LyXZ4Az_NHQS9CVs5nWBbxa_3ko.png" alt="Яндекc.Помощь" class="b-cy__question"></a></p>'
-                    . '</td>';
-        */
         $matches = [];
         $result = file_get_contents('https://yaca.yandex.ua/yca/cy/ch/' . $siteUrl);
 
@@ -325,4 +322,19 @@ class SiteLogic
 
         return 0;
     }
+
+    public function updateTycIfNeed(CommonSite $site)
+    {
+
+        $domain = $site->getDomain();
+        list($tyc, $rang) = $this->getYandexTicFromBar($domain);
+
+        if ($site->getTyc() != $tyc || $site->getRang() != $rang) {
+            $site
+                ->setTyc($tyc)
+                ->setRang($rang);
+            $this->em->flush();
+        }
+    }
+
 }

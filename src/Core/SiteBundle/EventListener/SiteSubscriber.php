@@ -39,6 +39,9 @@ class SiteSubscriber implements EventSubscriber
 
         $object = $args->getEntity();
         $this->container->get('core_site_logic')->checkIsDomainNameChange($object);
+        if ($object instanceof CommonSite) {
+            $this->container->get('core_site_logic')->updateTycIfNeed($object);
+        }
 
     }
 
@@ -47,7 +50,9 @@ class SiteSubscriber implements EventSubscriber
 
         $object = $args->getEntity();
         $this->container->get('core_site_logic')->checkIsDomainNameChange($object);
-
+        if ($object instanceof CommonSite) {
+            $this->container->get('core_site_logic')->updateTycIfNeed($object);
+        }
     }
 
     public function postRemove(LifecycleEventArgs $args)
