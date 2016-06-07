@@ -16,6 +16,19 @@ use Core\SiteBundle\Model\SearchFilter;
 class WebSiteRepository extends CommonSiteRepository
 {
 CONST MINIMAL_TYC=40;
+
+    public function findForDelete($id) {
+
+        return $this->createQueryBuilder('s')
+            ->where('s.id=:id')
+            ->andWhere('s.isVerified = 1 and s.tyc>:tyc')
+            ->setParameter('id', $id)
+            ->setParameter('tyc', self::MINIMAL_TYC)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
     public function searchByFilter(SearchFilter $filter)
     {
         $query = $this->createQueryBuilder('s')

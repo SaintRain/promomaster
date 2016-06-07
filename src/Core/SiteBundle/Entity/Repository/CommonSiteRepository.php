@@ -13,10 +13,9 @@ use Core\SiteBundle\Entity\CommonSite;
 use Doctrine\ORM\EntityRepository;
 use Core\SiteBundle\Model\SearchFilter;
 use  Core\SiteBundle\Entity\WebSite;
-
+use Core\SiteBundle\Entity\Repository\WebSiteRepository;
 class CommonSiteRepository extends EntityRepository
 {
-
 
 
 

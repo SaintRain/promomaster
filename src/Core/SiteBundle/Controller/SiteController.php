@@ -32,10 +32,12 @@ class SiteController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $site = $em->getRepository('CoreSiteBundle:CommonSite')->find($id);
+        $site = $em->getRepository('CoreSiteBundle:WebSite')->findForDelete($id);
         if (!$site) {
             throw $this->createNotFoundException('Site Not Found');
         }
+
+
 
         $todayStart = new \DateTime();
         $todayStart->modify('today');
