@@ -40,7 +40,7 @@ CONST MINIMAL_TYC=40;
             ->where('s.isVerified = 1 and s.tyc>'.self::MINIMAL_TYC);
 
         if ($filter->getKeywords()) {
-            $query->andWhere('(s.keywords LIKE :keywords OR s.shortDescription LIKE :keywords OR s.description LIKE :keywords)')
+            $query->andWhere('(s.domain LIKE :keywords OR s.keywords LIKE :keywords OR s.shortDescription LIKE :keywords OR s.description LIKE :keywords)')
                 ->setParameter('keywords', '%' . $filter->getKeywords() . '%');
         }
 
