@@ -16,7 +16,7 @@ class StatisticsCabinetController extends Controller
 
 
     /**
-     * Выводит статистику графиками по рекламной компании
+     * Выводит статистику графиками по рекламной кампании
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function adCompanyChartStatisticsAction($id)
@@ -34,7 +34,7 @@ class StatisticsCabinetController extends Controller
 
 
     /**
-     * Выводит статистику графиками по рекламной компании по токену
+     * Выводит статистику графиками по рекламной кампании по токену
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function adCompanyChartStatisticsByTokenAction($token)

@@ -108,7 +108,7 @@ class CityAdmin extends Admin
                         )
                     ))
                 ->end()
-                ->with('ID траспортных компаний')
+                ->with('ID траспортных кампаний')
                     ->add('emsId', null, array('label' => 'EMS'))
                     ->add('dellinId', null, array('label' => 'Деловые линии'))
                     ->add('pekId', null, array('label' => 'ПЭК'))

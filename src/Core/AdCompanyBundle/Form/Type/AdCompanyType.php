@@ -62,7 +62,7 @@ class AdCompanyType  extends AbstractType
             ])
             ->add('startDateTime', 'text', ['required' => false , 'read_only'=>true])
             ->add('finishDateTime', 'text', ['required' => false, 'read_only'=>true])
-            ->add('isEnabled', null, ['label' => 'Рекламная компания активна'])
+            ->add('isEnabled', null, ['label' => 'Рекламная кампания активна'])
             ->addModelTransformer(new AdCompanyTransformer())       //трансформер дат
         ;
 

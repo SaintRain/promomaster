@@ -65,7 +65,7 @@ class PlacementAdmin extends Admin
         $options = array('obj' => $obj, 'container' => $container);
 
         $formMapper
-            //->add('adCompany', null, ['label' => 'Компания', 'empty_value'=>'Ничего не выбрано...', 'property' => 'id'])
+            //->add('adCompany', null, ['label' => 'Кампания', 'empty_value'=>'Ничего не выбрано...', 'property' => 'id'])
 //            ->add('adPlace.id', 'hidden', ['label' => 'Рекламное место'])
 
             ->add('placementBannersList', 'sonata_type_collection',
@@ -116,7 +116,7 @@ class PlacementAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id', 'string', array('label' => 'ID'))
-            ->add('adCompany.name', null, ['label' => 'Компания'])
+            ->add('adCompany.name', null, ['label' => 'Кампания'])
             ->add('adPlace.name', null, ['label' => 'Рекламное место'])
             ->add('placementBannersList', null, ['label' => 'Баннеры размещения',
                 'template' => 'CoreAdCompanyBundle:Admin\list_fields\AdCompany:placementBannersList.html.twig'
@@ -143,7 +143,7 @@ class PlacementAdmin extends Admin
 //    {
 //        $datagridMapper
 //            ->add('id', 'doctrine_orm_callback', array(
-//                'label' => 'ID компании, через запятую',
+//                'label' => 'ID кампании, через запятую',
 //                'callback' => array($this, 'searchById'),
 //                'field_type' => 'text'
 //            ), null, ['attr' => ['placeholder' => 'ID сайта, через запятую']])

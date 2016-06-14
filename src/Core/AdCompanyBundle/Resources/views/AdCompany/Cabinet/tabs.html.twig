@@ -1,4 +1,4 @@
-{#вкладки для рекламной компании в ЛК#}
+{#вкладки для рекламной кампании в ЛК#}
 {% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
 
 {% block sub_content %}
@@ -10,10 +10,10 @@
             {{ flashMessage | raw }}
 
             &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_adcompany_create') }}'><i
-                        class='fa fa-plus-square'></i> &nbsp;Добавить еще рекламную компанию</a>
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще рекламную кампанию</a>
             &nbsp;&nbsp;&nbsp;
             <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_adcompany_list_first_page') }}'><i
-                        class='fa fa-reply'></i> &nbsp;Вернуться к списку рекламных компаний</a>
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку рекламных кампаний</a>
 
         </div>
     {% endfor %}
@@ -29,10 +29,10 @@
 
 
     {% if adcompany.id %}
-        <h3>Редактирование рекламной компании #{{ adcompany.id }} &nbsp;&nbsp;
+        <h3>Редактирование рекламной кампании #{{ adcompany.id }} &nbsp;&nbsp;
             <span class="text-right" style="white-space: nowrap"><a  class="video-show"    data-url="{{path('core_faq_show_video')}}" href="javascript:void(0)"><i class="fa fa-info-circle"></i>Видеоурок</a></span></h3>
     {% else %}
-        <h3>Добавление новой рекламной компании</h3>
+        <h3>Добавление новой рекламной кампании</h3>
     {% endif %}
 
 

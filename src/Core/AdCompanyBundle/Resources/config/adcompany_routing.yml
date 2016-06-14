@@ -1,10 +1,10 @@
-# Вывод первой страницы списка рекламных компаний в личном кабинете
+# Вывод первой страницы списка рекламных кампаний в личном кабинете
 core_cabinet_adcompany_list_first_page:
     path:      /cabinet/adcompanies.html
     schemes:  [http]
     defaults:  { _controller: CoreAdCompanyBundle:AdCompanyCabinet:list}
 
-# Вывод списка рекламных компаний в ЛК
+# Вывод списка рекламных кампаний в ЛК
 core_cabinet_adcompany_list:
     path:      /cabinet/adcompanies/{page}.html
     schemes:  [http]
@@ -12,7 +12,7 @@ core_cabinet_adcompany_list:
     requirements:
       page: \d+
 
-# редактирование рекламной компании в ЛК
+# редактирование рекламной кампании в ЛК
 core_cabinet_adcompany_edit:
     path:      /cabinet/adcompany_edit_{id}.html
     schemes:  [http]
@@ -28,7 +28,7 @@ core_cabinet_adcompany_create:
     defaults:  { _controller: CoreAdCompanyBundle:AdCompanyCabinet:create }
 
 
-# удаление рекламной компании в ЛК
+# удаление рекламной кампании в ЛК
 core_cabinet_adcompany_delete:
     path:      /cabinet/adcompany_delete_{id}.html
     schemes:  [http]

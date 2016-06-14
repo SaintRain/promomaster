@@ -88,7 +88,7 @@ Feature: Test contragent web interface in adminzone
         |Почтовый адрес         |344011, г. Ростов-на-Дону, пер.Доломановский, д. 70Д, оф.1001          |
         |ФИО контактного лица   |Пупкин Васислий Петрович                                               |
         |Факс                   |+380995456711                                                           |
-        |Сайт компании          |site.com                                                               |
+        |Сайт кампании          |site.com                                                               |
         |Контактный email       |test-legal@ekance.com                                                  |
         When I press "btn_create_and_edit"
         Then I should see "Элемент создан успешно"
@@ -132,7 +132,7 @@ Feature: Test contragent web interface in adminzone
         |Почтовый адрес         |344011, г. Ростов-на-Дону, пер.Доломановский, д. 71Д, оф.1001          |
         |ФИО контактного лица   |Петров Петр Иванович                                                   |
         |Факс                   |+80995456711                                                           |
-        |Сайт компании          |site-peter.com                                                         |
+        |Сайт кампании          |site-peter.com                                                         |
         And I press "btn_update_and_edit"
         Then I should see "Элемент успешно обновлен"    
     

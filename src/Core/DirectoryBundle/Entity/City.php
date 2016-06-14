@@ -69,7 +69,7 @@ class City
     private $timeZone;
 
     /**
-     * ID EMS (Траспортная компания)
+     * ID EMS (Траспортная кампания)
      * @var string
      *
      * @ORM\Column(name="ems_id", type="string", length=255, nullable=true)
@@ -78,7 +78,7 @@ class City
     private $emsId;
 
     /**
-     * ID Деловые линии (Траспортная компания)
+     * ID Деловые линии (Траспортная кампания)
      * @var string
      * @ORM\Column(name="dellin_id", type="string", length=34, nullable=true)
      * @Assert\Regex("/^[0-9A-Fx]+$/")
@@ -86,7 +86,7 @@ class City
     private $dellinId;
 
     /**
-     * ID ПЭК (Траспортная компания)
+     * ID ПЭК (Траспортная кампания)
      * @var string
      *
      * @ORM\Column(name="pek_id", type="string", length=36, nullable=true)
@@ -96,7 +96,7 @@ class City
     private $pekId;
 
     /**
-     * ID Байкал Сервис (Траспортная компания)
+     * ID Байкал Сервис (Траспортная кампания)
      * @var integer
      *
      * @ORM\Column(name="baikal_service_id", type="integer", nullable=true)
@@ -105,7 +105,7 @@ class City
     private $baikalServiceId;
 
     /**
-     * ID Жельдоральянс (Траспортная компания)
+     * ID Жельдоральянс (Траспортная кампания)
      * @var string
      *
      * @ORM\Column(name="gruzovozoff_id", type="string", length=32, nullable=true)
@@ -114,7 +114,7 @@ class City
     private $gruzovozoffId;
 
     /**
-     * ID Энергия (Траспортная компания)
+     * ID Энергия (Траспортная кампания)
      * @var integer
      *
      * @ORM\Column(name="energy_id", type="integer", nullable=true)
@@ -123,7 +123,7 @@ class City
     private $energyId;
 
     /**
-     * ID СДЭК (Траспортная компания)
+     * ID СДЭК (Траспортная кампания)
      * @var integer
      *
      * @ORM\Column(name="cdek_id", type="integer", nullable=true)
@@ -132,7 +132,7 @@ class City
     private $cdekId;
 
     /**
-     * ID DPD (Траспортная компания)
+     * ID DPD (Траспортная кампания)
      * @var string
      *
      * @ORM\Column(name="dpd_id", type="string", length=10, nullable=true)

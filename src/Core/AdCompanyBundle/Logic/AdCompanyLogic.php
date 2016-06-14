@@ -1,6 +1,6 @@
 <?php
 /**
- * Логика для рекламных компаний
+ * Логика для рекламных кампаний
  *
  * @author Sergeev A.M.
  * @copyright LLC "PromoMaster"
@@ -63,7 +63,7 @@ class AdCompanyLogic
         $adCompanies = $this->paginator->paginate($queryBuilder, $page, $filterRequest['maxResults']);
 
 
-        //для каждой рекламной компании определяем активна она или нет
+        //для каждой рекламной кампании определяем активна она или нет
         foreach ($adCompanies as $adComp) {
             $isActive = true;
 
@@ -90,7 +90,7 @@ class AdCompanyLogic
 
 
     /**
-     * Проверяет есть ли у пользователя рекламная компания с таким именем
+     * Проверяет есть ли у пользователя рекламная кампания с таким именем
      * @param $domain
      * @return mixed
      */

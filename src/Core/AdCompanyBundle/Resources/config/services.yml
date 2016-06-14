@@ -1,9 +1,9 @@
 services:
-  #админсике классы для рекламных компаний
+  #админсике классы для рекламных кампаний
   core_ad_company_admin:
     class: Core\AdCompanyBundle\Admin\AdCompanyAdmin
     tags:
-    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Материалы, label: Рекламные компании }
+    - { name: sonata.admin, manager_type: orm, audit: false, label_translator_strategy: sonata.admin.label.strategy.underscore,  group: Материалы, label: Рекламные кампании }
     arguments: [null, Core\AdCompanyBundle\Entity\AdCompany, null]
 
 
@@ -28,7 +28,7 @@ services:
     class: Core\AdCompanyBundle\Logic\PlacementLogic
     arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic']
 
-# логика для рекламных компаний
+# логика для рекламных кампаний
   core_adcompany_logic:
     class: Core\AdCompanyBundle\Logic\AdCompanyLogic
     arguments: ['@router', '@doctrine.orm.entity_manager', '@service_container', '@application_knp_paginator_logic', '@core_placement_logic']

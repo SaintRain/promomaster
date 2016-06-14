@@ -10,7 +10,7 @@
       Стоимость:                           { route: admin_core_site_adplaceprice_list }
       #Скидки:                        { route: admin_core_site_adplacepricediscount_list }
     Разделы рекламных мест:            { route: admin_core_site_section_list }
-    Рекламные компании:             { route: admin_core_adcompany_adcompany_list }
+    Рекламные кампании:             { route: admin_core_adcompany_adcompany_list }
     Размещения:                       { route: admin_core_adcompany_placement_list }
     Баннеры размещения:                       { route: admin_core_adcompany_placementbanner_list }
     Категории сайтов:                  { route: admin_core_category_sitecategory_list}
@@ -82,7 +82,7 @@ FAQ:
 #    Скидки по брендам:                  { route: admin_core_discounts_manufacturerdiscount_list }
 #    Индивидуальные cкидки по брендам:   { route: admin_core_discounts_contragentmanufacturerdiscount_list }
 #Доставка:
-#    Компании:                           { route: admin_core_delivery_company_list }
+#    Кампании:                           { route: admin_core_delivery_company_list }
 #    Способы доставки:                   { route: admin_core_delivery_service_list }
 #    Пункты выдачи:                      { route: admin_core_delivery_address_list }
 #    Типы доставок:                      { route: admin_core_delivery_servicetype_list }

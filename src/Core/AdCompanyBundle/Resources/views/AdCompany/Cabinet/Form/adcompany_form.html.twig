@@ -10,7 +10,7 @@
             <div class="col-lg-6{% if form_errors(form.name) %} state-error{% endif %}">
                 {{ form_label(form.name) }}
                 {{ form_widget(form.name,{ 'attr': {'class': 'form-control'} }) }}
-                <span class="note">Укажите произвольное название рекламной компании.</span>
+                <span class="note">Укажите произвольное название рекламной кампании.</span>
                 {{ form_errors(form.name) }}
             </div>
         </div>
@@ -195,7 +195,7 @@
 
             {% if adcompany.id %}
             $('.delete').click(function () {
-                var res = confirm('Вы действительно хотите удалить эту рекламную компанию из системы?');
+                var res = confirm('Вы действительно хотите удалить эту рекламную кампанию из системы?');
                 if (res) {
                     window.location.href = '{{ path('core_cabinet_adcompany_delete', {id:adcompany.id}) }}';
                 }

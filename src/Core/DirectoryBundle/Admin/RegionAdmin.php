@@ -63,7 +63,7 @@ class RegionAdmin extends Admin
                 ))
                 ->add('geoipName', null, array('label' => 'ID GEOIP'))
                 ->end()
-                ->with('ID траспортных компаний')
+                ->with('ID траспортных кампаний')
                 ->add('emsId', null, array('label' => 'ID EMS'))
                 ->add('dpdId', null, array('label' => 'ID DPD'))
                 ->end()

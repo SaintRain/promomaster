@@ -47,7 +47,7 @@ class Region
     private $timeZone;
 
     /**
-     * ID EMS (Траспортная компания)
+     * ID EMS (Траспортная кампания)
      * @var string
      *
      * @ORM\Column(name="ems_id", type="string", length=255, nullable=true)
@@ -56,7 +56,7 @@ class Region
     private $emsId;
 
     /**
-     * ID DPD (Траспортная компания)
+     * ID DPD (Траспортная кампания)
      * @var string
      *
      * @ORM\Column(name="dpd_id", type="string", length=255, nullable=true)

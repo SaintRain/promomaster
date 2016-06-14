@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Рекламные компании
+ * Рекламные кампании
  * @author  Sergeev A.M.
  * @copyright LLC "PromoMaster"
  */

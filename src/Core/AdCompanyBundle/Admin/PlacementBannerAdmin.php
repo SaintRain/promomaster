@@ -103,7 +103,7 @@ class PlacementBannerAdmin extends Admin
 //    {
 //        $datagridMapper
 //            ->add('id', 'doctrine_orm_callback', array(
-//                'label' => 'ID компании, через запятую',
+//                'label' => 'ID кампании, через запятую',
 //                'callback' => array($this, 'searchById'),
 //                'field_type' => 'text'
 //            ), null, ['attr' => ['placeholder' => 'ID сайта, через запятую']])

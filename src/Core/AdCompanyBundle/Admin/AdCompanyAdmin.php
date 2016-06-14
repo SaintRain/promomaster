@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Админский класс для рекламных компания
+ * Админский класс для рекламных кампания
  *
  * @author Sergeev A.M.
  * @copyright LLC "PromoMaster"
@@ -52,7 +52,7 @@ class AdCompanyAdmin extends Admin
      */
     public function toString($object)
     {
-        $text = null === $object->getId() ? 'Добавление новой рекламной компании' : 'Редактирование рекламной компании ' . $object->getName();
+        $text = null === $object->getId() ? 'Добавление новой рекламной кампании' : 'Редактирование рекламной кампании ' . $object->getName();
         return $text;
     }
 
@@ -103,7 +103,7 @@ class AdCompanyAdmin extends Admin
     {
         $datagridMapper
             ->add('id', 'doctrine_orm_callback', array(
-                'label' => 'ID компании, через запятую',
+                'label' => 'ID кампании, через запятую',
                 'callback' => array($this, 'searchById'),
                 'field_type' => 'text'
             ), null, ['attr' => ['placeholder' => 'ID сайта, через запятую']])

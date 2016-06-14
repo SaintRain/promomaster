@@ -17,7 +17,7 @@
         {% if  form.adCompany is defined %}
             <div class="row margin-bottom-20">
                 <div class="{{ fieldGroupClass }}  {% if form_errors(form.adCompany) %}state-error{% endif %}">
-                    <label>Рекламная компания*</label>
+                    <label>Рекламная кампания*</label>
                     {{ form_widget(form.adCompany,{ 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.adCompany) }}
                 </div>

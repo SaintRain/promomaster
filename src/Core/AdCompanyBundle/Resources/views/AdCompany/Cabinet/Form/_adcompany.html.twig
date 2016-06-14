@@ -1,7 +1,7 @@
 {% if adcompany.id %}
-        <h3>Редактирование рекламной компании</h3>
+        <h3>Редактирование рекламной кампании</h3>
     {% else %}
-        <h3>Добавление новой рекламной компании</h3>
+        <h3>Добавление новой рекламной кампании</h3>
     {% endif %}
 
 
@@ -12,10 +12,10 @@
             {{ flashMessage | raw }}
 
             &nbsp;&nbsp;&nbsp;<a class='btn-u btn-u-xs ' href='{{ path('core_cabinet_adcompany_create') }}'><i
-                        class='fa fa-plus-square'></i> &nbsp;Добавить еще рекламную компанию</a>
+                        class='fa fa-plus-square'></i> &nbsp;Добавить еще рекламную кампанию</a>
             &nbsp;&nbsp;&nbsp;
             <a class='btn-u btn-u-xs btn-u-default' href='{{ path('core_cabinet_adcompany_list_first_page') }}'><i
-                        class='fa fa-reply'></i> &nbsp;Вернуться к списку рекламных компаний</a>
+                        class='fa fa-reply'></i> &nbsp;Вернуться к списку рекламных кампаний</a>
 
         </div>
     {% endfor %}
@@ -179,7 +179,7 @@
 
             {% if adcompany.id %}
             $('.delete').click(function () {
-                var res = confirm('Вы действительно хотите удалить эту рекламную компанию из системы?');
+                var res = confirm('Вы действительно хотите удалить эту рекламную кампанию из системы?');
                 if (res) {
                     window.location.href = '{{ path('core_cabinet_adcompany_delete', {id:adcompany.id}) }}';
                 }

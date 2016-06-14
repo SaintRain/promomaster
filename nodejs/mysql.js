@@ -325,7 +325,7 @@ mysqlDeleteAdPlaces = function (id) {
 }
 
 
-//выборка рекламных компаний
+//выборка рекламных кампаний
 mysqlGetAdCompanies = function (id) {
     if (id) {
         var where = "WHERE id ='" + id + "'";
@@ -347,7 +347,7 @@ mysqlGetAdCompanies = function (id) {
 
 }
 
-//удаление рекламной компании
+//удаление рекламной кампании
 mysqlDeleteAdCompanies = function (id) {
     if (SD.adcompanies['_' + id]) {
         delete SD.adcompanies['_' + id];
@@ -413,7 +413,7 @@ mysqlDeleteCountries = function (id) {
 }
 
 
-//выборка связи рекламных компаний и стран
+//выборка связи рекламных кампаний и стран
 mysqlGetAdCompanyMatchCountries = function (adcompany_id, country_id) {
     if (adcompany_id, country_id) {
         var where = "WHERE adcompany_id ='" + adcompany_id + "' AND country_id='" + country_id + "'";
@@ -435,7 +435,7 @@ mysqlGetAdCompanyMatchCountries = function (adcompany_id, country_id) {
     });
 }
 
-//удаление связи рекламных компаний и стран
+//удаление связи рекламных кампаний и стран
 mysqlAdCompanyMatchCountries = function (adcompany_id, country_id) {
     if (SD.adCompanyMatchCountries['_' + adcompany_id]['_' + country_id]) {
         delete SD.adCompanyMatchCountries['_' + adcompany_id]['_' + country_id];
@@ -589,7 +589,7 @@ mysqlUpdateSitesForWebshot = function (site) {
 
 
 
-//выборка связи рекламных компаний и стран
+//выборка связи рекламных кампаний и стран
 //mysqlGetAdCompanyMatchCountries = function (adcompany_id, country_id) {
 //    if (adcompany_id, country_id) {
 //        var where = "WHERE adcompany_id ='" + adcompany_id + "' AND country_id='" + country_id + "'";

@@ -87,7 +87,7 @@ Feature: Test contragent web interface on frontend
         |Юридический адрес                  |344011, г. Ростов-на-Дону, пер.Доломановский, д. 70Д, оф.1 (10 этаж)   |
         |Почтовый адрес                     |344011, г. Ростов-на-Дону, пер.Доломановский, д. 70Д, оф.1001          |
         |ФИО контактного лица               |Пупкин Васислий Петрович                                               |
-        |Сайт компании                      |http://site.com                                                        |
+        |Сайт кампании                      |http://site.com                                                        |
         |legal_contragent_form_contactEmail |test-legal@ekance.com                                                  |
         And fill "0995456711" in masked "legal_contragent_form_phone1"
         And fill "+380995456711" in masked "legal_contragent_form_fax"
@@ -135,7 +135,7 @@ Feature: Test contragent web interface on frontend
         |Юридический адрес                  |344011, г. Ростов-на-Дону, пер.Доломановский, д. 71Д, оф.2 (10 этаж)   |
         |Почтовый адрес                     |344011, г. Ростов-на-Дону, пер.Доломановский, д. 71Д, оф.1001          |
         |ФИО контактного лица               |Пупкин Васислий Петрович                                               |
-        |Сайт компании                      |http://petersite.com                                                   |
+        |Сайт кампании                      |http://petersite.com                                                   |
         |Телефон                            |+380665456711                                                          |
         |Факс                               |+380665456711                                                          |
         And I select "ИП" from "Организационно-правовая форма"

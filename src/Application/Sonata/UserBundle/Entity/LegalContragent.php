@@ -93,7 +93,7 @@ class LegalContragent extends CommonContragent {
     private $bankAccount;
 
     /**
-     * Сайт компании
+     * Сайт кампании
      * @var string
      */
     private $site;

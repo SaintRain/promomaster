@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Сущность рекламной компании
+ * Сущность рекламной кампании
  * @author  Sergeev A.M.
  * @copyright LLC "PromoMaster"
  */
@@ -34,7 +34,7 @@ class AdCompany
 
 
     /**
-     * Имя компании
+     * Имя кампании
      * @var string
      * @ORM\Column(type="string", length=250, nullable=false)
      * @Assert\NotBlank()
@@ -82,7 +82,7 @@ class AdCompany
 
 
     /**
-     * Включить компанию
+     * Включить кампанию
      * @var int
      * @ORM\Column(type="boolean", nullable=true)
      */
@@ -110,7 +110,7 @@ class AdCompany
     private $token;
 
 
-    private  $isActive;  //хранит временное значение активности компаниии
+    private  $isActive;  //хранит временное значение активности кампаниии
 
     public function __construct()
     {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Выдача страниц в ЛК для редактирования рекламных компаний
+ * Выдача страниц в ЛК для редактирования рекламных кампаний
  * @author  Sergeev A.M.
  * @copyright LLC "PromoMaster"
  */
@@ -21,7 +21,7 @@ class AdCompanyCabinetController extends Controller
 
 
     /**
-     * Ставит статус компании
+     * Ставит статус кампании
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function setStatusAction(Request $request, $id, $status, $page=1)
@@ -59,7 +59,7 @@ class AdCompanyCabinetController extends Controller
 
 
     /**
-     * Вывод списка рекламных компаний пользователя в личном кабинете
+     * Вывод списка рекламных кампаний пользователя в личном кабинете
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction($page = 1)
@@ -80,7 +80,7 @@ class AdCompanyCabinetController extends Controller
 
 
     /**
-     * Редактирование рекламной компании
+     * Редактирование рекламной кампании
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -99,7 +99,7 @@ class AdCompanyCabinetController extends Controller
             $form->handleRequest($request);
 
             if ($this->get('core_adcompany_logic')->checkIsExistAdCompany($adcompany, $user)) {
-                $this->setFlash('edit_errors', 'Рекламная компания с указанным именем была добавлена вами ранее.');
+                $this->setFlash('edit_errors', 'Рекламная кампания с указанным именем была добавлена вами ранее.');
                 $isBadName = true;
             } else {
                 $isBadName = false;
@@ -121,7 +121,7 @@ class AdCompanyCabinetController extends Controller
 
 
     /**
-     * Добавление рекламной компании
+     * Добавление рекламной кампании
      * @return \Symfony\Component\HttpFoundation\Response
      */
     /*
@@ -144,7 +144,7 @@ class AdCompanyCabinetController extends Controller
                 $em->persist($adcompany);
                 $em->flush();
 
-                $this->setFlash('edit_success', 'Рекламная компания добавлена');
+                $this->setFlash('edit_success', 'Рекламная кампания добавлена');
                 return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $adcompany->getId()]));
             } else {
                 return $this->render('CoreAdCompanyBundle:AdCompany\Cabinet:edit.html.twig', ['adcompany' => $adcompany, 'form' => $form->createView()]);
@@ -177,7 +177,7 @@ class AdCompanyCabinetController extends Controller
                 $em->persist($adcompany);
                 $em->flush();
 
-                $this->setFlash('edit_success', 'Рекламная компания добавлена');
+                $this->setFlash('edit_success', 'Рекламная кампания добавлена');
 
                 return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $adcompany->getId()]));
             } else {
@@ -196,21 +196,21 @@ class AdCompanyCabinetController extends Controller
         $adcompany = new AdCompany();
         $adcompany->setUser($this->getUser());
         $adcompany->setIsEnabled(true);
-        $adcompany->setName('Новая рекламная компания');
+        $adcompany->setName('Новая рекламная кампания');
         $em = $this->getDoctrine()->getManager();
         $em->persist($adcompany);
         $em->flush();
-        $adcompany->setName('Новая рекламная компания #'.$adcompany->getId());
+        $adcompany->setName('Новая рекламная кампания #'.$adcompany->getId());
         $em->flush();
 
-        //$this->setFlash('edit_success', 'Рекламная компания добавлена');
+        //$this->setFlash('edit_success', 'Рекламная кампания добавлена');
 
         return new RedirectResponse($this->generateUrl('core_cabinet_adcompany_edit', ['id' => $adcompany->getId()]));
     }
 
 
     /**
-     * Удаление рекламной компании
+     * Удаление рекламной кампании
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($id)
@@ -220,13 +220,13 @@ class AdCompanyCabinetController extends Controller
         $em = $this->getDoctrine()->getManager();
         $adcompany = $em->getRepository('CoreAdCompanyBundle:AdCompany')->findForDeleting(['id' => $id, 'user' => $user]);
 
-        $msg = "Рекламная компания  «{$adcompany->getName()}» была удалена.";
+        $msg = "Рекламная кампания  «{$adcompany->getName()}» была удалена.";
         $em->remove($adcompany);
         try {
             $em->flush();
             $this->setFlash('edit_success', $msg);
         } catch (\Exception $e) {
-            $msg = "Невозможно рекламную компанию «{$adcompany->getName()}», т.к. она задействована в системе на данный момент.";
+            $msg = "Невозможно рекламную кампанию «{$adcompany->getName()}», т.к. она задействована в системе на данный момент.";
             $this->setFlash('edit_errors', $msg);
         }
 

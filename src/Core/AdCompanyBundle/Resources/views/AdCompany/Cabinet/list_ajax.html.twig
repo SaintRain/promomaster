@@ -19,8 +19,8 @@
 
             <div class="row">
                 <div class="col-sm-8 ">
-                    <h3>Список рекламных компаний</h3></div>
-                <div class="col-sm-2"><a href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u "><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламную компанию</a></div>
+                    <h3>Список рекламных кампаний</h3></div>
+                <div class="col-sm-2"><a href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u "><i class="fa fa-plus-square"></i> &nbsp;Добавить рекламную кампанию</a></div>
             </div>
 
 
@@ -94,7 +94,7 @@
 
                         </td>
                         <td>
-                            <a title="Перейти к статистике рекламной компании" href="{{ path('core_statistics_ad_company_chart_statistics', {id:adcompany.id}) }}"><i class="fa fa-line-chart"></i></a>
+                            <a title="Перейти к статистике рекламной кампании" href="{{ path('core_statistics_ad_company_chart_statistics', {id:adcompany.id}) }}"><i class="fa fa-line-chart"></i></a>
                             </td>
                         <td>
                             {% if adcompany.isActive %}<span class="label label-u">Да</span>{% else %}<span
@@ -129,9 +129,9 @@
             { routeFirsPage: routeFirsPage, routePage:routePage}) }}
 
         {% else %}
-            <h3>У вас нет рекламных компаний</h3>
+            <h3>У вас нет рекламных кампаний</h3>
             <a style="margin-top: -30px" href="{{ path('core_cabinet_adcompany_create') }}" class="btn-u pull-right"><i
-                        class="fa fa-plus-square"></i> &nbsp;Добавить рекламную компанию</a>
+                        class="fa fa-plus-square"></i> &nbsp;Добавить рекламную кампанию</a>
         {% endif %}
 
 

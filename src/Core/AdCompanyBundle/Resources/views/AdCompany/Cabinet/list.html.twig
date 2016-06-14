@@ -1,8 +1,8 @@
-{#вывод списка рекламных компаний в ЛК#}
+{#вывод списка рекламных кампаний в ЛК#}
 {% extends "ApplicationSonataUserBundle::cabinet_layout.html.twig" %}
 
 {# SEO - заголовки #}
-{% block title %}Ваши рекламные компании{% endblock %}
+{% block title %}Ваши рекламные кампании{% endblock %}
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
 
@@ -10,11 +10,11 @@
         <!--=== Breadcrumbs ===-->
         <div class="breadcrumbs">
             <div class="container">
-                <h1 class="pull-left">Рекламные компании</h1>
+                <h1 class="pull-left">Рекламные кампании</h1>
                 <ul class="pull-right breadcrumb">
                     <li><a href="{{ path('core_common_index') }}">На главную</a></li>
                     <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
-                    <li class="active">Список рекламных компаний</li>
+                    <li class="active">Список рекламных кампаний</li>
                 </ul>
             </div>
         </div>

@@ -139,7 +139,7 @@ exports.getAd = function (req, res, adplace_id) {
 
                             //console.log('in loop');
 
-                            //проверяем рекламную компанию по дате
+                            //проверяем рекламную кампанию по дате
                             var checkByDateRes = this.checkByDate(SD.adcompanies['_' + placement.adCompany_id].startDateTime,
                                     SD.adcompanies['_' + placement.adCompany_id].finishDateTime),
                             //проверяет по странам/регионам
@@ -147,7 +147,7 @@ exports.getAd = function (req, res, adplace_id) {
 
                             //console.log('checkByGeoRes='+checkByGeoRes);
 
-                            if (checkByDateRes && checkByGeoRes && SD.adcompanies['_' + placement.adCompany_id].isEnabled) {  //если для компании все ок, идем дальше
+                            if (checkByDateRes && checkByGeoRes && SD.adcompanies['_' + placement.adCompany_id].isEnabled) {  //если для кампании все ок, идем дальше
                                 checkByDateRes = this.checkByDate(placement.startDateTime, placement.finishDateTime),
                                     checkByGeoRes = this.checkByGeo(ip, SD.adPlaceMatchCountries, '_' + placement.id);
 

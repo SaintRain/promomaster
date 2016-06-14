@@ -1,8 +1,8 @@
-{#редактирование рекламной компании в ЛК#}
+{#редактирование рекламной кампании в ЛК#}
 {% extends "CoreAdCompanyBundle:AdCompany\\Cabinet:tabs.html.twig" %}
 {#{% form_theme form 'CoreCommonBundle:Form:choice_widget_with_data_attr.html.twig' %}#}
  {#SEO - заголовки #}
-{% block title %}{% if adcompany.id %}Редактирование рекламной компании {{ adcompany.name }}{% else %}Добавление рекламной компании в систему{% endif %}{% endblock %}
+{% block title %}{% if adcompany.id %}Редактирование рекламной кампании {{ adcompany.name }}{% else %}Добавление рекламной кампании в систему{% endif %}{% endblock %}
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
 
@@ -11,13 +11,13 @@
         <!--=== Breadcrumbs ===-->`
         <div class="breadcrumbs">
             <div class="container">
-                <h1 class="pull-left">Рекламная компания</h1>
+                <h1 class="pull-left">Рекламная кампания</h1>
                 <ul class="pull-right breadcrumb">
                     <li><a href="{{ path('core_common_index') }}">На главную</a></li>
                     <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
                     <li><a href="{{ path('core_cabinet_adcompany_list_first_page') }}">Список ваших рекламных
-                            компаний</a></li>
-                    <li class="active">Редактирование рекламной компании</li>
+                            кампаний</a></li>
+                    <li class="active">Редактирование рекламной кампании</li>
                 </ul>
             </div>
         </div>

@@ -38,7 +38,7 @@ form:
         addressLegal: Юридический адрес
         addressPost: Почтовый адрес
         contactFio: ФИО контактного лица
-        site: Сайт компании
+        site: Сайт кампании
         fax: Факс
     indi:
         caption: Физическое лицо

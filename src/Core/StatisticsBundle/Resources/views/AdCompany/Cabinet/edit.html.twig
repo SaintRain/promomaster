@@ -1,7 +1,7 @@
 {#Вывод статистики графиками для РК в ЛК#}
 {% extends "CoreAdCompanyBundle:AdCompany\\Cabinet:tabs.html.twig" %}
  {#SEO - заголовки #}
-{% block title %}Статистика рекламной компании {{ adcompany.name }}{% endblock %}
+{% block title %}Статистика рекламной кампании {{ adcompany.name }}{% endblock %}
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
 
@@ -10,13 +10,13 @@
         <!--=== Breadcrumbs ===-->`
         <div class="breadcrumbs">
             <div class="container">
-                <h1 class="pull-left">Статистика рекламной компании</h1>
+                <h1 class="pull-left">Статистика рекламной кампании</h1>
                 <ul class="pull-right breadcrumb">
                     <li><a href="{{ path('core_common_index') }}">На главную</a></li>
                     <li><a href="{{ path('sonata_user_profile_show') }}">Кабинет</a></li>
                     <li><a href="{{ path('core_cabinet_adcompany_list_first_page') }}">Список ваших рекламных
-                            компаний</a></li>
-                    <li class="active">Статистика рекламной компании</li>
+                            кампаний</a></li>
+                    <li class="active">Статистика рекламной кампании</li>
                 </ul>
             </div>
         </div>

@@ -109,7 +109,7 @@ class LegalContragentFormMapper
                     'label' => 'Контактный email'))
                 ->add('site', 'text', array(
                     'attr' => ['data-mask' => 'url'],
-                    'label' => 'Сайт компании'))
+                    'label' => 'Сайт кампании'))
                 ->end()
                 ->with('Адреса')
                     ->add('contactList', 'sonata_type_collection', array(

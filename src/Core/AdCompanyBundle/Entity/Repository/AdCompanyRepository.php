@@ -24,7 +24,7 @@ class AdCompanyRepository extends EntityRepository
     }
 
     /**
-     * Построение запроса на выборку рекламных компаний
+     * Построение запроса на выборку рекламных кампаний
      * @param array $options
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -51,7 +51,7 @@ class AdCompanyRepository extends EntityRepository
     }
 
     /**
-     * Находит рекламную компанию для удаления
+     * Находит рекламную кампанию для удаления
      * @param $options
      */
     public function findForDeleting($options)
@@ -72,7 +72,7 @@ class AdCompanyRepository extends EntityRepository
 
 
     /**
-     * Находит количество рекламных компаний по опциям
+     * Находит количество рекламных кампаний по опциям
      * @param $options
      */
     public function findQuantityByOptions($options)

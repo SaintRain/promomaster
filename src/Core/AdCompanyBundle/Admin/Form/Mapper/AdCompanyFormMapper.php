@@ -1,6 +1,6 @@
 <?php
 /**
- * форма для редактирования рекламной компании
+ * форма для редактирования рекламной кампании
  *
  * @author Sergeev A.M.
  * @copyright LLC "PromoMaster"
@@ -22,7 +22,7 @@ class AdCompanyFormMapper
 
         $formMapper
             ->with('Основное')
-            ->add('name', null, ['label' => 'Название компании', 'required' => true])
+            ->add('name', null, ['label' => 'Название кампании', 'required' => true])
             ->add('user', 'ajax_entity', [
                 'label' => 'Пользователь',
                 'required' => true,
@@ -59,7 +59,7 @@ class AdCompanyFormMapper
                     'placeholder' => 'Введите E-mail, фамилию, или ID пользователя',
                     'minimumInputLength' => 1),
             ])
-            ->add('isEnabled', null, ['label' => 'Компания включена', 'required' => false])
+            ->add('isEnabled', null, ['label' => 'Кампания включена', 'required' => false])
             ->with('Размещения')
             ->add('placements', 'sonata_type_collection',
                 array(

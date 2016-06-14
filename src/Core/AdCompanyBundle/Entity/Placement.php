@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Сущность размещений в рекламной компании
+ * Сущность размещений в рекламной кампании
  * @author  Sergeev A.M.
  * @copyright LLC "PromoMaster"
  */
@@ -34,7 +34,7 @@ class Placement
 
 
     /**
-     * Рекламная компания в рамках которой идет размещение
+     * Рекламная кампания в рамках которой идет размещение
      * @ORM\ManyToOne(targetEntity="AdCompany", inversedBy="placements")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
@@ -128,7 +128,7 @@ class Placement
      */
     private $statistics;
 
-    private $isActive;   //хранит временное значение активности компаниии
+    private $isActive;   //хранит временное значение активности кампаниии
 
     public function __construct()
     {

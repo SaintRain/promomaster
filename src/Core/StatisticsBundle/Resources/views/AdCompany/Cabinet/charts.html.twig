@@ -15,7 +15,7 @@
         };
         {%endfor%}
 
-        var titleText = 'Статистика по рекламной компании <b>{{ adcompany.name|e('js') }}</b>. Всего показов <b>{{  statistics. generalShows}}</b>, кликов  <b>{{  statistics. generalClicks}}</b>, CTR <b>{{  statistics.generalCTR}}%</b>.<br><b>Данные обновляются раз в минуту.</b>';
+        var titleText = 'Статистика по рекламной кампании <b>{{ adcompany.name|e('js') }}</b>. Всего показов <b>{{  statistics. generalShows}}</b>, кликов  <b>{{  statistics. generalClicks}}</b>, CTR <b>{{  statistics.generalCTR}}%</b>.<br><b>Данные обновляются раз в минуту.</b>';
         createChart(seriesOptions, titleText, "chart");
 
 
