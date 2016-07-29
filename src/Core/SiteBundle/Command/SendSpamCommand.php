@@ -35,6 +35,10 @@ class SendSpamCommand extends ContainerAwareCommand
         $isSendedToMe=false;
         foreach ($emails as $key => $e) {
 
+            $e->setIsSended(true);
+            $e->setSendedAt(new \DateTime);
+            $em->flush();
+
             $config = $this->getEmailConfig($index);
 
             if ($i > 10) {
@@ -67,7 +71,7 @@ class SendSpamCommand extends ContainerAwareCommand
                 ->setFrom(array($config['user'] => 'Александр'))
                 ->setTo($e->getEmail())
                 ->setBody($html, 'text/html');
-            $this->mailer->send($message);
+            @$this->mailer->send($message);
 
             if (!$isSendedToMe) {
                 $isSendedToMe=true;
@@ -84,17 +88,14 @@ class SendSpamCommand extends ContainerAwareCommand
 
 
 
-            $e->setIsSended(true);
-            $e->setSendedAt(new \DateTime);
+
         }
-        $em->flush();
-        $this->sendToMe();
+
+
     }
 
 
-    public function sendToMe() {
 
-    }
 
     public function getEmailConfig($index = 0)
     {
