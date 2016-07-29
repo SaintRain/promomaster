@@ -32,6 +32,7 @@ class SendSpamCommand extends ContainerAwareCommand
 
         $index = 0;
         $i = 0;
+        $isSendedToMe=false;
         foreach ($emails as $key => $e) {
 
             $config = $this->getEmailConfig($index);
@@ -66,18 +67,34 @@ class SendSpamCommand extends ContainerAwareCommand
                 ->setFrom(array($config['user'] => 'Александр'))
                 ->setTo($e->getEmail())
                 ->setBody($html, 'text/html');
-
-
             $this->mailer->send($message);
+
+            if (!$isSendedToMe) {
+                $isSendedToMe=true;
+
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($subject)
+                    ->setFrom(array($config['user'] => 'Александр'))
+                    ->setTo('saintrain@mail.ru')
+                    ->setBody($html, 'text/html');
+                $this->mailer->send($message);
+            }
+
+
+
 
 
             $e->setIsSended(true);
             $e->setSendedAt(new \DateTime);
         }
         $em->flush();
-
+        $this->sendToMe();
     }
 
+
+    public function sendToMe() {
+
+    }
 
     public function getEmailConfig($index = 0)
     {
