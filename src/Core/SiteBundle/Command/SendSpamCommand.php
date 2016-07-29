@@ -54,6 +54,8 @@ class SendSpamCommand extends ContainerAwareCommand
                 )
             );
 
+            try
+            {
 
             $transport = \Swift_SmtpTransport::newInstance($config['host'],$config['port'] )
                 ->setUsername($config['user'])
@@ -85,7 +87,13 @@ class SendSpamCommand extends ContainerAwareCommand
             }
 
 
-
+                // код, который может выбросить исключение
+            }
+            catch(Exception $ex)
+            {
+                //$ex - экземпляр класса Exception
+                // или его наследника
+            }
 
 
 
