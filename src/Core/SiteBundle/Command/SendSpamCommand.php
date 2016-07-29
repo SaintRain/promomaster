@@ -65,7 +65,7 @@ class SendSpamCommand extends ContainerAwareCommand
             ;
 
             $this->mailer = \Swift_Mailer::newInstance($transport);
-
+ld($e->getEmail());
 
             $subject = 'Реклама на вашем сайте ' . $e->getSite();
             $message = \Swift_Message::newInstance()
