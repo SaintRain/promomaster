@@ -30,7 +30,7 @@ class SendSpamCommand extends ContainerAwareCommand
         error_reporting(E_ALL);
 
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $emails = $em->getRepository('CoreSiteBundle:EmailSpam')->findForSpam(30);
+        $emails = $em->getRepository('CoreSiteBundle:EmailSpam')->findForSpam(15);
 
         $index = 0;
         $i = 0;
@@ -43,7 +43,7 @@ class SendSpamCommand extends ContainerAwareCommand
 
             $config = $this->getEmailConfig($index);
 
-            if ($i > 10) {
+            if ($i > 5) {
                 $index++;
                 $i = 0;
             } else {
@@ -110,11 +110,13 @@ class SendSpamCommand extends ContainerAwareCommand
     {
         $configs = [
             0 => [
-                'host' => 'smtp.mail.ru',
-                'user' => 'promomaster-net@mail.ru',
+                'host' => 'smtp.gmail.com',
+                'user' => 'promomaster.net@gmail.com',
                 'password' => 'tel769242000',
                 'encryption' => 'ssl',
                 'port'=>465
+
+
             ],
             1 => [
                 'host' => 'smtp.yandex.ru',
@@ -125,8 +127,8 @@ class SendSpamCommand extends ContainerAwareCommand
             ],
 
             2 => [
-                'host' => 'smtp.gmail.com',
-                'user' => 'promomaster.net@gmail.com',
+                'host' => 'smtp.mail.ru',
+                'user' => 'promomaster-net@mail.ru',
                 'password' => 'tel769242000',
                 'encryption' => 'ssl',
                 'port'=>465
