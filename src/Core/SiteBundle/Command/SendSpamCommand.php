@@ -96,7 +96,7 @@ class SendSpamCommand extends ContainerAwareCommand
             }
 
 
-            ld($e->getEmail());
+            ld($e->getEmail().'=='.$config['host']);
 
         }
 
