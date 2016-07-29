@@ -26,6 +26,8 @@ class SendSpamCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        ini_set(display_errors, "on");
+        error_reporting(E_ALL);
 
         $em = $this->getContainer()->get('doctrine')->getManager();
         $emails = $em->getRepository('CoreSiteBundle:EmailSpam')->findForSpam(30);
@@ -73,7 +75,7 @@ class SendSpamCommand extends ContainerAwareCommand
                 ->setFrom(array($config['user'] => 'Александр'))
                 ->setTo($e->getEmail())
                 ->setBody($html, 'text/html');
-            @$this->mailer->send($message);
+            $this->mailer->send($message);
 
             if (!$isSendedToMe) {
                 $isSendedToMe=true;
@@ -89,10 +91,8 @@ class SendSpamCommand extends ContainerAwareCommand
 
                 // код, который может выбросить исключение
             }
-            catch(Exception $ex)
-            {
-                //$ex - экземпляр класса Exception
-                // или его наследника
+            catch (Swift_TransportException $e) {
+
             }
 
 
