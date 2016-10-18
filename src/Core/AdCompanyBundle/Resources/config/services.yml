@@ -54,3 +54,13 @@ services:
           - @security.context
       tags:
           - { name: form.type, alias: ad_company_type }
+
+  html_log_formatter:
+      class: Monolog\Formatter\HtmlFormatter
+
+  web_log_processor:
+    class: Monolog\Processor\WebProcessor
+    tags:
+        - { name: monolog.processor }
+
+
