@@ -100,7 +100,7 @@
             </div>
 
             <div class="row ">
-                <div class="col-sm-6  {% if form_errors(form.plainPassword.first) %}state-error{% endif %}">
+                <div class="col-sm-6 {% if form_errors(form.plainPassword.first) %}state-error{% endif %}">
                     <label>Новый пароль </label>
                     {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control'} }) }}
                     {{ form_errors(form.plainPassword.first) }}
