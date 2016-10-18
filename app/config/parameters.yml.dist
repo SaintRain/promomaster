@@ -25,3 +25,6 @@ parameters:
     router.request_context.host: %domain_ru%  #дефолтный домен, нужен для консоли, чтобы ставить правильный домен на роуты
     router.request_context.base_url: app_dev.php #для прода ставим null
     nodejs_server: 'http://%domain_ru%:1337' #строчка подключения к серверу nodejs
+    errors_mail_to: promomaster.net@mail.ru
+    errors_mail_from: saintrain@mail.ru
+    errors_mail_subject: 'Promomaster.net Error!'

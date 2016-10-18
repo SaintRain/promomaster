@@ -5,9 +5,37 @@ imports:
 #    validation:
 #        cache: apc
 
+#monolog:
+#    handlers:
+#        main:
+#            type:  stream
+#            path:  %kernel.logs_dir%/%kernel.environment%.log
+#            level: error
 monolog:
     handlers:
         main:
+            type:         fingers_crossed
+            action_level: notice
+            handler:      grouped
+        grouped:
+            type:    group
+            members: [streamed, buffered]
+        streamed:
             type:  stream
-            path:  %kernel.logs_dir%/%kernel.environment%.log
-            level: error
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: info
+        buffered:
+            type:    buffer
+            handler: swift
+        swift:
+            type:         swift_mailer
+            formatter:    html_log_formatter
+            content_type: text/html
+            from_email:   %errors_mail_from%
+            to_email:     %errors_mail_to%
+            subject:      %errors_mail_subject%
+            level:        critical
+        mail:
+            type: fingers_crossed
+            action_level: critical
+            handler: swift
