@@ -20,11 +20,11 @@ monolog:
             handler: swift
         swift:
             type:         swift_mailer
-#            formatter:    html_log_formatter
+            formatter:    html_log_formatter
             content_type: text/html
-            from_email:   %default_email%
-            to_email:     %default_email%
-            subject:      "Ошибка на сервере  promomaster.net"
+            from_email:   %errors_mail_from%
+            to_email:     %errors_mail_to%
+            subject:      %errors_mail_subject%
             level:        critical
         mail:
             type: fingers_crossed
