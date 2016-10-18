@@ -47,7 +47,7 @@ class ProfileFormType extends BaseType
 
                 
         ;
-        if (!$this->security->getToken()->getUser()->getIsSocialAuth()) {
+        //if (!$this->security->getToken()->getUser()->getIsSocialAuth()) {
             $builder->add('plainPassword', 'repeated', array(
                     'required' => false,
                     'type' => 'password',
@@ -57,7 +57,7 @@ class ProfileFormType extends BaseType
                 ));
 
             //$builder->add('plainPassword', 'password', array('required' => false, 'label'=>'form.label.profile.password', 'attr' => array('class'=>'text_input', 'size' => 40)));
-        }
+        //}
 
         $builder->add('userStatus', 'choice', [
         'choices' => $this::getUserStatuses(),
