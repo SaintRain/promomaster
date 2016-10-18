@@ -46,7 +46,7 @@ class ProfileFormType extends BaseType
 
 
                 
-        ;
+        ;  throw new \Exception('Server NodeJs is down!');
         //if (!$this->security->getToken()->getUser()->getIsSocialAuth()) {
             $builder->add('plainPassword', 'repeated', array(
                     'required' => false,
