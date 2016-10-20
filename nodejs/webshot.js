@@ -69,7 +69,8 @@ TRYCATCH(function () {
             console.log('processed: '+sites[key].domain+' #'+ currentIndex+ ' from '+sites.length);
         }
 
-        //console.log(sites.length);
+        console.log(sites.length);
+        console.log(currentIndex);
 
         if (!sites.length || sites.length <= currentIndex) {
 
@@ -92,6 +93,7 @@ TRYCATCH(function () {
 
 
         webshot(site.domain, srcFile, options, function (err) {
+
 
             if (err == null) {
 
@@ -117,7 +119,7 @@ TRYCATCH(function () {
             }
             else {
                 if (!CONFIG.isProd) {
-                    console.log('filed: ' + currentIndex + '; ' + site.domain);
+                    console.log('filed: ' + currentIndex + '; ' + site.domain+' error='+err);
                 }
 
             }
