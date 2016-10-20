@@ -69,8 +69,6 @@ TRYCATCH(function () {
             console.log('processed: '+sites[key].domain+' #'+ currentIndex+ ' from '+sites.length);
         }
 
-        console.log(sites.length);
-        console.log(currentIndex);
 
         if (!sites.length || sites.length <= currentIndex) {
 
@@ -107,8 +105,6 @@ TRYCATCH(function () {
                     width: 800,
                     height: 800
                 });
-                console.log(srcFile)
-                console.log(res)
 
                 easyimg.thumbnail({
                     src: srcFile,
