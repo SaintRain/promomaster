@@ -66,7 +66,7 @@ TRYCATCH(function () {
         }
 
         if (!CONFIG.isProd) {
-            console.log('processed: '+ currentIndex+ ' from '+currentIndex);
+            console.log('processed: '+site.domain+' #'+ currentIndex+ ' from '+sites.length);
         }
 
         //console.log(sites.length);
@@ -114,7 +114,10 @@ TRYCATCH(function () {
                 //console.log('processed: ' + currentIndex + '; ' + site.domain);
             }
             else {
-                //console.log('filed: ' + currentIndex + '; ' + site.domain);
+                if (!CONFIG.isProd) {
+                    console.log('filed: ' + currentIndex + '; ' + site.domain);
+                }
+
             }
 
 

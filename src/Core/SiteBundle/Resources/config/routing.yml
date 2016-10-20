@@ -46,7 +46,7 @@ core_cabinet_site_verified_form:
 
 # проверка прав на площадку
 core_cabinet_site_verify:
-    path:      /cabinet/site_verifу_{id}.html
+    path:      /cabinet/site_verify_{id}.html
     schemes:  [http]
     defaults:  { _controller: CoreSiteBundle:SiteCabinet:verifySite }
     requirements:

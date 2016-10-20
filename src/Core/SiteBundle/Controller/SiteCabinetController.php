@@ -53,7 +53,7 @@ class SiteCabinetController extends Controller
         $categories = $this->getDoctrine()->getManager()->getRepository('CoreCategoryBundle:SiteCategory')
             ->getBuildTree()[0]['__children'];
 
-//ldd($_POST);
+
         //Сохранения изменения
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
@@ -158,7 +158,7 @@ class SiteCabinetController extends Controller
                 $em->persist($site);
                 $em->flush();
                 //$this->makeSnapShot($site->getId());
-                $em->flush();
+
                 $answer = [
                     'data' => ['id' => $site->getId(), 'name' => $site->getName()],
                     'result' => true
@@ -269,8 +269,9 @@ class SiteCabinetController extends Controller
 
         $pageUrl = $site->getDomain() . '/promomaster_' . $site->getVerifiedCode() . '.html';
 
-        $Headers = @get_headers($pageUrl);
-        if (strpos('200', $Headers[0])) {
+        $HeadersCode = $this->get_http_response_code($pageUrl);
+
+        if (!in_array($HeadersCode, ['404', '500', '400'])) {
             $isVerified = true;
         } else {
             try {
@@ -304,6 +305,11 @@ class SiteCabinetController extends Controller
             ['isVerified' => $isVerified]
         );
         return $response;
+    }
+
+    function get_http_response_code($domain1) {
+        $headers = @get_headers($domain1);
+        return substr($headers[0], 9, 3);
     }
 
     /**
