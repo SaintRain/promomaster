@@ -66,7 +66,7 @@ TRYCATCH(function () {
         }
 
         if (!CONFIG.isProd) {
-            console.log('processed: '+site.domain+' #'+ currentIndex+ ' from '+sites.length);
+            console.log('processed: '+sites[key].domain+' #'+ currentIndex+ ' from '+sites.length);
         }
 
         //console.log(sites.length);
