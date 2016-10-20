@@ -80,7 +80,7 @@ mysqlGetSites = function (id) {
         var where = "WHERE id ='" + id + "'";
     }
     else {
-        var where = " ORDER BY id DESC";
+        var where = "";
     }
 
     var q = "SELECT id, domain, user_id FROM core_site " + where;
@@ -565,7 +565,7 @@ mysqlGetPriceModel = function () {
 mysqlGetSitesForWebshot = function (callback) {
 
 var sites=[];
-    var q = "SELECT id, domain, user_id  FROM core_site WHERE isVerified=1 AND (isHaveSnapshot=0 OR isHaveSnapshot IS NULL)";
+    var q = "SELECT id, domain, user_id  FROM core_site WHERE isVerified=1 AND (isHaveSnapshot=0 OR isHaveSnapshot IS NULL) ORDER BY id DESC";
     MYSQL_CONNECTION.query(q, function (err, rows, fields) {
         if (err) throw err;
         rows.forEach(function (item) {
