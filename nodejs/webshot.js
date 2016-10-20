@@ -95,12 +95,14 @@ TRYCATCH(function () {
 
             if (err == null) {
 
-                easyimg.thumbnail({
+                var res=easyimg.thumbnail({
                     src: srcFile,
                     dst: srcFile,
                     width: 800,
                     height: 800
                 });
+                console.log(srcFile)
+                console.log(res)
 
                 easyimg.thumbnail({
                     src: srcFile,
