@@ -80,8 +80,12 @@ TRYCATCH(function () {
             }
 
 
-            //screenshot.close();
-            process.exit();
+            setTimeout(function(i) {
+                process.exit();
+            }, 25000);  //выключаем через 25 секунд т.к может обрабатываться еще последний процесс на снятие скрина
+
+
+
         }
 
     }
