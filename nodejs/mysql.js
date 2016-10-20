@@ -80,7 +80,7 @@ mysqlGetSites = function (id) {
         var where = "WHERE id ='" + id + "'";
     }
     else {
-        var where = "";
+        var where = " ORDER BY id DESC";
     }
 
     var q = "SELECT id, domain, user_id FROM core_site " + where;

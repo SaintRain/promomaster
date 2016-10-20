@@ -81,7 +81,7 @@ TRYCATCH(function () {
 
 
             //screenshot.close();
-            //process.exit();
+            process.exit();
         }
 
     }
