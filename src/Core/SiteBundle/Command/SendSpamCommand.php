@@ -50,9 +50,12 @@ class SendSpamCommand extends ContainerAwareCommand
                 $i++;
             }
 
+            $random_text = file_get_contents('http://loripsum.net/api');
+
             $html = $this->getContainer()->get('templating')->render('CoreSiteBundle:Spam:spamMessage.html.twig',
                 array(
-                    'data' => $e
+                    'data' => $e,
+                    'random_text'=>$random_text
                 )
             );
 
@@ -67,7 +70,6 @@ class SendSpamCommand extends ContainerAwareCommand
             ;
 
             $this->mailer = \Swift_Mailer::newInstance($transport);
-
 
             $subject = 'Реклама на вашем сайте ' . $e->getSite();
             $message = \Swift_Message::newInstance()
@@ -96,7 +98,7 @@ class SendSpamCommand extends ContainerAwareCommand
             }
 
 
-//            ld($e->getEmail().'=='.$config['host']);
+            ld($e->getEmail().'=='.$config['host']);
 
         }
 

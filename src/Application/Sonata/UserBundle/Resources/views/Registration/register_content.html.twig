@@ -1,14 +1,22 @@
 {% extends "CoreCommonBundle::main_layout.html.twig" %}
 
 {# SEO - заголовки #}
-{% block title %}{% endblock %}
+{% block title %}Регистрация{% endblock %}
 {% block meta_keywords %}{% endblock %}
 {% block meta_description %}{% endblock %}
+{%- block noIndex -%}
+    <meta name="robots" content="NOINDEX,NOFOLLOW"/>, <meta name="robots" content="NOINDEX, FOLLOW"/>
+{%- endblock -%}
 
- {% block js_head %}
+
+{% block js_head %}
      {{ parent() }}
      <script src="/assets/js/plugins/ulogin.js"></script>
  {% endblock %}
+
+
+
+
 
 {% block content %}
     <!--=== Breadcrumbs ===-->

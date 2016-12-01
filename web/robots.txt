@@ -15,3 +15,4 @@
  Disallow: /
  User-agent: AhrefsBot
  disallow: /
+ Host: promomaster.net

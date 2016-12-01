@@ -12,6 +12,7 @@
 
         <title>{% block title %}{% endblock %}</title>
         <!-- Meta -->
+        {% block noIndex %}{% endblock %}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="{% block meta_description %}{% endblock %}">
@@ -19,6 +20,7 @@
         <meta name="author" content="">
         <meta name='yandex-verification' content='58444132489db140'/>
         <meta name='yandex-verification' content='55c42153c59e73e8' />
+
 
         {% block css %}
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400"/>
